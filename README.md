@@ -21,8 +21,8 @@
     optional authentication parameters so the action can write inference to PR
     mappings after creating follow-up pull requests.
 - Configure secrets for the repository:
-  - OPENAI_API_KEY: OpenAI API key, used when starting TensorZero gateway
-  - CLICKHOUSE_URL: ClickHouse URL for both TensorZero gateway and the GitHub PR
+  - CI_BOT_OPENAI_API_KEY: OpenAI API key, used when starting TensorZero gateway
+  - CI_BOT_CLICKHOUSE_URL: ClickHouse URL for both TensorZero gateway and the GitHub PR
     to inference mapping; expected format is
     `http[s]://[username:password@]hostname:port[/database]`.
 - Configure GitHub Actions permissions for the repository:
