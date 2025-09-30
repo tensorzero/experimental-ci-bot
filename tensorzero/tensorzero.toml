@@ -1,0 +1,17 @@
+[functions.tensorzero_github_ci_bot]
+type = "chat"
+
+[functions.tensorzero_github_ci_bot.variants.gpt_5]
+type = "chat_completion"
+model = "openai::gpt-5"
+templates.generate_pr_and_comment.path = "prompt.minijinja"
+
+[metrics.tensorzero_github_ci_bot_pr_merged]
+type = "boolean"
+optimize = "max"
+level = "inference"
+
+[metrics.tensorzero_github_ci_bot_diff_patched_successfully]
+type = "boolean"
+optimize = "max"
+level = "inference"
