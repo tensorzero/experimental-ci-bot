@@ -35015,15 +35015,11 @@ async function createFollowupPr({ octokit, token, owner, repo, pullRequest, diff
             coreExports.warning('Diff did not produce any changes; skipping follow-up PR creation.');
             return undefined;
         }
-        await execGit([
-            'config',
-            'user.email',
-            '41898282+github-actions[bot]@users.noreply.github.com'
-        ], {
+        await execGit(['config', 'user.email', 'hello@tensorzero.com'], {
             cwd: repoDir,
             token
         });
-        await execGit(['config', 'user.name', 'github-actions[bot]'], {
+        await execGit(['config', 'user.name', 'TensorZero-Experimental-CI-Bot[bot]'], {
             cwd: repoDir,
             token
         });

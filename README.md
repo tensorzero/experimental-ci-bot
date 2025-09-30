@@ -22,8 +22,8 @@
     mappings after creating follow-up pull requests.
 - Configure secrets for the repository:
   - CI_BOT_OPENAI_API_KEY: OpenAI API key, used when starting TensorZero gateway
-  - CI_BOT_CLICKHOUSE_URL: ClickHouse URL for both TensorZero gateway and the GitHub PR
-    to inference mapping; expected format is
+  - CI_BOT_CLICKHOUSE_URL: ClickHouse URL for both TensorZero gateway and the
+    GitHub PR to inference mapping; expected format is
     `http[s]://[username:password@]hostname:port[/database]`.
 - Configure GitHub Actions permissions for the repository:
   - Under "Settings > Actions > General", check the box for "Allow GitHub
