@@ -189,21 +189,17 @@ export async function createFollowupPr(
       return undefined
     }
 
+    await execGit(['config', 'user.email', 'hello@tensorzero.com'], {
+      cwd: repoDir,
+      token
+    })
     await execGit(
-      [
-        'config',
-        'user.email',
-        '41898282+github-actions[bot]@users.noreply.github.com'
-      ],
+      ['config', 'user.name', 'TensorZero-Experimental-CI-Bot[bot]'],
       {
         cwd: repoDir,
         token
       }
     )
-    await execGit(['config', 'user.name', 'github-actions[bot]'], {
-      cwd: repoDir,
-      token
-    })
     await execGit(['add', '--all'], { cwd: repoDir, token })
     await execGit(
       ['commit', '-m', `chore: automated fix for PR #${pullRequest.number}`],
