@@ -26,8 +26,8 @@ jobs:
           docker pull tensorzero/gateway:latest
           docker run -d --rm \
             --name tensorzero-gateway \
-            -e TENSORZERO_CLICKHOUSE_URL=${{ secrets.CLICKHOUSE_URL }} \
-            -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+            -e TENSORZERO_CLICKHOUSE_URL=${{ secrets.CI_BOT_CLICKHOUSE_URL }} \
+            -e OPENAI_API_KEY=${{ secrets.CI_BOT_OPENAI_API_KEY }} \
             -p 3000:3000 \
             --volume ./tensorzero:/action-config \
             tensorzero/gateway:latest --config-file /action-config/tensorzero.toml
@@ -44,7 +44,7 @@ jobs:
         with:
           tensorzero-base-url: http://localhost:3000
           tensorzero-pr-merged-metric-name: tensorzero_github_ci_bot_pr_merged
-          clickhouse-url: ${{ secrets.CLICKHOUSE_URL }}
+          clickhouse-url: ${{ secrets.CI_BOT_CLICKHOUSE_URL }}
           clickhouse-table: GitHubBotPullRequestToInferenceMap
 
       - name: Stop TensorZero gateway

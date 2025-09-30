@@ -34,8 +34,8 @@ jobs:
           docker pull tensorzero/gateway:latest
           docker run -d --rm \
             --name tensorzero-gateway \
-            -e TENSORZERO_CLICKHOUSE_URL=${{ secrets.CLICKHOUSE_URL }} \
-            -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+            -e TENSORZERO_CLICKHOUSE_URL=${{ secrets.CI_BOT_CLICKHOUSE_URL }} \
+            -e OPENAI_API_KEY=${{ secrets.CI_BOT_OPENAI_API_KEY }} \
             -p 3000:3000 \
             --volume /tmp/tensorzero-for-gateway:/action-config \
             tensorzero/gateway:latest --config-file /action-config/tensorzero.toml
@@ -69,7 +69,7 @@ jobs:
           tensorzero-base-url: http://localhost:3000
           tensorzero-diff-patched-successfully-metric-name: tensorzero_github_ci_bot_diff_patched_successfully
           output-artifacts-dir: debug-logs
-          clickhouse-url: ${{ secrets.CLICKHOUSE_URL }}
+          clickhouse-url: ${{ secrets.CI_BOT_CLICKHOUSE_URL }}
           clickhouse-table: GitHubBotPullRequestToInferenceMap
 
       - name: Upload diagnostics bundle
