@@ -1,0 +1,13 @@
+name: TensorZero Stub
+description:
+  This is a stub. Don't use this action directly. Depend on the subactions
+  instead.
+author: shuyangli
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Stub'
+      run: |
+        echo 'This is a stub.
+        exit 1
+      shell: bash

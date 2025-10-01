@@ -1,0 +1,27 @@
+name: create-pr-feedback
+description: Prepare and surface pull request feedback from workflow data.
+author: shuyangli
+
+branding:
+  icon: compose
+  color: blue
+
+inputs:
+  tensorzero-base-url:
+    description: Base URL for the TensorZero instance.
+    required: true
+  tensorzero-pr-merged-metric-name:
+    description: Metric name for tracking PR successfully merged.
+    required: true
+  clickhouse-url:
+    description:
+      URL for ClickHouse HTTP interface, in the format of
+      http[s]://[username:password@]hostname:port[/database].
+    required: true
+  clickhouse-table:
+    description: Table for the PR to inference mapping.
+    required: true
+
+runs:
+  using: node24
+  main: ../dist/create-pr-feedback/index.js
