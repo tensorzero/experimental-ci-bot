@@ -3,10 +3,7 @@ import * as github from '@actions/github'
 import * as fs from 'fs'
 import * as path from 'path'
 
-import {
-  extractCommentsFromLlmResponse,
-  extractDiffFromLlmResponse
-} from './llmResponse.js'
+import { extractXmlTagsFromLlmResponse } from './llmResponse.js'
 import {
   type WorkflowJobsResponse,
   type FollowupPrResult,
@@ -348,12 +345,14 @@ export async function run(): Promise<void> {
     throw new Error('No LLM response found, failing the action.')
   }
 
-  const comments = extractCommentsFromLlmResponse(llmResponse)
-  const diff = extractDiffFromLlmResponse(llmResponse)
+  // We take the first non-empty diff and comments, but output all commands.
+  const comments = extractXmlTagsFromLlmResponse(llmResponse, 'comments')
+  const diff = extractXmlTagsFromLlmResponse(llmResponse, 'diff')
+  const commands = extractXmlTagsFromLlmResponse(llmResponse, 'command')
 
-  if (!comments && !diff) {
+  if (!comments && !diff && !commands) {
     core.info(
-      'LLM response contained neither comments nor diff; finishing without changes.'
+      'LLM response contains no comments, diff, or command; finishing without changes.'
     )
     return
   }
@@ -372,7 +371,7 @@ export async function run(): Promise<void> {
     return
   }
 
-  const trimmedDiff = diff.trim()
+  const trimmedDiff = diff[0].trim()
   let followupPr: FollowupPrResult | undefined
   let followupPrCreationError: string | undefined
   if (trimmedDiff) {
@@ -433,9 +432,11 @@ export async function run(): Promise<void> {
     }
   }
 
+  const trimmedComments = comments[0].trim()
   const comment = renderComment({
-    generatedCommentBody: comments.trim(),
+    generatedCommentBody: trimmedComments,
     generatedPatch: trimmedDiff,
+    commands,
     followupPrNumber: followupPr?.number,
     followupPrCreationError
   })

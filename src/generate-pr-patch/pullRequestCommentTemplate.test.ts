@@ -1,7 +1,7 @@
 import { renderComment } from './pullRequestCommentTemplate.js'
 
 describe('renderComment', () => {
-  it('returns undefined when comment body is absent', () => {
+  it('returns undefined when nothing is absent', () => {
     expect(renderComment({})).toBeUndefined()
   })
 
@@ -24,5 +24,41 @@ describe('renderComment', () => {
     expect(result).not.toBeUndefined()
     expect(result).toContain('\n\nNeeds attention')
     expect(result?.trimEnd().endsWith('Needs attention')).toBe(true)
+  })
+
+  it('renders commands when provided', () => {
+    const result = renderComment({
+      generatedCommentBody: 'CI failed on the lint step',
+      commands: ['npm install', 'npm run lint']
+    })
+
+    expect(result).toContain(
+      'Try running the following commands to address the issues'
+    )
+    expect(result).toContain('npm install')
+    expect(result).toContain('npm run lint')
+  })
+
+  it('renders errors when provided', () => {
+    const result = renderComment({
+      generatedCommentBody: 'CI failed on the lint step',
+      followupPrCreationError: 'Authentication failed',
+      generatedPatch: 'patch contents'
+    })
+
+    expect(result).toContain(
+      'I encountered an error while trying to create a follow-up PR: Authentication failed.'
+    )
+    expect(result).toContain('The patch I tried to generate is as follows:')
+    expect(result).toContain('patch contents')
+  })
+
+  it('does not render patch if passed', () => {
+    const result = renderComment({
+      generatedCommentBody: 'CI failed on the lint step',
+      generatedPatch: 'patch contents'
+    })
+
+    expect(result).not.toContain('patch contents')
   })
 })
