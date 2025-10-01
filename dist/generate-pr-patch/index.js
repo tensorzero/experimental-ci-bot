@@ -31246,13 +31246,12 @@ function requireGithub () {
 
 var githubExports = requireGithub();
 
-function extractCommentsFromLlmResponse(response) {
-    const comments = response.match(/<comments>(.*?)<\/comments>/s);
-    return comments ? comments[1] : '';
-}
-function extractDiffFromLlmResponse(response) {
-    const diff = response.match(/<diff>(.*?)<\/diff>/s);
-    return diff ? diff[1] : '';
+function extractXmlTagsFromLlmResponse(response, tag) {
+    const regex = new RegExp(`<${tag}>(.*?)<\\/${tag}>`, 'sg');
+    const matches = response.matchAll(regex);
+    // Take the first capture group from each match
+    const outputs = [...matches].map((match) => match[1].trim());
+    return outputs || [];
 }
 
 var dist$1 = {};
@@ -50505,6 +50504,16 @@ const commentTemplateString = `
 {{generatedCommentBody}}
 {{/if}}
 
+{{#if commands}}
+Try running the following commands to address the issues:
+
+\`\`\`
+{{#each commands}}
+{{this}}
+{{/each}}
+\`\`\`
+{{/if}}
+
 {{#if followupPrNumber}}
 I've opened an automated follow-up PR #{{followupPrNumber}} with proposed fixes.
 {{/if}}
@@ -50526,7 +50535,8 @@ const commentTemplate = Handlebars.compile(commentTemplateString.trim());
 function renderComment(commentContext) {
     if (!commentContext.generatedCommentBody &&
         !commentContext.followupPrCreationError &&
-        !commentContext.followupPrNumber) {
+        !commentContext.followupPrNumber &&
+        !commentContext.commands) {
         return undefined;
     }
     return commentTemplate(commentContext).trim();
@@ -50753,10 +50763,12 @@ async function run() {
     if (!llmResponse) {
         throw new Error('No LLM response found, failing the action.');
     }
-    const comments = extractCommentsFromLlmResponse(llmResponse);
-    const diff = extractDiffFromLlmResponse(llmResponse);
-    if (!comments && !diff) {
-        coreExports.info('LLM response contained neither comments nor diff; finishing without changes.');
+    // We take the first non-empty diff and comments, but output all commands.
+    const comments = extractXmlTagsFromLlmResponse(llmResponse, 'comments');
+    const diff = extractXmlTagsFromLlmResponse(llmResponse, 'diff');
+    const commands = extractXmlTagsFromLlmResponse(llmResponse, 'command');
+    if (!comments && !diff && !commands) {
+        coreExports.info('LLM response contains no comments, diff, or command; finishing without changes.');
         return;
     }
     if (!prNumber) {
@@ -50767,7 +50779,7 @@ async function run() {
         coreExports.warning('Unable to load pull request details; skipping follow-up PR creation.');
         return;
     }
-    const trimmedDiff = diff.trim();
+    const trimmedDiff = diff[0].trim();
     let followupPr;
     let followupPrCreationError;
     if (trimmedDiff) {
@@ -50808,9 +50820,11 @@ async function run() {
             coreExports.warning(`Failed to record inference ${inferenceId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse: ${errorMessage}`);
         }
     }
+    const trimmedComments = comments[0].trim();
     const comment = renderComment({
-        generatedCommentBody: comments.trim(),
+        generatedCommentBody: trimmedComments,
         generatedPatch: trimmedDiff,
+        commands,
         followupPrNumber: followupPr?.number,
         followupPrCreationError
     });
