@@ -1,9 +1,11 @@
-export function extractCommentsFromLlmResponse(response: string): string {
-  const comments = response.match(/<comments>(.*?)<\/comments>/s)
-  return comments ? comments[1] : ''
-}
+export function extractXmlTagFromLlmResponse(
+  response: string,
+  tag: string
+): string[] {
+  const regex = new RegExp(`<${tag}>(.*?)<\\/${tag}>`, 'sg')
+  const matches = response.matchAll(regex)
 
-export function extractDiffFromLlmResponse(response: string): string {
-  const diff = response.match(/<diff>(.*?)<\/diff>/s)
-  return diff ? diff[1] : ''
+  // Take the first capture group from each match
+  const outputs = [...matches].map((match) => match[1].trim())
+  return outputs || []
 }

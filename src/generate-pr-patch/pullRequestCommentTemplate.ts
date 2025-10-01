@@ -7,6 +7,16 @@ const commentTemplateString = `
 {{generatedCommentBody}}
 {{/if}}
 
+{{#if commands}}
+Try running the following commands to address the issues:
+
+\`\`\`
+{{#each commands}}
+{{this}}
+{{/each}}
+\`\`\`
+{{/if}}
+
 {{#if followupPrNumber}}
 I've opened an automated follow-up PR #{{followupPrNumber}} with proposed fixes.
 {{/if}}
@@ -28,6 +38,7 @@ No patch was generated.
 export interface CommentTemplateContext {
   generatedCommentBody?: string
   followupPrNumber?: number
+  commands?: string[]
   followupPrCreationError?: string
   generatedPatch?: string
 }
@@ -42,7 +53,8 @@ export function renderComment(
   if (
     !commentContext.generatedCommentBody &&
     !commentContext.followupPrCreationError &&
-    !commentContext.followupPrNumber
+    !commentContext.followupPrNumber &&
+    !commentContext.commands
   ) {
     return undefined
   }
