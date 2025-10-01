@@ -3,11 +3,7 @@ import * as github from '@actions/github'
 import * as fs from 'fs'
 import * as path from 'path'
 
-import {
-  extractCommentsFromLlmResponse,
-  extractDiffFromLlmResponse,
-  extractXmlTagFromLlmResponse
-} from './llmResponse.js'
+import { extractXmlTagsFromLlmResponse } from './llmResponse.js'
 import {
   type WorkflowJobsResponse,
   type FollowupPrResult,
@@ -350,12 +346,11 @@ export async function run(): Promise<void> {
   }
 
   // We take the first non-empty diff and comments, but output all commands.
-  const comments = extractXmlTagFromLlmResponse(llmResponse, 'comments')
-  const diff = extractXmlTagFromLlmResponse(llmResponse, 'diff')
+  const comments = extractXmlTagsFromLlmResponse(llmResponse, 'comments')
+  const diff = extractXmlTagsFromLlmResponse(llmResponse, 'diff')
+  const commands = extractXmlTagsFromLlmResponse(llmResponse, 'command')
 
-  const command = extractXmlTagFromLlmResponse(llmResponse, 'command')
-
-  if (!comments && !diff && !command) {
+  if (!comments && !diff && !commands) {
     core.info(
       'LLM response contains no comments, diff, or command; finishing without changes.'
     )

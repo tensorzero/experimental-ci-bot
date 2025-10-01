@@ -1,4 +1,4 @@
-export function extractXmlTagFromLlmResponse(
+export function extractXmlTagsFromLlmResponse(
   response: string,
   tag: string
 ): string[] {

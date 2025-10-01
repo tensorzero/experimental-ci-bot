@@ -1,4 +1,4 @@
-import { extractXmlTagFromLlmResponse } from './llmResponse.js'
+import { extractXmlTagsFromLlmResponse } from './llmResponse.js'
 
 describe('LLM response helpers', () => {
   it('extracts comments between markers', () => {
@@ -8,7 +8,7 @@ describe('LLM response helpers', () => {
 <diff>diff --git</diff>
 suffix`
 
-    expect(extractXmlTagFromLlmResponse(response, 'comments')).toContain(
+    expect(extractXmlTagsFromLlmResponse(response, 'comments')).toContain(
       'A detailed summary'
     )
   })
@@ -20,7 +20,7 @@ suffix`
 <diff>diff --git</diff>
 suffix`
 
-    expect(extractXmlTagFromLlmResponse(response, 'diff')).toContain(
+    expect(extractXmlTagsFromLlmResponse(response, 'diff')).toContain(
       'diff --git'
     )
   })
@@ -32,7 +32,7 @@ suffix`
 <diff>diff --git</diff>
 suffix`
 
-    expect(extractXmlTagFromLlmResponse(response, 'command')).toContain(
+    expect(extractXmlTagsFromLlmResponse(response, 'command')).toContain(
       'A user-facing command'
     )
   })
@@ -45,7 +45,7 @@ suffix`
 <diff>diff --git</diff>
 suffix`
 
-    expect(extractXmlTagFromLlmResponse(response, 'command')).toEqual([
+    expect(extractXmlTagsFromLlmResponse(response, 'command')).toEqual([
       'A user-facing command',
       'A second user-facing command'
     ])
@@ -54,6 +54,6 @@ suffix`
   it('returns empty strings when markers are missing', () => {
     const response = 'no structured response here'
 
-    expect(extractXmlTagFromLlmResponse(response, 'diff')).toEqual([])
+    expect(extractXmlTagsFromLlmResponse(response, 'diff')).toEqual([])
   })
 })
