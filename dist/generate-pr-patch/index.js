@@ -34931,7 +34931,7 @@ async function execGit(args, options = {}) {
                 ...process.env,
                 GIT_TERMINAL_PROMPT: '0'
             },
-            maxBuffer: 10 * 1024 * 1024,
+            maxBuffer: 20 * 1024 * 1024,
             encoding: 'utf-8'
         });
         return {
@@ -35107,12 +35107,10 @@ async function getPullRequestDiff(options) {
     }
 }
 async function getFailedWorkflowRunLogs(workflowRunId) {
-    const { stdout, stderr } = await execFileAsync('gh', [
-        'run',
-        'view',
-        `${workflowRunId}`,
-        '--log-failed'
-    ]);
+    const { stdout, stderr } = await execFileAsync('gh', ['run', 'view', `${workflowRunId}`, '--log-failed'], {
+        maxBuffer: 20 * 1024 * 1024,
+        encoding: 'utf-8'
+    });
     if (stderr) {
         coreExports.warning(`Encountered stderr when getting failed workflow logs: ${stderr}`);
     }
