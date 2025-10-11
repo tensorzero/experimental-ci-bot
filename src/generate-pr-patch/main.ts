@@ -371,7 +371,7 @@ export async function run(): Promise<void> {
     return
   }
 
-  const trimmedDiff = diff[0].trim()
+  const trimmedDiff = diff[0]?.trim() ?? ''
   let followupPr: FollowupPrResult | undefined
   let followupPrCreationError: string | undefined
   if (trimmedDiff) {
