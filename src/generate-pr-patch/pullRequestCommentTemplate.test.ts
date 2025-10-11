@@ -53,6 +53,19 @@ describe('renderComment', () => {
     expect(result).toContain('patch contents')
   })
 
+  it('renders the generated patch without HTML escaping', () => {
+    const result = renderComment({
+      generatedCommentBody: 'CI failed on the lint step',
+      followupPrCreationError: 'Authentication failed',
+      generatedPatch:
+        'diff --git a/example.ts b/example.ts\n@@ -1,4 +1,4 @@\n-import { something } from "old"\n+import { something } from "new"'
+    })
+
+    expect(result).toContain('import { something } from "old"')
+    expect(result).toContain('import { something } from "new"')
+    expect(result).not.toContain('&quot;')
+  })
+
   it('does not render patch if passed', () => {
     const result = renderComment({
       generatedCommentBody: 'CI failed on the lint step',
