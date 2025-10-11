@@ -47,7 +47,7 @@ Comments about the failure.
 Command the user should run.
 </command>
 
-* if the failure is due to an issue in the code, provide a unified diff patch that applies those fixes, in the exact Git patch format. Your diff will be applied with `git apply` to generate a new PR against the original PR branch. The diff should be wrapped in a block like this:
+* if the failure is due to an issue in the code, provide a unified diff patch that applies those fixes, in the exact Git patch format that `git diff` produces (for example `diff --git a/file b/file` headers followed by `---`/`+++` and context lines). Do **not** emit `*** Begin Patch`/`*** End Patch` markers or other apply_patch syntax. The diff should be wrapped in a block like this:
 
 <diff>
 Verbatim diff that can be applied as a patch to the original PR branch.
