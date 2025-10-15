@@ -50777,7 +50777,7 @@ async function run() {
         coreExports.warning('Unable to load pull request details; skipping follow-up PR creation.');
         return;
     }
-    const trimmedDiff = diff[0].trim();
+    const trimmedDiff = diff[0]?.trim() ?? '';
     let followupPr;
     let followupPrCreationError;
     if (trimmedDiff) {
