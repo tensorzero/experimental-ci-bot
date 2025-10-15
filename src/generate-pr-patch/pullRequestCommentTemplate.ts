@@ -27,7 +27,7 @@ I've opened an automated follow-up PR #{{followupPrNumber}} with proposed fixes.
 {{#if generatedPatch}}
 The patch I tried to generate is as follows:
 \`\`\`diff
-{{generatedPatch}}
+{{{generatedPatch}}}
 \`\`\`
 {{else}}
 No patch was generated.

@@ -49,3 +49,8 @@ requests should describe the motivation, summarize testing (`npm test`,
 `npm run bundle`), and link the tracking issue. Attach screenshots for
 user-visible output changes and ensure generated `dist/` artifacts are updated
 alongside source when behavior changes.
+
+## IMPORTANT RULES
+
+Before submitting a PR, run `npm run bundle` to update the javascript bundles.
+Otherwise, CI will fail.
