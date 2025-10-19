@@ -2,6 +2,10 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import * as fs from 'fs'
 import * as path from 'path'
+import * as fsPromises from 'fs/promises'
+import * as os from 'os'
+import { execFile } from 'child_process'
+import { promisify } from 'util'
 
 import { extractXmlTagsFromLlmResponse } from './llmResponse.js'
 import {
@@ -17,15 +21,26 @@ import {
 import {
   createFollowupPr,
   getPullRequestDiff,
-  getFailedWorkflowRunLogs
+  getFailedWorkflowRunLogs,
+  type PullRequestData
 } from '../gitClient.js'
 import {
-  callTensorZeroOpenAi,
   provideInferenceFeedback,
-  type TensorZeroGenerationArguments,
   type FailedJobSummary
 } from '../tensorZeroClient.js'
 import { renderComment } from './pullRequestCommentTemplate.js'
+import { runMiniSweAgent } from '../miniSweAgentClient.js'
+import {
+  writeCIFailureContextFile,
+  type CIFailureContext
+} from './ciFailureContext.js'
+import {
+  parseGitDiff,
+  createReviewComments,
+  postReviewComments
+} from '../githubReviewComments.js'
+
+const execFileAsync = promisify(execFile)
 
 async function getJobStatus(
   jobsUrl: string,
@@ -241,8 +256,86 @@ function maybeWriteDebugArtifact(
   core.info(`${filename} written to ${path.join(outputDir, filename)}`)
 }
 
+function maskSecret(value: string, secret: string | undefined): string {
+  if (!secret || !value) {
+    return value
+  }
+  return value.split(secret).join('***')
+}
+
+async function execGit(
+  args: string[],
+  options: { cwd?: string; token?: string } = {}
+): Promise<{ stdout: string; stderr: string }> {
+  const { cwd, token } = options
+  const commandString = maskSecret(`git ${args.join(' ')}`, token)
+  core.info(commandString)
+  try {
+    const result = await execFileAsync('git', args, {
+      cwd,
+      env: {
+        ...process.env,
+        GIT_TERMINAL_PROMPT: '0'
+      },
+      maxBuffer: 20 * 1024 * 1024,
+      encoding: 'utf-8'
+    })
+    return {
+      stdout: result.stdout ?? '',
+      stderr: result.stderr ?? ''
+    }
+  } catch (error) {
+    const err = error as { message: string; stdout?: string; stderr?: string }
+    const stderr = err.stderr || err.stdout || err.message
+    throw new Error(`${commandString} failed: ${maskSecret(stderr, token)}`)
+  }
+}
+
+interface ClonedRepository {
+  repoDir: string
+  cleanup: () => Promise<void>
+}
+
+async function clonePullRequestRepository(
+  token: string,
+  owner: string,
+  repo: string,
+  pullRequest: PullRequestData
+): Promise<ClonedRepository> {
+  const tempBaseDir = await fsPromises.mkdtemp(
+    path.join(os.tmpdir(), 'tensorzero-pr-')
+  )
+  const repoDir = path.join(tempBaseDir, 'repo')
+  const remoteUrl = `https://x-access-token:${token}@github.com/${owner}/${repo}.git`
+
+  try {
+    await execGit(
+      [
+        'clone',
+        '--origin',
+        'origin',
+        '--branch',
+        pullRequest.head.ref,
+        remoteUrl,
+        repoDir
+      ],
+      { token }
+    )
+  } catch (error) {
+    await fsPromises.rm(tempBaseDir, { recursive: true, force: true })
+    throw error
+  }
+
+  const cleanup = async (): Promise<void> => {
+    await fsPromises.rm(tempBaseDir, { recursive: true, force: true })
+  }
+
+  return { repoDir, cleanup }
+}
+
 /**
- * Collects artifacts, builds a prompt to an LLM, then
+ * Collects artifacts, runs mini-swe-agent to fix CI failures, then posts
+ * inline suggestions or creates a follow-up PR based on the agent's decision.
  *
  * @returns Resolves when the action is complete.
  */
@@ -301,6 +394,13 @@ export async function run(): Promise<void> {
   const pullRequest = workflow_run_payload.pull_requests?.[0]
   const prNumber = workflow_run_payload.pull_requests?.[0]?.number
 
+  if (!prNumber || !pullRequest) {
+    core.warning(
+      'Unable to identify the pull request; skipping action.'
+    )
+    return
+  }
+
   // Load diff summary and full diff.
   const { diffSummary, fullDiff } = await fetchDiffSummaryAndFullDiff(
     octokit,
@@ -316,144 +416,190 @@ export async function run(): Promise<void> {
 
   // Gather failure logs
   const failureLogs = await getFailedWorkflowRunLogs(runId)
-
-  // Call TensorZero to generate a PR and comment.
-  const generationArguments: TensorZeroGenerationArguments = {
-    failed_jobs: failedJobs,
-    diff_summary: diffSummary,
-    full_diff: fullDiff,
-    failure_logs: failureLogs,
-    repo_full_name: `${owner}/${repo}`,
-    branch: workflow_run_payload.head_branch,
-    pr_number: prNumber
-  }
-
-  const response = await callTensorZeroOpenAi(
-    tensorZeroBaseUrl,
-    generationArguments
-  )
-  maybeWriteDebugArtifact(
-    outputDir,
-    'llm-response.json',
-    JSON.stringify(response, null, 2)
-  )
   maybeWriteDebugArtifact(outputDir, 'failure-logs.txt', failureLogs)
 
-  // Get the LLM response from `response`
-  const llmResponse = response.choices[0].message.content
-  if (!llmResponse) {
-    throw new Error('No LLM response found, failing the action.')
-  }
+  // Clone the PR repository
+  core.info('Cloning pull request repository...')
+  const { repoDir, cleanup } = await clonePullRequestRepository(
+    token,
+    owner,
+    repo,
+    pullRequest
+  )
 
-  // We take the first non-empty diff and comments, but output all commands.
-  const comments = extractXmlTagsFromLlmResponse(llmResponse, 'comments')
-  const diff = extractXmlTagsFromLlmResponse(llmResponse, 'diff')
-  const commands = extractXmlTagsFromLlmResponse(llmResponse, 'command')
+  try {
+    // Write CI failure context file
+    const ciContext: CIFailureContext = {
+      repoFullName: `${owner}/${repo}`,
+      branch: workflow_run_payload.head_branch,
+      prNumber,
+      workflowRunId: runId,
+      workflowRunUrl: workflow_run_payload.html_url,
+      prUrl: pullRequest.html_url,
+      failedJobs,
+      diffSummary,
+      fullDiff,
+      failureLogs
+    }
 
-  if (!comments && !diff && !commands) {
-    core.info(
-      'LLM response contains no comments, diff, or command; finishing without changes.'
+    const contextFilePath = writeCIFailureContextFile(repoDir, ciContext)
+    core.info(`CI failure context written to: ${contextFilePath}`)
+
+    // Prepare TensorZero config path
+    const tensorZeroConfigPath = path.join(
+      process.cwd(),
+      'tensorzero',
+      'swe_agent_config'
     )
-    return
-  }
 
-  if (!prNumber) {
-    core.warning(
-      'Unable to identify the original pull request; skipping comment and follow-up PR creation.'
-    )
-    return
-  }
+    // Run mini-swe-agent
+    core.info('Running mini-swe-agent...')
+    const agentResult = await runMiniSweAgent({
+      task: 'Fix the CI failures as described in ci_failure_context.md',
+      cwd: repoDir,
+      tensorZeroConfigPath,
+      trajectoryOutputPath: outputDir
+        ? path.join(outputDir, 'agent_trajectory.json')
+        : path.join(repoDir, 'agent_trajectory.json'),
+      costLimit: 3.0,
+      timeout: 30 * 60 * 1000 // 30 minutes
+    })
 
-  if (!pullRequest) {
-    core.warning(
-      'Unable to load pull request details; skipping follow-up PR creation.'
-    )
-    return
-  }
+    core.info(`Agent completed with decision: ${agentResult.completion.decision}`)
+    core.info(`Agent reasoning: ${agentResult.completion.reasoning}`)
 
-  const trimmedDiff = diff[0]?.trim() ?? ''
-  let followupPr: FollowupPrResult | undefined
-  let followupPrCreationError: string | undefined
-  if (trimmedDiff) {
-    try {
-      followupPr = await createFollowupPr(
-        {
+    // Save agent trajectory as debug artifact
+    if (outputDir) {
+      maybeWriteDebugArtifact(
+        outputDir,
+        'agent_trajectory.json',
+        JSON.stringify(agentResult.trajectory, null, 2)
+      )
+    }
+
+    // Handle the agent's decision
+    if (agentResult.completion.decision === 'INLINE_SUGGESTIONS') {
+      core.info('Agent chose to provide inline suggestions')
+
+      // Parse the git diff to extract changes
+      const fileChanges = await parseGitDiff(repoDir)
+
+      if (fileChanges.length === 0) {
+        core.info('No file changes detected; skipping review comments.')
+      } else {
+        // Create review comments
+        const reviewComments = createReviewComments(
+          fileChanges,
+          agentResult.completion.reasoning
+        )
+
+        // Post review comments to GitHub
+        await postReviewComments(
           octokit,
-          token,
           owner,
           repo,
-          pullRequest,
-          diff: trimmedDiff
-        },
-        outputDir
-      )
-      if (followupPr) {
-        await provideInferenceFeedback(
-          tensorZeroBaseUrl,
-          tensorZeroDiffPatchedSuccessfullyMetricName,
-          response.id,
-          true
+          prNumber,
+          reviewComments,
+          pullRequest.head.sha
         )
+
+        core.info(`Posted ${reviewComments.length} inline suggestion(s) to PR #${prNumber}`)
+
+        // TODO: Track feedback metric for suggestions
+        // We'll implement this in the feedback collection workflow
       }
-    } catch (error) {
-      await provideInferenceFeedback(
-        tensorZeroBaseUrl,
-        tensorZeroDiffPatchedSuccessfullyMetricName,
-        response.id,
-        false,
-        { reason: 'Failed to Apply Patch' }
-      )
+    } else {
+      // PULL_REQUEST decision
+      core.info('Agent chose to create a follow-up PR')
 
-      followupPrCreationError =
-        error instanceof Error ? error.message : `${error}`
-      core.error(followupPrCreationError)
-    }
-  }
-
-  // TODO: consider using episode_id instead of inference ID.
-  const inferenceId = response.id
-
-  if (followupPr) {
-    const request: CreatePullRequestToInferenceRequest = {
-      inferenceId,
-      pullRequestId: followupPr.id,
-      originalPullRequestUrl: pullRequest.html_url
-    }
-    try {
-      await createPullRequestToInferenceRecord(request, clickhouse)
-      core.info(
-        `Recorded inference ${inferenceId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse.`
-      )
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : `${error}`
-      core.warning(
-        `Failed to record inference ${inferenceId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse: ${errorMessage}`
-      )
-    }
-  }
-
-  const trimmedComments = comments[0].trim()
-  const comment = renderComment({
-    generatedCommentBody: trimmedComments,
-    generatedPatch: trimmedDiff,
-    commands,
-    followupPrNumber: followupPr?.number,
-    followupPrCreationError
-  })
-  if (comment) {
-    try {
-      await octokit.rest.issues.createComment({
-        owner,
-        repo,
-        issue_number: prNumber,
-        body: comment
+      // Get the git diff as a patch
+      const { stdout: diffOutput } = await execGit(['diff'], {
+        cwd: repoDir,
+        token
       })
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : `${error}`
-      core.warning(
-        `Failed to create comment on pull request #${prNumber}: ${errorMessage}`
-      )
-      // Don't throw here - commenting is not critical to the main functionality
+
+      const trimmedDiff = diffOutput.trim()
+
+      if (!trimmedDiff) {
+        core.info('No changes detected; skipping follow-up PR creation.')
+      } else {
+        // Create follow-up PR using existing logic
+        let followupPr: FollowupPrResult | undefined
+        let followupPrCreationError: string | undefined
+
+        try {
+          followupPr = await createFollowupPr(
+            {
+              octokit,
+              token,
+              owner,
+              repo,
+              pullRequest,
+              diff: trimmedDiff
+            },
+            outputDir
+          )
+
+          if (followupPr) {
+            core.info(`Created follow-up PR #${followupPr.number}`)
+
+            // Record inference in ClickHouse
+            // Note: We don't have an inference ID from mini-swe-agent, so we'll use the trajectory's result as ID
+            const inferenceId = `agent-${runId}-${Date.now()}`
+
+            const request: CreatePullRequestToInferenceRequest = {
+              inferenceId,
+              pullRequestId: followupPr.id,
+              originalPullRequestUrl: pullRequest.html_url
+            }
+
+            try {
+              await createPullRequestToInferenceRecord(request, clickhouse)
+              core.info(
+                `Recorded inference ${inferenceId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse.`
+              )
+            } catch (error) {
+              const errorMessage = error instanceof Error ? error.message : `${error}`
+              core.warning(
+                `Failed to record inference ${inferenceId} for follow-up PR #${followupPr.number} in ClickHouse: ${errorMessage}`
+              )
+            }
+          }
+        } catch (error) {
+          followupPrCreationError =
+            error instanceof Error ? error.message : `${error}`
+          core.error(`Failed to create follow-up PR: ${followupPrCreationError}`)
+        }
+
+        // Post a comment on the original PR
+        const comment = renderComment({
+          generatedCommentBody: agentResult.completion.reasoning,
+          generatedPatch: trimmedDiff,
+          commands: [],
+          followupPrNumber: followupPr?.number,
+          followupPrCreationError
+        })
+
+        if (comment) {
+          try {
+            await octokit.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: prNumber,
+              body: comment
+            })
+          } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : `${error}`
+            core.warning(
+              `Failed to create comment on pull request #${prNumber}: ${errorMessage}`
+            )
+          }
+        }
+      }
     }
+  } finally {
+    // Clean up cloned repository
+    await cleanup()
+    core.info('Cleaned up temporary repository')
   }
 }

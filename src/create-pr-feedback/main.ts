@@ -97,7 +97,7 @@ export async function run(): Promise<void> {
     return
   }
 
-  // Provide feedback
+  // Provide feedback for follow-up PRs
   const feedbackReason: string = isPullRequestMerged
     ? 'Pull Request Merged'
     : 'Pull Request Rejected'
@@ -115,4 +115,12 @@ export async function run(): Promise<void> {
       )
     })
   )
+
+  // TODO: Add feedback collection for inline suggestions
+  // This requires:
+  // 1. Tracking which review comments were posted by the bot
+  // 2. Checking if those suggestions were accepted (commits were made with the suggested changes)
+  // 3. Calculating acceptance rate
+  // 4. Sending feedback to TensorZero with ci_fix_suggestions_accepted_rate metric
+  core.info('Inline suggestion feedback collection not yet implemented')
 }

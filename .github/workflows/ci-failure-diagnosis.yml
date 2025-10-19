@@ -24,10 +24,31 @@ jobs:
           sparse-checkout: |
             tensorzero
 
-      - name: Move tensorzero to tensorzero-for-gateway
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
         run: |
-          mv ./tensorzero /tmp/tensorzero-for-gateway
-          ls -lR .
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install mini-swe-agent
+        run: |
+          # Clone and install mini-swe-agent locally
+          git clone --depth 1 file:///Users/viraj/tensorzero/mini-swe-agent /tmp/mini-swe-agent || \
+          git clone --depth 1 https://github.com/tensorzero/mini-swe-agent.git /tmp/mini-swe-agent || true
+
+          # Install using uv if we have the local repo, otherwise skip (will handle in action)
+          if [ -d "/tmp/mini-swe-agent" ]; then
+            cd /tmp/mini-swe-agent && uv pip install --system -e .
+          fi
+
+      - name: Move tensorzero config to /tmp
+        run: |
+          mv ./tensorzero/swe_agent_config /tmp/tensorzero-for-gateway
+          ls -lR /tmp/tensorzero-for-gateway
 
       - name: Start TensorZero gateway
         run: |
@@ -36,6 +57,7 @@ jobs:
             --name tensorzero-gateway \
             -e TENSORZERO_CLICKHOUSE_URL=${{ secrets.CI_BOT_CLICKHOUSE_URL }} \
             -e OPENAI_API_KEY=${{ secrets.CI_BOT_OPENAI_API_KEY }} \
+            -e ANTHROPIC_API_KEY=${{ secrets.CI_BOT_ANTHROPIC_API_KEY }} \
             -p 3000:3000 \
             --volume /tmp/tensorzero-for-gateway:/action-config \
             tensorzero/gateway:latest --config-file /action-config/tensorzero.toml
@@ -58,9 +80,12 @@ jobs:
         run: |
           ls -lR /tmp/tensorzero-for-gateway
           cat /tmp/tensorzero-for-gateway/tensorzero.toml
-          cat /tmp/tensorzero-for-gateway/prompt.minijinja
+          cat /tmp/tensorzero-for-gateway/templates/system.minijinja
+          cat /tmp/tensorzero-for-gateway/templates/instance.minijinja
+          which mini || echo "mini-swe-agent not found in PATH"
+          mini --help || echo "mini-swe-agent not working"
 
-      - name: Call LLM to generate PR revision
+      - name: Run mini-swe-agent to fix CI failures
         uses: tensorzero/experimental-ci-bot/generate-pr-patch@main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

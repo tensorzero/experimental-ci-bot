@@ -28,8 +28,9 @@ jobs:
             --name tensorzero-gateway \
             -e TENSORZERO_CLICKHOUSE_URL=${{ secrets.CI_BOT_CLICKHOUSE_URL }} \
             -e OPENAI_API_KEY=${{ secrets.CI_BOT_OPENAI_API_KEY }} \
+            -e ANTHROPIC_API_KEY=${{ secrets.CI_BOT_ANTHROPIC_API_KEY }} \
             -p 3000:3000 \
-            --volume ./tensorzero:/action-config \
+            --volume ./tensorzero/swe_agent_config:/action-config \
             tensorzero/gateway:latest --config-file /action-config/tensorzero.toml
 
           for _i in {1..100}; do
