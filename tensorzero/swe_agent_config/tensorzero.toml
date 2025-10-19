@@ -1,0 +1,53 @@
+gateway.debug = true
+
+[models.gpt-5]
+routing = ["openai"]
+
+[models.gpt-5.providers.openai]
+type = "openai"
+model_name = "gpt-5-2025-08-07"
+
+[models.claude-4-sonnet]
+routing = ["anthropic"]
+
+[models.claude-4-sonnet.providers.anthropic]
+type = "anthropic"
+model_name = "claude-sonnet-4-20250514"
+
+# Main function that mini-swe-agent will call
+[functions.swe_agent]
+type = "chat"
+
+[functions.swe_agent.variants.gpt-5]
+weight = 0
+type = "chat_completion"
+model = "gpt-5"
+templates.system.path = "templates/system.minijinja"
+templates.instance.path = "templates/instance.minijinja"
+templates.action_observation.path = "templates/action_observation.minijinja"
+templates.format_error.path = "templates/format_error.minijinja"
+
+[functions.swe_agent.variants.claude-4-sonnet]
+weight = 1
+type = "chat_completion"
+model = "claude-4-sonnet"
+templates.system.path = "templates/system.minijinja"
+templates.instance.path = "templates/instance.minijinja"
+templates.action_observation.path = "templates/action_observation.minijinja"
+templates.format_error.path = "templates/format_error.minijinja"
+
+# Metrics for tracking agent performance
+[metrics.ci_fix_validation_passed]
+type = "boolean"
+optimize = "max"
+level = "inference"
+
+[metrics.ci_fix_suggestions_accepted_rate]
+type = "float"
+optimize = "max"
+level = "inference"
+
+[metrics.ci_fix_pr_merged]
+type = "boolean"
+optimize = "max"
+level = "inference"

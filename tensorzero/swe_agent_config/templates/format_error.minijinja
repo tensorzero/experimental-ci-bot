@@ -1,0 +1,24 @@
+Please always provide EXACTLY ONE action in triple backticks, found {{actions|length}} actions.
+
+If you want to end the task, use the completion command:
+
+```bash
+echo "COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT
+DECISION: [INLINE_SUGGESTIONS|PULL_REQUEST]
+REASONING: [Your reasoning here]"
+```
+
+Do not combine the completion command with any other command.
+
+Otherwise, format your response exactly as follows:
+
+<response_example>
+THOUGHT: Your reasoning about why you want to perform this action.
+
+```bash
+<your_command_here>
+```
+</response_example>
+
+Note: In rare cases, if you need to reference triple backticks in your command, proceed in two steps:
+first write TRIPLEBACKTICKSBASH, then replace it with ```bash in a subsequent command.
