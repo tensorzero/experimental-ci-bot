@@ -19,7 +19,11 @@
   "exports": {
     "./generate-pr-patch": "./dist/generate-pr-patch/index.js",
     "./create-pr-feedback": "./dist/create-pr-feedback/index.js",
+    "./cli": "./dist/cli/index.js",
     ".": "./dist/generate-pr-patch/index.js"
+  },
+  "bin": {
+    "experimental-ci-bot": "./dist/cli/index.js"
   },
   "engines": {
     "node": ">=24.0.0"
@@ -35,7 +39,8 @@
     "package": "npx rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
     "package:watch": "npm run package -- --watch",
     "test": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 npx jest",
-    "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package"
+    "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package",
+    "cli": "node --loader ts-node/esm src/cli/index.ts"
   },
   "license": "MIT",
   "dependencies": {
