@@ -384,7 +384,8 @@ export async function run(): Promise<void> {
         ? path.join(outputDir, 'agent_trajectory.json')
         : path.join(repoDir, 'agent_trajectory.json'),
       costLimit: 3.0,
-      timeout: 30 * 60 * 1000 // 30 minutes
+      timeout: 30 * 60 * 1000, // 30 minutes
+      prNumber
     })
 
     core.info(`Agent completed with decision: ${agentResult.completion.decision}`)

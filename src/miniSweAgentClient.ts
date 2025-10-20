@@ -47,6 +47,11 @@ export interface MiniSweAgentConfig {
    * Timeout in milliseconds (default: 30 minutes)
    */
   timeout?: number;
+
+  /**
+   * Pull request number for tagging
+   */
+  prNumber?: number;
 }
 
 export interface MiniSweAgentResult {
@@ -91,6 +96,7 @@ export async function runMiniSweAgent(
     stepLimit = 0,
     modelName,
     timeout = 30 * 60 * 1000, // 30 minutes
+    prNumber,
   } = config;
 
   // Build command arguments
@@ -112,6 +118,10 @@ export async function runMiniSweAgent(
 
   if (modelName) {
     args.push("-m", modelName);
+  }
+
+  if (prNumber !== undefined) {
+    args.push("--tag", `pr_number=${prNumber}`);
   }
 
   // Set up environment variables
