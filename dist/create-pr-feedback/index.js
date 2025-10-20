@@ -1,7 +1,7 @@
 import require$$0 from 'os';
 import require$$0$1 from 'crypto';
 import require$$1 from 'fs';
-import require$$1$7 from 'path';
+import require$$1$6 from 'path';
 import require$$2$1 from 'http';
 import require$$1$1 from 'https';
 import require$$0$4 from 'net';
@@ -13,21 +13,18 @@ import require$$0$5 from 'stream';
 import require$$1$3 from 'buffer';
 import require$$8 from 'querystring';
 import require$$14 from 'stream/web';
-import require$$0$7 from 'node:stream';
-import require$$1$4 from 'node:util';
-import require$$0$6 from 'node:events';
-import require$$0$8 from 'worker_threads';
+import { createRequire } from 'node:module';
+import require$$0$6 from 'worker_threads';
 import require$$2$2 from 'perf_hooks';
 import require$$5 from 'util/types';
 import require$$4$2 from 'async_hooks';
-import require$$1$5 from 'console';
-import require$$1$6 from 'url';
+import require$$1$4 from 'console';
+import require$$1$5 from 'url';
 import require$$3$1 from 'zlib';
 import require$$6 from 'string_decoder';
-import require$$0$9 from 'diagnostics_channel';
+import require$$0$7 from 'diagnostics_channel';
 import require$$2$3 from 'child_process';
 import require$$6$1 from 'timers';
-import require$$0$a from 'node:os';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -1754,6 +1751,15 @@ function requireTimers () {
 
 var main = {exports: {}};
 
+const require$4 = createRequire(import.meta.url);
+function __require$3() { return require$4("node:stream"); }
+
+const require$3 = createRequire(import.meta.url);
+function __require$2() { return require$3("node:util"); }
+
+const require$2 = createRequire(import.meta.url);
+function __require$1() { return require$2("node:events"); }
+
 var sbmh;
 var hasRequiredSbmh;
 
@@ -1787,8 +1793,8 @@ function requireSbmh () {
 	 * Based heavily on the Streaming Boyer-Moore-Horspool C++ implementation
 	 * by Hongli Lai at: https://github.com/FooBarWidget/boyer-moore-horspool
 	 */
-	const EventEmitter = require$$0$6.EventEmitter;
-	const inherits = require$$1$4.inherits;
+	const EventEmitter = __require$1().EventEmitter;
+	const inherits = __require$2().inherits;
 
 	function SBMH (needle) {
 	  if (typeof needle === 'string') {
@@ -1997,8 +2003,8 @@ function requirePartStream () {
 	if (hasRequiredPartStream) return PartStream_1;
 	hasRequiredPartStream = 1;
 
-	const inherits = require$$1$4.inherits;
-	const ReadableStream = require$$0$7.Readable;
+	const inherits = __require$2().inherits;
+	const ReadableStream = __require$3().Readable;
 
 	function PartStream (opts) {
 	  ReadableStream.call(this, opts);
@@ -2042,8 +2048,8 @@ function requireHeaderParser () {
 	if (hasRequiredHeaderParser) return HeaderParser_1;
 	hasRequiredHeaderParser = 1;
 
-	const EventEmitter = require$$0$6.EventEmitter;
-	const inherits = require$$1$4.inherits;
+	const EventEmitter = __require$1().EventEmitter;
+	const inherits = __require$2().inherits;
 	const getLimit = requireGetLimit();
 
 	const StreamSearch = requireSbmh();
@@ -2150,8 +2156,8 @@ function requireDicer () {
 	if (hasRequiredDicer) return Dicer_1;
 	hasRequiredDicer = 1;
 
-	const WritableStream = require$$0$7.Writable;
-	const inherits = require$$1$4.inherits;
+	const WritableStream = __require$3().Writable;
+	const inherits = __require$2().inherits;
 
 	const StreamSearch = requireSbmh();
 
@@ -2727,8 +2733,8 @@ function requireMultipart () {
 	//  * support limits.fieldNameSize
 	//     -- this will require modifications to utils.parseParams
 
-	const { Readable } = require$$0$7;
-	const { inherits } = require$$1$4;
+	const { Readable } = __require$3();
+	const { inherits } = __require$2();
 
 	const Dicer = requireDicer();
 
@@ -3293,8 +3299,8 @@ function requireMain () {
 	if (hasRequiredMain) return main.exports;
 	hasRequiredMain = 1;
 
-	const WritableStream = require$$0$7.Writable;
-	const { inherits } = require$$1$4;
+	const WritableStream = __require$3().Writable;
+	const { inherits } = __require$2();
 	const Dicer = requireDicer();
 
 	const MultipartParser = requireMultipart();
@@ -3386,7 +3392,7 @@ function requireConstants$3 () {
 	if (hasRequiredConstants$3) return constants$3;
 	hasRequiredConstants$3 = 1;
 
-	const { MessageChannel, receiveMessageOnPort } = require$$0$8;
+	const { MessageChannel, receiveMessageOnPort } = require$$0$6;
 
 	const corsSafeListedMethods = ['GET', 'HEAD', 'POST'];
 	const corsSafeListedMethodsSet = new Set(corsSafeListedMethods);
@@ -14142,7 +14148,7 @@ function requirePendingInterceptorsFormatter () {
 	hasRequiredPendingInterceptorsFormatter = 1;
 
 	const { Transform } = require$$0$5;
-	const { Console } = require$$1$5;
+	const { Console } = require$$1$4;
 
 	/**
 	 * Gets the output of `console.table(…)` as a string.
@@ -14369,7 +14375,7 @@ function requireProxyAgent () {
 	hasRequiredProxyAgent = 1;
 
 	const { kProxy, kClose, kDestroy, kInterceptors } = requireSymbols$4();
-	const { URL } = require$$1$6;
+	const { URL } = require$$1$5;
 	const Agent = requireAgent();
 	const Pool = requirePool();
 	const DispatcherBase = requireDispatcherBase();
@@ -22319,7 +22325,7 @@ function requireEvents () {
 
 	const { webidl } = requireWebidl();
 	const { kEnumerableProperty } = requireUtil$6();
-	const { MessagePort } = require$$0$8;
+	const { MessagePort } = require$$0$6;
 
 	/**
 	 * @see https://html.spec.whatwg.org/multipage/comms.html#messageevent
@@ -22836,7 +22842,7 @@ function requireConnection$2 () {
 	if (hasRequiredConnection$2) return connection$2;
 	hasRequiredConnection$2 = 1;
 
-	const diagnosticsChannel = require$$0$9;
+	const diagnosticsChannel = require$$0$7;
 	const { uid, states } = requireConstants();
 	const {
 	  kReadyState,
@@ -23217,7 +23223,7 @@ function requireReceiver () {
 	hasRequiredReceiver = 1;
 
 	const { Writable } = require$$0$5;
-	const diagnosticsChannel = require$$0$9;
+	const diagnosticsChannel = require$$0$7;
 	const { parserStates, opcodes, states, emptyBuffer } = requireConstants();
 	const { kReadyState, kSentClose, kResponse, kReceivedClose } = requireSymbols();
 	const { isValidStatusCode, failWebsocketConnection, websocketMessageReceived } = requireUtil();
@@ -25540,7 +25546,7 @@ function requirePathUtils () {
 	};
 	Object.defineProperty(pathUtils, "__esModule", { value: true });
 	pathUtils.toPlatformPath = pathUtils.toWin32Path = pathUtils.toPosixPath = void 0;
-	const path = __importStar(require$$1$7);
+	const path = __importStar(require$$1$6);
 	/**
 	 * toPosixPath converts the given path to the posix form. On Windows, \\ will be
 	 * replaced with /.
@@ -25627,7 +25633,7 @@ function requireIoUtil () {
 		Object.defineProperty(exports, "__esModule", { value: true });
 		exports.getCmdPath = exports.tryGetExecutablePath = exports.isRooted = exports.isDirectory = exports.exists = exports.READONLY = exports.UV_FS_O_EXLOCK = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rm = exports.rename = exports.readlink = exports.readdir = exports.open = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
 		const fs = __importStar(require$$1);
-		const path = __importStar(require$$1$7);
+		const path = __importStar(require$$1$6);
 		_a = fs.promises
 		// export const {open} = 'fs'
 		, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.open = _a.open, exports.readdir = _a.readdir, exports.readlink = _a.readlink, exports.rename = _a.rename, exports.rm = _a.rm, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
@@ -25817,7 +25823,7 @@ function requireIo () {
 	Object.defineProperty(io, "__esModule", { value: true });
 	io.findInPath = io.which = io.mkdirP = io.rmRF = io.mv = io.cp = void 0;
 	const assert_1 = require$$0$3;
-	const path = __importStar(require$$1$7);
+	const path = __importStar(require$$1$6);
 	const ioUtil = __importStar(requireIoUtil());
 	/**
 	 * Copies a file or folder.
@@ -26125,7 +26131,7 @@ function requireToolrunner () {
 	const os = __importStar(require$$0);
 	const events = __importStar(require$$4$1);
 	const child = __importStar(require$$2$3);
-	const path = __importStar(require$$1$7);
+	const path = __importStar(require$$1$6);
 	const io = __importStar(requireIo());
 	const ioUtil = __importStar(requireIoUtil());
 	const timers_1 = require$$6$1;
@@ -26969,7 +26975,7 @@ function requireCore () {
 		const file_command_1 = requireFileCommand();
 		const utils_1 = requireUtils$5();
 		const os = __importStar(require$$0);
-		const path = __importStar(require$$1$7);
+		const path = __importStar(require$$1$6);
 		const oidc_utils_1 = requireOidcUtils();
 		/**
 		 * The code to exit an action
@@ -33365,6 +33371,9 @@ var user_agent = {};
 
 var runtime = {};
 
+const require$1 = createRequire(import.meta.url);
+function __require() { return require$1("node:os"); }
+
 var version = {};
 
 var hasRequiredVersion;
@@ -33421,7 +33430,7 @@ function requireRuntime () {
 	};
 	Object.defineProperty(runtime, "__esModule", { value: true });
 	runtime.Runtime = void 0;
-	const os = __importStar(require$$0$a);
+	const os = __importStar(__require());
 	const version_1 = __importDefault(requireVersion());
 	/** Indirect export of package version and node version for easier mocking since Node.js 22.18 */
 	class Runtime {
@@ -35130,7 +35139,7 @@ const safeJSON = (text) => {
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const VERSION = '5.23.0'; // x-release-please-version
+const VERSION = '5.23.2'; // x-release-please-version
 
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 const isRunningInBrowser = () => {
@@ -41859,7 +41868,7 @@ async function run() {
     if (!isPullRequestEligibleForFeedback(inferenceRecords)) {
         return;
     }
-    // Provide feedback
+    // Provide feedback for follow-up PRs
     const feedbackReason = isPullRequestMerged
         ? 'Pull Request Merged'
         : 'Pull Request Rejected';
@@ -41867,6 +41876,13 @@ async function run() {
         await provideInferenceFeedback(tensorZeroBaseUrl, tensorZeroPrMergedMetricName, record.inference_id, isPullRequestMerged, { reason: feedbackReason });
         coreExports.info(`Feedback (${isPullRequestMerged}) provided for inference ${record.inference_id}`);
     }));
+    // TODO: Add feedback collection for inline suggestions
+    // This requires:
+    // 1. Tracking which review comments were posted by the bot
+    // 2. Checking if those suggestions were accepted (commits were made with the suggested changes)
+    // 3. Calculating acceptance rate
+    // 4. Sending feedback to TensorZero with ci_fix_suggestions_accepted_rate metric
+    coreExports.info('Inline suggestion feedback collection not yet implemented');
 }
 
 /**

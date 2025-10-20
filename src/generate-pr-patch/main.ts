@@ -2,12 +2,7 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import * as fs from 'fs'
 import * as path from 'path'
-import * as fsPromises from 'fs/promises'
-import * as os from 'os'
-import { execFile } from 'child_process'
-import { promisify } from 'util'
 
-import { extractXmlTagsFromLlmResponse } from './llmResponse.js'
 import {
   type WorkflowJobsResponse,
   type FollowupPrResult,
@@ -20,12 +15,9 @@ import {
 } from '../clickhouseClient.js'
 import {
   createFollowupPr,
-  getPullRequestDiff,
-  getFailedWorkflowRunLogs,
-  type PullRequestData
+  getFailedWorkflowRunLogs
 } from '../gitClient.js'
 import {
-  provideInferenceFeedback,
   type FailedJobSummary
 } from '../tensorZeroClient.js'
 import { renderComment } from './pullRequestCommentTemplate.js'
@@ -39,8 +31,10 @@ import {
   createReviewComments,
   postReviewComments
 } from '../githubReviewComments.js'
-
-const execFileAsync = promisify(execFile)
+import {
+  clonePullRequestRepository,
+  getPullRequestDiff
+} from '../git.js'
 
 async function getJobStatus(
   jobsUrl: string,
@@ -226,12 +220,12 @@ async function fetchDiffSummaryAndFullDiff(
     pull_number: prNumber
   })
   const pullRequest = prResponse.data
-  const diffResult = await getPullRequestDiff({
+  const diffResult = await getPullRequestDiff(
     token,
     owner,
     repo,
     pullRequest
-  })
+  )
 
   return {
     diffSummary: diffResult.diffSummary,
@@ -257,73 +251,6 @@ function maybeWriteDebugArtifact(
   core.info(`${filename} written to ${path.join(outputDir, filename)}`)
 }
 
-async function execGit(
-  args: string[],
-  options: { cwd?: string } = {}
-): Promise<{ stdout: string; stderr: string }> {
-  const { cwd } = options
-  const commandString = `git ${args.join(' ')}`
-  core.info(commandString)
-  try {
-    const result = await execFileAsync('git', args, {
-      cwd,
-      env: {
-        ...process.env,
-        GIT_TERMINAL_PROMPT: '0'
-      },
-      maxBuffer: 20 * 1024 * 1024,
-      encoding: 'utf-8'
-    })
-    return {
-      stdout: result.stdout ?? '',
-      stderr: result.stderr ?? ''
-    }
-  } catch (error) {
-    const err = error as { message: string; stdout?: string; stderr?: string }
-    const stderr = err.stderr || err.stdout || err.message
-    throw new Error(`${commandString} failed: ${stderr}`)
-  }
-}
-
-interface ClonedRepository {
-  repoDir: string
-  cleanup: () => Promise<void>
-}
-
-async function clonePullRequestRepository(
-  token: string,
-  owner: string,
-  repo: string,
-  pullRequest: PullRequestData
-): Promise<ClonedRepository> {
-  const tempBaseDir = await fsPromises.mkdtemp(
-    path.join(os.tmpdir(), 'tensorzero-pr-')
-  )
-  const repoDir = path.join(tempBaseDir, 'repo')
-  const remoteUrl = `https://x-access-token:${token}@github.com/${owner}/${repo}.git`
-
-  try {
-    await execGit([
-      'clone',
-      '--origin',
-      'origin',
-      '--branch',
-      pullRequest.head.ref,
-      remoteUrl,
-      repoDir
-    ])
-  } catch (error) {
-    await fsPromises.rm(tempBaseDir, { recursive: true, force: true })
-    throw error
-  }
-
-  const cleanup = async (): Promise<void> => {
-    await fsPromises.rm(tempBaseDir, { recursive: true, force: true })
-  }
-
-  return { repoDir, cleanup }
-}
-
 /**
  * Collects artifacts, runs mini-swe-agent to fix CI failures, then posts
  * inline suggestions or creates a follow-up PR based on the agent's decision.
@@ -334,8 +261,8 @@ export async function run(): Promise<void> {
   const inputs = parseAndValidateActionInputs()
   const {
     token,
-    tensorZeroBaseUrl,
-    tensorZeroDiffPatchedSuccessfullyMetricName,
+    // tensorZeroBaseUrl and tensorZeroDiffPatchedSuccessfullyMetricName are parsed but not used yet
+    // keeping them for potential future use
     outputArtifactsDir,
     clickhouse
   } = inputs
@@ -414,7 +341,7 @@ export async function run(): Promise<void> {
 
   // Clone the PR repository
   core.info('Cloning pull request repository...')
-  const { repoDir, cleanup } = await clonePullRequestRepository(
+  const { repoDir, cleanup, git } = await clonePullRequestRepository(
     token,
     owner,
     repo,
@@ -508,9 +435,7 @@ export async function run(): Promise<void> {
       core.info('Agent chose to create a follow-up PR')
 
       // Get the git diff as a patch
-      const { stdout: diffOutput } = await execGit(['diff'], {
-        cwd: repoDir
-      })
+      const diffOutput = await git.diff()
 
       const trimmedDiff = diffOutput.trim()
 

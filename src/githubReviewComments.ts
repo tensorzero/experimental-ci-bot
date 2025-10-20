@@ -1,8 +1,5 @@
-import { Octokit } from "@octokit/rest";
-import { exec } from "node:child_process";
-import { promisify } from "node:util";
-
-const execAsync = promisify(exec);
+import { GitClient } from "./git.js";
+import { OctokitInstance } from "./gitClient.js";
 
 /**
  * A single file change with hunks
@@ -52,7 +49,8 @@ export interface ReviewComment {
 export async function parseGitDiff(
   repoPath: string,
 ): Promise<FileChange[]> {
-  const { stdout } = await execAsync("git diff --unified=3", { cwd: repoPath, maxBuffer: 20 * 1024 * 1024 });
+  const git = new GitClient(repoPath);
+  const stdout = await git.diff(undefined, { unified: 3 });
 
   const changes: FileChange[] = [];
   let currentFile: FileChange | null = null;
@@ -181,7 +179,7 @@ ${reasoning}`;
  * Post review comments on a GitHub PR
  */
 export async function postReviewComments(
-  octokit: Octokit,
+  octokit: OctokitInstance,
   owner: string,
   repo: string,
   pullNumber: number,
@@ -196,7 +194,7 @@ export async function postReviewComments(
   console.log(`Posting ${comments.length} review comment(s) to PR #${pullNumber}`);
 
   // Create a review with all comments
-  await octokit.pulls.createReview({
+  await octokit.rest.pulls.createReview({
     owner,
     repo,
     pull_number: pullNumber,
