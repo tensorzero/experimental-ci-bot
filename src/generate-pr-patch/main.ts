@@ -257,19 +257,12 @@ function maybeWriteDebugArtifact(
   core.info(`${filename} written to ${path.join(outputDir, filename)}`)
 }
 
-function maskSecret(value: string, secret: string | undefined): string {
-  if (!secret || !value) {
-    return value
-  }
-  return value.split(secret).join('***')
-}
-
 async function execGit(
   args: string[],
-  options: { cwd?: string; token?: string } = {}
+  options: { cwd?: string } = {}
 ): Promise<{ stdout: string; stderr: string }> {
-  const { cwd, token } = options
-  const commandString = maskSecret(`git ${args.join(' ')}`, token)
+  const { cwd } = options
+  const commandString = `git ${args.join(' ')}`
   core.info(commandString)
   try {
     const result = await execFileAsync('git', args, {
@@ -288,7 +281,7 @@ async function execGit(
   } catch (error) {
     const err = error as { message: string; stdout?: string; stderr?: string }
     const stderr = err.stderr || err.stdout || err.message
-    throw new Error(`${commandString} failed: ${maskSecret(stderr, token)}`)
+    throw new Error(`${commandString} failed: ${stderr}`)
   }
 }
 
@@ -310,18 +303,15 @@ async function clonePullRequestRepository(
   const remoteUrl = `https://x-access-token:${token}@github.com/${owner}/${repo}.git`
 
   try {
-    await execGit(
-      [
-        'clone',
-        '--origin',
-        'origin',
-        '--branch',
-        pullRequest.head.ref,
-        remoteUrl,
-        repoDir
-      ],
-      { token }
-    )
+    await execGit([
+      'clone',
+      '--origin',
+      'origin',
+      '--branch',
+      pullRequest.head.ref,
+      remoteUrl,
+      repoDir
+    ])
   } catch (error) {
     await fsPromises.rm(tempBaseDir, { recursive: true, force: true })
     throw error
@@ -349,6 +339,9 @@ export async function run(): Promise<void> {
     outputArtifactsDir,
     clickhouse
   } = inputs
+
+  // Ensure GitHub Actions automatically masks the token in all log output
+  core.setSecret(token)
 
   // Prepare artifact directory
   const outputDir = outputArtifactsDir
@@ -516,8 +509,7 @@ export async function run(): Promise<void> {
 
       // Get the git diff as a patch
       const { stdout: diffOutput } = await execGit(['diff'], {
-        cwd: repoDir,
-        token
+        cwd: repoDir
       })
 
       const trimmedDiff = diffOutput.trim()
