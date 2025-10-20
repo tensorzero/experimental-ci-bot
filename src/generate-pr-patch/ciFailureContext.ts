@@ -9,6 +9,7 @@ export interface CIFailureContext {
   workflowRunId: number;
   workflowRunUrl: string;
   prUrl: string;
+  prDescription?: string;
   failedJobs: FailedJobSummary[];
   diffSummary: string;
   fullDiff: string;
@@ -28,6 +29,7 @@ export function generateCIFailureContextMarkdown(
     workflowRunId,
     workflowRunUrl,
     prUrl,
+    prDescription,
     failedJobs,
     diffSummary,
     fullDiff,
@@ -44,7 +46,18 @@ export function generateCIFailureContextMarkdown(
 - **PR URL**: ${prUrl}
 - **Workflow Run ID**: ${workflowRunId}
 - **Workflow Run URL**: ${workflowRunUrl}
+`;
 
+  // Add PR description if available
+  if (prDescription) {
+    markdown += `
+## Pull Request Description
+
+${prDescription}
+`;
+  }
+
+  markdown += `
 ## Your Task
 
 Fix the CI failures in this pull request. The tests and checks are failing, and you need to:

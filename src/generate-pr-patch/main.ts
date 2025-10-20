@@ -213,7 +213,7 @@ async function fetchDiffSummaryAndFullDiff(
   repo: string,
   prNumber: number,
   token: string
-): Promise<{ diffSummary: string; fullDiff: string }> {
+): Promise<{ diffSummary: string; fullDiff: string; prDescription: string | null }> {
   if (!prNumber) {
     throw new Error(
       'Unable to determine pull request number to compute diff contents.'
@@ -235,7 +235,8 @@ async function fetchDiffSummaryAndFullDiff(
 
   return {
     diffSummary: diffResult.diffSummary,
-    fullDiff: diffResult.fullDiff
+    fullDiff: diffResult.fullDiff,
+    prDescription: pullRequest.body
   }
 }
 
@@ -402,7 +403,7 @@ export async function run(): Promise<void> {
   }
 
   // Load diff summary and full diff.
-  const { diffSummary, fullDiff } = await fetchDiffSummaryAndFullDiff(
+  const { diffSummary, fullDiff, prDescription } = await fetchDiffSummaryAndFullDiff(
     octokit,
     owner,
     repo,
@@ -436,6 +437,7 @@ export async function run(): Promise<void> {
       workflowRunId: runId,
       workflowRunUrl: workflow_run_payload.html_url,
       prUrl: pullRequest.html_url,
+      prDescription: prDescription ?? undefined,
       failedJobs,
       diffSummary,
       fullDiff,
