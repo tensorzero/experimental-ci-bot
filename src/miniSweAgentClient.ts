@@ -137,11 +137,15 @@ export async function runMiniSweAgent(
   console.log(`TensorZero config: ${tensorZeroConfigPath}`)
 
   return new Promise((resolve, reject) => {
-    const proc = spawn('uv', ['run', 'mini', ...args], {
-      cwd,
-      env,
-      stdio: ['pipe', 'pipe', 'pipe']
-    })
+    const proc = spawn(
+      'uv',
+      ['run', '--project', process.cwd(), 'mini', ...args],
+      {
+        cwd,
+        env,
+        stdio: ['pipe', 'pipe', 'pipe']
+      }
+    )
 
     let stdout = ''
     let stderr = ''
