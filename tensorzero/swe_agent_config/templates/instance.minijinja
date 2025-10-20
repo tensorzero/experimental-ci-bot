@@ -26,6 +26,7 @@ Work step-by-step to ensure you can iterate on your changes and catch any proble
 3. You can prefix commands with environment variables or directory changes: `cd /path && command`
 4. You can write/load environment variables from files if needed
 5. Cannot modify GitHub Actions workflows (only repository code)
+6. If a command needs more time, add '# timeout: <seconds>' on the first line (max {{max_timeout}} seconds).
 
 <system_information>
 {{system}} {{release}} {{version}} {{machine}}
@@ -113,5 +114,11 @@ THOUGHT: I need to first read the CI failure context to understand what went wro
 cat ci_failure_context.md
 ```
 </example_response>
+
+## With max_timeout
+```bash
+# timeout: 300
+uv run expensive_script.py
+```
 
 Now begin your work!
