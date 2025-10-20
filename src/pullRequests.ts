@@ -1,3 +1,15 @@
+/**
+ * High-level GitHub pull request operations.
+ *
+ * This module provides functions for working with GitHub pull requests, including:
+ * - Creating follow-up PRs with automated fixes based on LLM-generated diffs
+ * - Fetching failed workflow run logs using the GitHub CLI
+ *
+ * These functions orchestrate git operations (from git.ts) and GitHub API calls
+ * to implement complete PR workflows. Use this module for PR-related business logic
+ * rather than low-level git operations.
+ */
+
 import { execFile } from 'child_process'
 import { promisify } from 'util'
 import * as fsPromises from 'fs/promises'

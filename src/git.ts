@@ -1,3 +1,15 @@
+/**
+ * Low-level git operations wrapper.
+ *
+ * This module provides a GitClient class that wraps simple-git for common git operations
+ * like cloning, fetching, diffing, branching, and pushing. It includes token masking for
+ * secure logging and provides utility functions for cloning pull request repositories
+ * and computing PR diffs.
+ *
+ * Use this module when you need direct git operations. For higher-level GitHub PR workflows,
+ * see pullRequests.ts instead.
+ */
+
 import { simpleGit, SimpleGit, SimpleGitOptions } from 'simple-git'
 import * as fsPromises from 'fs/promises'
 import * as os from 'os'

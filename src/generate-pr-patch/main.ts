@@ -16,7 +16,7 @@ import {
 import {
   createFollowupPr,
   getFailedWorkflowRunLogs
-} from '../gitClient.js'
+} from '../pullRequests.js'
 import {
   type FailedJobSummary
 } from '../tensorZeroClient.js'
