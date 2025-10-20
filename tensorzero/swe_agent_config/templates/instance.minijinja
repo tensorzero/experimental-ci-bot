@@ -93,26 +93,7 @@ print(hello)
 EOF
 ```
 
-### Edit files with sed:
-{%- if system == "Darwin" -%}
-<important>
-You are on MacOS. For all sed examples, use `sed -i ''` instead of `sed -i`.
-</important>
-{%- endif -%}
-
-```bash
-# Replace all occurrences
-sed -i 's/old_string/new_string/g' filename.py
-
-# Replace only first occurrence
-sed -i 's/old_string/new_string/' filename.py
-
-# Replace on specific line
-sed -i '1s/old_string/new_string/' filename.py
-
-# Replace in line range
-sed -i '1,10s/old_string/new_string/g' filename.py
-```
+TODO: add an edit command
 
 ### View file content:
 ```bash
