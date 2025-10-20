@@ -14,12 +14,19 @@ routing = ["anthropic"]
 type = "anthropic"
 model_name = "claude-sonnet-4-20250514"
 
+[models.claude-4-5-sonnet]
+routing = ["anthropic"]
+
+[models.claude-4-5-sonnet.providers.anthropic]
+type = "anthropic"
+model_name = "claude-sonnet-4-5-20250929"
+
 # Main function that mini-swe-agent will call
 [functions.swe_agent]
 type = "chat"
 
 [functions.swe_agent.variants.gpt-5]
-weight = 0
+weight = 1
 type = "chat_completion"
 model = "gpt-5"
 templates.system.path = "templates/system.minijinja"
@@ -27,10 +34,10 @@ templates.instance.path = "templates/instance.minijinja"
 templates.action_observation.path = "templates/action_observation.minijinja"
 templates.format_error.path = "templates/format_error.minijinja"
 
-[functions.swe_agent.variants.claude-4-sonnet]
+[functions.swe_agent.variants.claude-4-5-sonnet]
 weight = 1
 type = "chat_completion"
-model = "claude-4-sonnet"
+model = "claude-4-5-sonnet"
 templates.system.path = "templates/system.minijinja"
 templates.instance.path = "templates/instance.minijinja"
 templates.action_observation.path = "templates/action_observation.minijinja"

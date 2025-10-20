@@ -152,10 +152,11 @@ export async function runAgent(
       )
 
       // Prepare TensorZero config path
-      const tensorZeroConfigPath = path.join(
+      const tensorZeroConfigPath = path.resolve(
         process.cwd(),
         'tensorzero',
-        'swe_agent_config'
+        'swe_agent_config',
+        'tensorzero.toml'
       )
 
       // Determine task based on whether we have CI failure info
@@ -172,7 +173,7 @@ export async function runAgent(
         trajectoryOutputPath: artifactDir
           ? path.join(artifactDir, 'agent_trajectory.json')
           : path.join(repoDir, 'agent_trajectory.json'),
-        costLimit: agent.costLimit,
+        costLimit: 3,
         timeout: agent.timeout * 60 * 1000, // Convert minutes to milliseconds
         prNumber: pullRequest.number
       })
