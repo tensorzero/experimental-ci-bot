@@ -1,5 +1,5 @@
 import { GitClient } from './git.js'
-import { OctokitInstance } from './gitClient.js'
+import type { OctokitInstance } from './pullRequests.js'
 
 /**
  * A single file change with hunks

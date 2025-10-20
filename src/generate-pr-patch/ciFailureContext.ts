@@ -6,8 +6,8 @@ export interface CIFailureContext {
   repoFullName: string
   branch: string
   prNumber: number
-  workflowRunId: number
-  workflowRunUrl: string
+  workflowRunId?: number
+  workflowRunUrl?: string
   prUrl: string
   prDescription?: string
   failedJobs: FailedJobSummary[]
@@ -43,9 +43,7 @@ export function generateCIFailureContextMarkdown(
 - **Repository**: ${repoFullName}
 - **Branch**: ${branch}
 - **Pull Request**: #${prNumber}
-- **PR URL**: ${prUrl}
-- **Workflow Run ID**: ${workflowRunId}
-- **Workflow Run URL**: ${workflowRunUrl}
+- **PR URL**: ${prUrl}${workflowRunId ? `\n- **Workflow Run ID**: ${workflowRunId}` : ''}${workflowRunUrl ? `\n- **Workflow Run URL**: ${workflowRunUrl}` : ''}
 `
 
   // Add PR description if available

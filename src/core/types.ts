@@ -1,7 +1,7 @@
 /**
  * Shared types for core agent runner logic
  */
-import type { Octokit } from '@octokit/rest'
+import type { OctokitInstance } from '../pullRequests.js'
 import type { FailedJobSummary } from '../tensorZeroClient.js'
 
 /**
@@ -35,7 +35,7 @@ export interface AgentRunnerInput {
   /**
    * Octokit instance for GitHub API calls
    */
-  octokit: Octokit
+  octokit: OctokitInstance
 
   /**
    * GitHub token
