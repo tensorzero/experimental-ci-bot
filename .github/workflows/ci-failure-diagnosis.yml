@@ -34,16 +34,10 @@ jobs:
           curl -LsSf https://astral.sh/uv/install.sh | sh
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
-      - name: Install mini-swe-agent
+      - name: Create venv and install mini-swe-agent
         run: |
-          # Clone and install mini-swe-agent locally
-          git clone --depth 1 file:///Users/viraj/tensorzero/mini-swe-agent /tmp/mini-swe-agent || \
-          git clone --depth 1 https://github.com/tensorzero/mini-swe-agent.git /tmp/mini-swe-agent || true
-
-          # Install using uv if we have the local repo, otherwise skip (will handle in action)
-          if [ -d "/tmp/mini-swe-agent" ]; then
-            cd /tmp/mini-swe-agent && uv pip install --system -e .
-          fi
+          uv venv
+          uv pip install git+https://github.com/tensorzero/mini-swe-agent.git
 
       - name: Move tensorzero config to /tmp
         run: |
