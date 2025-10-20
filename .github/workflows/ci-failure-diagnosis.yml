@@ -37,7 +37,7 @@ jobs:
       - name: Create venv and install mini-swe-agent
         run: |
           uv venv
-          uv pip install git+https://github.com/tensorzero/mini-swe-agent.git
+          uv pip install git+https://github.com/SWE-agent/mini-swe-agent.git@main
 
       - name: Move tensorzero config to /tmp
         run: |
