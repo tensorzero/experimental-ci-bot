@@ -1,12 +1,12 @@
-import { GitClient } from "./git.js";
-import { OctokitInstance } from "./gitClient.js";
+import { GitClient } from './git.js'
+import { OctokitInstance } from './gitClient.js'
 
 /**
  * A single file change with hunks
  */
 export interface FileChange {
-  path: string;
-  hunks: DiffHunk[];
+  path: string
+  hunks: DiffHunk[]
 }
 
 /**
@@ -16,112 +16,110 @@ export interface DiffHunk {
   /**
    * Starting line number in the new file
    */
-  startLine: number;
+  startLine: number
 
   /**
    * Number of lines in this hunk
    */
-  lineCount: number;
+  lineCount: number
 
   /**
    * The actual diff content (including context)
    */
-  content: string;
+  content: string
 
   /**
    * The suggested replacement content (without diff markers)
    */
-  suggestedContent: string;
+  suggestedContent: string
 }
 
 /**
  * A review comment to post on GitHub
  */
 export interface ReviewComment {
-  path: string;
-  line: number;
-  body: string;
+  path: string
+  line: number
+  body: string
 }
 
 /**
  * Parse git diff output to extract file changes with hunks
  */
-export async function parseGitDiff(
-  repoPath: string,
-): Promise<FileChange[]> {
-  const git = new GitClient(repoPath);
-  const stdout = await git.diff(undefined, { unified: 3 });
+export async function parseGitDiff(repoPath: string): Promise<FileChange[]> {
+  const git = new GitClient(repoPath)
+  const stdout = await git.diff(undefined, { unified: 3 })
 
-  const changes: FileChange[] = [];
-  let currentFile: FileChange | null = null;
-  let currentHunk: DiffHunk | null = null;
-  let hunkLines: string[] = [];
+  const changes: FileChange[] = []
+  let currentFile: FileChange | null = null
+  let currentHunk: DiffHunk | null = null
+  let hunkLines: string[] = []
 
-  const lines = stdout.split("\n");
+  const lines = stdout.split('\n')
 
   for (const line of lines) {
     // New file header
-    if (line.startsWith("diff --git")) {
+    if (line.startsWith('diff --git')) {
       if (currentFile && currentHunk) {
-        currentHunk.content = hunkLines.join("\n");
-        currentHunk.suggestedContent = extractSuggestedContent(hunkLines);
-        currentFile.hunks.push(currentHunk);
+        currentHunk.content = hunkLines.join('\n')
+        currentHunk.suggestedContent = extractSuggestedContent(hunkLines)
+        currentFile.hunks.push(currentHunk)
       }
-      currentFile = null;
-      currentHunk = null;
-      hunkLines = [];
-      continue;
+      currentFile = null
+      currentHunk = null
+      hunkLines = []
+      continue
     }
 
     // File path (--- and +++)
-    if (line.startsWith("+++ b/")) {
-      const path = line.substring(6);
-      if (path !== "/dev/null") {
-        currentFile = { path, hunks: [] };
-        changes.push(currentFile);
+    if (line.startsWith('+++ b/')) {
+      const path = line.substring(6)
+      if (path !== '/dev/null') {
+        currentFile = { path, hunks: [] }
+        changes.push(currentFile)
       }
-      continue;
+      continue
     }
 
     // Hunk header (@@ -start,count +start,count @@)
-    if (line.startsWith("@@")) {
+    if (line.startsWith('@@')) {
       // Save previous hunk if exists
       if (currentFile && currentHunk) {
-        currentHunk.content = hunkLines.join("\n");
-        currentHunk.suggestedContent = extractSuggestedContent(hunkLines);
-        currentFile.hunks.push(currentHunk);
+        currentHunk.content = hunkLines.join('\n')
+        currentHunk.suggestedContent = extractSuggestedContent(hunkLines)
+        currentFile.hunks.push(currentHunk)
       }
 
       // Parse new hunk
-      const match = line.match(/@@\s+-\d+(?:,\d+)?\s+\+(\d+)(?:,(\d+))?\s+@@/);
+      const match = line.match(/@@\s+-\d+(?:,\d+)?\s+\+(\d+)(?:,(\d+))?\s+@@/)
       if (match && currentFile) {
-        const startLine = parseInt(match[1], 10);
-        const lineCount = match[2] ? parseInt(match[2], 10) : 1;
+        const startLine = parseInt(match[1], 10)
+        const lineCount = match[2] ? parseInt(match[2], 10) : 1
         currentHunk = {
           startLine,
           lineCount,
-          content: "",
-          suggestedContent: "",
-        };
-        hunkLines = [];
+          content: '',
+          suggestedContent: ''
+        }
+        hunkLines = []
       }
-      continue;
+      continue
     }
 
     // Hunk content
     if (currentHunk) {
-      hunkLines.push(line);
+      hunkLines.push(line)
     }
   }
 
   // Don't forget the last hunk
   if (currentFile && currentHunk) {
-    currentHunk.content = hunkLines.join("\n");
-    currentHunk.suggestedContent = extractSuggestedContent(hunkLines);
-    currentFile.hunks.push(currentHunk);
+    currentHunk.content = hunkLines.join('\n')
+    currentHunk.suggestedContent = extractSuggestedContent(hunkLines)
+    currentFile.hunks.push(currentHunk)
   }
 
-  return changes;
+  return changes
 }
 
 /**
@@ -129,20 +127,20 @@ export async function parseGitDiff(
  * (removes diff markers and shows only the new content)
  */
 function extractSuggestedContent(hunkLines: string[]): string {
-  const newLines: string[] = [];
+  const newLines: string[] = []
 
   for (const line of hunkLines) {
-    if (line.startsWith("+") && !line.startsWith("+++")) {
+    if (line.startsWith('+') && !line.startsWith('+++')) {
       // Add lines (remove the + prefix)
-      newLines.push(line.substring(1));
-    } else if (line.startsWith(" ")) {
+      newLines.push(line.substring(1))
+    } else if (line.startsWith(' ')) {
       // Context lines (keep as-is, remove space prefix)
-      newLines.push(line.substring(1));
+      newLines.push(line.substring(1))
     }
     // Skip removed lines (-)
   }
 
-  return newLines.join("\n");
+  return newLines.join('\n')
 }
 
 /**
@@ -150,9 +148,9 @@ function extractSuggestedContent(hunkLines: string[]): string {
  */
 export function createReviewComments(
   changes: FileChange[],
-  reasoning: string,
+  reasoning: string
 ): ReviewComment[] {
-  const comments: ReviewComment[] = [];
+  const comments: ReviewComment[] = []
 
   for (const change of changes) {
     for (const hunk of change.hunks) {
@@ -162,17 +160,17 @@ export function createReviewComments(
 ${hunk.suggestedContent}
 \`\`\`
 
-${reasoning}`;
+${reasoning}`
 
       comments.push({
         path: change.path,
         line: hunk.startLine + hunk.lineCount - 1, // Comment on the last line of the hunk
-        body,
-      });
+        body
+      })
     }
   }
 
-  return comments;
+  return comments
 }
 
 /**
@@ -184,14 +182,16 @@ export async function postReviewComments(
   repo: string,
   pullNumber: number,
   comments: ReviewComment[],
-  commitSha: string,
+  commitSha: string
 ): Promise<void> {
   if (comments.length === 0) {
-    console.log("No review comments to post");
-    return;
+    console.log('No review comments to post')
+    return
   }
 
-  console.log(`Posting ${comments.length} review comment(s) to PR #${pullNumber}`);
+  console.log(
+    `Posting ${comments.length} review comment(s) to PR #${pullNumber}`
+  )
 
   // Create a review with all comments
   await octokit.rest.pulls.createReview({
@@ -199,13 +199,13 @@ export async function postReviewComments(
     repo,
     pull_number: pullNumber,
     commit_id: commitSha,
-    event: "COMMENT",
+    event: 'COMMENT',
     comments: comments.map((comment) => ({
       path: comment.path,
       line: comment.line,
-      body: comment.body,
-    })),
-  });
+      body: comment.body
+    }))
+  })
 
-  console.log("Review comments posted successfully");
+  console.log('Review comments posted successfully')
 }

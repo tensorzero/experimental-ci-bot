@@ -1,115 +1,115 @@
-import { spawn } from "node:child_process";
-import * as fs from "node:fs";
-import * as path from "node:path";
+import { spawn } from 'node:child_process'
+import * as fs from 'node:fs'
+import * as path from 'node:path'
 import {
   type AgentTrajectory,
   type AgentCompletionOutput,
-  parseAgentCompletion,
-} from "./types/agentOutput.js";
+  parseAgentCompletion
+} from './types/agentOutput.js'
 
 export interface MiniSweAgentConfig {
   /**
    * The task for the agent to complete
    */
-  task: string;
+  task: string
 
   /**
    * Working directory for the agent (where the repo is cloned)
    */
-  cwd: string;
+  cwd: string
 
   /**
    * Path to the TensorZero config directory (containing tensorzero.toml and templates/)
    */
-  tensorZeroConfigPath: string;
+  tensorZeroConfigPath: string
 
   /**
    * Optional output path for the trajectory file
    */
-  trajectoryOutputPath?: string;
+  trajectoryOutputPath?: string
 
   /**
    * Cost limit for the agent in dollars (default: 3.0)
    */
-  costLimit?: number;
+  costLimit?: number
 
   /**
    * Step limit for the agent (default: 0 = unlimited)
    */
-  stepLimit?: number;
+  stepLimit?: number
 
   /**
    * Model name to use (default: uses TensorZero config)
    */
-  modelName?: string;
+  modelName?: string
 
   /**
    * Timeout in milliseconds (default: 30 minutes)
    */
-  timeout?: number;
+  timeout?: number
 
   /**
    * Pull request number for tagging
    */
-  prNumber?: number;
+  prNumber?: number
 }
 
 export interface MiniSweAgentResult {
   /**
    * The agent's decision and reasoning
    */
-  completion: AgentCompletionOutput;
+  completion: AgentCompletionOutput
 
   /**
    * Full trajectory of the agent's execution
    */
-  trajectory: AgentTrajectory;
+  trajectory: AgentTrajectory
 
   /**
    * Standard output from the agent
    */
-  stdout: string;
+  stdout: string
 
   /**
    * Standard error from the agent
    */
-  stderr: string;
+  stderr: string
 
   /**
    * Exit code from the agent process
    */
-  exitCode: number | null;
+  exitCode: number | null
 }
 
 /**
  * Run the mini-swe-agent with the given configuration
  */
 export async function runMiniSweAgent(
-  config: MiniSweAgentConfig,
+  config: MiniSweAgentConfig
 ): Promise<MiniSweAgentResult> {
   const {
     task,
     cwd,
     tensorZeroConfigPath,
-    trajectoryOutputPath = path.join(cwd, "agent_trajectory.json"),
+    trajectoryOutputPath = path.join(cwd, 'agent_trajectory.json'),
     costLimit = 3.0,
     stepLimit = 0,
     modelName,
     timeout = 30 * 60 * 1000, // 30 minutes
-    prNumber,
-  } = config;
+    prNumber
+  } = config
 
   // Build command arguments
   const args = [
-    "-t",
+    '-t',
     task,
-    "-o",
+    '-o',
     trajectoryOutputPath,
-    "-l",
+    '-l',
     costLimit.toString(),
-    "--exit-immediately",
-    "-y", // YOLO mode - don't ask for confirmation
-  ];
+    '--exit-immediately',
+    '-y' // YOLO mode - don't ask for confirmation
+  ]
 
   if (stepLimit > 0) {
     // mini-swe-agent doesn't have a step-limit CLI flag, but we can set it in config
@@ -117,11 +117,11 @@ export async function runMiniSweAgent(
   }
 
   if (modelName) {
-    args.push("-m", modelName);
+    args.push('-m', modelName)
   }
 
   if (prNumber !== undefined) {
-    args.push("--tag", `pr_number=${prNumber}`);
+    args.push('--tag', `pr_number=${prNumber}`)
   }
 
   // Set up environment variables
@@ -129,84 +129,81 @@ export async function runMiniSweAgent(
     ...process.env,
     TENSORZERO_CONFIG_PATH: tensorZeroConfigPath,
     // Ensure Python output is unbuffered for better logging
-    PYTHONUNBUFFERED: "1",
-  };
+    PYTHONUNBUFFERED: '1'
+  }
 
-  console.log(`Running mini-swe-agent with task: ${task}`);
-  console.log(`Working directory: ${cwd}`);
-  console.log(`TensorZero config: ${tensorZeroConfigPath}`);
+  console.log(`Running mini-swe-agent with task: ${task}`)
+  console.log(`Working directory: ${cwd}`)
+  console.log(`TensorZero config: ${tensorZeroConfigPath}`)
 
   return new Promise((resolve, reject) => {
-    const proc = spawn("uv", ["run", "mini", ...args], {
+    const proc = spawn('uv', ['run', 'mini', ...args], {
       cwd,
       env,
-      stdio: ["pipe", "pipe", "pipe"],
-    });
+      stdio: ['pipe', 'pipe', 'pipe']
+    })
 
-    let stdout = "";
-    let stderr = "";
+    let stdout = ''
+    let stderr = ''
 
-    proc.stdout?.on("data", (data) => {
-      const chunk = data.toString();
-      stdout += chunk;
-      console.log(`[mini-swe-agent] ${chunk}`);
-    });
+    proc.stdout?.on('data', (data) => {
+      const chunk = data.toString()
+      stdout += chunk
+      console.log(`[mini-swe-agent] ${chunk}`)
+    })
 
-    proc.stderr?.on("data", (data) => {
-      const chunk = data.toString();
-      stderr += chunk;
-      console.error(`[mini-swe-agent] ${chunk}`);
-    });
+    proc.stderr?.on('data', (data) => {
+      const chunk = data.toString()
+      stderr += chunk
+      console.error(`[mini-swe-agent] ${chunk}`)
+    })
 
     // Set up timeout
     const timeoutId = setTimeout(() => {
-      proc.kill("SIGTERM");
+      proc.kill('SIGTERM')
       reject(
-        new Error(`mini-swe-agent timed out after ${timeout / 1000} seconds`),
-      );
-    }, timeout);
+        new Error(`mini-swe-agent timed out after ${timeout / 1000} seconds`)
+      )
+    }, timeout)
 
-    proc.on("close", (code) => {
-      clearTimeout(timeoutId);
+    proc.on('close', (code) => {
+      clearTimeout(timeoutId)
 
-      console.log(`mini-swe-agent exited with code ${code}`);
+      console.log(`mini-swe-agent exited with code ${code}`)
 
       // Read the trajectory file
-      let trajectory: AgentTrajectory;
+      let trajectory: AgentTrajectory
       try {
-        const trajectoryContent = fs.readFileSync(
-          trajectoryOutputPath,
-          "utf-8",
-        );
-        trajectory = JSON.parse(trajectoryContent);
+        const trajectoryContent = fs.readFileSync(trajectoryOutputPath, 'utf-8')
+        trajectory = JSON.parse(trajectoryContent)
       } catch (error) {
         reject(
           new Error(
-            `Failed to read trajectory file: ${error instanceof Error ? error.message : String(error)}`,
-          ),
-        );
-        return;
+            `Failed to read trajectory file: ${error instanceof Error ? error.message : String(error)}`
+          )
+        )
+        return
       }
 
       // Parse the completion output from the trajectory
-      const completion = parseAgentCompletion(trajectory.result);
+      const completion = parseAgentCompletion(trajectory.result)
 
       resolve({
         completion,
         trajectory,
         stdout,
         stderr,
-        exitCode: code,
-      });
-    });
+        exitCode: code
+      })
+    })
 
-    proc.on("error", (error) => {
-      clearTimeout(timeoutId);
+    proc.on('error', (error) => {
+      clearTimeout(timeoutId)
       reject(
         new Error(
-          `Failed to spawn mini-swe-agent: ${error instanceof Error ? error.message : String(error)}`,
-        ),
-      );
-    });
-  });
+          `Failed to spawn mini-swe-agent: ${error instanceof Error ? error.message : String(error)}`
+        )
+      )
+    })
+  })
 }

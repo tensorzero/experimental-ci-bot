@@ -8,17 +8,20 @@
 
 ## Running Locally
 
-You can run the mini-swe-agent locally to test PRs before deploying to GitHub Actions.
+You can run the mini-swe-agent locally to test PRs before deploying to GitHub
+Actions.
 
 ### Prerequisites
 
 1. Install dependencies:
+
    ```bash
    npm install
    npm run bundle  # Build the CLI
    ```
 
 2. Set up required environment variables:
+
    ```bash
    # GitHub authentication (choose one):
    export GITHUB_TOKEN=$(gh auth token)  # If using gh CLI
@@ -42,6 +45,7 @@ npm run cli -- --repo owner/repo --pr 123 --dry-run
 ```
 
 This will:
+
 - Clone the PR repository
 - Run the mini-swe-agent to analyze and fix issues
 - Display the generated patch locally
@@ -56,6 +60,7 @@ npm run cli -- --repo owner/repo --pr 456
 ```
 
 This will:
+
 - Clone the PR repository
 - Run the mini-swe-agent
 - Create a follow-up PR or post inline comments based on the agent's decision

@@ -14,7 +14,9 @@ async function main(): Promise<void> {
 
   console.log(`Repository: ${options.repository}`)
   console.log(`Pull Request: #${options.pr}`)
-  console.log(`Mode: ${options.dryRun ? 'DRY RUN (local only)' : 'LIVE (will create PRs/comments)'}`)
+  console.log(
+    `Mode: ${options.dryRun ? 'DRY RUN (local only)' : 'LIVE (will create PRs/comments)'}`
+  )
   console.log(`Cost Limit: $${options.costLimit}`)
   console.log(`Timeout: ${options.timeout} minutes`)
   if (options.workflowRunId) {

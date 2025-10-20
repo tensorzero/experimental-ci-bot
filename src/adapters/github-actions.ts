@@ -3,7 +3,11 @@
  */
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import type { AgentRunnerInput, PullRequestInfo, CIFailureInfo } from '../core/types.js'
+import type {
+  AgentRunnerInput,
+  PullRequestInfo,
+  CIFailureInfo
+} from '../core/types.js'
 import type { WorkflowJobsResponse } from '../generate-pr-patch/types.js'
 import type { FailedJobSummary } from '../tensorZeroClient.js'
 import { getFailedWorkflowRunLogs } from '../pullRequests.js'
@@ -244,7 +248,13 @@ export async function createAgentInputFromGitHubActions(): Promise<AgentRunnerIn
 
   // Parse action inputs
   const inputs = parseActionInputs()
-  const { token, outputArtifactsDir, clickhouse, tensorZeroBaseUrl, tensorZeroDiffPatchedSuccessfullyMetricName } = inputs
+  const {
+    token,
+    outputArtifactsDir,
+    clickhouse,
+    tensorZeroBaseUrl,
+    tensorZeroDiffPatchedSuccessfullyMetricName
+  } = inputs
 
   // Mask the token
   core.setSecret(token)
@@ -277,7 +287,8 @@ export async function createAgentInputFromGitHubActions(): Promise<AgentRunnerIn
     clickhouse,
     tensorZero: {
       baseUrl: tensorZeroBaseUrl,
-      diffPatchedSuccessfullyMetricName: tensorZeroDiffPatchedSuccessfullyMetricName
+      diffPatchedSuccessfullyMetricName:
+        tensorZeroDiffPatchedSuccessfullyMetricName
     },
     agent: {
       costLimit: 3.0, // Default for GitHub Actions

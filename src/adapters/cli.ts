@@ -4,7 +4,11 @@
 import { Octokit } from '@octokit/rest'
 import { execSync } from 'child_process'
 import type { CliOptions } from '../cli/args.js'
-import type { AgentRunnerInput, PullRequestInfo, CIFailureInfo } from '../core/types.js'
+import type {
+  AgentRunnerInput,
+  PullRequestInfo,
+  CIFailureInfo
+} from '../core/types.js'
 import type { WorkflowJobsResponse } from '../generate-pr-patch/types.js'
 import type { FailedJobSummary } from '../tensorZeroClient.js'
 import { getFailedWorkflowRunLogs } from '../pullRequests.js'

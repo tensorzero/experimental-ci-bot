@@ -9,10 +9,7 @@ import type {
   PullRequestInfo
 } from './types.js'
 import type { OctokitInstance } from '../generate-pr-patch/types.js'
-import {
-  createFollowupPr,
-  type FollowupPrResult
-} from '../pullRequests.js'
+import { createFollowupPr, type FollowupPrResult } from '../pullRequests.js'
 import { runMiniSweAgent } from '../miniSweAgentClient.js'
 import {
   writeCIFailureContextFile,
@@ -23,10 +20,7 @@ import {
   createReviewComments,
   postReviewComments
 } from '../githubReviewComments.js'
-import {
-  clonePullRequestRepository,
-  getPullRequestDiff
-} from '../git.js'
+import { clonePullRequestRepository, getPullRequestDiff } from '../git.js'
 import {
   type CreatePullRequestToInferenceRequest,
   createPullRequestToInferenceRecord
@@ -47,7 +41,9 @@ function maybeWriteDebugArtifact(
   fs.writeFileSync(path.join(outputDir, filename), content, {
     encoding: 'utf-8'
   })
-  console.log(`[Debug] ${filename} written to ${path.join(outputDir, filename)}`)
+  console.log(
+    `[Debug] ${filename} written to ${path.join(outputDir, filename)}`
+  )
 }
 
 async function fetchDiffSummaryAndFullDiff(
@@ -96,7 +92,9 @@ export async function runAgent(
 
   console.log('[Agent Runner] Starting agent execution...')
   console.log(`[Agent Runner] Mode: ${mode}`)
-  console.log(`[Agent Runner] PR: ${pullRequest.owner}/${pullRequest.repo}#${pullRequest.number}`)
+  console.log(
+    `[Agent Runner] PR: ${pullRequest.owner}/${pullRequest.repo}#${pullRequest.number}`
+  )
 
   // Prepare artifact directory
   const artifactDir = outputDir ? path.resolve(outputDir) : undefined
@@ -111,7 +109,11 @@ export async function runAgent(
       pullRequest,
       token
     )
-    maybeWriteDebugArtifact(artifactDir, 'fetched-diff-summary.txt', diffSummary)
+    maybeWriteDebugArtifact(
+      artifactDir,
+      'fetched-diff-summary.txt',
+      diffSummary
+    )
     maybeWriteDebugArtifact(artifactDir, 'fetched-full-diff.txt', fullDiff)
 
     // Clone the PR repository
@@ -145,7 +147,9 @@ export async function runAgent(
       }
 
       const contextFilePath = writeCIFailureContextFile(repoDir, ciContext)
-      console.log(`[Agent Runner] CI failure context written to: ${contextFilePath}`)
+      console.log(
+        `[Agent Runner] CI failure context written to: ${contextFilePath}`
+      )
 
       // Prepare TensorZero config path
       const tensorZeroConfigPath = path.join(
@@ -173,8 +177,12 @@ export async function runAgent(
         prNumber: pullRequest.number
       })
 
-      console.log(`[Agent Runner] Agent completed with decision: ${agentResult.completion.decision}`)
-      console.log(`[Agent Runner] Agent reasoning: ${agentResult.completion.reasoning}`)
+      console.log(
+        `[Agent Runner] Agent completed with decision: ${agentResult.completion.decision}`
+      )
+      console.log(
+        `[Agent Runner] Agent reasoning: ${agentResult.completion.reasoning}`
+      )
 
       // Save agent trajectory as debug artifact
       if (artifactDir) {
@@ -203,7 +211,9 @@ export async function runAgent(
         console.log('[Agent Runner] Agent chose to provide inline suggestions')
 
         if (isDryRun) {
-          console.log('\n[DRY RUN] Would create inline suggestions with the following changes:')
+          console.log(
+            '\n[DRY RUN] Would create inline suggestions with the following changes:'
+          )
           console.log(trimmedDiff)
           return {
             success: true,
@@ -217,7 +227,9 @@ export async function runAgent(
         const fileChanges = await parseGitDiff(repoDir)
 
         if (fileChanges.length === 0) {
-          console.log('[Agent Runner] No file changes detected; skipping review comments.')
+          console.log(
+            '[Agent Runner] No file changes detected; skipping review comments.'
+          )
           return {
             success: true,
             diff: trimmedDiff,
@@ -257,7 +269,9 @@ export async function runAgent(
         console.log('[Agent Runner] Agent chose to create a follow-up PR')
 
         if (isDryRun) {
-          console.log('\n[DRY RUN] Would create a follow-up PR with the following patch:')
+          console.log(
+            '\n[DRY RUN] Would create a follow-up PR with the following patch:'
+          )
           console.log(trimmedDiff)
           return {
             success: true,
@@ -290,7 +304,9 @@ export async function runAgent(
           )
 
           if (followupPr) {
-            console.log(`[Agent Runner] Created follow-up PR #${followupPr.number}`)
+            console.log(
+              `[Agent Runner] Created follow-up PR #${followupPr.number}`
+            )
 
             // Record inference in ClickHouse if configured
             if (clickhouse) {
@@ -308,7 +324,8 @@ export async function runAgent(
                   `[Agent Runner] Recorded inference ${inferenceId} for follow-up PR #${followupPr.number} in ClickHouse.`
                 )
               } catch (error) {
-                const errorMessage = error instanceof Error ? error.message : `${error}`
+                const errorMessage =
+                  error instanceof Error ? error.message : `${error}`
                 console.warn(
                   `[Agent Runner] Failed to record inference in ClickHouse: ${errorMessage}`
                 )
@@ -318,7 +335,9 @@ export async function runAgent(
         } catch (error) {
           followupPrCreationError =
             error instanceof Error ? error.message : `${error}`
-          console.error(`[Agent Runner] Failed to create follow-up PR: ${followupPrCreationError}`)
+          console.error(
+            `[Agent Runner] Failed to create follow-up PR: ${followupPrCreationError}`
+          )
         }
 
         // Post a comment on the original PR
@@ -338,9 +357,12 @@ export async function runAgent(
               issue_number: pullRequest.number,
               body: comment
             })
-            console.log(`[Agent Runner] Posted comment on PR #${pullRequest.number}`)
+            console.log(
+              `[Agent Runner] Posted comment on PR #${pullRequest.number}`
+            )
           } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : `${error}`
+            const errorMessage =
+              error instanceof Error ? error.message : `${error}`
             console.warn(
               `[Agent Runner] Failed to create comment on pull request: ${errorMessage}`
             )

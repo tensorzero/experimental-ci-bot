@@ -82,7 +82,9 @@ export class GitClient {
     targetDir: string,
     branch: string
   ): Promise<void> {
-    this.logCommand(`clone --origin origin --branch ${branch} [URL] ${targetDir}`)
+    this.logCommand(
+      `clone --origin origin --branch ${branch} [URL] ${targetDir}`
+    )
     try {
       await this.git.clone(remoteUrl, targetDir, [
         '--origin',
@@ -104,7 +106,10 @@ export class GitClient {
     }
   }
 
-  async diff(range?: string, options?: { stat?: boolean; unified?: number }): Promise<string> {
+  async diff(
+    range?: string,
+    options?: { stat?: boolean; unified?: number }
+  ): Promise<string> {
     const args: string[] = []
 
     if (options?.stat) {
@@ -150,7 +155,9 @@ export class GitClient {
     this.logCommand('status --porcelain')
     try {
       const result = await this.git.status(['--porcelain'])
-      return result.files.map(f => `${f.index}${f.working_dir} ${f.path}`).join('\n')
+      return result.files
+        .map((f) => `${f.index}${f.working_dir} ${f.path}`)
+        .join('\n')
     } catch (error) {
       throw this.maskError(error as Error)
     }

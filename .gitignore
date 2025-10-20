@@ -103,3 +103,13 @@ __tests__/runner/*
 # IDE files
 .idea
 *.code-workspace
+
+# Python
+.venv
+venv
+env
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python

@@ -1,26 +1,26 @@
-import * as fs from "node:fs";
-import * as path from "node:path";
-import type { FailedJobSummary } from "../tensorZeroClient.js";
+import * as fs from 'node:fs'
+import * as path from 'node:path'
+import type { FailedJobSummary } from '../tensorZeroClient.js'
 
 export interface CIFailureContext {
-  repoFullName: string;
-  branch: string;
-  prNumber: number;
-  workflowRunId: number;
-  workflowRunUrl: string;
-  prUrl: string;
-  prDescription?: string;
-  failedJobs: FailedJobSummary[];
-  diffSummary: string;
-  fullDiff: string;
-  failureLogs: string;
+  repoFullName: string
+  branch: string
+  prNumber: number
+  workflowRunId: number
+  workflowRunUrl: string
+  prUrl: string
+  prDescription?: string
+  failedJobs: FailedJobSummary[]
+  diffSummary: string
+  fullDiff: string
+  failureLogs: string
 }
 
 /**
  * Generate a markdown document describing the CI failure for the agent to read
  */
 export function generateCIFailureContextMarkdown(
-  context: CIFailureContext,
+  context: CIFailureContext
 ): string {
   const {
     repoFullName,
@@ -33,8 +33,8 @@ export function generateCIFailureContextMarkdown(
     failedJobs,
     diffSummary,
     fullDiff,
-    failureLogs,
-  } = context;
+    failureLogs
+  } = context
 
   let markdown = `# CI Failure Context
 
@@ -46,7 +46,7 @@ export function generateCIFailureContextMarkdown(
 - **PR URL**: ${prUrl}
 - **Workflow Run ID**: ${workflowRunId}
 - **Workflow Run URL**: ${workflowRunUrl}
-`;
+`
 
   // Add PR description if available
   if (prDescription) {
@@ -54,7 +54,7 @@ export function generateCIFailureContextMarkdown(
 ## Pull Request Description
 
 ${prDescription}
-`;
+`
   }
 
   markdown += `
@@ -70,24 +70,24 @@ Fix the CI failures in this pull request. The tests and checks are failing, and 
 
 ## Failed Jobs and Steps
 
-`;
+`
 
   for (const job of failedJobs) {
-    markdown += `### Job: ${job.name}\n\n`;
+    markdown += `### Job: ${job.name}\n\n`
     if (job.conclusion) {
-      markdown += `- **Conclusion**: ${job.conclusion}\n`;
+      markdown += `- **Conclusion**: ${job.conclusion}\n`
     }
     if (job.html_url) {
-      markdown += `- **URL**: ${job.html_url}\n`;
+      markdown += `- **URL**: ${job.html_url}\n`
     }
-    markdown += `\n**Failed Steps:**\n\n`;
+    markdown += `\n**Failed Steps:**\n\n`
 
     for (const step of job.failed_steps) {
-      markdown += `- **${step.name}**\n`;
-      markdown += `  - Status: ${step.status ?? "unknown"}\n`;
-      markdown += `  - Conclusion: ${step.conclusion ?? "unknown"}\n`;
+      markdown += `- **${step.name}**\n`
+      markdown += `  - Status: ${step.status ?? 'unknown'}\n`
+      markdown += `  - Conclusion: ${step.conclusion ?? 'unknown'}\n`
     }
-    markdown += `\n`;
+    markdown += `\n`
   }
 
   markdown += `## PR Diff Summary
@@ -134,9 +134,9 @@ When you've successfully fixed and validated the changes, decide how to present 
 Output your decision using the completion command format described in your system instructions.
 
 Good luck!
-`;
+`
 
-  return markdown;
+  return markdown
 }
 
 /**
@@ -144,12 +144,12 @@ Good luck!
  */
 export function writeCIFailureContextFile(
   repoPath: string,
-  context: CIFailureContext,
+  context: CIFailureContext
 ): string {
-  const markdown = generateCIFailureContextMarkdown(context);
-  const filePath = path.join(repoPath, "ci_failure_context.md");
+  const markdown = generateCIFailureContextMarkdown(context)
+  const filePath = path.join(repoPath, 'ci_failure_context.md')
 
-  fs.writeFileSync(filePath, markdown, { encoding: "utf-8" });
+  fs.writeFileSync(filePath, markdown, { encoding: 'utf-8' })
 
-  return filePath;
+  return filePath
 }
