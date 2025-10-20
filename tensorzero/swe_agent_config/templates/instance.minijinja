@@ -33,6 +33,7 @@ Work step-by-step to ensure you can iterate on your changes and catch any proble
 
 ## Validation Commands Reference
 
+TODO: update
 Depending on the project type, use these commands to validate your changes:
 
 ### JavaScript/TypeScript:
@@ -79,11 +80,6 @@ pytest path/to/test_file.py::test_name
 # Run linter
 ruff check .
 
-# Format check
-black --check .
-
-# Type check
-mypy .
 ```
 
 ## Useful Command Examples
