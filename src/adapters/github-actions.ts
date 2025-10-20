@@ -202,7 +202,9 @@ async function extractPullRequestInfo(
  * Extract CI failure information from GitHub Actions context
  */
 async function extractCIFailureInfo(
-  token: string
+  token: string,
+  owner: string,
+  repo: string
 ): Promise<CIFailureInfo | null> {
   const workflow_run_payload = github.context.payload['workflow_run']
   const runId = workflow_run_payload.id
@@ -226,7 +228,7 @@ async function extractCIFailureInfo(
   const failedJobs = getAllFailedJobs(workflowJobsStatus)
 
   // Gather failure logs
-  const failureLogs = await getFailedWorkflowRunLogs(runId)
+  const failureLogs = await getFailedWorkflowRunLogs(runId, owner, repo)
 
   return {
     workflowRunId: runId,
@@ -271,7 +273,7 @@ export async function createAgentInputFromGitHubActions(): Promise<AgentRunnerIn
   }
 
   // Extract CI failure information
-  const ciFailure = await extractCIFailureInfo(token)
+  const ciFailure = await extractCIFailureInfo(token, owner, repo)
   if (!ciFailure) {
     core.warning('No CI failure information available; skipping action.')
     return null

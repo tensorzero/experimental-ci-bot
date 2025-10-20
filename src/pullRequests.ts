@@ -138,23 +138,117 @@ export async function createFollowupPr(
 }
 
 export async function getFailedWorkflowRunLogs(
-  workflowRunId: number
+  workflowRunId: number,
+  owner?: string,
+  repo?: string
 ): Promise<string> {
-  const { stdout, stderr } = await execFileAsync(
-    'gh',
-    ['run', 'view', `${workflowRunId}`, '--log-failed'],
-    {
-      maxBuffer: 20 * 1024 * 1024,
-      encoding: 'utf-8'
-    }
-  )
-  if (stderr) {
-    core.warning(
-      `Encountered stderr when getting failed workflow logs: ${stderr}`
+  // Validate that owner and repo are provided
+  if (!owner || !repo) {
+    throw new Error(
+      'Owner and repo are required to fetch workflow run logs via API'
     )
   }
-  if (stdout) {
-    return stdout
+
+  try {
+    // First, fetch the list of jobs for this workflow run
+    const jobsArgs = [
+      'api',
+      `repos/${owner}/${repo}/actions/runs/${workflowRunId}/jobs`,
+      '--paginate'
+    ]
+
+    const { stdout: jobsOutput } = await execFileAsync('gh', jobsArgs, {
+      maxBuffer: 20 * 1024 * 1024,
+      encoding: 'utf-8'
+    })
+
+    const jobsData = JSON.parse(jobsOutput)
+    const jobs = jobsData.jobs || []
+
+    // Filter to failed jobs
+    const failedJobs = jobs.filter(
+      (job: any) => job.conclusion && job.conclusion !== 'success'
+    )
+
+    if (failedJobs.length === 0) {
+      core.warning(`No failed jobs found for workflow run ${workflowRunId}`)
+      return ''
+    }
+
+    // Fetch logs for each failed job
+    const logPromises = failedJobs.map(async (job: any) => {
+      try {
+        const logsArgs = [
+          'api',
+          `repos/${owner}/${repo}/actions/jobs/${job.id}/logs`,
+          '--paginate'
+        ]
+
+        const { stdout: logs } = await execFileAsync('gh', logsArgs, {
+          maxBuffer: 20 * 1024 * 1024,
+          encoding: 'utf-8'
+        })
+
+        return `\n=== Job: ${job.name} (ID: ${job.id}) ===\n${logs}\n`
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : `${error}`
+        core.warning(
+          `Failed to fetch logs for job ${job.name} (${job.id}): ${errorMessage}`
+        )
+        return `\n=== Job: ${job.name} (ID: ${job.id}) ===\n[Failed to fetch logs: ${errorMessage}]\n`
+      }
+    })
+
+    const allLogs = await Promise.all(logPromises)
+    const combinedLogs = allLogs.join('\n')
+
+    if (!combinedLogs.trim()) {
+      throw new Error(`Did not receive any logs for workflow ${workflowRunId}`)
+    }
+
+    return combinedLogs
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : `${error}`
+    throw new Error(
+      `Failed to fetch workflow run logs: ${errorMessage}`
+    )
   }
-  throw new Error(`Did not receive any logs for workflow ${workflowRunId}`)
+}
+
+/**
+ * Find the most recent failed workflow run for a specific commit SHA
+ */
+export async function findLatestFailedWorkflowRun(
+  octokit: OctokitInstance,
+  owner: string,
+  repo: string,
+  headSha: string
+): Promise<number | undefined> {
+  try {
+    // Query workflow runs for this commit
+    const { data } = await octokit.rest.actions.listWorkflowRunsForRepo({
+      owner,
+      repo,
+      head_sha: headSha,
+      per_page: 100 // Get up to 100 runs for this commit
+    })
+
+    // Filter to failed runs and sort by created_at descending
+    const failedRuns = data.workflow_runs
+      .filter((run) => run.conclusion === 'failure')
+      .sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      )
+
+    if (failedRuns.length === 0) {
+      return undefined
+    }
+
+    return failedRuns[0].id
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : `${error}`
+    core.warning(`Failed to query workflow runs: ${errorMessage}`)
+    return undefined
+  }
 }

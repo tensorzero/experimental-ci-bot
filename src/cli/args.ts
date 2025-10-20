@@ -162,7 +162,7 @@ Options:
   -p, --pr <number>                Pull request number (required)
   -d, --dry-run                    Show patch locally without creating PRs/comments
   -t, --token <token>              GitHub token (default: uses GITHUB_TOKEN env or gh CLI)
-  -w, --workflow-run-id <id>       Workflow run ID to fetch failure logs from
+  -w, --workflow-run-id <id>       Workflow run ID (default: auto-detects latest failed run)
   -o, --output-dir <path>          Directory for debug artifacts
   --clickhouse-url <url>           ClickHouse URL for tracking
   --clickhouse-table <name>        ClickHouse table name
@@ -176,14 +176,14 @@ Environment Variables:
   OPENAI_API_KEY                   OpenAI API key (alternative to Anthropic)
 
 Examples:
-  # Dry run - show patch locally
+  # Dry run - automatically finds latest failed workflow run
   experimental-ci-bot --repo tensorzero/tensorzero --pr 123 --dry-run
 
   # Create actual PR/comments (requires write access)
   export GITHUB_TOKEN=\$(gh auth token)
   experimental-ci-bot --repo myorg/myrepo --pr 456
 
-  # Fetch and fix specific workflow run failures
+  # Fix a specific workflow run
   experimental-ci-bot --repo owner/repo --pr 789 --workflow-run-id 12345
 `)
 }

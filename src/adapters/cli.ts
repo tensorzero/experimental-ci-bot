@@ -11,7 +11,10 @@ import type {
 } from '../core/types.js'
 import type { WorkflowJobsResponse } from '../generate-pr-patch/types.js'
 import type { FailedJobSummary } from '../tensorZeroClient.js'
-import { getFailedWorkflowRunLogs } from '../pullRequests.js'
+import {
+  getFailedWorkflowRunLogs,
+  findLatestFailedWorkflowRun
+} from '../pullRequests.js'
 
 /**
  * Get GitHub token from CLI options, environment, or gh CLI
@@ -118,7 +121,7 @@ function getAllFailedJobs(
 }
 
 /**
- * Fetch CI failure information if workflow run ID is provided
+ * Fetch CI failure information for a specific workflow run
  */
 async function fetchCIFailureInfo(
   octokit: Octokit,
@@ -149,7 +152,11 @@ async function fetchCIFailureInfo(
     const failedJobs = getAllFailedJobs(workflowJobsStatus)
 
     // Fetch failure logs
-    const failureLogs = await getFailedWorkflowRunLogs(workflowRunId)
+    const failureLogs = await getFailedWorkflowRunLogs(
+      workflowRunId,
+      owner,
+      repo
+    )
 
     return {
       workflowRunId,
@@ -189,14 +196,41 @@ export async function createAgentInputFromCli(
     options.pr
   )
 
-  // Optionally fetch CI failure information
+  // Fetch CI failure information
   let ciFailure: CIFailureInfo | undefined
-  if (options.workflowRunId) {
+  let workflowRunId = options.workflowRunId
+
+  // Auto-detect workflow run if not provided
+  if (!workflowRunId) {
+    console.log(
+      '[CLI Adapter] No workflow run ID provided, searching for latest failed run...'
+    )
+    console.log(
+      `[CLI Adapter] Searching for failed workflow runs for commit ${pullRequest.headSha.substring(0, 7)}...`
+    )
+    workflowRunId = await findLatestFailedWorkflowRun(
+      octokit as any,
+      owner,
+      repo,
+      pullRequest.headSha
+    )
+
+    if (workflowRunId) {
+      console.log(`[CLI Adapter] Found failed workflow run #${workflowRunId}`)
+    } else {
+      console.log(
+        '[CLI Adapter] No failed workflow runs found. Agent will run without CI failure context.'
+      )
+    }
+  }
+
+  // Fetch CI failure details if we have a workflow run ID
+  if (workflowRunId) {
     ciFailure = await fetchCIFailureInfo(
       octokit,
       owner,
       repo,
-      options.workflowRunId,
+      workflowRunId,
       token
     )
   }
