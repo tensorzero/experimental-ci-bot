@@ -52,6 +52,11 @@ export interface CliOptions {
    * Timeout in minutes
    */
   timeout?: number
+
+  /**
+   * Test mode - add comments to files without running agent
+   */
+  testMode?: boolean
 }
 
 /**
@@ -61,7 +66,8 @@ export function parseArgs(args: string[]): CliOptions {
   const options: Partial<CliOptions> = {
     dryRun: false,
     costLimit: 3.0,
-    timeout: 30
+    timeout: 30,
+    testMode: false
   }
 
   for (let i = 0; i < args.length; i++) {
@@ -81,6 +87,10 @@ export function parseArgs(args: string[]): CliOptions {
       case '--dry-run':
       case '-d':
         options.dryRun = true
+        break
+
+      case '--test-mode':
+        options.testMode = true
         break
 
       case '--token':
@@ -161,6 +171,7 @@ Options:
   -r, --repo <owner/repo>          Repository in format "owner/repo" (required)
   -p, --pr <number>                Pull request number (required)
   -d, --dry-run                    Show patch locally without creating PRs/comments
+  --test-mode                      Test mode: add comments without running agent (for integration testing)
   -t, --token <token>              GitHub token (default: uses GITHUB_TOKEN env or gh CLI)
   -w, --workflow-run-id <id>       Workflow run ID (default: auto-detects latest failed run)
   -o, --output-dir <path>          Directory for debug artifacts

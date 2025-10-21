@@ -255,6 +255,7 @@ export async function createAgentInputFromCli(
     agent: {
       costLimit: options.costLimit ?? 3.0,
       timeout: options.timeout ?? 30
-    }
+    },
+    testMode: options.testMode
   }
 }

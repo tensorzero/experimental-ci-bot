@@ -26,6 +26,8 @@ import {
   createPullRequestToInferenceRecord
 } from '../clickhouseClient.js'
 import { renderComment } from '../generate-pr-patch/pullRequestCommentTemplate.js'
+import type { AgentCompletionOutput } from '../types/agentOutput.js'
+import type { GitClient } from '../git.js'
 
 function maybeWriteDebugArtifact(
   outputDir: string | undefined,
@@ -68,6 +70,144 @@ async function fetchDiffSummaryAndFullDiff(
   return {
     diffSummary: diffResult.diffSummary,
     fullDiff: diffResult.fullDiff
+  }
+}
+
+/**
+ * Get comment prefix based on file extension
+ */
+function getCommentPrefix(filePath: string): string {
+  const ext = path.extname(filePath).toLowerCase()
+
+  // Common comment styles
+  const lineCommentExts = [
+    '.js',
+    '.ts',
+    '.tsx',
+    '.jsx',
+    '.java',
+    '.c',
+    '.cpp',
+    '.cc',
+    '.h',
+    '.hpp',
+    '.cs',
+    '.go',
+    '.rs',
+    '.swift',
+    '.kt',
+    '.scala',
+    '.php'
+  ]
+
+  const hashCommentExts = [
+    '.py',
+    '.rb',
+    '.sh',
+    '.bash',
+    '.zsh',
+    '.yaml',
+    '.yml',
+    '.toml',
+    '.r',
+    '.pl'
+  ]
+
+  if (lineCommentExts.includes(ext)) {
+    return '//'
+  } else if (hashCommentExts.includes(ext)) {
+    return '#'
+  } else if (ext === '.html' || ext === '.xml') {
+    return '<!--'
+  } else if (ext === '.css' || ext === '.scss' || ext === '.sass') {
+    return '/*'
+  }
+
+  // Default to // for unknown types
+  return '//'
+}
+
+/**
+ * Run test mode: add comments to files without running agent
+ */
+async function runTestMode(
+  repoDir: string,
+  git: GitClient,
+  fullDiff: string
+): Promise<AgentCompletionOutput> {
+  console.log('[Test Mode] Adding test comments to files...')
+
+  // Parse the diff to find changed files
+  const changedFiles: string[] = []
+  const diffLines = fullDiff.split('\n')
+
+  for (const line of diffLines) {
+    if (line.startsWith('+++ b/')) {
+      const filePath = line.substring(6)
+      if (filePath !== '/dev/null') {
+        changedFiles.push(filePath)
+      }
+    }
+  }
+
+  if (changedFiles.length === 0) {
+    console.log('[Test Mode] No files found in PR diff')
+    return {
+      decision: 'INLINE_SUGGESTIONS',
+      reasoning: 'Test mode: No files found to modify'
+    }
+  }
+
+  // Select first 2-3 files to modify
+  const filesToModify = changedFiles.slice(0, Math.min(3, changedFiles.length))
+  console.log(
+    `[Test Mode] Selected ${filesToModify.length} files to modify:`,
+    filesToModify
+  )
+
+  // Add test comments to each file
+  for (const filePath of filesToModify) {
+    const fullPath = path.join(repoDir, filePath)
+
+    try {
+      // Check if file exists
+      if (!fs.existsSync(fullPath)) {
+        console.log(`[Test Mode] Skipping ${filePath} - file does not exist`)
+        continue
+      }
+
+      // Read file content
+      const content = fs.readFileSync(fullPath, 'utf-8')
+
+      // Get appropriate comment syntax
+      const commentPrefix = getCommentPrefix(filePath)
+      let testComment: string
+
+      if (commentPrefix === '<!--') {
+        testComment =
+          '<!-- TEST MODE: This is a test comment added by experimental-ci-bot -->\n'
+      } else if (commentPrefix === '/*') {
+        testComment =
+          '/* TEST MODE: This is a test comment added by experimental-ci-bot */\n'
+      } else {
+        testComment = `${commentPrefix} TEST MODE: This is a test comment added by experimental-ci-bot\n`
+      }
+
+      // Add comment to the top of the file
+      const newContent = testComment + content
+
+      // Write back to file
+      fs.writeFileSync(fullPath, newContent, 'utf-8')
+      console.log(`[Test Mode] Added test comment to ${filePath}`)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : `${error}`
+      console.error(`[Test Mode] Failed to modify ${filePath}: ${errorMessage}`)
+    }
+  }
+
+  return {
+    decision: 'INLINE_SUGGESTIONS',
+    reasoning: `Test mode: Added test comments to ${filesToModify.length} file(s). This is a manual integration test of the diff collection and review comment posting system, without running the actual agent.`
   }
 }
 
@@ -164,35 +304,51 @@ export async function runAgent(
         ? 'Fix the CI failures as described in ci_failure_context.md'
         : 'Review and improve the changes in this PR as described in ci_failure_context.md'
 
-      // Run mini-swe-agent
-      console.log('[Agent Runner] Running mini-swe-agent...')
-      const agentResult = await runMiniSweAgent({
-        task,
-        cwd: repoDir,
-        tensorZeroConfigPath,
-        trajectoryOutputPath: artifactDir
-          ? path.join(artifactDir, 'agent_trajectory.json')
-          : path.join(repoDir, 'agent_trajectory.json'),
-        costLimit: 3,
-        timeout: agent.timeout * 60 * 1000, // Convert minutes to milliseconds
-        prNumber: pullRequest.number
-      })
+      // Run mini-swe-agent or test mode
+      let agentCompletion: AgentCompletionOutput
 
-      console.log(
-        `[Agent Runner] Agent completed with decision: ${agentResult.completion.decision}`
-      )
-      console.log(
-        `[Agent Runner] Agent reasoning: ${agentResult.completion.reasoning}`
-      )
+      if (input.testMode) {
+        console.log('[Agent Runner] Running in TEST MODE...')
+        agentCompletion = await runTestMode(repoDir, git, fullDiff)
+      } else {
+        console.log('[Agent Runner] Running mini-swe-agent...')
+        const agentResult = await runMiniSweAgent({
+          task,
+          cwd: repoDir,
+          tensorZeroConfigPath,
+          trajectoryOutputPath: artifactDir
+            ? path.join(artifactDir, 'agent_trajectory.json')
+            : path.join(repoDir, 'agent_trajectory.json'),
+          costLimit: 3,
+          timeout: agent.timeout * 60 * 1000, // Convert minutes to milliseconds
+          prNumber: pullRequest.number
+        })
 
-      // Save agent trajectory as debug artifact
-      if (artifactDir) {
-        maybeWriteDebugArtifact(
-          artifactDir,
-          'agent_trajectory.json',
-          JSON.stringify(agentResult.trajectory, null, 2)
+        agentCompletion = agentResult.completion
+
+        console.log(
+          `[Agent Runner] Agent completed with decision: ${agentResult.completion.decision}`
         )
+        console.log(
+          `[Agent Runner] Agent reasoning: ${agentResult.completion.reasoning}`
+        )
+
+        // Save agent trajectory as debug artifact
+        if (artifactDir) {
+          maybeWriteDebugArtifact(
+            artifactDir,
+            'agent_trajectory.json',
+            JSON.stringify(agentResult.trajectory, null, 2)
+          )
+        }
       }
+
+      console.log(
+        `[Agent Runner] Completion decision: ${agentCompletion.decision}`
+      )
+      console.log(
+        `[Agent Runner] Completion reasoning: ${agentCompletion.reasoning}`
+      )
 
       // Get the git diff
       const diffOutput = await git.diff()
@@ -202,13 +358,13 @@ export async function runAgent(
         console.log('[Agent Runner] No changes detected by agent.')
         return {
           success: true,
-          decision: agentResult.completion.decision,
-          reasoning: agentResult.completion.reasoning
+          decision: agentCompletion.decision,
+          reasoning: agentCompletion.reasoning
         }
       }
 
       // Handle the agent's decision
-      if (agentResult.completion.decision === 'INLINE_SUGGESTIONS') {
+      if (agentCompletion.decision === 'INLINE_SUGGESTIONS') {
         console.log('[Agent Runner] Agent chose to provide inline suggestions')
 
         if (isDryRun) {
@@ -220,7 +376,7 @@ export async function runAgent(
             success: true,
             diff: trimmedDiff,
             decision: 'INLINE_SUGGESTIONS',
-            reasoning: agentResult.completion.reasoning
+            reasoning: agentCompletion.reasoning
           }
         }
 
@@ -235,14 +391,14 @@ export async function runAgent(
             success: true,
             diff: trimmedDiff,
             decision: 'INLINE_SUGGESTIONS',
-            reasoning: agentResult.completion.reasoning
+            reasoning: agentCompletion.reasoning
           }
         }
 
         // Create review comments
         const reviewComments = createReviewComments(
           fileChanges,
-          agentResult.completion.reasoning
+          agentCompletion.reasoning
         )
 
         // Post review comments to GitHub
@@ -263,7 +419,7 @@ export async function runAgent(
           success: true,
           diff: trimmedDiff,
           decision: 'INLINE_SUGGESTIONS',
-          reasoning: agentResult.completion.reasoning
+          reasoning: agentCompletion.reasoning
         }
       } else {
         // PULL_REQUEST decision
@@ -278,7 +434,7 @@ export async function runAgent(
             success: true,
             diff: trimmedDiff,
             decision: 'PULL_REQUEST',
-            reasoning: agentResult.completion.reasoning
+            reasoning: agentCompletion.reasoning
           }
         }
 
@@ -343,7 +499,7 @@ export async function runAgent(
 
         // Post a comment on the original PR
         const comment = renderComment({
-          generatedCommentBody: agentResult.completion.reasoning,
+          generatedCommentBody: agentCompletion.reasoning,
           generatedPatch: trimmedDiff,
           commands: [],
           followupPrNumber: followupPr?.number,
@@ -374,7 +530,7 @@ export async function runAgent(
           success: true,
           diff: trimmedDiff,
           decision: 'PULL_REQUEST',
-          reasoning: agentResult.completion.reasoning,
+          reasoning: agentCompletion.reasoning,
           followupPrNumber: followupPr?.number,
           error: followupPrCreationError
         }

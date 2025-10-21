@@ -209,9 +209,7 @@ export async function getFailedWorkflowRunLogs(
     return combinedLogs
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : `${error}`
-    throw new Error(
-      `Failed to fetch workflow run logs: ${errorMessage}`
-    )
+    throw new Error(`Failed to fetch workflow run logs: ${errorMessage}`)
   }
 }
 

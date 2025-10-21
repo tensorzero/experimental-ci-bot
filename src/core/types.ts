@@ -85,6 +85,11 @@ export interface AgentRunnerInput {
     costLimit: number
     timeout: number
   }
+
+  /**
+   * Test mode - add comments to files without running agent (for integration testing)
+   */
+  testMode?: boolean
 }
 
 /**

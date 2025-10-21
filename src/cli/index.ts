@@ -17,6 +17,11 @@ async function main(): Promise<void> {
   console.log(
     `Mode: ${options.dryRun ? 'DRY RUN (local only)' : 'LIVE (will create PRs/comments)'}`
   )
+  if (options.testMode) {
+    console.log(
+      `Test Mode: ENABLED (will add test comments without running agent)`
+    )
+  }
   console.log(`Cost Limit: $${options.costLimit}`)
   console.log(`Timeout: ${options.timeout} minutes`)
   if (options.workflowRunId) {

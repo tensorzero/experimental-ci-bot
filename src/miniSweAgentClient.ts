@@ -190,7 +190,7 @@ export async function runMiniSweAgent(
       }
 
       // Parse the completion output from the trajectory
-      const completion = parseAgentCompletion(trajectory.result)
+      const completion = parseAgentCompletion(trajectory.info.submission)
 
       resolve({
         completion,
