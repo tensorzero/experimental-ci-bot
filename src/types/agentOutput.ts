@@ -20,14 +20,30 @@ export interface AgentMessage {
 }
 
 /**
+ * Model statistics from the agent's execution
+ */
+export interface ModelStats {
+  instance_cost: number
+  api_calls: number
+}
+
+/**
+ * Information about the agent's execution
+ */
+export interface AgentInfo {
+  exit_status: string
+  submission: string
+  model_stats: ModelStats
+  mini_version: string
+  config?: unknown
+}
+
+/**
  * The full trajectory of the agent's execution
  */
 export interface AgentTrajectory {
+  info: AgentInfo
   messages: AgentMessage[]
-  exit_status: string
-  result: string
-  cost?: number
-  n_calls?: number
 }
 
 /**
