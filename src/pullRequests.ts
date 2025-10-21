@@ -16,6 +16,7 @@ import * as fsPromises from 'fs/promises'
 import * as path from 'path'
 import * as core from '@actions/core'
 import { clonePullRequestRepository as cloneRepo } from './git.js'
+import type { GitClient } from './git.js'
 
 const execFileAsync = promisify(execFile)
 
@@ -40,6 +41,14 @@ export interface CreateFollowupPrOptions {
   repo: string
   pullRequest: PullRequestData
   diff: string
+}
+
+export interface CreateFollowupPrFromWorkingDirOptions {
+  octokit: OctokitInstance
+  owner: string
+  repo: string
+  pullRequest: PullRequestData
+  git: GitClient
 }
 
 export async function createFollowupPr(
@@ -134,6 +143,85 @@ export async function createFollowupPr(
     }
   } finally {
     await cleanup()
+  }
+}
+
+/**
+ * Create a follow-up PR directly from the working directory where changes were made
+ * This avoids the double-clone bug and patch application issues
+ */
+export async function createFollowupPrFromWorkingDir(
+  {
+    octokit,
+    owner,
+    repo,
+    pullRequest,
+    git
+  }: CreateFollowupPrFromWorkingDirOptions,
+  outputDir?: string
+): Promise<FollowupPrResult | undefined> {
+  // Check if this is a fork PR (we can't push to forks)
+  if (pullRequest.base.repo?.id !== pullRequest.head.repo?.id) {
+    core.warning(
+      'Original PR branch lives in a fork; skipping follow-up PR creation.'
+    )
+    return undefined
+  }
+
+  // Check for changes
+  const status = await git.status()
+  if (!status.trim()) {
+    core.info('No changes to commit; skipping follow-up PR creation.')
+    return undefined
+  }
+
+  // Create a new branch for the fix
+  const fixBranchName = `tensorzero/pr-${pullRequest.number}-${Date.now()}`
+  core.info(`Creating new branch: ${fixBranchName}`)
+  await git.checkoutNewBranch(fixBranchName)
+
+  // Configure git user
+  await git.config('user.email', 'hello@tensorzero.com')
+  await git.config('user.name', 'TensorZero-Experimental-CI-Bot[bot]')
+
+  // Commit all changes
+  await git.addAll()
+  await git.commit(`chore: automated fix for PR #${pullRequest.number}`)
+
+  // Push to remote
+  core.info(`Pushing branch ${fixBranchName} to origin`)
+  await git.push(fixBranchName)
+
+  // Create the pull request
+  const prTitle = `Automated follow-up for #${pullRequest.number}`
+  const prBodyLines = [
+    `This pull request was generated automatically in response to failing CI on #${pullRequest.number}.`,
+    '',
+    'The proposed changes were produced by mini-swe-agent running directly in the repository.'
+  ]
+  const prBody = prBodyLines.join('\n')
+
+  core.info(`Creating PR: ${prTitle}`)
+  const createdPr = await octokit.rest.pulls.create({
+    owner,
+    repo,
+    base: pullRequest.head.ref,
+    head: fixBranchName,
+    title: prTitle,
+    body: prBody
+  })
+
+  if (outputDir) {
+    await fsPromises.writeFile(
+      path.join(outputDir, 'followup-pr-payload.json'),
+      JSON.stringify(createdPr, null, 2)
+    )
+  }
+
+  return {
+    number: createdPr.data.number,
+    id: createdPr.data.id,
+    htmlUrl: createdPr.data.html_url
   }
 }
 

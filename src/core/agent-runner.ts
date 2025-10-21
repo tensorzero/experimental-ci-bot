@@ -9,7 +9,10 @@ import type {
   PullRequestInfo
 } from './types.js'
 import type { OctokitInstance } from '../generate-pr-patch/types.js'
-import { createFollowupPr, type FollowupPrResult } from '../pullRequests.js'
+import {
+  createFollowupPrFromWorkingDir,
+  type FollowupPrResult
+} from '../pullRequests.js'
 import { runMiniSweAgent } from '../miniSweAgentClient.js'
 import {
   writeCIFailureContextFile,
@@ -314,9 +317,6 @@ export async function runAgent(
           task,
           cwd: repoDir,
           tensorZeroConfigPath,
-          trajectoryOutputPath: artifactDir
-            ? path.join(artifactDir, 'agent_trajectory.json')
-            : path.join(repoDir, 'agent_trajectory.json'),
           costLimit: 3,
           timeout: agent.timeout * 60 * 1000, // Convert minutes to milliseconds
           prNumber: pullRequest.number
@@ -327,15 +327,6 @@ export async function runAgent(
         console.log(
           `[Agent Runner] Agent reasoning: ${agentResult.completion.reasoning}`
         )
-
-        // Save agent trajectory as debug artifact
-        if (artifactDir) {
-          maybeWriteDebugArtifact(
-            artifactDir,
-            'agent_trajectory.json',
-            JSON.stringify(agentResult.trajectory, null, 2)
-          )
-        }
       }
 
       console.log(
@@ -354,6 +345,20 @@ export async function runAgent(
         }
       }
 
+      // Debug logging: show diff statistics
+      const diffLines = trimmedDiff.split('\n')
+      const filesChanged = diffLines.filter((line) =>
+        line.startsWith('diff --git')
+      ).length
+      const additions = diffLines.filter((line) => line.startsWith('+')).length
+      const deletions = diffLines.filter((line) => line.startsWith('-')).length
+      console.log(
+        `[Agent Runner] Diff statistics: ${filesChanged} files, +${additions} -${deletions} lines`
+      )
+
+      // Save diff as debug artifact
+      maybeWriteDebugArtifact(artifactDir, 'agent-changes.diff', trimmedDiff)
+
       // Create a follow-up PR with the changes
       console.log('[Agent Runner] Creating a follow-up PR with the changes')
 
@@ -369,19 +374,18 @@ export async function runAgent(
         }
       }
 
-      // Create follow-up PR
+      // Create follow-up PR directly from the working directory
       let followupPr: FollowupPrResult | undefined
       let followupPrCreationError: string | undefined
 
       try {
-        followupPr = await createFollowupPr(
+        followupPr = await createFollowupPrFromWorkingDir(
           {
             octokit,
-            token,
             owner: pullRequest.owner,
             repo: pullRequest.repo,
             pullRequest: prData,
-            diff: trimmedDiff
+            git
           },
           artifactDir
         )

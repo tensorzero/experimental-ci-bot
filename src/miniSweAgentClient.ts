@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
+import * as os from 'node:os'
 import {
   type AgentTrajectory,
   type AgentCompletionOutput,
@@ -91,7 +92,7 @@ export async function runMiniSweAgent(
     task,
     cwd,
     tensorZeroConfigPath,
-    trajectoryOutputPath = path.join(cwd, 'agent_trajectory.json'),
+    trajectoryOutputPath, // Ignored - we always use temp file now
     costLimit = 3.0,
     stepLimit = 0,
     modelName,
@@ -99,12 +100,18 @@ export async function runMiniSweAgent(
     prNumber
   } = config
 
+  // Create a temporary trajectory file that we'll delete after reading
+  const tempTrajectoryPath = path.join(
+    os.tmpdir(),
+    `agent_trajectory_${Date.now()}_${Math.random().toString(36).substring(7)}.json`
+  )
+
   // Build command arguments
   const args = [
     '-t',
     task,
     '-o',
-    trajectoryOutputPath,
+    tempTrajectoryPath,
     '-l',
     costLimit.toString(),
     '--exit-immediately',
@@ -175,10 +182,10 @@ export async function runMiniSweAgent(
 
       console.log(`mini-swe-agent exited with code ${code}`)
 
-      // Read the trajectory file
+      // Read the trajectory file from temp location
       let trajectory: AgentTrajectory
       try {
-        const trajectoryContent = fs.readFileSync(trajectoryOutputPath, 'utf-8')
+        const trajectoryContent = fs.readFileSync(tempTrajectoryPath, 'utf-8')
         trajectory = JSON.parse(trajectoryContent)
       } catch (error) {
         reject(
@@ -187,6 +194,18 @@ export async function runMiniSweAgent(
           )
         )
         return
+      } finally {
+        // Delete the temporary trajectory file
+        try {
+          if (fs.existsSync(tempTrajectoryPath)) {
+            fs.unlinkSync(tempTrajectoryPath)
+            console.log('Deleted temporary trajectory file')
+          }
+        } catch (error) {
+          console.warn(
+            `Failed to delete temporary trajectory file: ${error instanceof Error ? error.message : String(error)}`
+          )
+        }
       }
 
       // Parse the completion output from the trajectory
