@@ -1,13 +1,7 @@
 /**
- * The decision made by the agent on how to present the fix
- */
-export type AgentDecision = 'INLINE_SUGGESTIONS' | 'PULL_REQUEST'
-
-/**
  * The parsed output from the agent's completion signal
  */
 export interface AgentCompletionOutput {
-  decision: AgentDecision
   reasoning: string
 }
 
@@ -52,21 +46,12 @@ export interface AgentTrajectory {
 export function parseAgentCompletion(output: string): AgentCompletionOutput {
   const lines = output.trim().split('\n')
 
-  let decision: AgentDecision | null = null
   let reasoning = ''
 
   for (const line of lines) {
     const trimmedLine = line.trim()
 
-    if (trimmedLine.startsWith('DECISION:')) {
-      const decisionValue = trimmedLine.replace('DECISION:', '').trim()
-      if (
-        decisionValue === 'INLINE_SUGGESTIONS' ||
-        decisionValue === 'PULL_REQUEST'
-      ) {
-        decision = decisionValue
-      }
-    } else if (trimmedLine.startsWith('REASONING:')) {
+    if (trimmedLine.startsWith('REASONING:')) {
       reasoning = trimmedLine.replace('REASONING:', '').trim()
     } else if (
       !trimmedLine.startsWith('COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT')
@@ -80,13 +65,9 @@ export function parseAgentCompletion(output: string): AgentCompletionOutput {
     }
   }
 
-  // Default to PR if no decision was made or decision is unclear
-  if (!decision) {
-    decision = 'PULL_REQUEST'
-    if (!reasoning) {
-      reasoning = 'Agent did not specify a decision, defaulting to PR'
-    }
+  if (!reasoning) {
+    reasoning = 'Agent completed task without providing reasoning'
   }
 
-  return { decision, reasoning }
+  return { reasoning }
 }

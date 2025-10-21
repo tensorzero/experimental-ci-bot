@@ -15,11 +15,6 @@ import {
   writeCIFailureContextFile,
   type CIFailureContext
 } from '../generate-pr-patch/ciFailureContext.js'
-import {
-  parseGitDiff,
-  createReviewComments,
-  postReviewComments
-} from '../githubReviewComments.js'
 import { clonePullRequestRepository, getPullRequestDiff } from '../git.js'
 import {
   type CreatePullRequestToInferenceRequest,
@@ -158,7 +153,6 @@ async function runTestMode(
   if (changedFiles.length === 0) {
     console.log('[Test Mode] No files found in PR diff')
     return {
-      decision: 'INLINE_SUGGESTIONS',
       reasoning: 'Test mode: No files found to modify'
     }
   }
@@ -211,7 +205,6 @@ async function runTestMode(
   }
 
   return {
-    decision: 'PULL_REQUEST',
     reasoning: `Test mode: Added test comments to ${filesToModify.length} file(s). This is a manual integration test of the follow-up PR creation system, without running the actual agent.`
   }
 }
@@ -332,9 +325,6 @@ export async function runAgent(
         agentCompletion = agentResult.completion
 
         console.log(
-          `[Agent Runner] Agent completed with decision: ${agentResult.completion.decision}`
-        )
-        console.log(
           `[Agent Runner] Agent reasoning: ${agentResult.completion.reasoning}`
         )
 
@@ -349,9 +339,6 @@ export async function runAgent(
       }
 
       console.log(
-        `[Agent Runner] Completion decision: ${agentCompletion.decision}`
-      )
-      console.log(
         `[Agent Runner] Completion reasoning: ${agentCompletion.reasoning}`
       )
 
@@ -363,178 +350,115 @@ export async function runAgent(
         console.log('[Agent Runner] No changes detected by agent.')
         return {
           success: true,
-          decision: agentCompletion.decision,
           reasoning: agentCompletion.reasoning
         }
       }
 
-      // Handle the agent's decision
-      if (agentCompletion.decision === 'INLINE_SUGGESTIONS') {
-        console.log('[Agent Runner] Agent chose to provide inline suggestions')
+      // Create a follow-up PR with the changes
+      console.log('[Agent Runner] Creating a follow-up PR with the changes')
 
-        if (isDryRun) {
-          console.log(
-            '\n[DRY RUN] Would create inline suggestions with the following changes:'
-          )
-          console.log(trimmedDiff)
-          return {
-            success: true,
-            diff: trimmedDiff,
-            decision: 'INLINE_SUGGESTIONS',
-            reasoning: agentCompletion.reasoning
-          }
-        }
-
-        // Parse the git diff to extract changes
-        const fileChanges = await parseGitDiff(repoDir)
-
-        if (fileChanges.length === 0) {
-          console.log(
-            '[Agent Runner] No file changes detected; skipping review comments.'
-          )
-          return {
-            success: true,
-            diff: trimmedDiff,
-            decision: 'INLINE_SUGGESTIONS',
-            reasoning: agentCompletion.reasoning
-          }
-        }
-
-        // Create review comments
-        const reviewComments = createReviewComments(
-          fileChanges,
-          agentCompletion.reasoning
-        )
-
-        // Post review comments to GitHub
-        await postReviewComments(
-          octokit,
-          pullRequest.owner,
-          pullRequest.repo,
-          pullRequest.number,
-          reviewComments,
-          pullRequest.headSha
-        )
-
+      if (isDryRun) {
         console.log(
-          `[Agent Runner] Posted ${reviewComments.length} inline suggestion(s) to PR #${pullRequest.number}`
+          '\n[DRY RUN] Would create a follow-up PR with the following patch:'
         )
-
+        console.log(trimmedDiff)
         return {
           success: true,
           diff: trimmedDiff,
-          decision: 'INLINE_SUGGESTIONS',
           reasoning: agentCompletion.reasoning
         }
-      } else {
-        // PULL_REQUEST decision
-        console.log('[Agent Runner] Agent chose to create a follow-up PR')
+      }
 
-        if (isDryRun) {
+      // Create follow-up PR
+      let followupPr: FollowupPrResult | undefined
+      let followupPrCreationError: string | undefined
+
+      try {
+        followupPr = await createFollowupPr(
+          {
+            octokit,
+            token,
+            owner: pullRequest.owner,
+            repo: pullRequest.repo,
+            pullRequest: prData,
+            diff: trimmedDiff
+          },
+          artifactDir
+        )
+
+        if (followupPr) {
           console.log(
-            '\n[DRY RUN] Would create a follow-up PR with the following patch:'
-          )
-          console.log(trimmedDiff)
-          return {
-            success: true,
-            diff: trimmedDiff,
-            decision: 'PULL_REQUEST',
-            reasoning: agentCompletion.reasoning
-          }
-        }
-
-        // Create follow-up PR
-        let followupPr: FollowupPrResult | undefined
-        let followupPrCreationError: string | undefined
-
-        try {
-          followupPr = await createFollowupPr(
-            {
-              octokit,
-              token,
-              owner: pullRequest.owner,
-              repo: pullRequest.repo,
-              pullRequest: prData,
-              diff: trimmedDiff
-            },
-            artifactDir
+            `[Agent Runner] Created follow-up PR #${followupPr.number}`
           )
 
-          if (followupPr) {
-            console.log(
-              `[Agent Runner] Created follow-up PR #${followupPr.number}`
-            )
+          // Record inference in ClickHouse if configured
+          if (clickhouse) {
+            const inferenceId = `agent-${pullRequest.number}-${Date.now()}`
 
-            // Record inference in ClickHouse if configured
-            if (clickhouse) {
-              const inferenceId = `agent-${pullRequest.number}-${Date.now()}`
+            const request: CreatePullRequestToInferenceRequest = {
+              inferenceId,
+              pullRequestId: followupPr.id,
+              originalPullRequestUrl: pullRequest.htmlUrl
+            }
 
-              const request: CreatePullRequestToInferenceRequest = {
-                inferenceId,
-                pullRequestId: followupPr.id,
-                originalPullRequestUrl: pullRequest.htmlUrl
-              }
-
-              try {
-                await createPullRequestToInferenceRecord(request, clickhouse)
-                console.log(
-                  `[Agent Runner] Recorded inference ${inferenceId} for follow-up PR #${followupPr.number} in ClickHouse.`
-                )
-              } catch (error) {
-                const errorMessage =
-                  error instanceof Error ? error.message : `${error}`
-                console.warn(
-                  `[Agent Runner] Failed to record inference in ClickHouse: ${errorMessage}`
-                )
-              }
+            try {
+              await createPullRequestToInferenceRecord(request, clickhouse)
+              console.log(
+                `[Agent Runner] Recorded inference ${inferenceId} for follow-up PR #${followupPr.number} in ClickHouse.`
+              )
+            } catch (error) {
+              const errorMessage =
+                error instanceof Error ? error.message : `${error}`
+              console.warn(
+                `[Agent Runner] Failed to record inference in ClickHouse: ${errorMessage}`
+              )
             }
           }
+        }
+      } catch (error) {
+        followupPrCreationError =
+          error instanceof Error ? error.message : `${error}`
+        console.error(
+          `[Agent Runner] Failed to create follow-up PR: ${followupPrCreationError}`
+        )
+      }
+
+      // Post a comment on the original PR
+      const comment = renderComment({
+        generatedCommentBody: agentCompletion.reasoning,
+        generatedPatch: trimmedDiff,
+        commands: [],
+        followupPrNumber: followupPr?.number,
+        followupPrUrl: followupPr?.htmlUrl,
+        followupPrCreationError
+      })
+
+      if (comment) {
+        try {
+          await octokit.rest.issues.createComment({
+            owner: pullRequest.owner,
+            repo: pullRequest.repo,
+            issue_number: pullRequest.number,
+            body: comment
+          })
+          console.log(
+            `[Agent Runner] Posted comment on PR #${pullRequest.number}`
+          )
         } catch (error) {
-          followupPrCreationError =
+          const errorMessage =
             error instanceof Error ? error.message : `${error}`
-          console.error(
-            `[Agent Runner] Failed to create follow-up PR: ${followupPrCreationError}`
+          console.warn(
+            `[Agent Runner] Failed to create comment on pull request: ${errorMessage}`
           )
         }
+      }
 
-        // Post a comment on the original PR
-        const comment = renderComment({
-          generatedCommentBody: agentCompletion.reasoning,
-          generatedPatch: trimmedDiff,
-          commands: [],
-          followupPrNumber: followupPr?.number,
-          followupPrUrl: followupPr?.htmlUrl,
-          followupPrCreationError
-        })
-
-        if (comment) {
-          try {
-            await octokit.rest.issues.createComment({
-              owner: pullRequest.owner,
-              repo: pullRequest.repo,
-              issue_number: pullRequest.number,
-              body: comment
-            })
-            console.log(
-              `[Agent Runner] Posted comment on PR #${pullRequest.number}`
-            )
-          } catch (error) {
-            const errorMessage =
-              error instanceof Error ? error.message : `${error}`
-            console.warn(
-              `[Agent Runner] Failed to create comment on pull request: ${errorMessage}`
-            )
-          }
-        }
-
-        return {
-          success: true,
-          diff: trimmedDiff,
-          decision: 'PULL_REQUEST',
-          reasoning: agentCompletion.reasoning,
-          followupPrNumber: followupPr?.number,
-          error: followupPrCreationError
-        }
+      return {
+        success: true,
+        diff: trimmedDiff,
+        reasoning: agentCompletion.reasoning,
+        followupPrNumber: followupPr?.number,
+        error: followupPrCreationError
       }
     } finally {
       // Clean up cloned repository

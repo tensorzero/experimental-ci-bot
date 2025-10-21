@@ -64,7 +64,6 @@ Fix the CI failures in this pull request. The tests and checks are failing, and 
 2. Review the PR diff to understand what changes were made
 3. Make targeted fixes to resolve the failures
 4. Run validation commands to ensure your fixes work
-5. Decide whether to propose inline suggestions or a pull request
 
 ## Failed Jobs and Steps
 
@@ -115,21 +114,7 @@ After making your changes, you MUST validate them by running:
 3. **Build the project** - Ensure the project still compiles/builds successfully
 4. **Language-specific checks** - Run type checkers, cargo clippy, etc. as appropriate
 
-## Decision Criteria
-
-When you've successfully fixed and validated the changes, decide how to present your fix:
-
-**Use INLINE_SUGGESTIONS when:**
-- Changes are localized to 1-2 files
-- Changes are simple and straightforward
-- Total lines changed is small (<20 lines)
-
-**Use PULL_REQUEST when:**
-- Changes span multiple files (3+)
-- Changes are complex or require significant refactoring
-- You need human review for confidence
-
-Output your decision using the completion command format described in your system instructions.
+When you've successfully fixed and validated the changes, output your completion using the completion command format described in your system instructions.
 
 Good luck!
 `

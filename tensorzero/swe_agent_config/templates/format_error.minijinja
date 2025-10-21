@@ -4,7 +4,6 @@ If you want to end the task, use the completion command:
 
 ```bash
 echo "COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT
-DECISION: [INLINE_SUGGESTIONS|PULL_REQUEST]
 REASONING: [Your reasoning here]"
 ```
 

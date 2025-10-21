@@ -107,11 +107,6 @@ export interface AgentRunnerResult {
   diff?: string
 
   /**
-   * Decision made by the agent
-   */
-  decision?: 'INLINE_SUGGESTIONS' | 'PULL_REQUEST'
-
-  /**
    * Reasoning from the agent
    */
   reasoning?: string
