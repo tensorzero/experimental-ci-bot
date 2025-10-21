@@ -54,9 +54,6 @@ async function main(): Promise<void> {
 
     if (result.success) {
       console.log('✓ Status: SUCCESS')
-      if (result.decision) {
-        console.log(`Decision: ${result.decision}`)
-      }
       if (result.reasoning) {
         console.log(`\nReasoning:\n${result.reasoning}`)
       }
