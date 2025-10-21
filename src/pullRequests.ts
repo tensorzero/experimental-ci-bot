@@ -49,6 +49,7 @@ export interface CreateFollowupPrFromWorkingDirOptions {
   repo: string
   pullRequest: PullRequestData
   git: GitClient
+  reasoning?: string
 }
 
 export async function createFollowupPr(
@@ -156,7 +157,8 @@ export async function createFollowupPrFromWorkingDir(
     owner,
     repo,
     pullRequest,
-    git
+    git,
+    reasoning
   }: CreateFollowupPrFromWorkingDirOptions,
   outputDir?: string
 ): Promise<FollowupPrResult | undefined> {
@@ -199,6 +201,15 @@ export async function createFollowupPrFromWorkingDir(
     '',
     'The proposed changes were produced by mini-swe-agent running directly in the repository.'
   ]
+
+  // Add reasoning if available
+  if (reasoning && reasoning.trim()) {
+    prBodyLines.push('')
+    prBodyLines.push('## Fix Details')
+    prBodyLines.push('')
+    prBodyLines.push(reasoning.trim())
+  }
+
   const prBody = prBodyLines.join('\n')
 
   core.info(`Creating PR: ${prTitle}`)

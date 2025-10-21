@@ -26,7 +26,7 @@ model_name = "claude-sonnet-4-5-20250929"
 type = "chat"
 
 [functions.swe_agent.variants.gpt-5]
-weight = 1
+weight = 0
 type = "chat_completion"
 model = "gpt-5"
 templates.system.path = "templates/system.minijinja"

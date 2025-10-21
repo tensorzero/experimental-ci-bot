@@ -333,6 +333,20 @@ export async function runAgent(
         `[Agent Runner] Completion reasoning: ${agentCompletion.reasoning}`
       )
 
+      // Clean up the CI failure context file before git operations
+      // This prevents it from being committed in the follow-up PR
+      try {
+        fs.rmSync(contextFilePath, { force: true })
+        console.log(
+          `[Agent Runner] Cleaned up CI failure context file: ${contextFilePath}`
+        )
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : `${error}`
+        console.warn(
+          `[Agent Runner] Failed to clean up CI failure context file: ${errorMessage}`
+        )
+      }
+
       // Get the git diff
       const diffOutput = await git.diff()
       const trimmedDiff = diffOutput.trim()
@@ -385,7 +399,8 @@ export async function runAgent(
             owner: pullRequest.owner,
             repo: pullRequest.repo,
             pullRequest: prData,
-            git
+            git,
+            reasoning: agentCompletion.reasoning
           },
           artifactDir
         )

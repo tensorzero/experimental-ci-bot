@@ -92,7 +92,7 @@ export async function runMiniSweAgent(
     task,
     cwd,
     tensorZeroConfigPath,
-    trajectoryOutputPath, // Ignored - we always use temp file now
+    trajectoryOutputPath: _trajectoryOutputPath, // Ignored - we always use temp file now
     costLimit = 3.0,
     stepLimit = 0,
     modelName,
