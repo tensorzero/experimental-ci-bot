@@ -18,7 +18,7 @@ Try running the following commands to address the issues:
 {{/if}}
 
 {{#if followupPrNumber}}
-I've opened an automated follow-up PR #{{followupPrNumber}} with proposed fixes.
+I've opened an automated follow-up PR {{#if followupPrUrl}}[#{{followupPrNumber}}]({{followupPrUrl}}){{else}}#{{followupPrNumber}}{{/if}} with proposed fixes.
 {{/if}}
 {{#if followupPrCreationError}}
 > [!WARNING]
@@ -38,6 +38,7 @@ No patch was generated.
 export interface CommentTemplateContext {
   generatedCommentBody?: string
   followupPrNumber?: number
+  followupPrUrl?: string
   commands?: string[]
   followupPrCreationError?: string
   generatedPatch?: string

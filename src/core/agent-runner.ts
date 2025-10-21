@@ -52,7 +52,11 @@ async function fetchDiffSummaryAndFullDiff(
   octokit: OctokitInstance,
   pr: PullRequestInfo,
   token: string
-): Promise<{ diffSummary: string; fullDiff: string }> {
+): Promise<{
+  diffSummary: string
+  fullDiff: string
+  prData: Awaited<ReturnType<OctokitInstance['rest']['pulls']['get']>>['data']
+}> {
   console.log('[Agent Runner] Fetching PR diff via git...')
   const prResponse = await octokit.rest.pulls.get({
     owner: pr.owner,
@@ -69,7 +73,8 @@ async function fetchDiffSummaryAndFullDiff(
 
   return {
     diffSummary: diffResult.diffSummary,
-    fullDiff: diffResult.fullDiff
+    fullDiff: diffResult.fullDiff,
+    prData: prResponse.data
   }
 }
 
@@ -206,8 +211,8 @@ async function runTestMode(
   }
 
   return {
-    decision: 'INLINE_SUGGESTIONS',
-    reasoning: `Test mode: Added test comments to ${filesToModify.length} file(s). This is a manual integration test of the diff collection and review comment posting system, without running the actual agent.`
+    decision: 'PULL_REQUEST',
+    reasoning: `Test mode: Added test comments to ${filesToModify.length} file(s). This is a manual integration test of the follow-up PR creation system, without running the actual agent.`
   }
 }
 
@@ -244,7 +249,7 @@ export async function runAgent(
 
   try {
     // Load diff summary and full diff
-    const { diffSummary, fullDiff } = await fetchDiffSummaryAndFullDiff(
+    const { diffSummary, fullDiff, prData } = await fetchDiffSummaryAndFullDiff(
       octokit,
       pullRequest,
       token
@@ -449,12 +454,7 @@ export async function runAgent(
               token,
               owner: pullRequest.owner,
               repo: pullRequest.repo,
-              pullRequest: {
-                number: pullRequest.number,
-                head: { ref: pullRequest.headRef, sha: pullRequest.headSha },
-                base: { ref: pullRequest.baseRef },
-                html_url: pullRequest.htmlUrl
-              } as any,
+              pullRequest: prData,
               diff: trimmedDiff
             },
             artifactDir
@@ -503,6 +503,7 @@ export async function runAgent(
           generatedPatch: trimmedDiff,
           commands: [],
           followupPrNumber: followupPr?.number,
+          followupPrUrl: followupPr?.htmlUrl,
           followupPrCreationError
         })
 
