@@ -44,6 +44,7 @@ describe('clickhouseClient', () => {
       table: 'tensorzero.inference_records',
       values: [
         {
+          episode_id: 'episode-123',
           pull_request_id: 42,
           inference_id: 'abc-123',
           original_pull_request_url: 'https://github.com/org/repo/pull/42'
