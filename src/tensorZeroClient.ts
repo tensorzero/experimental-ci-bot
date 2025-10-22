@@ -40,6 +40,13 @@ export interface TensorZeroFeedbackRequest<T> {
   tags?: TensorZeroGithubCiBotFeedbackTags
 }
 
+export interface TensorZeroEpisodeFeedbackRequest<T> {
+  metric_name: string
+  episode_id: string
+  value: T
+  tags?: TensorZeroGithubCiBotFeedbackTags
+}
+
 export interface TensorZeroGithubCiBotFeedbackTags {
   reason: string
 }
@@ -104,6 +111,34 @@ export async function provideInferenceFeedback<T>(
   })
   if (!response.ok) {
     throw new Error(`Failed to provide feedback: ${response.statusText}`)
+  }
+  return
+}
+
+export async function provideEpisodeFeedback<T>(
+  tensorZeroBaseUrl: string,
+  metricName: string,
+  episodeId: string,
+  value: T,
+  tags?: TensorZeroGithubCiBotFeedbackTags
+): Promise<void> {
+  const feedbackUrl = `${tensorZeroBaseUrl}/feedback`
+  const feedbackRequest: TensorZeroEpisodeFeedbackRequest<T> = {
+    metric_name: metricName,
+    episode_id: episodeId,
+    value,
+    tags
+  }
+  core.info(`Episode Feedback Request: ${JSON.stringify(feedbackRequest, null, 2)}`)
+  const response = await fetch(feedbackUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(feedbackRequest)
+  })
+  if (!response.ok) {
+    throw new Error(`Failed to provide episode feedback: ${response.statusText}`)
   }
   return
 }
