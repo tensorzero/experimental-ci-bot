@@ -112,7 +112,6 @@ export async function provideInferenceFeedback<T>(
   if (!response.ok) {
     throw new Error(`Failed to provide feedback: ${response.statusText}`)
   }
-  return
 }
 
 export async function provideEpisodeFeedback<T>(
@@ -129,7 +128,9 @@ export async function provideEpisodeFeedback<T>(
     value,
     tags
   }
-  core.info(`Episode Feedback Request: ${JSON.stringify(feedbackRequest, null, 2)}`)
+  core.info(
+    `Episode Feedback Request: ${JSON.stringify(feedbackRequest, null, 2)}`
+  )
   const response = await fetch(feedbackUrl, {
     method: 'POST',
     headers: {
@@ -138,7 +139,8 @@ export async function provideEpisodeFeedback<T>(
     body: JSON.stringify(feedbackRequest)
   })
   if (!response.ok) {
-    throw new Error(`Failed to provide episode feedback: ${response.statusText}`)
+    throw new Error(
+      `Failed to provide episode feedback: ${response.statusText}`
+    )
   }
-  return
 }

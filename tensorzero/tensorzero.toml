@@ -15,3 +15,8 @@ level = "inference"
 type = "boolean"
 optimize = "max"
 level = "inference"
+
+[metrics.tensorzero_github_ci_bot_agent_pr_merged]
+type = "boolean"
+optimize = "max"
+level = "episode"
