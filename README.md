@@ -20,7 +20,7 @@ Actions.
    npm run bundle  # Build the CLI
    ```
 
-2. Set up required environment variables:
+1. Set up required environment variables:
 
    ```bash
    # GitHub authentication (choose one):
@@ -75,16 +75,16 @@ npm run cli -- --repo owner/repo --pr 789 --workflow-run-id 12345
 
 ### CLI Options
 
-```
--r, --repo <owner/repo>          Repository in format "owner/repo" (required)
+```text
+-r, --repo <owner/repo>          Repository in "owner/repo" format
 -p, --pr <number>                Pull request number (required)
--d, --dry-run                    Show patch locally without creating PRs/comments
--t, --token <token>              GitHub token (default: uses GITHUB_TOKEN env or gh CLI)
--w, --workflow-run-id <id>       Workflow run ID to fetch failure logs from
+-d, --dry-run                    Show patch locally without PRs/comments
+-t, --token <token>              GitHub token (default: GITHUB_TOKEN or gh)
+-w, --workflow-run-id <id>       Workflow run ID for failure logs
 -o, --output-dir <path>          Directory for debug artifacts
 --clickhouse-url <url>           ClickHouse URL for tracking
 --clickhouse-table <name>        ClickHouse table name
--c, --cost-limit <dollars>       Cost limit for mini-swe-agent (default: 3.0)
+-c, --cost-limit <dollars>       Cost limit (default: 3.0)
 --timeout <minutes>              Timeout in minutes (default: 30)
 -h, --help                       Show help message
 ```
