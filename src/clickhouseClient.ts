@@ -16,6 +16,7 @@ export interface ClickHouseConfig {
 
 export interface CreatePullRequestToInferenceRequest {
   inferenceId: string
+  episodeId: string
   pullRequestId: number
   originalPullRequestUrl: string
 }
@@ -25,12 +26,6 @@ export interface PullRequestToInferenceRecord {
   pull_request_id: number
   created_at: string
   original_pull_request_url: string
-}
-
-export interface CreatePullRequestToEpisodeRequest {
-  episodeId: string
-  pullRequestId: number
-  originalPullRequestUrl: string
 }
 
 export interface PullRequestToEpisodeRecord {
@@ -116,6 +111,7 @@ export async function createPullRequestToInferenceRecord(
         {
           pull_request_id: request.pullRequestId,
           inference_id: request.inferenceId,
+          episode_id: request.episodeId,
           original_pull_request_url: request.originalPullRequestUrl
         }
       ],
@@ -152,34 +148,6 @@ export async function getPullRequestToInferenceRecords(
     }
   }
   return records
-}
-
-export async function createPullRequestToEpisodeRecord(
-  request: CreatePullRequestToEpisodeRequest,
-  config: ClickHouseConfig,
-  dependencies?: ClickHouseDependencies
-): Promise<void> {
-  const { client, table, shouldClose } = createTensorZeroClickHouseClient(
-    config,
-    dependencies
-  )
-  try {
-    await client.insert({
-      table,
-      values: [
-        {
-          pull_request_id: request.pullRequestId,
-          episode_id: request.episodeId,
-          original_pull_request_url: request.originalPullRequestUrl
-        }
-      ],
-      format: 'JSONEachRow'
-    })
-  } finally {
-    if (shouldClose) {
-      await client.close()
-    }
-  }
 }
 
 // Returns all episode records for a given pull request.

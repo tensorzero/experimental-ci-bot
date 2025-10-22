@@ -5,7 +5,6 @@ import {
   type ClickHouseConfig,
   createPullRequestToInferenceRecord,
   getPullRequestToInferenceRecords,
-  createPullRequestToEpisodeRecord,
   getPullRequestToEpisodeRecords
 } from './clickhouseClient.js'
 
@@ -33,6 +32,7 @@ describe('clickhouseClient', () => {
     await createPullRequestToInferenceRecord(
       {
         inferenceId: 'abc-123',
+        episodeId: 'episode-123',
         pullRequestId: 42,
         originalPullRequestUrl: 'https://github.com/org/repo/pull/42'
       },
@@ -88,6 +88,7 @@ describe('clickhouseClient', () => {
       createPullRequestToInferenceRecord(
         {
           inferenceId: 'abc',
+          episodeId: 'episode-123',
           pullRequestId: 1,
           originalPullRequestUrl: 'https://example.com/pr/1'
         },
@@ -101,6 +102,7 @@ describe('clickhouseClient', () => {
       createPullRequestToInferenceRecord(
         {
           inferenceId: 'abc',
+          episodeId: 'episode-123',
           pullRequestId: 1,
           originalPullRequestUrl: 'https://example.com/pr/1'
         },
@@ -116,6 +118,7 @@ describe('clickhouseClient', () => {
       createPullRequestToInferenceRecord(
         {
           inferenceId: 'abc',
+          episodeId: 'episode-123',
           pullRequestId: 1,
           originalPullRequestUrl: 'https://example.com/pr/1'
         },
@@ -124,31 +127,6 @@ describe('clickhouseClient', () => {
       )
     ).rejects.toThrow('insert failed')
 
-    expect(client.close).not.toHaveBeenCalled()
-  })
-
-  it('writes episode records using structured inserts', async () => {
-    await createPullRequestToEpisodeRecord(
-      {
-        episodeId: 'episode-456',
-        pullRequestId: 99,
-        originalPullRequestUrl: 'https://github.com/org/repo/pull/99'
-      },
-      defaultConfig,
-      { client }
-    )
-
-    expect(client.insert).toHaveBeenCalledWith({
-      table: 'tensorzero.inference_records',
-      values: [
-        {
-          pull_request_id: 99,
-          episode_id: 'episode-456',
-          original_pull_request_url: 'https://github.com/org/repo/pull/99'
-        }
-      ],
-      format: 'JSONEachRow'
-    })
     expect(client.close).not.toHaveBeenCalled()
   })
 
@@ -179,19 +157,6 @@ describe('clickhouseClient', () => {
     })
     expect(jsonMock).toHaveBeenCalledTimes(1)
     expect(records).toEqual(expectedRecords)
-  })
-
-  it('validates table name for episode records', async () => {
-    await expect(
-      createPullRequestToEpisodeRecord(
-        {
-          episodeId: 'episode-123',
-          pullRequestId: 1,
-          originalPullRequestUrl: 'https://example.com/pr/1'
-        },
-        { ...defaultConfig, table: 'bad@table' }
-      )
-    ).rejects.toThrow('ClickHouse table name must contain only')
   })
 
   it('propagates query failures for episode records without closing the client', async () => {

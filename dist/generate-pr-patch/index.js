@@ -34900,6 +34900,7 @@ async function createPullRequestToInferenceRecord(request, config, dependencies)
                 {
                     pull_request_id: request.pullRequestId,
                     inference_id: request.inferenceId,
+                    episode_id: request.episodeId,
                     original_pull_request_url: request.originalPullRequestUrl
                 }
             ],
@@ -50802,9 +50803,13 @@ async function run() {
     }
     // TODO: consider using episode_id instead of inference ID.
     const inferenceId = response.id;
+    const episodeId = response.episode_id;
     if (followupPr) {
+        // This version currently only contains one inference per episode; soon with miniswe-agent, we will have many inferences per episode.
+        // When that launches, we will switch to only create PR-episode associations.
         const request = {
             inferenceId,
+            episodeId,
             pullRequestId: followupPr.id,
             originalPullRequestUrl: pullRequest.html_url
         };
