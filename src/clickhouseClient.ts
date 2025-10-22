@@ -27,6 +27,19 @@ export interface PullRequestToInferenceRecord {
   original_pull_request_url: string
 }
 
+export interface CreatePullRequestToEpisodeRequest {
+  episodeId: string
+  pullRequestId: number
+  originalPullRequestUrl: string
+}
+
+export interface PullRequestToEpisodeRecord {
+  episode_id: string
+  pull_request_id: number
+  created_at: string
+  original_pull_request_url: string
+}
+
 const CLICKHOUSE_TABLE_NAME_REGEX = /^[a-zA-Z0-9_.]+$/
 
 function assertValidTableName(table: string): void {
@@ -129,6 +142,60 @@ export async function getPullRequestToInferenceRecords(
   try {
     const response = await client.query({
       query: `SELECT inference_id, pull_request_id, created_at, original_pull_request_url FROM ${table} WHERE pull_request_id = {pullRequestId:UInt64}`,
+      query_params: { pullRequestId },
+      format: 'JSONEachRow'
+    })
+    records = await response.json()
+  } finally {
+    if (shouldClose) {
+      await client.close()
+    }
+  }
+  return records
+}
+
+export async function createPullRequestToEpisodeRecord(
+  request: CreatePullRequestToEpisodeRequest,
+  config: ClickHouseConfig,
+  dependencies?: ClickHouseDependencies
+): Promise<void> {
+  const { client, table, shouldClose } = createTensorZeroClickHouseClient(
+    config,
+    dependencies
+  )
+  try {
+    await client.insert({
+      table,
+      values: [
+        {
+          pull_request_id: request.pullRequestId,
+          episode_id: request.episodeId,
+          original_pull_request_url: request.originalPullRequestUrl
+        }
+      ],
+      format: 'JSONEachRow'
+    })
+  } finally {
+    if (shouldClose) {
+      await client.close()
+    }
+  }
+}
+
+// Returns all episode records for a given pull request.
+export async function getPullRequestToEpisodeRecords(
+  pullRequestId: number,
+  config: ClickHouseConfig,
+  dependencies?: ClickHouseDependencies
+): Promise<PullRequestToEpisodeRecord[]> {
+  const { client, table, shouldClose } = createTensorZeroClickHouseClient(
+    config,
+    dependencies
+  )
+  let records: PullRequestToEpisodeRecord[] = []
+  try {
+    const response = await client.query({
+      query: `SELECT episode_id, pull_request_id, created_at, original_pull_request_url FROM ${table} WHERE pull_request_id = {pullRequestId:UInt64}`,
       query_params: { pullRequestId },
       format: 'JSONEachRow'
     })

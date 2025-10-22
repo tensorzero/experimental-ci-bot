@@ -4,7 +4,9 @@ import {
   type ClickHouseClientLike,
   type ClickHouseConfig,
   createPullRequestToInferenceRecord,
-  getPullRequestToInferenceRecords
+  getPullRequestToInferenceRecords,
+  createPullRequestToEpisodeRecord,
+  getPullRequestToEpisodeRecords
 } from './clickhouseClient.js'
 
 const defaultConfig: ClickHouseConfig = {
@@ -121,6 +123,83 @@ describe('clickhouseClient', () => {
         { client }
       )
     ).rejects.toThrow('insert failed')
+
+    expect(client.close).not.toHaveBeenCalled()
+  })
+
+  it('writes episode records using structured inserts', async () => {
+    await createPullRequestToEpisodeRecord(
+      {
+        episodeId: 'episode-456',
+        pullRequestId: 99,
+        originalPullRequestUrl: 'https://github.com/org/repo/pull/99'
+      },
+      defaultConfig,
+      { client }
+    )
+
+    expect(client.insert).toHaveBeenCalledWith({
+      table: 'tensorzero.inference_records',
+      values: [
+        {
+          pull_request_id: 99,
+          episode_id: 'episode-456',
+          original_pull_request_url: 'https://github.com/org/repo/pull/99'
+        }
+      ],
+      format: 'JSONEachRow'
+    })
+    expect(client.close).not.toHaveBeenCalled()
+  })
+
+  it('queries episode records with parameter binding', async () => {
+    const expectedRecords = [
+      {
+        episode_id: 'episode-789',
+        pull_request_id: 55,
+        created_at: '2024-02-01T00:00:00Z',
+        original_pull_request_url: 'https://github.com/org/repo/pull/55'
+      }
+    ]
+    const jsonMock = jest
+      .fn<() => Promise<unknown>>()
+      .mockResolvedValue(expectedRecords)
+    // @ts-expect-error(Mock type is inaccurate)
+    client.query.mockResolvedValueOnce({ json: jsonMock })
+
+    const records = await getPullRequestToEpisodeRecords(55, defaultConfig, {
+      client
+    })
+
+    expect(client.query).toHaveBeenCalledWith({
+      query:
+        'SELECT episode_id, pull_request_id, created_at, original_pull_request_url FROM tensorzero.inference_records WHERE pull_request_id = {pullRequestId:UInt64}',
+      query_params: { pullRequestId: 55 },
+      format: 'JSONEachRow'
+    })
+    expect(jsonMock).toHaveBeenCalledTimes(1)
+    expect(records).toEqual(expectedRecords)
+  })
+
+  it('validates table name for episode records', async () => {
+    await expect(
+      createPullRequestToEpisodeRecord(
+        {
+          episodeId: 'episode-123',
+          pullRequestId: 1,
+          originalPullRequestUrl: 'https://example.com/pr/1'
+        },
+        { ...defaultConfig, table: 'bad@table' }
+      )
+    ).rejects.toThrow('ClickHouse table name must contain only')
+  })
+
+  it('propagates query failures for episode records without closing the client', async () => {
+    client.query.mockRejectedValueOnce(new Error('query failed'))
+
+    await expect(
+      getPullRequestToEpisodeRecords(123, defaultConfig, { client })
+    ).rejects.toThrow('query failed')
 
     expect(client.close).not.toHaveBeenCalled()
   })
