@@ -20,7 +20,6 @@ import {
   createPullRequestToInferenceRecord
 } from '../clickhouseClient.js'
 import { renderComment } from '../generate-pr-patch/pullRequestCommentTemplate.js'
-import type { AgentCompletionOutput } from '../types/agentOutput.js'
 import { provideEpisodeFeedback } from '../tensorZeroClient.js'
 import {
   fetchDiffSummaryAndFullDiff,
@@ -125,8 +124,6 @@ export async function runAgent(
         ? 'Fix the CI failures as described in ci_failure_context.md'
         : 'Review and improve the changes in this PR as described in ci_failure_context.md'
 
-      // Run mini-swe-agent or test mode
-
       console.log('[Agent Runner] Running mini-swe-agent...')
       const agentResult = await runMiniSweAgent({
         task,
@@ -227,8 +224,6 @@ export async function runAgent(
             `[Agent Runner] Created follow-up PR #${followupPr.number}`
           )
 
-          // This version currently only contains one inference per episode; soon with miniswe-agent, we will have many inferences per episode.
-          // When that launches, we will switch to only create PR-episode associations.
           const request: CreatePullRequestToInferenceRequest = {
             inferenceId: undefined,
             episodeId,
@@ -286,6 +281,15 @@ export async function runAgent(
             )
             console.info(
               `[Agent Runner] Provided feedback: ci_fix_pr_created_agent=false for episode ${episodeId}`
+            )
+            await provideEpisodeFeedback(
+              input.tensorZero.baseUrl,
+              'ci_fix_pr_merged_agent',
+              episodeId,
+              false
+            )
+            console.info(
+              `[Agent Runner] Provided feedback: ci_fix_pr_merged_agent=false for episode ${episodeId}`
             )
           } catch (error) {
             const errorMessage =
@@ -373,6 +377,25 @@ export async function runAgent(
     // Provide feedback for agent failure
     // Note: episodeId may have been recovered from .episode_id file if the agent started but failed
     if (episodeId && input.tensorZero?.baseUrl) {
+      try {
+        await provideEpisodeFeedback(
+          input.tensorZero.baseUrl,
+          'ci_fix_pr_created_agent',
+          episodeId,
+          false
+        )
+        console.info(
+          `[Agent Runner] Provided feedback: ci_fix_pr_created_agent=false for episode ${episodeId}`
+        )
+      } catch (feedbackError) {
+        const feedbackErrorMessage =
+          feedbackError instanceof Error
+            ? feedbackError.message
+            : `${feedbackError}`
+        console.warn(
+          `[Agent Runner] Failed to provide feedback for agent failure: ${feedbackErrorMessage}`
+        )
+      }
       try {
         await provideEpisodeFeedback(
           input.tensorZero.baseUrl,
