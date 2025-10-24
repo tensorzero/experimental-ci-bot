@@ -10,7 +10,10 @@ import type {
 } from '../core/types.js'
 import type { WorkflowJobsResponse } from '../generate-pr-patch/types.js'
 import type { FailedJobSummary } from '../tensorZeroClient.js'
-import { getFailedWorkflowRunLogs } from '../pullRequests.js'
+import {
+  getFailedWorkflowRunLogs,
+  type OctokitInstance
+} from '../pullRequests.js'
 
 /**
  * Parse action inputs from GitHub Actions environment
@@ -168,7 +171,7 @@ function getAllFailedJobs(
  * Extract PR information from GitHub Actions context
  */
 async function extractPullRequestInfo(
-  octokit: any,
+  octokit: OctokitInstance,
   owner: string,
   repo: string
 ): Promise<PullRequestInfo | null> {
@@ -280,7 +283,7 @@ export async function createAgentInputFromGitHubActions(): Promise<AgentRunnerIn
   }
 
   return {
-    octokit: octokit as any,
+    octokit,
     token,
     pullRequest,
     ciFailure,

@@ -264,11 +264,9 @@ export async function runAgent(
       pullRequest.owner,
       pullRequest.repo,
       {
-        number: pullRequest.number,
         head: { ref: pullRequest.headRef, sha: pullRequest.headSha },
-        base: { ref: pullRequest.baseRef },
-        html_url: pullRequest.htmlUrl
-      } as any
+        base: { ref: pullRequest.baseRef }
+      }
     )
 
     try {

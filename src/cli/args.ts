@@ -129,7 +129,7 @@ export function parseArgs(args: string[]): CliOptions {
       case '-h':
         printHelp()
         process.exit(0)
-
+      // eslint-disable-next-line no-fallthrough
       default:
         if (arg.startsWith('-')) {
           console.error(`Unknown option: ${arg}`)
@@ -191,7 +191,7 @@ Examples:
   experimental-ci-bot --repo tensorzero/tensorzero --pr 123 --dry-run
 
   # Create actual PR/comments (requires write access)
-  export GITHUB_TOKEN=\$(gh auth token)
+  export GITHUB_TOKEN=$(gh auth token)
   experimental-ci-bot --repo myorg/myrepo --pr 456
 
   # Fix a specific workflow run

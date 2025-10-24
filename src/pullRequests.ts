@@ -20,6 +20,12 @@ import type { GitClient } from './git.js'
 
 const execFileAsync = promisify(execFile)
 
+interface WorkflowJob {
+  id: number
+  name: string
+  conclusion: string | null
+}
+
 export type OctokitInstance = ReturnType<
   typeof import('@actions/github').getOctokit
 >
@@ -262,11 +268,11 @@ export async function getFailedWorkflowRunLogs(
     })
 
     const jobsData = JSON.parse(jobsOutput)
-    const jobs = jobsData.jobs || []
+    const jobs = (jobsData.jobs || []) as WorkflowJob[]
 
     // Filter to failed jobs
     const failedJobs = jobs.filter(
-      (job: any) => job.conclusion && job.conclusion !== 'success'
+      (job) => job.conclusion && job.conclusion !== 'success'
     )
 
     if (failedJobs.length === 0) {
@@ -275,7 +281,7 @@ export async function getFailedWorkflowRunLogs(
     }
 
     // Fetch logs for each failed job
-    const logPromises = failedJobs.map(async (job: any) => {
+    const logPromises = failedJobs.map(async (job) => {
       try {
         const logsArgs = [
           'api',

@@ -36,7 +36,7 @@ function getGitHubToken(options: CliOptions): string {
       console.log('[CLI Adapter] Using token from gh CLI')
       return token
     }
-  } catch (error) {
+  } catch {
     // gh CLI not available or not authenticated
   }
 
@@ -209,7 +209,8 @@ export async function createAgentInputFromCli(
       `[CLI Adapter] Searching for failed workflow runs for commit ${pullRequest.headSha.substring(0, 7)}...`
     )
     workflowRunId = await findLatestFailedWorkflowRun(
-      octokit as any,
+      // @ts-expect-error - CLI uses @octokit/rest while core types expect @actions/github Octokit
+      octokit,
       owner,
       repo,
       pullRequest.headSha
@@ -245,7 +246,8 @@ export async function createAgentInputFromCli(
       : undefined
 
   return {
-    octokit: octokit as any, // Type compatibility
+    // @ts-expect-error - CLI uses @octokit/rest while core types expect @actions/github Octokit
+    octokit,
     token,
     pullRequest,
     ciFailure,
