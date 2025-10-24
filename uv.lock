@@ -942,7 +942,7 @@ wheels = [
 [[package]]
 name = "mini-swe-agent"
 version = "1.14.2"
-source = { git = "https://github.com/virajmehta/mini-swe-agent.git?rev=main#875a9cc9127428e6ae488380cb526aba2aa2f660" }
+source = { git = "https://github.com/virajmehta/mini-swe-agent.git?rev=main#a57a44221485ec807401e683732859c77d5125a5" }
 dependencies = [
     { name = "jinja2" },
     { name = "litellm" },
