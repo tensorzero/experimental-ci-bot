@@ -102,6 +102,11 @@ export interface AgentRunnerResult {
   success: boolean
 
   /**
+   * The episode ID of the agent rollout
+   */
+  episodeId?: string
+
+  /**
    * The generated diff/patch
    */
   diff?: string

@@ -29,6 +29,7 @@ export interface AgentInfo {
   submission: string
   model_stats: ModelStats
   mini_version: string
+  episode_id?: string
   config?: unknown
 }
 

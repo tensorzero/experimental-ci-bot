@@ -305,6 +305,7 @@ export async function runAgent(
 
       // Run mini-swe-agent or test mode
       let agentCompletion: AgentCompletionOutput
+      let episodeId: string | undefined
 
       if (input.testMode) {
         console.log('[Agent Runner] Running in TEST MODE...')
@@ -321,6 +322,7 @@ export async function runAgent(
         })
 
         agentCompletion = agentResult.completion
+        episodeId = agentResult.episodeId
 
         console.log(
           `[Agent Runner] Agent reasoning: ${agentResult.completion.reasoning}`
@@ -353,6 +355,7 @@ export async function runAgent(
         console.log('[Agent Runner] No changes detected by agent.')
         return {
           success: true,
+          episodeId,
           reasoning: agentCompletion.reasoning
         }
       }
@@ -381,6 +384,7 @@ export async function runAgent(
         console.log(trimmedDiff)
         return {
           success: true,
+          episodeId,
           diff: trimmedDiff,
           reasoning: agentCompletion.reasoning
         }
@@ -472,6 +476,7 @@ export async function runAgent(
 
       return {
         success: true,
+        episodeId,
         diff: trimmedDiff,
         reasoning: agentCompletion.reasoning,
         followupPrNumber: followupPr?.number,
@@ -492,6 +497,7 @@ export async function runAgent(
 
     return {
       success: false,
+      episodeId: undefined,
       error: errorMessage
     }
   }

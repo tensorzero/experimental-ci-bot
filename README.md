@@ -143,6 +143,7 @@ CREATE TABLE GitHubBotPullRequestToInferenceMap
 (
    pull_request_id UInt128,
    inference_id String,
+   episode_id String,
    created_at DateTime DEFAULT now(),
    original_pull_request_url String
 )

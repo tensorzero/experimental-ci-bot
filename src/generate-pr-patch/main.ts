@@ -31,6 +31,44 @@ export async function run(): Promise<void> {
     } else {
       core.setFailed(
         `Agent execution failed: ${result.error ?? 'Unknown error'}`
+    }
+  } catch (error) {
+      await provideInferenceFeedback(
+        tensorZeroBaseUrl,
+        tensorZeroDiffPatchedSuccessfullyMetricName,
+        response.id,
+        false,
+        { reason: 'Failed to Apply Patch' }
+      )
+
+      followupPrCreationError =
+        error instanceof Error ? error.message : `${error}`
+      core.error(followupPrCreationError)
+    }
+  }
+
+  // TODO: consider using episode_id instead of inference ID.
+  const inferenceId = response.id
+  const episodeId = response.episode_id
+
+  if (followupPr) {
+    // This version currently only contains one inference per episode; soon with miniswe-agent, we will have many inferences per episode.
+    // When that launches, we will switch to only create PR-episode associations.
+    const request: CreatePullRequestToInferenceRequest = {
+      inferenceId,
+      episodeId,
+      pullRequestId: followupPr.id,
+      originalPullRequestUrl: pullRequest.html_url
+    }
+    try {
+      await createPullRequestToInferenceRecord(request, clickhouse)
+      core.info(
+        `Recorded inference ${inferenceId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse.`
+      )
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : `${error}`
+      core.warning(
+        `Failed to record inference ${inferenceId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse: ${errorMessage}`
       )
     }
   } catch (error) {

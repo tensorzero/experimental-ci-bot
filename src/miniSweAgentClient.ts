@@ -67,6 +67,11 @@ export interface MiniSweAgentResult {
   trajectory: AgentTrajectory
 
   /**
+   * Episode ID from the agent's execution
+   */
+  episodeId?: string
+
+  /**
    * Standard output from the agent
    */
   stdout: string
@@ -214,6 +219,7 @@ export async function runMiniSweAgent(
       resolve({
         completion,
         trajectory,
+        episodeId: trajectory.info.episode_id,
         stdout,
         stderr,
         exitCode: code
