@@ -52,5 +52,5 @@ alongside source when behavior changes.
 
 ## IMPORTANT RULES
 
-Before submitting a PR, run `npm run bundle` to update the javascript bundles.
+Before submitting a PR, run `npm run bundle` to update the JavaScript bundles.
 Otherwise, CI will fail.

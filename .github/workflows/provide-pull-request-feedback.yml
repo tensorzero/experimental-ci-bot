@@ -43,6 +43,7 @@ jobs:
         uses: tensorzero/experimental-ci-bot/create-pr-feedback@main
         with:
           tensorzero-base-url: http://localhost:3000
+          # TODO: Switch to tensorzero_github_ci_bot_agent_pr_merged for episode-level feedback when agent creates PRs
           tensorzero-pr-merged-metric-name: tensorzero_github_ci_bot_pr_merged
           clickhouse-url: ${{ secrets.CI_BOT_CLICKHOUSE_URL }}
           clickhouse-table: GitHubBotPullRequestToInferenceMap

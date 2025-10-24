@@ -41792,7 +41792,6 @@ async function provideInferenceFeedback(tensorZeroBaseUrl, metricName, inference
     if (!response.ok) {
         throw new Error(`Failed to provide feedback: ${response.statusText}`);
     }
-    return;
 }
 
 function parseAndValidateActionInputs() {
