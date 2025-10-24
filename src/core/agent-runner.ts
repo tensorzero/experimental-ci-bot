@@ -407,33 +407,29 @@ export async function runAgent(
           artifactDir
         )
 
-        if (followupPr) {
+        if (followupPr && clickhouse) {
           console.log(
             `[Agent Runner] Created follow-up PR #${followupPr.number}`
           )
 
-          // Record inference in ClickHouse if configured
-          if (clickhouse) {
-            const inferenceId = `agent-${pullRequest.number}-${Date.now()}`
-
-            const request: CreatePullRequestToInferenceRequest = {
-              inferenceId,
-              pullRequestId: followupPr.id,
-              originalPullRequestUrl: pullRequest.htmlUrl
-            }
-
-            try {
-              await createPullRequestToInferenceRecord(request, clickhouse)
-              console.log(
-                `[Agent Runner] Recorded inference ${inferenceId} for follow-up PR #${followupPr.number} in ClickHouse.`
-              )
-            } catch (error) {
-              const errorMessage =
-                error instanceof Error ? error.message : `${error}`
-              console.warn(
-                `[Agent Runner] Failed to record inference in ClickHouse: ${errorMessage}`
-              )
-            }
+          // This version currently only contains one inference per episode; soon with miniswe-agent, we will have many inferences per episode.
+          // When that launches, we will switch to only create PR-episode associations.
+          const request: CreatePullRequestToInferenceRequest = {
+            inferenceId: undefined,
+            episodeId,
+            pullRequestId: followupPr.id
+          }
+          try {
+            await createPullRequestToInferenceRecord(request, clickhouse)
+            console.info(
+              `Recorded episode ${episodeId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse.`
+            )
+          } catch (error) {
+            const errorMessage =
+              error instanceof Error ? error.message : `${error}`
+            console.warn(
+              `Failed to record episode ${episodeId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse: ${errorMessage}`
+            )
           }
         }
       } catch (error) {

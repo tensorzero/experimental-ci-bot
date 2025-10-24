@@ -15,10 +15,9 @@ export interface ClickHouseConfig {
 }
 
 export interface CreatePullRequestToInferenceRequest {
-  inferenceId: string
-  episodeId: string
+  inferenceId?: string
+  episodeId?: string
   pullRequestId: number
-  originalPullRequestUrl: string
 }
 
 export interface PullRequestToInferenceRecord {
