@@ -4,7 +4,7 @@ import {
   type ClickHouseClientLike,
   type ClickHouseConfig,
   createPullRequestToInferenceRecord,
-  getPullRequestToInferenceRecords,
+  getPullRequestToEpisodeRecords,
   getPullRequestToEpisodeRecords
 } from './clickhouseClient.js'
 
@@ -70,7 +70,7 @@ describe('clickhouseClient', () => {
     // @ts-expect-error(Mock type is inaccurate)
     client.query.mockResolvedValueOnce({ json: jsonMock })
 
-    const records = await getPullRequestToInferenceRecords(77, defaultConfig, {
+    const records = await getPullRequestToEpisodeRecords(77, defaultConfig, {
       client
     })
 
