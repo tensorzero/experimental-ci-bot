@@ -27,7 +27,6 @@ const MAX_COMMAND_COUNT = 25
 const MAX_COMMAND_CHAR_LENGTH = 2_000
 
 interface ApplyArtifactsInputs {
-  token: string
   artifactDirectory: string
   manifestPath: string
   tensorZeroBaseUrl: string
@@ -36,11 +35,6 @@ interface ApplyArtifactsInputs {
 }
 
 function parseInputs(): ApplyArtifactsInputs {
-  const token = core.getInput('token')?.trim()
-  if (!token) {
-    throw new Error('A GitHub token is required via the `token` input.')
-  }
-
   const artifactDirectory = core.getInput('artifact-directory')?.trim()
   if (!artifactDirectory) {
     throw new Error(
@@ -80,7 +74,6 @@ function parseInputs(): ApplyArtifactsInputs {
   }
 
   return {
-    token,
     artifactDirectory,
     manifestPath,
     tensorZeroBaseUrl,
@@ -90,6 +83,16 @@ function parseInputs(): ApplyArtifactsInputs {
       table: clickhouseTable
     }
   }
+}
+
+function getRequiredGitHubToken(): string {
+  const token = process.env.GITHUB_TOKEN?.trim()
+  if (!token) {
+    throw new Error(
+      'GITHUB_TOKEN environment variable is required; ensure this job grants write access.'
+    )
+  }
+  return token
 }
 
 function resolveArtifactPath(baseDir: string, relativePath: string): string {
@@ -328,13 +331,13 @@ async function recordInferenceMapping(
 export async function run(): Promise<void> {
   const inputs = parseInputs()
   const {
-    token,
     artifactDirectory,
     manifestPath,
     tensorZeroBaseUrl,
     tensorZeroDiffPatchedSuccessfullyMetricName,
     clickhouse
   } = inputs
+  const token = getRequiredGitHubToken()
 
   const absoluteArtifactDir = path.resolve(artifactDirectory)
   if (!fs.existsSync(absoluteArtifactDir)) {

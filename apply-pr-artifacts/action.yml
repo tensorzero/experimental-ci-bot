@@ -5,9 +5,6 @@ description:
 author: shuyangli
 
 inputs:
-  token:
-    description: GitHub token with contents/pull-request write access.
-    required: true
   artifact-directory:
     description: Directory containing the downloaded artifact bundle.
     required: true

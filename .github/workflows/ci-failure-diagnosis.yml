@@ -123,8 +123,9 @@ jobs:
 
       - name: Apply diagnostic artifacts
         uses: tensorzero/experimental-ci-bot/apply-pr-artifacts@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           artifact-directory: pr-artifacts/ci-bot-artifacts
           tensorzero-base-url: http://localhost:3000
           tensorzero-diff-patched-successfully-metric-name: tensorzero_github_ci_bot_diff_patched_successfully

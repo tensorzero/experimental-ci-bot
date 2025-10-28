@@ -50559,10 +50559,6 @@ const MAX_COMMENT_CHAR_LENGTH = 25_000;
 const MAX_COMMAND_COUNT = 25;
 const MAX_COMMAND_CHAR_LENGTH = 2_000;
 function parseInputs() {
-    const token = coreExports.getInput('token')?.trim();
-    if (!token) {
-        throw new Error('A GitHub token is required via the `token` input.');
-    }
     const artifactDirectory = coreExports.getInput('artifact-directory')?.trim();
     if (!artifactDirectory) {
         throw new Error('Artifact directory is required via the `artifact-directory` input.');
@@ -50586,7 +50582,6 @@ function parseInputs() {
         throw new Error('ClickHouse table name is required via the `clickhouse-table` input.');
     }
     return {
-        token,
         artifactDirectory,
         manifestPath,
         tensorZeroBaseUrl,
@@ -50596,6 +50591,13 @@ function parseInputs() {
             table: clickhouseTable
         }
     };
+}
+function getRequiredGitHubToken() {
+    const token = process.env.GITHUB_TOKEN?.trim();
+    if (!token) {
+        throw new Error('GITHUB_TOKEN environment variable is required; ensure this job grants write access.');
+    }
+    return token;
 }
 function resolveArtifactPath(baseDir, relativePath) {
     const normalized = path$1.posix.normalize(relativePath);
@@ -50755,7 +50757,8 @@ async function recordInferenceMapping(followupPr, manifest, clickhouse) {
 }
 async function run() {
     const inputs = parseInputs();
-    const { token, artifactDirectory, manifestPath, tensorZeroBaseUrl, tensorZeroDiffPatchedSuccessfullyMetricName, clickhouse } = inputs;
+    const { artifactDirectory, manifestPath, tensorZeroBaseUrl, tensorZeroDiffPatchedSuccessfullyMetricName, clickhouse } = inputs;
+    const token = getRequiredGitHubToken();
     const absoluteArtifactDir = path$1.resolve(artifactDirectory);
     if (!fs.existsSync(absoluteArtifactDir)) {
         throw new Error(`Artifact directory does not exist: ${absoluteArtifactDir}`);
