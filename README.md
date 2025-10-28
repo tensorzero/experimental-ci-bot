@@ -31,7 +31,7 @@
 
 ## CI remediation workflow architecture
 
-TensorZero CI remediation now operates as a two-stage workflow to avoid running
+TensorZero CI remediation operates as a two-stage workflow to avoid running
 untrusted pull request code with privileged credentials:
 
 1. **Collect artifacts (`.github/workflows/ci-failure-diagnosis.yml`)** —
@@ -39,7 +39,7 @@ untrusted pull request code with privileged credentials:
    TensorZero gateway, gathers logs and diffs, calls the LLM, and uploads a
    manifest + patch bundle as an artifact with read-only permissions. No GitHub
    write operations happen here.
-2. **Apply artifacts (`.github/workflows/ci-failure-diagnosis-apply.yml`)** —
+1. **Apply artifacts (`.github/workflows/ci-failure-diagnosis-apply.yml`)** —
    triggered by completion of the first workflow. It downloads the untrusted
    bundle, validates the manifest, applies the diff using a privileged token,
    posts comments, and records telemetry.
