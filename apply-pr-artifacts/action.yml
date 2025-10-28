@@ -1,17 +1,21 @@
-name: generate-pr-patch
+name: apply-pr-artifacts
 description:
-  Collect failing CI context, call TensorZero, and emit untrusted patch/comment
-  artifacts for later processing.
+  Consume TensorZero CI Bot artifacts, verify them, and apply patches and
+  comments with privileged GitHub access.
 author: shuyangli
-
-branding:
-  icon: alert-circle
-  color: orange
 
 inputs:
   token:
-    description: GitHub token used to query workflow run artifacts.
+    description: GitHub token with contents/pull-request write access.
     required: true
+  artifact-directory:
+    description: Directory containing the downloaded artifact bundle.
+    required: true
+  manifest-path:
+    description:
+      Relative path to the manifest inside the artifact directory (defaults to
+      manifest.json).
+    required: false
   tensorzero-base-url:
     description: Base URL for the TensorZero instance.
     required: true
@@ -26,11 +30,7 @@ inputs:
   clickhouse-table:
     description: Table where inference to PR associations should be recorded.
     required: true
-  output-artifacts-dir:
-    description:
-      Directory where untrusted artifacts (manifest, diff, comments, logs) will
-      be written for upload.
 
 runs:
   using: node24
-  main: ../dist/generate-pr-patch/index.js
+  main: ../dist/apply-pr-artifacts/index.js

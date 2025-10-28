@@ -29,6 +29,26 @@
   - Under "Settings > Actions > General", check the box for "Allow GitHub
     Actions to create and approve pull requests".
 
+## CI remediation workflow architecture
+
+TensorZero CI remediation now operates as a two-stage workflow to avoid running
+untrusted pull request code with privileged credentials:
+
+1. **Collect artifacts (`.github/workflows/ci-failure-diagnosis.yml`)** —
+   triggered from the failing `Continuous Integration` run. It launches the
+   TensorZero gateway, gathers logs and diffs, calls the LLM, and uploads a
+   manifest + patch bundle as an artifact with read-only permissions. No GitHub
+   write operations happen here.
+2. **Apply artifacts (`.github/workflows/ci-failure-diagnosis-apply.yml`)** —
+   triggered by completion of the first workflow. It downloads the untrusted
+   bundle, validates the manifest, applies the diff using a privileged token,
+   posts comments, and records telemetry.
+
+Treat artifacts produced by the collect job as untrusted input. The privileged
+workflow performs additional safety checks (manifest schema validation, SHA
+matching, diff length limits, and head/base SHA consistency) before mutating the
+repository.
+
 ### Prepare ClickHouse database
 
 We need to create a new table to store GitHub PR to Inference Map:

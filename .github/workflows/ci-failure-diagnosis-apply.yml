@@ -1,22 +1,28 @@
-name: TensorZero CI Bot - Collect Artifacts
+name: TensorZero CI Bot - Apply Artifacts
 
 on:
   workflow_run:
-    workflows: ['Continuous Integration']
+    workflows: ['TensorZero CI Bot - Collect Artifacts']
     types:
       - completed
 
 permissions:
-  contents: read
-  pull-requests: read
+  contents: write
+  pull-requests: write
   actions: read
 
 jobs:
-  collect-artifacts:
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+  apply-artifacts:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    name: Gather failure context and generate artifacts
+    name: Apply collected artifacts and update PR
     steps:
+      - name: Download CI bot artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: tensorzero-ci-bot-artifacts
+          path: pr-artifacts
+
       - name: Checkout TensorZero config file
         uses: actions/checkout@v5
         with:
@@ -47,32 +53,15 @@ jobs:
           echo "Gateway never became ready" >&2
           exit 1
 
-      - name: Checkout repository
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 0
-          fetch-tags: false
-
-      - name: Generate patch artifacts
-        uses: tensorzero/experimental-ci-bot/generate-pr-patch@main
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Apply diagnostic artifacts
+        uses: tensorzero/experimental-ci-bot/apply-pr-artifacts@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          artifact-directory: pr-artifacts/ci-bot-artifacts
           tensorzero-base-url: http://localhost:3000
           tensorzero-diff-patched-successfully-metric-name: tensorzero_github_ci_bot_diff_patched_successfully
-          output-artifacts-dir: ci-bot-artifacts
           clickhouse-url: ${{ secrets.CI_BOT_CLICKHOUSE_URL }}
           clickhouse-table: GitHubBotPullRequestToInferenceMap
-
-      - name: Upload CI bot artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tensorzero-ci-bot-artifacts
-          path: |
-            ci-bot-artifacts/
 
       - name: Stop TensorZero gateway
         if: always()

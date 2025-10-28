@@ -25,5 +25,6 @@ const createConfig = (actionName) => {
 
 export default [
   createConfig('generate-pr-patch'),
-  createConfig('create-pr-feedback')
+  createConfig('create-pr-feedback'),
+  createConfig('apply-pr-artifacts')
 ]
