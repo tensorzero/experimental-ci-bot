@@ -228,21 +228,29 @@ async function fetchAuthoritativePullRequest(
   return response.data
 }
 
-function verifyPullRequestHasNotChanged(
+function detectPullRequestDrift(
   manifest: PullRequestPatchManifest,
   pullRequest: PullRequestData
-): void {
+): string | undefined {
   if (pullRequest.head.sha !== manifest.pullRequest.headSha) {
-    throw new Error(
-      `Pull request head SHA has changed (was ${manifest.pullRequest.headSha}, now ${pullRequest.head.sha}). Aborting.`
-    )
+    return `Pull request head SHA has changed (was ${manifest.pullRequest.headSha}, now ${pullRequest.head.sha}).`
   }
 
   if (pullRequest.base.sha !== manifest.pullRequest.baseSha) {
-    throw new Error(
-      `Pull request base SHA has changed (was ${manifest.pullRequest.baseSha}, now ${pullRequest.base.sha}). Aborting.`
-    )
+    return `Pull request base SHA has changed (was ${manifest.pullRequest.baseSha}, now ${pullRequest.base.sha}).`
   }
+
+  return undefined
+}
+
+async function cancelDueToDrift(reason: string): Promise<void> {
+  core.notice(`${reason} Skipping artifact application.`)
+  core.info('Skipping artifact application because PR state changed.')
+  core.setOutput('apply-artifacts-cancelled', 'true')
+  await core.summary
+    .addHeading('Cancelled artifact application', 2)
+    .addRaw(reason)
+    .write()
 }
 
 async function attemptFollowupPrCreation(
@@ -386,7 +394,11 @@ export async function run(): Promise<void> {
     repo,
     manifest.pullRequest.number
   )
-  verifyPullRequestHasNotChanged(manifest, pullRequest)
+  const driftReason = detectPullRequestDrift(manifest, pullRequest)
+  if (driftReason) {
+    await cancelDueToDrift(driftReason)
+    return
+  }
 
   const diffPathRelative =
     manifest.outputs.generatedPatchPath ?? 'generated-patch.diff'

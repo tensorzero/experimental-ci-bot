@@ -50697,13 +50697,23 @@ async function fetchAuthoritativePullRequest(token, owner, repo, prNumber) {
     });
     return response.data;
 }
-function verifyPullRequestHasNotChanged(manifest, pullRequest) {
+function detectPullRequestDrift(manifest, pullRequest) {
     if (pullRequest.head.sha !== manifest.pullRequest.headSha) {
-        throw new Error(`Pull request head SHA has changed (was ${manifest.pullRequest.headSha}, now ${pullRequest.head.sha}). Aborting.`);
+        return `Pull request head SHA has changed (was ${manifest.pullRequest.headSha}, now ${pullRequest.head.sha}).`;
     }
     if (pullRequest.base.sha !== manifest.pullRequest.baseSha) {
-        throw new Error(`Pull request base SHA has changed (was ${manifest.pullRequest.baseSha}, now ${pullRequest.base.sha}). Aborting.`);
+        return `Pull request base SHA has changed (was ${manifest.pullRequest.baseSha}, now ${pullRequest.base.sha}).`;
     }
+    return undefined;
+}
+async function cancelDueToDrift(reason) {
+    coreExports.notice(`${reason} Skipping artifact application.`);
+    coreExports.info('Skipping artifact application because PR state changed.');
+    coreExports.setOutput('apply-artifacts-cancelled', 'true');
+    await coreExports.summary
+        .addHeading('Cancelled artifact application', 2)
+        .addRaw(reason)
+        .write();
 }
 async function attemptFollowupPrCreation(options) {
     try {
@@ -50781,7 +50791,11 @@ async function run() {
         throw new Error(`Manifest repository ${manifest.repository.owner}/${manifest.repository.name} does not match workflow repository ${owner}/${repo}.`);
     }
     const pullRequest = await fetchAuthoritativePullRequest(token, owner, repo, manifest.pullRequest.number);
-    verifyPullRequestHasNotChanged(manifest, pullRequest);
+    const driftReason = detectPullRequestDrift(manifest, pullRequest);
+    if (driftReason) {
+        await cancelDueToDrift(driftReason);
+        return;
+    }
     const diffPathRelative = manifest.outputs.generatedPatchPath ?? 'generated-patch.diff';
     const diffAbsolutePath = resolveArtifactPath(absoluteArtifactDir, diffPathRelative);
     const diffContent = ensureDiffIsSafe(readOptionalTextFile(diffAbsolutePath) ?? '');
