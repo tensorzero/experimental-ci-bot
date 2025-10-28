@@ -135,12 +135,6 @@ function isPullRequestEligibleForFix(): boolean {
 
 // Parse action inputs
 function parseAndValidateActionInputs(): GeneratePrPatchActionInput {
-  const token = core.getInput('token')?.trim()
-  if (!token) {
-    throw new Error(
-      'A GitHub token is required. Provide one via the `token` input.'
-    )
-  }
   const tensorZeroBaseUrl = core.getInput('tensorzero-base-url')?.trim()
   if (!tensorZeroBaseUrl) {
     throw new Error(
@@ -161,29 +155,10 @@ function parseAndValidateActionInputs(): GeneratePrPatchActionInput {
     ? outputArtifactsDirInput.trim() || undefined
     : undefined
 
-  const clickhouseUrl = core.getInput('clickhouse-url')?.trim()
-  if (!clickhouseUrl) {
-    throw new Error(
-      'ClickHouse URL is required when configuring ClickHouse logging; provide one via the `clickhouse-url` input.'
-    )
-  }
-
-  const clickhouseTable = core.getInput('clickhouse-table')?.trim()
-  if (!clickhouseTable) {
-    throw new Error(
-      'ClickHouse table name is required when configuring ClickHouse logging; provide one via the `clickhouse-table` input.'
-    )
-  }
-
   return {
-    token,
     tensorZeroBaseUrl,
     tensorZeroDiffPatchedSuccessfullyMetricName,
-    outputArtifactsDir,
-    clickhouse: {
-      url: clickhouseUrl,
-      table: clickhouseTable
-    }
+    outputArtifactsDir
   }
 }
 
@@ -250,6 +225,16 @@ function validatePullRequestForManifest(pullRequest: PullRequestData): void {
   }
 }
 
+function getRequiredGitHubToken(): string {
+  const token = process.env.GITHUB_TOKEN?.trim()
+  if (!token) {
+    throw new Error(
+      'GITHUB_TOKEN environment variable is required; ensure this job grants read access.'
+    )
+  }
+  return token
+}
+
 /**
  * Collects artifacts, builds a prompt to an LLM, then stores untrusted outputs
  * for a privileged workflow to consume.
@@ -257,11 +242,11 @@ function validatePullRequestForManifest(pullRequest: PullRequestData): void {
 export async function run(): Promise<void> {
   const inputs = parseAndValidateActionInputs()
   const {
-    token,
     tensorZeroBaseUrl,
     tensorZeroDiffPatchedSuccessfullyMetricName,
     outputArtifactsDir
   } = inputs
+  const token = getRequiredGitHubToken()
 
   // Prepare artifact directory
   const outputDir = outputArtifactsDir

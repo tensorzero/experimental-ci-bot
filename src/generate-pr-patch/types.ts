@@ -1,11 +1,7 @@
-import type { ClickHouseConfig } from '../clickhouseClient.js'
-
 export interface GeneratePrPatchActionInput {
-  token: string
   tensorZeroBaseUrl: string
   tensorZeroDiffPatchedSuccessfullyMetricName: string
   outputArtifactsDir: string | undefined
-  clickhouse: ClickHouseConfig
 }
 
 export interface WorkflowJobStep {
@@ -35,18 +31,3 @@ export type OctokitInstance = ReturnType<
 export type PullRequestData = Awaited<
   ReturnType<OctokitInstance['rest']['pulls']['get']>
 >['data']
-
-export interface FollowupPrResult {
-  number: number
-  id: number
-  htmlUrl: string
-}
-
-export interface CreateFollowupPrOptions {
-  octokit: OctokitInstance
-  token: string
-  owner: string
-  repo: string
-  pullRequest: PullRequestData
-  diff: string
-}

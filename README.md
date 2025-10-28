@@ -34,20 +34,23 @@
 TensorZero CI remediation operates as a two-stage workflow to avoid running
 untrusted pull request code with privileged credentials:
 
-1. **Collect artifacts (`.github/workflows/ci-failure-diagnosis.yml`)** —
+1. **collect-artifacts job (`.github/workflows/ci-failure-diagnosis.yml`)** —
    triggered from the failing `Continuous Integration` run. It launches the
    TensorZero gateway, gathers logs and diffs, calls the LLM, and uploads a
    manifest + patch bundle as an artifact with read-only permissions. No GitHub
    write operations happen here.
-1. **Apply artifacts (`.github/workflows/ci-failure-diagnosis-apply.yml`)** —
-   triggered by completion of the first workflow. It downloads the untrusted
+1. **apply-artifacts job (`.github/workflows/ci-failure-diagnosis.yml`)** — runs
+   in the same workflow after the first job succeeds. It downloads the untrusted
    bundle, validates the manifest, applies the diff using a privileged token,
    posts comments, and records telemetry.
 
-Treat artifacts produced by the collect job as untrusted input. The privileged
-workflow performs additional safety checks (manifest schema validation, SHA
-matching, diff length limits, and head/base SHA consistency) before mutating the
-repository.
+Treat artifacts produced by the collect job as untrusted input. The collecting
+job relies solely on the job-scoped `GITHUB_TOKEN`, and we never pass repository
+secrets into that phase. The privileged job runs with separate `permissions` so
+its token has write access while the collecting job only receives read scopes.
+The privileged workflow performs additional safety checks (manifest schema
+validation, SHA matching, diff length limits, and head/base SHA consistency)
+before mutating the repository.
 
 ### Prepare ClickHouse database
 

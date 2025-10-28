@@ -38402,10 +38402,6 @@ function isPullRequestEligibleForFix() {
 }
 // Parse action inputs
 function parseAndValidateActionInputs() {
-    const token = coreExports.getInput('token')?.trim();
-    if (!token) {
-        throw new Error('A GitHub token is required. Provide one via the `token` input.');
-    }
     const tensorZeroBaseUrl = coreExports.getInput('tensorzero-base-url')?.trim();
     if (!tensorZeroBaseUrl) {
         throw new Error('TensorZero base url is required; provide one via the `tensorzero-base-url` input.');
@@ -38419,23 +38415,10 @@ function parseAndValidateActionInputs() {
     const outputArtifactsDir = outputArtifactsDirInput
         ? outputArtifactsDirInput.trim() || undefined
         : undefined;
-    const clickhouseUrl = coreExports.getInput('clickhouse-url')?.trim();
-    if (!clickhouseUrl) {
-        throw new Error('ClickHouse URL is required when configuring ClickHouse logging; provide one via the `clickhouse-url` input.');
-    }
-    const clickhouseTable = coreExports.getInput('clickhouse-table')?.trim();
-    if (!clickhouseTable) {
-        throw new Error('ClickHouse table name is required when configuring ClickHouse logging; provide one via the `clickhouse-table` input.');
-    }
     return {
-        token,
         tensorZeroBaseUrl,
         tensorZeroDiffPatchedSuccessfullyMetricName,
-        outputArtifactsDir,
-        clickhouse: {
-            url: clickhouseUrl,
-            table: clickhouseTable
-        }
+        outputArtifactsDir
     };
 }
 async function fetchDiffSummaryAndFullDiff(octokit, owner, repo, prNumber, token) {
@@ -38481,13 +38464,21 @@ function validatePullRequestForManifest(pullRequest) {
         throw new Error('Pull request base SHA is missing from API response.');
     }
 }
+function getRequiredGitHubToken() {
+    const token = process.env.GITHUB_TOKEN?.trim();
+    if (!token) {
+        throw new Error('GITHUB_TOKEN environment variable is required; ensure this job grants read access.');
+    }
+    return token;
+}
 /**
  * Collects artifacts, builds a prompt to an LLM, then stores untrusted outputs
  * for a privileged workflow to consume.
  */
 async function run() {
     const inputs = parseAndValidateActionInputs();
-    const { token, tensorZeroBaseUrl, tensorZeroDiffPatchedSuccessfullyMetricName, outputArtifactsDir } = inputs;
+    const { tensorZeroBaseUrl, tensorZeroDiffPatchedSuccessfullyMetricName, outputArtifactsDir } = inputs;
+    const token = getRequiredGitHubToken();
     // Prepare artifact directory
     const outputDir = outputArtifactsDir
         ? path$1.join(process.cwd(), outputArtifactsDir)

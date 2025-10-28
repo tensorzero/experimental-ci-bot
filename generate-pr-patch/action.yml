@@ -9,22 +9,11 @@ branding:
   color: orange
 
 inputs:
-  token:
-    description: GitHub token used to query workflow run artifacts.
-    required: true
   tensorzero-base-url:
     description: Base URL for the TensorZero instance.
     required: true
   tensorzero-diff-patched-successfully-metric-name:
     description: Metric name for tracking diff patching success.
-    required: true
-  clickhouse-url:
-    description:
-      URL for ClickHouse HTTP interface, in the format of
-      http[s]://[username:password@]hostname:port[/database].
-    required: true
-  clickhouse-table:
-    description: Table where inference to PR associations should be recorded.
     required: true
   output-artifacts-dir:
     description:
