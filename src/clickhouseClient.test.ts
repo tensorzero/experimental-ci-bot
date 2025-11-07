@@ -34,7 +34,6 @@ describe('clickhouseClient', () => {
         inferenceId: 'abc-123',
         episodeId: 'episode-123',
         pullRequestId: 42,
-        originalPullRequestUrl: 'https://github.com/org/repo/pull/42'
       },
       defaultConfig,
       { client }
@@ -91,7 +90,6 @@ describe('clickhouseClient', () => {
           inferenceId: 'abc',
           episodeId: 'episode-123',
           pullRequestId: 1,
-          originalPullRequestUrl: 'https://example.com/pr/1'
         },
         { ...defaultConfig, table: 'invalid-table!' }
       )
@@ -105,7 +103,6 @@ describe('clickhouseClient', () => {
           inferenceId: 'abc',
           episodeId: 'episode-123',
           pullRequestId: 1,
-          originalPullRequestUrl: 'https://example.com/pr/1'
         },
         { ...defaultConfig, url: ' ' }
       )
@@ -121,7 +118,6 @@ describe('clickhouseClient', () => {
           inferenceId: 'abc',
           episodeId: 'episode-123',
           pullRequestId: 1,
-          originalPullRequestUrl: 'https://example.com/pr/1'
         },
         defaultConfig,
         { client }
