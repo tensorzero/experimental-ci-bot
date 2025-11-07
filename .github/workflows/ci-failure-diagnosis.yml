@@ -61,7 +61,8 @@ jobs:
           cat /tmp/tensorzero-for-gateway/prompt.minijinja
 
       - name: Call LLM to generate PR revision
-        uses: tensorzero/experimental-ci-bot/generate-pr-patch@main
+        # TODO: currently pinned to miniswe-agent branch; switch back to main when ready.
+        uses: tensorzero/experimental-ci-bot/generate-pr-patch@viraj/pr-only
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

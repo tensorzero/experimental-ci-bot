@@ -40,7 +40,8 @@ jobs:
           exit 1
 
       - name: Send PR Feedback
-        uses: tensorzero/experimental-ci-bot/create-pr-feedback@main
+        # TODO: currently pinned to miniswe-agent branch; switch back to main when ready.
+        uses: tensorzero/experimental-ci-bot/create-pr-feedback@viraj/pr-only
         with:
           tensorzero-base-url: http://localhost:3000
           # TODO: Switch to tensorzero_github_ci_bot_agent_pr_merged for episode-level feedback when agent creates PRs
