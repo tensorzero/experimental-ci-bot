@@ -100,6 +100,7 @@ function parseArgs(args) {
             case '-h':
                 printHelp();
                 process.exit(0);
+            // eslint-disable-next-line no-fallthrough
             default:
                 if (arg.startsWith('-')) {
                     console.error(`Unknown option: ${arg}`);
@@ -154,7 +155,7 @@ Examples:
   experimental-ci-bot --repo tensorzero/tensorzero --pr 123 --dry-run
 
   # Create actual PR/comments (requires write access)
-  export GITHUB_TOKEN=\$(gh auth token)
+  export GITHUB_TOKEN=$(gh auth token)
   experimental-ci-bot --repo myorg/myrepo --pr 456
 
   # Fix a specific workflow run
@@ -37184,7 +37185,7 @@ async function getFailedWorkflowRunLogs(workflowRunId, owner, repo) {
             encoding: 'utf-8'
         });
         const jobsData = JSON.parse(jobsOutput);
-        const jobs = jobsData.jobs || [];
+        const jobs = (jobsData.jobs || []);
         // Filter to failed jobs
         const failedJobs = jobs.filter((job) => job.conclusion && job.conclusion !== 'success');
         if (failedJobs.length === 0) {
@@ -37273,7 +37274,7 @@ function getGitHubToken(options) {
             return token;
         }
     }
-    catch (error) {
+    catch {
         // gh CLI not available or not authenticated
     }
     throw new Error('GitHub token not found. Please provide via --token, GITHUB_TOKEN env var, or authenticate with gh CLI (gh auth login)');
@@ -37387,7 +37388,9 @@ async function createAgentInputFromCli(options) {
     if (!workflowRunId) {
         console.log('[CLI Adapter] No workflow run ID provided, searching for latest failed run...');
         console.log(`[CLI Adapter] Searching for failed workflow runs for commit ${pullRequest.headSha.substring(0, 7)}...`);
-        workflowRunId = await findLatestFailedWorkflowRun(octokit, owner, repo, pullRequest.headSha);
+        workflowRunId = await findLatestFailedWorkflowRun(
+        // @ts-expect-error - CLI uses @octokit/rest while core types expect @actions/github Octokit
+        octokit, owner, repo, pullRequest.headSha);
         if (workflowRunId) {
             console.log(`[CLI Adapter] Found failed workflow run #${workflowRunId}`);
         }
@@ -37407,7 +37410,8 @@ async function createAgentInputFromCli(options) {
         }
         : undefined;
     return {
-        octokit: octokit, // Type compatibility
+        // @ts-expect-error - CLI uses @octokit/rest while core types expect @actions/github Octokit
+        octokit,
         token,
         pullRequest,
         ciFailure,
@@ -37453,7 +37457,9 @@ function parseAgentCompletion(output) {
  * Run the mini-swe-agent with the given configuration
  */
 async function runMiniSweAgent(config) {
-    const { task, cwd, tensorZeroConfigPath, costLimit = 3.0, modelName, timeout = 30 * 60 * 1000, // 30 minutes
+    const { task, cwd, tensorZeroConfigPath, 
+    // trajectoryOutputPath is ignored - we always use temp file now
+    costLimit = 3.0, modelName, timeout = 30 * 60 * 1000, // 30 minutes
     prNumber } = config;
     // Create a temporary trajectory file that we'll delete after reading
     const tempTrajectoryPath = path$1.join(os.tmpdir(), `agent_trajectory_${Date.now()}_${Math.random().toString(36).substring(7)}.json`);
@@ -37537,6 +37543,7 @@ async function runMiniSweAgent(config) {
             resolve({
                 completion,
                 trajectory,
+                episodeId: trajectory.info.episode_id,
                 stdout,
                 stderr,
                 exitCode: code
@@ -41289,7 +41296,7 @@ async function createPullRequestToInferenceRecord(request, config, dependencies)
                 {
                     pull_request_id: request.pullRequestId,
                     inference_id: request.inferenceId,
-                    original_pull_request_url: request.originalPullRequestUrl
+                    episode_id: request.episodeId
                 }
             ],
             format: 'JSONEachRow'
@@ -49963,10 +49970,8 @@ async function runAgent(input) {
         // Clone the PR repository
         console.log('[Agent Runner] Cloning pull request repository...');
         const { repoDir, cleanup, git } = await clonePullRequestRepository(token, pullRequest.owner, pullRequest.repo, {
-            number: pullRequest.number,
             head: { ref: pullRequest.headRef, sha: pullRequest.headSha },
-            base: { ref: pullRequest.baseRef },
-            html_url: pullRequest.htmlUrl
+            base: { ref: pullRequest.baseRef }
         });
         try {
             // Write CI failure context file
@@ -49993,6 +49998,7 @@ async function runAgent(input) {
                 : 'Review and improve the changes in this PR as described in ci_failure_context.md';
             // Run mini-swe-agent or test mode
             let agentCompletion;
+            let episodeId;
             if (input.testMode) {
                 console.log('[Agent Runner] Running in TEST MODE...');
                 agentCompletion = await runTestMode(repoDir, git, fullDiff);
@@ -50008,6 +50014,7 @@ async function runAgent(input) {
                     prNumber: pullRequest.number
                 });
                 agentCompletion = agentResult.completion;
+                episodeId = agentResult.episodeId;
                 console.log(`[Agent Runner] Agent reasoning: ${agentResult.completion.reasoning}`);
             }
             console.log(`[Agent Runner] Completion reasoning: ${agentCompletion.reasoning}`);
@@ -50028,6 +50035,7 @@ async function runAgent(input) {
                 console.log('[Agent Runner] No changes detected by agent.');
                 return {
                     success: true,
+                    episodeId,
                     reasoning: agentCompletion.reasoning
                 };
             }
@@ -50046,6 +50054,7 @@ async function runAgent(input) {
                 console.log(trimmedDiff);
                 return {
                     success: true,
+                    episodeId,
                     diff: trimmedDiff,
                     reasoning: agentCompletion.reasoning
                 };
@@ -50062,24 +50071,22 @@ async function runAgent(input) {
                     git,
                     reasoning: agentCompletion.reasoning
                 }, artifactDir);
-                if (followupPr) {
+                if (followupPr && clickhouse) {
                     console.log(`[Agent Runner] Created follow-up PR #${followupPr.number}`);
-                    // Record inference in ClickHouse if configured
-                    if (clickhouse) {
-                        const inferenceId = `agent-${pullRequest.number}-${Date.now()}`;
-                        const request = {
-                            inferenceId,
-                            pullRequestId: followupPr.id,
-                            originalPullRequestUrl: pullRequest.htmlUrl
-                        };
-                        try {
-                            await createPullRequestToInferenceRecord(request, clickhouse);
-                            console.log(`[Agent Runner] Recorded inference ${inferenceId} for follow-up PR #${followupPr.number} in ClickHouse.`);
-                        }
-                        catch (error) {
-                            const errorMessage = error instanceof Error ? error.message : `${error}`;
-                            console.warn(`[Agent Runner] Failed to record inference in ClickHouse: ${errorMessage}`);
-                        }
+                    // This version currently only contains one inference per episode; soon with miniswe-agent, we will have many inferences per episode.
+                    // When that launches, we will switch to only create PR-episode associations.
+                    const request = {
+                        inferenceId: undefined,
+                        episodeId,
+                        pullRequestId: followupPr.id
+                    };
+                    try {
+                        await createPullRequestToInferenceRecord(request, clickhouse);
+                        console.info(`Recorded episode ${episodeId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse.`);
+                    }
+                    catch (error) {
+                        const errorMessage = error instanceof Error ? error.message : `${error}`;
+                        console.warn(`Failed to record episode ${episodeId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse: ${errorMessage}`);
                     }
                 }
             }
@@ -50114,6 +50121,7 @@ async function runAgent(input) {
             }
             return {
                 success: true,
+                episodeId,
                 diff: trimmedDiff,
                 reasoning: agentCompletion.reasoning,
                 followupPrNumber: followupPr?.number,
@@ -50134,6 +50142,7 @@ async function runAgent(input) {
         }
         return {
             success: false,
+            episodeId: undefined,
             error: errorMessage
         };
     }
