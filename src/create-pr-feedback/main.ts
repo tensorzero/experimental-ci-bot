@@ -2,8 +2,8 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import { CreatePrFeedbackActionInput } from './types.js'
 import {
-  type PullRequestToInferenceRecord,
-  getPullRequestToInferenceRecords
+  type PullRequestToEpisodeRecord,
+  getPullRequestToEpisodeRecords
 } from '../clickhouseClient.js'
 import { provideInferenceFeedback } from '../tensorZeroClient.js'
 
@@ -45,7 +45,7 @@ function parseAndValidateActionInputs(): CreatePrFeedbackActionInput {
 }
 
 function isPullRequestEligibleForFeedback(
-  inferenceRecords: PullRequestToInferenceRecord[]
+  inferenceRecords: PullRequestToEpisodeRecord[]
 ): boolean {
   const pullRequestState = github.context.payload.pull_request?.state
   if (!pullRequestState) {
@@ -89,11 +89,11 @@ export async function run(): Promise<void> {
   const isPullRequestMerged =
     (github.context.payload.pull_request?.merged as boolean) ?? false
 
-  const inferenceRecords = await getPullRequestToInferenceRecords(
+  const episodeRecords = await getPullRequestToEpisodeRecords(
     pullRequestId,
     clickhouse
   )
-  if (!isPullRequestEligibleForFeedback(inferenceRecords)) {
+  if (!isPullRequestEligibleForFeedback(episodeRecords)) {
     return
   }
 
@@ -102,16 +102,16 @@ export async function run(): Promise<void> {
     ? 'Pull Request Merged'
     : 'Pull Request Rejected'
   await Promise.all(
-    inferenceRecords.map(async (record) => {
+    episodeRecords.map(async (record) => {
       await provideInferenceFeedback(
         tensorZeroBaseUrl,
         tensorZeroPrMergedMetricName,
-        record.inference_id,
+        record.episode_id,
         isPullRequestMerged,
         { reason: feedbackReason }
       )
       core.info(
-        `Feedback (${isPullRequestMerged}) provided for inference ${record.inference_id}`
+        `Feedback (${isPullRequestMerged}) provided for inference ${record.episode_id}`
       )
     })
   )

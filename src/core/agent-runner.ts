@@ -3,12 +3,8 @@
  */
 import * as fs from 'fs'
 import * as path from 'path'
-import type {
-  AgentRunnerInput,
-  AgentRunnerResult,
-  PullRequestInfo
-} from './types.js'
-import type { OctokitInstance } from '../generate-pr-patch/types.js'
+import type { AgentRunnerInput, AgentRunnerResult } from './types.js'
+
 import {
   createFollowupPrFromWorkingDir,
   type FollowupPrResult
@@ -18,199 +14,17 @@ import {
   writeCIFailureContextFile,
   type CIFailureContext
 } from '../generate-pr-patch/ciFailureContext.js'
-import { clonePullRequestRepository, getPullRequestDiff } from '../git.js'
+import { clonePullRequestRepository } from '../git.js'
 import {
   type CreatePullRequestToInferenceRequest,
   createPullRequestToInferenceRecord
 } from '../clickhouseClient.js'
 import { renderComment } from '../generate-pr-patch/pullRequestCommentTemplate.js'
-import type { AgentCompletionOutput } from '../types/agentOutput.js'
-import type { GitClient } from '../git.js'
-
-function maybeWriteDebugArtifact(
-  outputDir: string | undefined,
-  filename: string,
-  content: string
-): void {
-  if (!outputDir) {
-    return
-  }
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true })
-  }
-  fs.writeFileSync(path.join(outputDir, filename), content, {
-    encoding: 'utf-8'
-  })
-  console.log(
-    `[Debug] ${filename} written to ${path.join(outputDir, filename)}`
-  )
-}
-
-async function fetchDiffSummaryAndFullDiff(
-  octokit: OctokitInstance,
-  pr: PullRequestInfo,
-  token: string
-): Promise<{
-  diffSummary: string
-  fullDiff: string
-  prData: Awaited<ReturnType<OctokitInstance['rest']['pulls']['get']>>['data']
-}> {
-  console.log('[Agent Runner] Fetching PR diff via git...')
-  const prResponse = await octokit.rest.pulls.get({
-    owner: pr.owner,
-    repo: pr.repo,
-    pull_number: pr.number
-  })
-
-  const diffResult = await getPullRequestDiff(
-    token,
-    pr.owner,
-    pr.repo,
-    prResponse.data
-  )
-
-  return {
-    diffSummary: diffResult.diffSummary,
-    fullDiff: diffResult.fullDiff,
-    prData: prResponse.data
-  }
-}
-
-/**
- * Get comment prefix based on file extension
- */
-function getCommentPrefix(filePath: string): string {
-  const ext = path.extname(filePath).toLowerCase()
-
-  // Common comment styles
-  const lineCommentExts = [
-    '.js',
-    '.ts',
-    '.tsx',
-    '.jsx',
-    '.java',
-    '.c',
-    '.cpp',
-    '.cc',
-    '.h',
-    '.hpp',
-    '.cs',
-    '.go',
-    '.rs',
-    '.swift',
-    '.kt',
-    '.scala',
-    '.php'
-  ]
-
-  const hashCommentExts = [
-    '.py',
-    '.rb',
-    '.sh',
-    '.bash',
-    '.zsh',
-    '.yaml',
-    '.yml',
-    '.toml',
-    '.r',
-    '.pl'
-  ]
-
-  if (lineCommentExts.includes(ext)) {
-    return '//'
-  } else if (hashCommentExts.includes(ext)) {
-    return '#'
-  } else if (ext === '.html' || ext === '.xml') {
-    return '<!--'
-  } else if (ext === '.css' || ext === '.scss' || ext === '.sass') {
-    return '/*'
-  }
-
-  // Default to // for unknown types
-  return '//'
-}
-
-/**
- * Run test mode: add comments to files without running agent
- */
-async function runTestMode(
-  repoDir: string,
-  git: GitClient,
-  fullDiff: string
-): Promise<AgentCompletionOutput> {
-  console.log('[Test Mode] Adding test comments to files...')
-
-  // Parse the diff to find changed files
-  const changedFiles: string[] = []
-  const diffLines = fullDiff.split('\n')
-
-  for (const line of diffLines) {
-    if (line.startsWith('+++ b/')) {
-      const filePath = line.substring(6)
-      if (filePath !== '/dev/null') {
-        changedFiles.push(filePath)
-      }
-    }
-  }
-
-  if (changedFiles.length === 0) {
-    console.log('[Test Mode] No files found in PR diff')
-    return {
-      reasoning: 'Test mode: No files found to modify'
-    }
-  }
-
-  // Select first 2-3 files to modify
-  const filesToModify = changedFiles.slice(0, Math.min(3, changedFiles.length))
-  console.log(
-    `[Test Mode] Selected ${filesToModify.length} files to modify:`,
-    filesToModify
-  )
-
-  // Add test comments to each file
-  for (const filePath of filesToModify) {
-    const fullPath = path.join(repoDir, filePath)
-
-    try {
-      // Check if file exists
-      if (!fs.existsSync(fullPath)) {
-        console.log(`[Test Mode] Skipping ${filePath} - file does not exist`)
-        continue
-      }
-
-      // Read file content
-      const content = fs.readFileSync(fullPath, 'utf-8')
-
-      // Get appropriate comment syntax
-      const commentPrefix = getCommentPrefix(filePath)
-      let testComment: string
-
-      if (commentPrefix === '<!--') {
-        testComment =
-          '<!-- TEST MODE: This is a test comment added by experimental-ci-bot -->\n'
-      } else if (commentPrefix === '/*') {
-        testComment =
-          '/* TEST MODE: This is a test comment added by experimental-ci-bot */\n'
-      } else {
-        testComment = `${commentPrefix} TEST MODE: This is a test comment added by experimental-ci-bot\n`
-      }
-
-      // Add comment to the top of the file
-      const newContent = testComment + content
-
-      // Write back to file
-      fs.writeFileSync(fullPath, newContent, 'utf-8')
-      console.log(`[Test Mode] Added test comment to ${filePath}`)
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : `${error}`
-      console.error(`[Test Mode] Failed to modify ${filePath}: ${errorMessage}`)
-    }
-  }
-
-  return {
-    reasoning: `Test mode: Added test comments to ${filesToModify.length} file(s). This is a manual integration test of the follow-up PR creation system, without running the actual agent.`
-  }
-}
+import { provideEpisodeFeedback } from '../tensorZeroClient.js'
+import {
+  fetchDiffSummaryAndFullDiff,
+  maybeWriteDebugArtifact
+} from './utils.js'
 
 /**
  * Run the agent to fix CI failures or improve a PR
@@ -243,6 +57,10 @@ export async function runAgent(
     console.log(`[Agent Runner] Output artifact directory: ${artifactDir}`)
   }
 
+  // Declare these at function scope so they're accessible in catch blocks
+  let repoDir: string | undefined
+  let episodeId: string | undefined
+
   try {
     // Load diff summary and full diff
     const { diffSummary, fullDiff, prData } = await fetchDiffSummaryAndFullDiff(
@@ -259,7 +77,7 @@ export async function runAgent(
 
     // Clone the PR repository
     console.log('[Agent Runner] Cloning pull request repository...')
-    const { repoDir, cleanup, git } = await clonePullRequestRepository(
+    const cloneResult = await clonePullRequestRepository(
       token,
       pullRequest.owner,
       pullRequest.repo,
@@ -268,6 +86,9 @@ export async function runAgent(
         base: { ref: pullRequest.baseRef }
       }
     )
+    repoDir = cloneResult.repoDir
+    const cleanup = cloneResult.cleanup
+    const git = cloneResult.git
 
     try {
       // Write CI failure context file
@@ -303,31 +124,22 @@ export async function runAgent(
         ? 'Fix the CI failures as described in ci_failure_context.md'
         : 'Review and improve the changes in this PR as described in ci_failure_context.md'
 
-      // Run mini-swe-agent or test mode
-      let agentCompletion: AgentCompletionOutput
-      let episodeId: string | undefined
+      console.log('[Agent Runner] Running mini-swe-agent...')
+      const agentResult = await runMiniSweAgent({
+        task,
+        cwd: repoDir,
+        tensorZeroConfigPath,
+        costLimit: 3,
+        timeout: agent.timeout * 60 * 1000, // Convert minutes to milliseconds
+        prNumber: pullRequest.number
+      })
 
-      if (input.testMode) {
-        console.log('[Agent Runner] Running in TEST MODE...')
-        agentCompletion = await runTestMode(repoDir, git, fullDiff)
-      } else {
-        console.log('[Agent Runner] Running mini-swe-agent...')
-        const agentResult = await runMiniSweAgent({
-          task,
-          cwd: repoDir,
-          tensorZeroConfigPath,
-          costLimit: 3,
-          timeout: agent.timeout * 60 * 1000, // Convert minutes to milliseconds
-          prNumber: pullRequest.number
-        })
+      const agentCompletion = agentResult.completion
+      episodeId = agentResult.episodeId
 
-        agentCompletion = agentResult.completion
-        episodeId = agentResult.episodeId
-
-        console.log(
-          `[Agent Runner] Agent reasoning: ${agentResult.completion.reasoning}`
-        )
-      }
+      console.log(
+        `[Agent Runner] Agent reasoning: ${agentResult.completion.reasoning}`
+      )
 
       console.log(
         `[Agent Runner] Completion reasoning: ${agentCompletion.reasoning}`
@@ -412,8 +224,6 @@ export async function runAgent(
             `[Agent Runner] Created follow-up PR #${followupPr.number}`
           )
 
-          // This version currently only contains one inference per episode; soon with miniswe-agent, we will have many inferences per episode.
-          // When that launches, we will switch to only create PR-episode associations.
           const request: CreatePullRequestToInferenceRequest = {
             inferenceId: undefined,
             episodeId,
@@ -432,12 +242,63 @@ export async function runAgent(
             )
           }
         }
+
+        // Provide feedback for PR creation success
+        if (followupPr && episodeId && input.tensorZero?.baseUrl) {
+          try {
+            await provideEpisodeFeedback(
+              input.tensorZero.baseUrl,
+              'ci_fix_pr_created_agent',
+              episodeId,
+              true
+            )
+            console.info(
+              `[Agent Runner] Provided feedback: ci_fix_pr_created_agent=true for episode ${episodeId}`
+            )
+          } catch (error) {
+            const errorMessage =
+              error instanceof Error ? error.message : `${error}`
+            console.warn(
+              `[Agent Runner] Failed to provide feedback for PR creation: ${errorMessage}`
+            )
+          }
+        }
       } catch (error) {
         followupPrCreationError =
           error instanceof Error ? error.message : `${error}`
         console.error(
           `[Agent Runner] Failed to create follow-up PR: ${followupPrCreationError}`
         )
+
+        // Provide feedback for PR creation failure
+        if (episodeId && input.tensorZero?.baseUrl) {
+          try {
+            await provideEpisodeFeedback(
+              input.tensorZero.baseUrl,
+              'ci_fix_pr_created_agent',
+              episodeId,
+              false
+            )
+            console.info(
+              `[Agent Runner] Provided feedback: ci_fix_pr_created_agent=false for episode ${episodeId}`
+            )
+            await provideEpisodeFeedback(
+              input.tensorZero.baseUrl,
+              'ci_fix_pr_merged_agent',
+              episodeId,
+              false
+            )
+            console.info(
+              `[Agent Runner] Provided feedback: ci_fix_pr_merged_agent=false for episode ${episodeId}`
+            )
+          } catch (error) {
+            const errorMessage =
+              error instanceof Error ? error.message : `${error}`
+            console.warn(
+              `[Agent Runner] Failed to provide feedback for PR creation failure: ${errorMessage}`
+            )
+          }
+        }
       }
 
       // Post a comment on the original PR
@@ -478,6 +339,28 @@ export async function runAgent(
         followupPrNumber: followupPr?.number,
         error: followupPrCreationError
       }
+    } catch (innerError) {
+      // Try to read episode_id from .episode_id file before cleanup
+      // This handles the case where mini-swe-agent wrote the episode_id but then crashed
+      if (repoDir && !episodeId) {
+        try {
+          const episodeIdPath = path.join(repoDir, '.episode_id')
+          if (fs.existsSync(episodeIdPath)) {
+            episodeId = fs.readFileSync(episodeIdPath, 'utf-8').trim()
+            console.log(
+              `[Agent Runner] Recovered episode ID from .episode_id file: ${episodeId}`
+            )
+          }
+        } catch (readError) {
+          const readErrorMessage =
+            readError instanceof Error ? readError.message : `${readError}`
+          console.warn(
+            `[Agent Runner] Failed to read .episode_id file: ${readErrorMessage}`
+          )
+        }
+      }
+      // Re-throw the error to be handled by outer catch block
+      throw innerError
     } finally {
       // Clean up cloned repository
       await cleanup()
@@ -491,9 +374,52 @@ export async function runAgent(
       console.error(error.stack)
     }
 
+    // Provide feedback for agent failure
+    // Note: episodeId may have been recovered from .episode_id file if the agent started but failed
+    if (episodeId && input.tensorZero?.baseUrl) {
+      try {
+        await provideEpisodeFeedback(
+          input.tensorZero.baseUrl,
+          'ci_fix_pr_created_agent',
+          episodeId,
+          false
+        )
+        console.info(
+          `[Agent Runner] Provided feedback: ci_fix_pr_created_agent=false for episode ${episodeId}`
+        )
+      } catch (feedbackError) {
+        const feedbackErrorMessage =
+          feedbackError instanceof Error
+            ? feedbackError.message
+            : `${feedbackError}`
+        console.warn(
+          `[Agent Runner] Failed to provide feedback for agent failure: ${feedbackErrorMessage}`
+        )
+      }
+      try {
+        await provideEpisodeFeedback(
+          input.tensorZero.baseUrl,
+          'ci_fix_pr_merged_agent',
+          episodeId,
+          false
+        )
+        console.info(
+          `[Agent Runner] Provided feedback: ci_fix_pr_merged_agent=false for episode ${episodeId}`
+        )
+      } catch (feedbackError) {
+        const feedbackErrorMessage =
+          feedbackError instanceof Error
+            ? feedbackError.message
+            : `${feedbackError}`
+        console.warn(
+          `[Agent Runner] Failed to provide feedback for agent failure: ${feedbackErrorMessage}`
+        )
+      }
+    }
+
     return {
       success: false,
-      episodeId: undefined,
+      episodeId,
       error: errorMessage
     }
   }

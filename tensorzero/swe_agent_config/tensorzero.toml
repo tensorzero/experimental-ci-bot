@@ -58,3 +58,13 @@ level = "inference"
 type = "boolean"
 optimize = "max"
 level = "inference"
+
+[metrics.ci_fix_pr_merged_agent]
+type = "boolean"
+optimize = "max"
+level = "episode"
+
+[metrics.ci_fix_pr_created_agent]
+type = "boolean"
+optimize = "max"
+level = "episode"

@@ -34879,13 +34879,13 @@ function createTensorZeroClickHouseClient(config, dependencies) {
         shouldClose: true
     };
 }
-// Returns all inference records for a given pull request. There should only be one since so far for simplicity, the table should be created with a ReplacingMergeTree, but we may want to support multiple inferences for interactive PR updates.
-async function getPullRequestToInferenceRecords(pullRequestId, config, dependencies) {
+// Returns all episode records for a given pull request.
+async function getPullRequestToEpisodeRecords(pullRequestId, config, dependencies) {
     const { client, table, shouldClose } = createTensorZeroClickHouseClient(config);
     let records = [];
     try {
         const response = await client.query({
-            query: `SELECT inference_id, pull_request_id, created_at, original_pull_request_url FROM ${table} WHERE pull_request_id = {pullRequestId:UInt64}`,
+            query: `SELECT episode_id, pull_request_id, created_at, original_pull_request_url FROM ${table} WHERE pull_request_id = {pullRequestId:UInt64}`,
             query_params: { pullRequestId },
             format: 'JSONEachRow'
         });
@@ -41854,17 +41854,17 @@ async function run() {
     }
     coreExports.info(`Handling Pull Request ID ${pullRequestId} (#${githubExports.context.payload.pull_request?.number}); merged: ${githubExports.context.payload.pull_request?.merged}.`);
     const isPullRequestMerged = githubExports.context.payload.pull_request?.merged ?? false;
-    const inferenceRecords = await getPullRequestToInferenceRecords(pullRequestId, clickhouse);
-    if (!isPullRequestEligibleForFeedback(inferenceRecords)) {
+    const episodeRecords = await getPullRequestToEpisodeRecords(pullRequestId, clickhouse);
+    if (!isPullRequestEligibleForFeedback(episodeRecords)) {
         return;
     }
     // Provide feedback for follow-up PRs
     const feedbackReason = isPullRequestMerged
         ? 'Pull Request Merged'
         : 'Pull Request Rejected';
-    await Promise.all(inferenceRecords.map(async (record) => {
-        await provideInferenceFeedback(tensorZeroBaseUrl, tensorZeroPrMergedMetricName, record.inference_id, isPullRequestMerged, { reason: feedbackReason });
-        coreExports.info(`Feedback (${isPullRequestMerged}) provided for inference ${record.inference_id}`);
+    await Promise.all(episodeRecords.map(async (record) => {
+        await provideInferenceFeedback(tensorZeroBaseUrl, tensorZeroPrMergedMetricName, record.episode_id, isPullRequestMerged, { reason: feedbackReason });
+        coreExports.info(`Feedback (${isPullRequestMerged}) provided for inference ${record.episode_id}`);
     }));
     // TODO: Add feedback collection for inline suggestions
     // This requires:
