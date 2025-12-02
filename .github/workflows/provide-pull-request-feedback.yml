@@ -23,10 +23,10 @@ jobs:
 
       - name: Send PR Feedback
         # TODO: currently pinned to miniswe-agent branch; switch back to main when ready.
-        uses: tensorzero/experimental-ci-bot/create-pr-feedback@viraj/pr-only
+        uses: tensorzero/experimental-ci-bot/create-pr-feedback@main
         with:
           tensorzero-base-url: http://ci-bot-gateway:3000
           # TODO: Switch to tensorzero_github_ci_bot_agent_pr_merged for episode-level feedback when agent creates PRs
-          tensorzero-pr-merged-metric-name: tensorzero_github_ci_bot_pr_merged
+          tensorzero-pr-merged-metric-name: ci_fix_pr_merged_agent
           clickhouse-url: ${{ secrets.CI_BOT_CLICKHOUSE_URL }}
           clickhouse-table: GitHubBotPullRequestToInferenceMap

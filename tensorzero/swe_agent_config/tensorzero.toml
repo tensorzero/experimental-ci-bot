@@ -44,6 +44,7 @@ templates.action_observation.path = "templates/action_observation.minijinja"
 templates.format_error.path = "templates/format_error.minijinja"
 
 # Metrics for tracking agent performance
+# Many of them are not yet used except for ci_fix_pr_merged_agent
 [metrics.ci_fix_validation_passed]
 type = "boolean"
 optimize = "max"
@@ -59,6 +60,7 @@ type = "boolean"
 optimize = "max"
 level = "inference"
 
+# This is the one we use actively
 [metrics.ci_fix_pr_merged_agent]
 type = "boolean"
 optimize = "max"
