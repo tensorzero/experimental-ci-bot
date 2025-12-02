@@ -37484,12 +37484,15 @@ async function runMiniSweAgent(config) {
     const env = {
         ...process.env,
         TENSORZERO_CONFIG_PATH: tensorZeroConfigPath,
+        // Skip mini-swe-agent's interactive first-time setup
+        MSWEA_CONFIGURED: 'true',
         // Ensure Python output is unbuffered for better logging
         PYTHONUNBUFFERED: '1'
     };
     console.log(`Running mini-swe-agent with task: ${task}`);
     console.log(`Working directory: ${cwd}`);
     console.log(`TensorZero config: ${tensorZeroConfigPath}`);
+    console.log(`MSWEA_CONFIGURED: ${env.MSWEA_CONFIGURED}`);
     return new Promise((resolve, reject) => {
         const proc = spawn$1('uv', ['run', '--project', process.cwd(), 'mini', ...args], {
             cwd,

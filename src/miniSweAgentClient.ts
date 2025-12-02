@@ -149,6 +149,7 @@ export async function runMiniSweAgent(
   console.log(`Running mini-swe-agent with task: ${task}`)
   console.log(`Working directory: ${cwd}`)
   console.log(`TensorZero config: ${tensorZeroConfigPath}`)
+  console.log(`MSWEA_CONFIGURED: ${env.MSWEA_CONFIGURED}`)
 
   return new Promise((resolve, reject) => {
     const proc = spawn(
