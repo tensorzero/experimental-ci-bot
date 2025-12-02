@@ -33,7 +33,7 @@ describe('clickhouseClient', () => {
       {
         inferenceId: 'abc-123',
         episodeId: 'episode-123',
-        pullRequestId: 42,
+        pullRequestId: 42
       },
       defaultConfig,
       { client }
@@ -46,7 +46,7 @@ describe('clickhouseClient', () => {
           episode_id: 'episode-123',
           pull_request_id: 42,
           inference_id: 'abc-123',
-          original_pull_request_url: 'https://github.com/org/repo/pull/42'
+          original_pull_request_url: undefined
         }
       ],
       format: 'JSONEachRow'

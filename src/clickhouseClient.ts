@@ -18,7 +18,7 @@ export interface CreatePullRequestToInferenceRequest {
   inferenceId: string
   episodeId: string
   pullRequestId: number
-  originalPullRequestUrl: string
+  originalPullRequestUrl?: string
 }
 
 export interface PullRequestToInferenceRecord {
