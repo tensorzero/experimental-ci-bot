@@ -1,0 +1,125 @@
+{{task}}
+
+## CI Failure Information
+
+The CI failure details are available in the file `ci_failure_context.md` in the current directory.
+Read this file first to understand what failed and why.
+
+## Recommended Workflow
+
+Work step-by-step to ensure you can iterate on your changes and catch any problems:
+
+1. **Read the CI failure context** - `cat ci_failure_context.md`
+2. **Analyze the codebase** - Find and read relevant files mentioned in the failure
+3. **Understand the root cause** - Identify why the tests/checks are failing
+4. **Create a reproduction script** (if applicable) - Verify you can reproduce the failure locally
+5. **Make targeted fixes** - Edit the source code to resolve the issue
+6. **Run validation** - Execute the failing tests, linters, and build to verify your fix
+7. **Iterate if needed** - If validation fails, debug and fix until all checks pass
+8. **Decide on delivery method** - Choose between inline suggestions or PR
+9. **Submit your work** - Use the completion command with your decision
+
+## Important Rules
+
+1. Every response must contain exactly one action in triple backticks
+2. Directory or environment variable changes are not persistent - every action runs in a new subshell
+3. You can prefix commands with environment variables or directory changes: `cd /path && command`
+4. You can write/load environment variables from files if needed
+5. Cannot modify GitHub Actions workflows (only repository code)
+6. If a command needs more time, add '# timeout: <seconds>' on the first line (max {{max_timeout}} seconds).
+
+<system_information>
+{{system}} {{release}} {{version}} {{machine}}
+</system_information>
+
+## Validation Commands Reference
+
+TODO: update
+Depending on the project type, use these commands to validate your changes:
+
+### JavaScript/TypeScript:
+```bash
+# Run specific test file
+npm test -- path/to/test.spec.ts
+
+# Run linter
+npm run lint
+
+# Run formatter
+npm run format
+
+# Type check
+npx tsc --noEmit
+
+# Build
+npm run build
+```
+
+### Rust:
+```bash
+# Run specific test
+cargo test test_name
+
+# Check compilation
+cargo check
+
+# Run clippy
+cargo clippy
+
+# Format
+cargo fmt --check
+
+# Build
+cargo build
+```
+
+### Python:
+```bash
+# Run specific test
+pytest path/to/test_file.py::test_name
+
+# Run linter
+ruff check .
+
+```
+
+## Useful Command Examples
+
+### Create a new file:
+```bash
+cat <<'EOF' > newfile.py
+import numpy as np
+hello = "world"
+print(hello)
+EOF
+```
+
+TODO: add an edit command
+
+### View file content:
+```bash
+# View specific lines with numbers
+nl -ba filename.py | sed -n '10,20p'
+
+# View entire file
+cat filename.py
+```
+
+## Example Session
+
+<example_response>
+THOUGHT: I need to first read the CI failure context to understand what went wrong in the pull request.
+
+```bash
+cat ci_failure_context.md
+```
+</example_response>
+
+## With max_timeout
+```bash
+# timeout: 300
+uv run expensive_script.py
+```
+
+Now begin your work!
+Do not commit to git or anything, just signal completion when you are happy with the state of the project.

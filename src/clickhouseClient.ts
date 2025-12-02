@@ -15,10 +15,9 @@ export interface ClickHouseConfig {
 }
 
 export interface CreatePullRequestToInferenceRequest {
-  inferenceId: string
-  episodeId: string
+  inferenceId?: string
+  episodeId?: string
   pullRequestId: number
-  originalPullRequestUrl: string
 }
 
 export interface PullRequestToInferenceRecord {
@@ -111,8 +110,7 @@ export async function createPullRequestToInferenceRecord(
         {
           pull_request_id: request.pullRequestId,
           inference_id: request.inferenceId,
-          episode_id: request.episodeId,
-          original_pull_request_url: request.originalPullRequestUrl
+          episode_id: request.episodeId
         }
       ],
       format: 'JSONEachRow'

@@ -1,7 +1,7 @@
 import * as require$$0 from 'os';
 import require$$0__default from 'os';
 import require$$0$1 from 'crypto';
-import * as fs from 'fs';
+import * as fs$1 from 'fs';
 import fs__default from 'fs';
 import * as path$1 from 'path';
 import path__default from 'path';
@@ -18,7 +18,7 @@ import require$$8 from 'querystring';
 import require$$14 from 'stream/web';
 import require$$0$7 from 'node:stream';
 import require$$1$3 from 'node:util';
-import require$$0$6 from 'node:events';
+import require$$0$6, { EventEmitter } from 'node:events';
 import require$$0$8 from 'worker_threads';
 import require$$2$2 from 'perf_hooks';
 import require$$5 from 'util/types';
@@ -28,10 +28,16 @@ import require$$1$5 from 'url';
 import require$$3$1 from 'zlib';
 import require$$6 from 'string_decoder';
 import require$$0$9 from 'diagnostics_channel';
-import require$$2$3, { execFile } from 'child_process';
+import require$$2$3, { spawn, execFile } from 'child_process';
 import require$$6$1 from 'timers';
-import require$$0$a from 'node:os';
 import * as fsPromises from 'fs/promises';
+import { Buffer as Buffer$1 } from 'node:buffer';
+import require$$1$6 from 'tty';
+import { spawn as spawn$1 } from 'node:child_process';
+import * as fs from 'node:fs';
+import * as path$2 from 'node:path';
+import * as os from 'node:os';
+import os__default from 'node:os';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -117,7 +123,7 @@ function requireUtils$6 () {
 	    };
 	}
 	utils$6.toCommandProperties = toCommandProperties;
-	
+
 	return utils$6;
 }
 
@@ -220,7 +226,7 @@ function requireCommand () {
 	        .replace(/:/g, '%3A')
 	        .replace(/,/g, '%2C');
 	}
-	
+
 	return command;
 }
 
@@ -291,7 +297,7 @@ function requireFileCommand () {
 	    return `${key}<<${delimiter}${os.EOL}${convertedValue}${os.EOL}${delimiter}`;
 	}
 	fileCommand.prepareKeyValueMessage = prepareKeyValueMessage;
-	
+
 	return fileCommand;
 }
 
@@ -399,7 +405,7 @@ function requireProxy () {
 	        return this._decodedPassword;
 	    }
 	}
-	
+
 	return proxy;
 }
 
@@ -8248,7 +8254,7 @@ function requireUtils$5 () {
 	    return res;
 	}
 	utils$5.enumToMap = enumToMap;
-	
+
 	return utils$5;
 }
 
@@ -8528,7 +8534,7 @@ function requireConstants$2 () {
 		    'transfer-encoding': HEADER_STATE.TRANSFER_ENCODING,
 		    'upgrade': HEADER_STATE.UPGRADE,
 		};
-		
+
 	} (constants$2));
 	return constants$2;
 }
@@ -20419,11 +20425,11 @@ function requireUtil$3 () {
 	return util$3;
 }
 
-var cache;
+var cache$1;
 var hasRequiredCache;
 
 function requireCache () {
-	if (hasRequiredCache) return cache;
+	if (hasRequiredCache) return cache$1;
 	hasRequiredCache = 1;
 
 	const { kConstruct } = requireSymbols$1();
@@ -21259,10 +21265,10 @@ function requireCache () {
 	  webidl.converters.RequestInfo
 	);
 
-	cache = {
+	cache$1 = {
 	  Cache
 	};
-	return cache;
+	return cache$1;
 }
 
 var cachestorage;
@@ -25040,7 +25046,7 @@ function requireLib$1 () {
 	}
 	lib$1.HttpClient = HttpClient;
 	const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => ((c[k.toLowerCase()] = obj[k]), c), {});
-	
+
 	return lib$1;
 }
 
@@ -25130,7 +25136,7 @@ function requireAuth () {
 	    }
 	}
 	auth$1.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
-	
+
 	return auth$1;
 }
 
@@ -25182,8 +25188,8 @@ function requireOidcUtils () {
 	            const res = yield httpclient
 	                .getJson(id_token_url)
 	                .catch(error => {
-	                throw new Error(`Failed to get ID Token. \n 
-        Error Code : ${error.statusCode}\n 
+	                throw new Error(`Failed to get ID Token. \n
+        Error Code : ${error.statusCode}\n
         Error Message: ${error.message}`);
 	            });
 	            const id_token = (_a = res.result) === null || _a === void 0 ? void 0 : _a.value;
@@ -25214,7 +25220,7 @@ function requireOidcUtils () {
 	    }
 	}
 	oidcUtils.OidcClient = OidcClient;
-	
+
 	return oidcUtils;
 }
 
@@ -25507,7 +25513,7 @@ function requireSummary () {
 		 */
 		exports.markdownSummary = _summary;
 		exports.summary = _summary;
-		
+
 	} (summary));
 	return summary;
 }
@@ -25579,7 +25585,7 @@ function requirePathUtils () {
 	    return pth.replace(/[/\\]/g, path.sep);
 	}
 	pathUtils.toPlatformPath = toPlatformPath;
-	
+
 	return pathUtils;
 }
 
@@ -25780,7 +25786,7 @@ function requireIoUtil () {
 		    return (_a = process.env['COMSPEC']) !== null && _a !== void 0 ? _a : `cmd.exe`;
 		}
 		exports.getCmdPath = getCmdPath;
-		
+
 	} (ioUtil));
 	return ioUtil;
 }
@@ -26087,7 +26093,7 @@ function requireIo () {
 	        }
 	    });
 	}
-	
+
 	return io;
 }
 
@@ -26712,7 +26718,7 @@ function requireToolrunner () {
 	        state._setResult();
 	    }
 	}
-	
+
 	return toolrunner;
 }
 
@@ -26822,7 +26828,7 @@ function requireExec () {
 	    });
 	}
 	exec.getExecOutput = getExecOutput;
-	
+
 	return exec;
 }
 
@@ -26924,7 +26930,7 @@ function requirePlatform () {
 		    });
 		}
 		exports.getDetails = getDetails;
-		
+
 	} (platform));
 	return platform;
 }
@@ -27277,7 +27283,7 @@ function requireCore () {
 		 * Platform utilities exports
 		 */
 		exports.platform = __importStar(requirePlatform());
-		
+
 	} (core));
 	return core;
 }
@@ -27347,7 +27353,7 @@ function requireContext () {
 	    }
 	}
 	context.Context = Context;
-	
+
 	return context;
 }
 
@@ -27428,7 +27434,7 @@ function requireUtils$4 () {
 	    return process.env['GITHUB_API_URL'] || 'https://api.github.com';
 	}
 	utils$3.getApiBaseUrl = getApiBaseUrl;
-	
+
 	return utils$3;
 }
 
@@ -27535,13 +27541,13 @@ function requireAdd () {
 	return add;
 }
 
-var remove;
+var remove$1;
 var hasRequiredRemove;
 
 function requireRemove () {
-	if (hasRequiredRemove) return remove;
+	if (hasRequiredRemove) return remove$1;
 	hasRequiredRemove = 1;
-	remove = removeHook;
+	remove$1 = removeHook;
 
 	function removeHook(state, name, method) {
 	  if (!state.registry[name]) {
@@ -27560,7 +27566,7 @@ function requireRemove () {
 
 	  state.registry[name].splice(index, 1);
 	}
-	return remove;
+	return remove$1;
 }
 
 var hasRequiredBeforeAfterHook;
@@ -28482,7 +28488,7 @@ var noop$1 = () => {
 };
 var consoleWarn = console.warn.bind(console);
 var consoleError = console.error.bind(console);
-function createLogger(logger = {}) {
+function createLogger$1(logger = {}) {
   if (typeof logger.debug !== "function") {
     logger.debug = noop$1;
   }
@@ -28570,7 +28576,7 @@ var Octokit = class {
     }
     this.request = request.defaults(requestDefaults);
     this.graphql = withCustomRequest(this.request).defaults(requestDefaults);
-    this.log = createLogger(options.log);
+    this.log = createLogger$1(options.log);
     this.hook = hook;
     if (!options.authStrategy) {
       if (!options.auth) {
@@ -31191,7 +31197,7 @@ function requireUtils$3 () {
 		    return opts;
 		}
 		exports.getOctokitOptions = getOctokitOptions;
-		
+
 	} (utils$4));
 	return utils$4;
 }
@@ -31240,18 +31246,6717 @@ function requireGithub () {
 	    return new GitHubWithPlugins((0, utils_1.getOctokitOptions)(token, options));
 	}
 	github.getOctokit = getOctokit;
-	
+
 	return github;
 }
 
 var githubExports = requireGithub();
 
-function extractXmlTagsFromLlmResponse(response, tag) {
-    const regex = new RegExp(`<${tag}>(.*?)<\\/${tag}>`, 'sg');
-    const matches = response.matchAll(regex);
-    // Take the first capture group from each match
-    const outputs = [...matches].map((match) => match[1].trim());
-    return outputs || [];
+var dist$3 = {};
+
+var src$1 = {};
+
+var src = {exports: {}};
+
+var browser = {exports: {}};
+
+/**
+ * Helpers.
+ */
+
+var ms;
+var hasRequiredMs;
+
+function requireMs () {
+	if (hasRequiredMs) return ms;
+	hasRequiredMs = 1;
+	var s = 1000;
+	var m = s * 60;
+	var h = m * 60;
+	var d = h * 24;
+	var w = d * 7;
+	var y = d * 365.25;
+
+	/**
+	 * Parse or format the given `val`.
+	 *
+	 * Options:
+	 *
+	 *  - `long` verbose formatting [false]
+	 *
+	 * @param {String|Number} val
+	 * @param {Object} [options]
+	 * @throws {Error} throw an error if val is not a non-empty string or a number
+	 * @return {String|Number}
+	 * @api public
+	 */
+
+	ms = function (val, options) {
+	  options = options || {};
+	  var type = typeof val;
+	  if (type === 'string' && val.length > 0) {
+	    return parse(val);
+	  } else if (type === 'number' && isFinite(val)) {
+	    return options.long ? fmtLong(val) : fmtShort(val);
+	  }
+	  throw new Error(
+	    'val is not a non-empty string or a valid number. val=' +
+	      JSON.stringify(val)
+	  );
+	};
+
+	/**
+	 * Parse the given `str` and return milliseconds.
+	 *
+	 * @param {String} str
+	 * @return {Number}
+	 * @api private
+	 */
+
+	function parse(str) {
+	  str = String(str);
+	  if (str.length > 100) {
+	    return;
+	  }
+	  var match = /^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
+	    str
+	  );
+	  if (!match) {
+	    return;
+	  }
+	  var n = parseFloat(match[1]);
+	  var type = (match[2] || 'ms').toLowerCase();
+	  switch (type) {
+	    case 'years':
+	    case 'year':
+	    case 'yrs':
+	    case 'yr':
+	    case 'y':
+	      return n * y;
+	    case 'weeks':
+	    case 'week':
+	    case 'w':
+	      return n * w;
+	    case 'days':
+	    case 'day':
+	    case 'd':
+	      return n * d;
+	    case 'hours':
+	    case 'hour':
+	    case 'hrs':
+	    case 'hr':
+	    case 'h':
+	      return n * h;
+	    case 'minutes':
+	    case 'minute':
+	    case 'mins':
+	    case 'min':
+	    case 'm':
+	      return n * m;
+	    case 'seconds':
+	    case 'second':
+	    case 'secs':
+	    case 'sec':
+	    case 's':
+	      return n * s;
+	    case 'milliseconds':
+	    case 'millisecond':
+	    case 'msecs':
+	    case 'msec':
+	    case 'ms':
+	      return n;
+	    default:
+	      return undefined;
+	  }
+	}
+
+	/**
+	 * Short format for `ms`.
+	 *
+	 * @param {Number} ms
+	 * @return {String}
+	 * @api private
+	 */
+
+	function fmtShort(ms) {
+	  var msAbs = Math.abs(ms);
+	  if (msAbs >= d) {
+	    return Math.round(ms / d) + 'd';
+	  }
+	  if (msAbs >= h) {
+	    return Math.round(ms / h) + 'h';
+	  }
+	  if (msAbs >= m) {
+	    return Math.round(ms / m) + 'm';
+	  }
+	  if (msAbs >= s) {
+	    return Math.round(ms / s) + 's';
+	  }
+	  return ms + 'ms';
+	}
+
+	/**
+	 * Long format for `ms`.
+	 *
+	 * @param {Number} ms
+	 * @return {String}
+	 * @api private
+	 */
+
+	function fmtLong(ms) {
+	  var msAbs = Math.abs(ms);
+	  if (msAbs >= d) {
+	    return plural(ms, msAbs, d, 'day');
+	  }
+	  if (msAbs >= h) {
+	    return plural(ms, msAbs, h, 'hour');
+	  }
+	  if (msAbs >= m) {
+	    return plural(ms, msAbs, m, 'minute');
+	  }
+	  if (msAbs >= s) {
+	    return plural(ms, msAbs, s, 'second');
+	  }
+	  return ms + ' ms';
+	}
+
+	/**
+	 * Pluralization helper.
+	 */
+
+	function plural(ms, msAbs, n, name) {
+	  var isPlural = msAbs >= n * 1.5;
+	  return Math.round(ms / n) + ' ' + name + (isPlural ? 's' : '');
+	}
+	return ms;
+}
+
+var common;
+var hasRequiredCommon;
+
+function requireCommon () {
+	if (hasRequiredCommon) return common;
+	hasRequiredCommon = 1;
+	/**
+	 * This is the common logic for both the Node.js and web browser
+	 * implementations of `debug()`.
+	 */
+
+	function setup(env) {
+		createDebug.debug = createDebug;
+		createDebug.default = createDebug;
+		createDebug.coerce = coerce;
+		createDebug.disable = disable;
+		createDebug.enable = enable;
+		createDebug.enabled = enabled;
+		createDebug.humanize = requireMs();
+		createDebug.destroy = destroy;
+
+		Object.keys(env).forEach(key => {
+			createDebug[key] = env[key];
+		});
+
+		/**
+		* The currently active debug mode names, and names to skip.
+		*/
+
+		createDebug.names = [];
+		createDebug.skips = [];
+
+		/**
+		* Map of special "%n" handling functions, for the debug "format" argument.
+		*
+		* Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
+		*/
+		createDebug.formatters = {};
+
+		/**
+		* Selects a color for a debug namespace
+		* @param {String} namespace The namespace string for the debug instance to be colored
+		* @return {Number|String} An ANSI color code for the given namespace
+		* @api private
+		*/
+		function selectColor(namespace) {
+			let hash = 0;
+
+			for (let i = 0; i < namespace.length; i++) {
+				hash = ((hash << 5) - hash) + namespace.charCodeAt(i);
+				hash |= 0; // Convert to 32bit integer
+			}
+
+			return createDebug.colors[Math.abs(hash) % createDebug.colors.length];
+		}
+		createDebug.selectColor = selectColor;
+
+		/**
+		* Create a debugger with the given `namespace`.
+		*
+		* @param {String} namespace
+		* @return {Function}
+		* @api public
+		*/
+		function createDebug(namespace) {
+			let prevTime;
+			let enableOverride = null;
+			let namespacesCache;
+			let enabledCache;
+
+			function debug(...args) {
+				// Disabled?
+				if (!debug.enabled) {
+					return;
+				}
+
+				const self = debug;
+
+				// Set `diff` timestamp
+				const curr = Number(new Date());
+				const ms = curr - (prevTime || curr);
+				self.diff = ms;
+				self.prev = prevTime;
+				self.curr = curr;
+				prevTime = curr;
+
+				args[0] = createDebug.coerce(args[0]);
+
+				if (typeof args[0] !== 'string') {
+					// Anything else let's inspect with %O
+					args.unshift('%O');
+				}
+
+				// Apply any `formatters` transformations
+				let index = 0;
+				args[0] = args[0].replace(/%([a-zA-Z%])/g, (match, format) => {
+					// If we encounter an escaped % then don't increase the array index
+					if (match === '%%') {
+						return '%';
+					}
+					index++;
+					const formatter = createDebug.formatters[format];
+					if (typeof formatter === 'function') {
+						const val = args[index];
+						match = formatter.call(self, val);
+
+						// Now we need to remove `args[index]` since it's inlined in the `format`
+						args.splice(index, 1);
+						index--;
+					}
+					return match;
+				});
+
+				// Apply env-specific formatting (colors, etc.)
+				createDebug.formatArgs.call(self, args);
+
+				const logFn = self.log || createDebug.log;
+				logFn.apply(self, args);
+			}
+
+			debug.namespace = namespace;
+			debug.useColors = createDebug.useColors();
+			debug.color = createDebug.selectColor(namespace);
+			debug.extend = extend;
+			debug.destroy = createDebug.destroy; // XXX Temporary. Will be removed in the next major release.
+
+			Object.defineProperty(debug, 'enabled', {
+				enumerable: true,
+				configurable: false,
+				get: () => {
+					if (enableOverride !== null) {
+						return enableOverride;
+					}
+					if (namespacesCache !== createDebug.namespaces) {
+						namespacesCache = createDebug.namespaces;
+						enabledCache = createDebug.enabled(namespace);
+					}
+
+					return enabledCache;
+				},
+				set: v => {
+					enableOverride = v;
+				}
+			});
+
+			// Env-specific initialization logic for debug instances
+			if (typeof createDebug.init === 'function') {
+				createDebug.init(debug);
+			}
+
+			return debug;
+		}
+
+		function extend(namespace, delimiter) {
+			const newDebug = createDebug(this.namespace + (typeof delimiter === 'undefined' ? ':' : delimiter) + namespace);
+			newDebug.log = this.log;
+			return newDebug;
+		}
+
+		/**
+		* Enables a debug mode by namespaces. This can include modes
+		* separated by a colon and wildcards.
+		*
+		* @param {String} namespaces
+		* @api public
+		*/
+		function enable(namespaces) {
+			createDebug.save(namespaces);
+			createDebug.namespaces = namespaces;
+
+			createDebug.names = [];
+			createDebug.skips = [];
+
+			const split = (typeof namespaces === 'string' ? namespaces : '')
+				.trim()
+				.replace(/\s+/g, ',')
+				.split(',')
+				.filter(Boolean);
+
+			for (const ns of split) {
+				if (ns[0] === '-') {
+					createDebug.skips.push(ns.slice(1));
+				} else {
+					createDebug.names.push(ns);
+				}
+			}
+		}
+
+		/**
+		 * Checks if the given string matches a namespace template, honoring
+		 * asterisks as wildcards.
+		 *
+		 * @param {String} search
+		 * @param {String} template
+		 * @return {Boolean}
+		 */
+		function matchesTemplate(search, template) {
+			let searchIndex = 0;
+			let templateIndex = 0;
+			let starIndex = -1;
+			let matchIndex = 0;
+
+			while (searchIndex < search.length) {
+				if (templateIndex < template.length && (template[templateIndex] === search[searchIndex] || template[templateIndex] === '*')) {
+					// Match character or proceed with wildcard
+					if (template[templateIndex] === '*') {
+						starIndex = templateIndex;
+						matchIndex = searchIndex;
+						templateIndex++; // Skip the '*'
+					} else {
+						searchIndex++;
+						templateIndex++;
+					}
+				} else if (starIndex !== -1) { // eslint-disable-line no-negated-condition
+					// Backtrack to the last '*' and try to match more characters
+					templateIndex = starIndex + 1;
+					matchIndex++;
+					searchIndex = matchIndex;
+				} else {
+					return false; // No match
+				}
+			}
+
+			// Handle trailing '*' in template
+			while (templateIndex < template.length && template[templateIndex] === '*') {
+				templateIndex++;
+			}
+
+			return templateIndex === template.length;
+		}
+
+		/**
+		* Disable debug output.
+		*
+		* @return {String} namespaces
+		* @api public
+		*/
+		function disable() {
+			const namespaces = [
+				...createDebug.names,
+				...createDebug.skips.map(namespace => '-' + namespace)
+			].join(',');
+			createDebug.enable('');
+			return namespaces;
+		}
+
+		/**
+		* Returns true if the given mode name is enabled, false otherwise.
+		*
+		* @param {String} name
+		* @return {Boolean}
+		* @api public
+		*/
+		function enabled(name) {
+			for (const skip of createDebug.skips) {
+				if (matchesTemplate(name, skip)) {
+					return false;
+				}
+			}
+
+			for (const ns of createDebug.names) {
+				if (matchesTemplate(name, ns)) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/**
+		* Coerce `val`.
+		*
+		* @param {Mixed} val
+		* @return {Mixed}
+		* @api private
+		*/
+		function coerce(val) {
+			if (val instanceof Error) {
+				return val.stack || val.message;
+			}
+			return val;
+		}
+
+		/**
+		* XXX DO NOT USE. This is a temporary stub function.
+		* XXX It WILL be removed in the next major release.
+		*/
+		function destroy() {
+			console.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');
+		}
+
+		createDebug.enable(createDebug.load());
+
+		return createDebug;
+	}
+
+	common = setup;
+	return common;
+}
+
+/* eslint-env browser */
+
+var hasRequiredBrowser;
+
+function requireBrowser () {
+	if (hasRequiredBrowser) return browser.exports;
+	hasRequiredBrowser = 1;
+	(function (module, exports) {
+		/**
+		 * This is the web browser implementation of `debug()`.
+		 */
+
+		exports.formatArgs = formatArgs;
+		exports.save = save;
+		exports.load = load;
+		exports.useColors = useColors;
+		exports.storage = localstorage();
+		exports.destroy = (() => {
+			let warned = false;
+
+			return () => {
+				if (!warned) {
+					warned = true;
+					console.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');
+				}
+			};
+		})();
+
+		/**
+		 * Colors.
+		 */
+
+		exports.colors = [
+			'#0000CC',
+			'#0000FF',
+			'#0033CC',
+			'#0033FF',
+			'#0066CC',
+			'#0066FF',
+			'#0099CC',
+			'#0099FF',
+			'#00CC00',
+			'#00CC33',
+			'#00CC66',
+			'#00CC99',
+			'#00CCCC',
+			'#00CCFF',
+			'#3300CC',
+			'#3300FF',
+			'#3333CC',
+			'#3333FF',
+			'#3366CC',
+			'#3366FF',
+			'#3399CC',
+			'#3399FF',
+			'#33CC00',
+			'#33CC33',
+			'#33CC66',
+			'#33CC99',
+			'#33CCCC',
+			'#33CCFF',
+			'#6600CC',
+			'#6600FF',
+			'#6633CC',
+			'#6633FF',
+			'#66CC00',
+			'#66CC33',
+			'#9900CC',
+			'#9900FF',
+			'#9933CC',
+			'#9933FF',
+			'#99CC00',
+			'#99CC33',
+			'#CC0000',
+			'#CC0033',
+			'#CC0066',
+			'#CC0099',
+			'#CC00CC',
+			'#CC00FF',
+			'#CC3300',
+			'#CC3333',
+			'#CC3366',
+			'#CC3399',
+			'#CC33CC',
+			'#CC33FF',
+			'#CC6600',
+			'#CC6633',
+			'#CC9900',
+			'#CC9933',
+			'#CCCC00',
+			'#CCCC33',
+			'#FF0000',
+			'#FF0033',
+			'#FF0066',
+			'#FF0099',
+			'#FF00CC',
+			'#FF00FF',
+			'#FF3300',
+			'#FF3333',
+			'#FF3366',
+			'#FF3399',
+			'#FF33CC',
+			'#FF33FF',
+			'#FF6600',
+			'#FF6633',
+			'#FF9900',
+			'#FF9933',
+			'#FFCC00',
+			'#FFCC33'
+		];
+
+		/**
+		 * Currently only WebKit-based Web Inspectors, Firefox >= v31,
+		 * and the Firebug extension (any Firefox version) are known
+		 * to support "%c" CSS customizations.
+		 *
+		 * TODO: add a `localStorage` variable to explicitly enable/disable colors
+		 */
+
+		// eslint-disable-next-line complexity
+		function useColors() {
+			// NB: In an Electron preload script, document will be defined but not fully
+			// initialized. Since we know we're in Chrome, we'll just detect this case
+			// explicitly
+			if (typeof window !== 'undefined' && window.process && (window.process.type === 'renderer' || window.process.__nwjs)) {
+				return true;
+			}
+
+			// Internet Explorer and Edge do not support colors.
+			if (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)) {
+				return false;
+			}
+
+			let m;
+
+			// Is webkit? http://stackoverflow.com/a/16459606/376773
+			// document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
+			// eslint-disable-next-line no-return-assign
+			return (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
+				// Is firebug? http://stackoverflow.com/a/398120/376773
+				(typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
+				// Is firefox >= v31?
+				// https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+				(typeof navigator !== 'undefined' && navigator.userAgent && (m = navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/)) && parseInt(m[1], 10) >= 31) ||
+				// Double check webkit in userAgent just in case we are in a worker
+				(typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/));
+		}
+
+		/**
+		 * Colorize log arguments if enabled.
+		 *
+		 * @api public
+		 */
+
+		function formatArgs(args) {
+			args[0] = (this.useColors ? '%c' : '') +
+				this.namespace +
+				(this.useColors ? ' %c' : ' ') +
+				args[0] +
+				(this.useColors ? '%c ' : ' ') +
+				'+' + module.exports.humanize(this.diff);
+
+			if (!this.useColors) {
+				return;
+			}
+
+			const c = 'color: ' + this.color;
+			args.splice(1, 0, c, 'color: inherit');
+
+			// The final "%c" is somewhat tricky, because there could be other
+			// arguments passed either before or after the %c, so we need to
+			// figure out the correct index to insert the CSS into
+			let index = 0;
+			let lastC = 0;
+			args[0].replace(/%[a-zA-Z%]/g, match => {
+				if (match === '%%') {
+					return;
+				}
+				index++;
+				if (match === '%c') {
+					// We only are interested in the *last* %c
+					// (the user may have provided their own)
+					lastC = index;
+				}
+			});
+
+			args.splice(lastC, 0, c);
+		}
+
+		/**
+		 * Invokes `console.debug()` when available.
+		 * No-op when `console.debug` is not a "function".
+		 * If `console.debug` is not available, falls back
+		 * to `console.log`.
+		 *
+		 * @api public
+		 */
+		exports.log = console.debug || console.log || (() => {});
+
+		/**
+		 * Save `namespaces`.
+		 *
+		 * @param {String} namespaces
+		 * @api private
+		 */
+		function save(namespaces) {
+			try {
+				if (namespaces) {
+					exports.storage.setItem('debug', namespaces);
+				} else {
+					exports.storage.removeItem('debug');
+				}
+			} catch (error) {
+				// Swallow
+				// XXX (@Qix-) should we be logging these?
+			}
+		}
+
+		/**
+		 * Load `namespaces`.
+		 *
+		 * @return {String} returns the previously persisted debug modes
+		 * @api private
+		 */
+		function load() {
+			let r;
+			try {
+				r = exports.storage.getItem('debug') || exports.storage.getItem('DEBUG') ;
+			} catch (error) {
+				// Swallow
+				// XXX (@Qix-) should we be logging these?
+			}
+
+			// If debug isn't set in LS, and we're in Electron, try to load $DEBUG
+			if (!r && typeof process !== 'undefined' && 'env' in process) {
+				r = process.env.DEBUG;
+			}
+
+			return r;
+		}
+
+		/**
+		 * Localstorage attempts to return the localstorage.
+		 *
+		 * This is necessary because safari throws
+		 * when a user disables cookies/localstorage
+		 * and you attempt to access it.
+		 *
+		 * @return {LocalStorage}
+		 * @api private
+		 */
+
+		function localstorage() {
+			try {
+				// TVMLKit (Apple TV JS Runtime) does not have a window object, just localStorage in the global context
+				// The Browser also has localStorage in the global context.
+				return localStorage;
+			} catch (error) {
+				// Swallow
+				// XXX (@Qix-) should we be logging these?
+			}
+		}
+
+		module.exports = requireCommon()(exports);
+
+		const {formatters} = module.exports;
+
+		/**
+		 * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
+		 */
+
+		formatters.j = function (v) {
+			try {
+				return JSON.stringify(v);
+			} catch (error) {
+				return '[UnexpectedJSONParseError]: ' + error.message;
+			}
+		};
+	} (browser, browser.exports));
+	return browser.exports;
+}
+
+var node = {exports: {}};
+
+var hasFlag;
+var hasRequiredHasFlag;
+
+function requireHasFlag () {
+	if (hasRequiredHasFlag) return hasFlag;
+	hasRequiredHasFlag = 1;
+
+	hasFlag = (flag, argv = process.argv) => {
+		const prefix = flag.startsWith('-') ? '' : (flag.length === 1 ? '-' : '--');
+		const position = argv.indexOf(prefix + flag);
+		const terminatorPosition = argv.indexOf('--');
+		return position !== -1 && (terminatorPosition === -1 || position < terminatorPosition);
+	};
+	return hasFlag;
+}
+
+var supportsColor_1;
+var hasRequiredSupportsColor;
+
+function requireSupportsColor () {
+	if (hasRequiredSupportsColor) return supportsColor_1;
+	hasRequiredSupportsColor = 1;
+	const os = require$$0__default;
+	const tty = require$$1$6;
+	const hasFlag = requireHasFlag();
+
+	const {env} = process;
+
+	let forceColor;
+	if (hasFlag('no-color') ||
+		hasFlag('no-colors') ||
+		hasFlag('color=false') ||
+		hasFlag('color=never')) {
+		forceColor = 0;
+	} else if (hasFlag('color') ||
+		hasFlag('colors') ||
+		hasFlag('color=true') ||
+		hasFlag('color=always')) {
+		forceColor = 1;
+	}
+
+	if ('FORCE_COLOR' in env) {
+		if (env.FORCE_COLOR === 'true') {
+			forceColor = 1;
+		} else if (env.FORCE_COLOR === 'false') {
+			forceColor = 0;
+		} else {
+			forceColor = env.FORCE_COLOR.length === 0 ? 1 : Math.min(parseInt(env.FORCE_COLOR, 10), 3);
+		}
+	}
+
+	function translateLevel(level) {
+		if (level === 0) {
+			return false;
+		}
+
+		return {
+			level,
+			hasBasic: true,
+			has256: level >= 2,
+			has16m: level >= 3
+		};
+	}
+
+	function supportsColor(haveStream, streamIsTTY) {
+		if (forceColor === 0) {
+			return 0;
+		}
+
+		if (hasFlag('color=16m') ||
+			hasFlag('color=full') ||
+			hasFlag('color=truecolor')) {
+			return 3;
+		}
+
+		if (hasFlag('color=256')) {
+			return 2;
+		}
+
+		if (haveStream && !streamIsTTY && forceColor === undefined) {
+			return 0;
+		}
+
+		const min = forceColor || 0;
+
+		if (env.TERM === 'dumb') {
+			return min;
+		}
+
+		if (process.platform === 'win32') {
+			// Windows 10 build 10586 is the first Windows release that supports 256 colors.
+			// Windows 10 build 14931 is the first release that supports 16m/TrueColor.
+			const osRelease = os.release().split('.');
+			if (
+				Number(osRelease[0]) >= 10 &&
+				Number(osRelease[2]) >= 10586
+			) {
+				return Number(osRelease[2]) >= 14931 ? 3 : 2;
+			}
+
+			return 1;
+		}
+
+		if ('CI' in env) {
+			if (['TRAVIS', 'CIRCLECI', 'APPVEYOR', 'GITLAB_CI', 'GITHUB_ACTIONS', 'BUILDKITE'].some(sign => sign in env) || env.CI_NAME === 'codeship') {
+				return 1;
+			}
+
+			return min;
+		}
+
+		if ('TEAMCITY_VERSION' in env) {
+			return /^(9\.(0*[1-9]\d*)\.|\d{2,}\.)/.test(env.TEAMCITY_VERSION) ? 1 : 0;
+		}
+
+		if (env.COLORTERM === 'truecolor') {
+			return 3;
+		}
+
+		if ('TERM_PROGRAM' in env) {
+			const version = parseInt((env.TERM_PROGRAM_VERSION || '').split('.')[0], 10);
+
+			switch (env.TERM_PROGRAM) {
+				case 'iTerm.app':
+					return version >= 3 ? 3 : 2;
+				case 'Apple_Terminal':
+					return 2;
+				// No default
+			}
+		}
+
+		if (/-256(color)?$/i.test(env.TERM)) {
+			return 2;
+		}
+
+		if (/^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(env.TERM)) {
+			return 1;
+		}
+
+		if ('COLORTERM' in env) {
+			return 1;
+		}
+
+		return min;
+	}
+
+	function getSupportLevel(stream) {
+		const level = supportsColor(stream, stream && stream.isTTY);
+		return translateLevel(level);
+	}
+
+	supportsColor_1 = {
+		supportsColor: getSupportLevel,
+		stdout: translateLevel(supportsColor(true, tty.isatty(1))),
+		stderr: translateLevel(supportsColor(true, tty.isatty(2)))
+	};
+	return supportsColor_1;
+}
+
+/**
+ * Module dependencies.
+ */
+
+var hasRequiredNode;
+
+function requireNode () {
+	if (hasRequiredNode) return node.exports;
+	hasRequiredNode = 1;
+	(function (module, exports) {
+		const tty = require$$1$6;
+		const util = require$$0$2;
+
+		/**
+		 * This is the Node.js implementation of `debug()`.
+		 */
+
+		exports.init = init;
+		exports.log = log;
+		exports.formatArgs = formatArgs;
+		exports.save = save;
+		exports.load = load;
+		exports.useColors = useColors;
+		exports.destroy = util.deprecate(
+			() => {},
+			'Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.'
+		);
+
+		/**
+		 * Colors.
+		 */
+
+		exports.colors = [6, 2, 3, 4, 5, 1];
+
+		try {
+			// Optional dependency (as in, doesn't need to be installed, NOT like optionalDependencies in package.json)
+			// eslint-disable-next-line import/no-extraneous-dependencies
+			const supportsColor = requireSupportsColor();
+
+			if (supportsColor && (supportsColor.stderr || supportsColor).level >= 2) {
+				exports.colors = [
+					20,
+					21,
+					26,
+					27,
+					32,
+					33,
+					38,
+					39,
+					40,
+					41,
+					42,
+					43,
+					44,
+					45,
+					56,
+					57,
+					62,
+					63,
+					68,
+					69,
+					74,
+					75,
+					76,
+					77,
+					78,
+					79,
+					80,
+					81,
+					92,
+					93,
+					98,
+					99,
+					112,
+					113,
+					128,
+					129,
+					134,
+					135,
+					148,
+					149,
+					160,
+					161,
+					162,
+					163,
+					164,
+					165,
+					166,
+					167,
+					168,
+					169,
+					170,
+					171,
+					172,
+					173,
+					178,
+					179,
+					184,
+					185,
+					196,
+					197,
+					198,
+					199,
+					200,
+					201,
+					202,
+					203,
+					204,
+					205,
+					206,
+					207,
+					208,
+					209,
+					214,
+					215,
+					220,
+					221
+				];
+			}
+		} catch (error) {
+			// Swallow - we only care if `supports-color` is available; it doesn't have to be.
+		}
+
+		/**
+		 * Build up the default `inspectOpts` object from the environment variables.
+		 *
+		 *   $ DEBUG_COLORS=no DEBUG_DEPTH=10 DEBUG_SHOW_HIDDEN=enabled node script.js
+		 */
+
+		exports.inspectOpts = Object.keys(process.env).filter(key => {
+			return /^debug_/i.test(key);
+		}).reduce((obj, key) => {
+			// Camel-case
+			const prop = key
+				.substring(6)
+				.toLowerCase()
+				.replace(/_([a-z])/g, (_, k) => {
+					return k.toUpperCase();
+				});
+
+			// Coerce string value into JS value
+			let val = process.env[key];
+			if (/^(yes|on|true|enabled)$/i.test(val)) {
+				val = true;
+			} else if (/^(no|off|false|disabled)$/i.test(val)) {
+				val = false;
+			} else if (val === 'null') {
+				val = null;
+			} else {
+				val = Number(val);
+			}
+
+			obj[prop] = val;
+			return obj;
+		}, {});
+
+		/**
+		 * Is stdout a TTY? Colored output is enabled when `true`.
+		 */
+
+		function useColors() {
+			return 'colors' in exports.inspectOpts ?
+				Boolean(exports.inspectOpts.colors) :
+				tty.isatty(process.stderr.fd);
+		}
+
+		/**
+		 * Adds ANSI color escape codes if enabled.
+		 *
+		 * @api public
+		 */
+
+		function formatArgs(args) {
+			const {namespace: name, useColors} = this;
+
+			if (useColors) {
+				const c = this.color;
+				const colorCode = '\u001B[3' + (c < 8 ? c : '8;5;' + c);
+				const prefix = `  ${colorCode};1m${name} \u001B[0m`;
+
+				args[0] = prefix + args[0].split('\n').join('\n' + prefix);
+				args.push(colorCode + 'm+' + module.exports.humanize(this.diff) + '\u001B[0m');
+			} else {
+				args[0] = getDate() + name + ' ' + args[0];
+			}
+		}
+
+		function getDate() {
+			if (exports.inspectOpts.hideDate) {
+				return '';
+			}
+			return new Date().toISOString() + ' ';
+		}
+
+		/**
+		 * Invokes `util.formatWithOptions()` with the specified arguments and writes to stderr.
+		 */
+
+		function log(...args) {
+			return process.stderr.write(util.formatWithOptions(exports.inspectOpts, ...args) + '\n');
+		}
+
+		/**
+		 * Save `namespaces`.
+		 *
+		 * @param {String} namespaces
+		 * @api private
+		 */
+		function save(namespaces) {
+			if (namespaces) {
+				process.env.DEBUG = namespaces;
+			} else {
+				// If you set a process.env field to null or undefined, it gets cast to the
+				// string 'null' or 'undefined'. Just delete instead.
+				delete process.env.DEBUG;
+			}
+		}
+
+		/**
+		 * Load `namespaces`.
+		 *
+		 * @return {String} returns the previously persisted debug modes
+		 * @api private
+		 */
+
+		function load() {
+			return process.env.DEBUG;
+		}
+
+		/**
+		 * Init logic for `debug` instances.
+		 *
+		 * Create a new `inspectOpts` object in case `useColors` is set
+		 * differently for a particular `debug` instance.
+		 */
+
+		function init(debug) {
+			debug.inspectOpts = {};
+
+			const keys = Object.keys(exports.inspectOpts);
+			for (let i = 0; i < keys.length; i++) {
+				debug.inspectOpts[keys[i]] = exports.inspectOpts[keys[i]];
+			}
+		}
+
+		module.exports = requireCommon()(exports);
+
+		const {formatters} = module.exports;
+
+		/**
+		 * Map %o to `util.inspect()`, all on a single line.
+		 */
+
+		formatters.o = function (v) {
+			this.inspectOpts.colors = this.useColors;
+			return util.inspect(v, this.inspectOpts)
+				.split('\n')
+				.map(str => str.trim())
+				.join(' ');
+		};
+
+		/**
+		 * Map %O to `util.inspect()`, allowing multiple lines if needed.
+		 */
+
+		formatters.O = function (v) {
+			this.inspectOpts.colors = this.useColors;
+			return util.inspect(v, this.inspectOpts);
+		};
+	} (node, node.exports));
+	return node.exports;
+}
+
+/**
+ * Detect Electron renderer / nwjs process, which is node, but we should
+ * treat as a browser.
+ */
+
+var hasRequiredSrc$1;
+
+function requireSrc$1 () {
+	if (hasRequiredSrc$1) return src.exports;
+	hasRequiredSrc$1 = 1;
+	if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
+		src.exports = requireBrowser();
+	} else {
+		src.exports = requireNode();
+	}
+	return src.exports;
+}
+
+var hasRequiredSrc;
+
+function requireSrc () {
+	if (hasRequiredSrc) return src$1;
+	hasRequiredSrc = 1;
+	(function (exports) {
+		var __importDefault = (src$1 && src$1.__importDefault) || function (mod) {
+		    return (mod && mod.__esModule) ? mod : { "default": mod };
+		};
+		Object.defineProperty(exports, "__esModule", { value: true });
+		const fs_1 = fs__default;
+		const debug_1 = __importDefault(requireSrc$1());
+		const log = debug_1.default('@kwsites/file-exists');
+		function check(path, isFile, isDirectory) {
+		    log(`checking %s`, path);
+		    try {
+		        const stat = fs_1.statSync(path);
+		        if (stat.isFile() && isFile) {
+		            log(`[OK] path represents a file`);
+		            return true;
+		        }
+		        if (stat.isDirectory() && isDirectory) {
+		            log(`[OK] path represents a directory`);
+		            return true;
+		        }
+		        log(`[FAIL] path represents something other than a file or directory`);
+		        return false;
+		    }
+		    catch (e) {
+		        if (e.code === 'ENOENT') {
+		            log(`[FAIL] path is not accessible: %o`, e);
+		            return false;
+		        }
+		        log(`[FATAL] %o`, e);
+		        throw e;
+		    }
+		}
+		/**
+		 * Synchronous validation of a path existing either as a file or as a directory.
+		 *
+		 * @param {string} path The path to check
+		 * @param {number} type One or both of the exported numeric constants
+		 */
+		function exists(path, type = exports.READABLE) {
+		    return check(path, (type & exports.FILE) > 0, (type & exports.FOLDER) > 0);
+		}
+		exports.exists = exists;
+		/**
+		 * Constant representing a file
+		 */
+		exports.FILE = 1;
+		/**
+		 * Constant representing a folder
+		 */
+		exports.FOLDER = 2;
+		/**
+		 * Constant representing either a file or a folder
+		 */
+		exports.READABLE = exports.FILE + exports.FOLDER;
+
+	} (src$1));
+	return src$1;
+}
+
+var hasRequiredDist$3;
+
+function requireDist$3 () {
+	if (hasRequiredDist$3) return dist$3;
+	hasRequiredDist$3 = 1;
+	(function (exports) {
+		function __export(m) {
+		    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+		}
+		Object.defineProperty(exports, "__esModule", { value: true });
+		__export(requireSrc());
+
+	} (dist$3));
+	return dist$3;
+}
+
+var distExports$2 = requireDist$3();
+
+var srcExports = requireSrc$1();
+var debug = /*@__PURE__*/getDefaultExportFromCjs(srcExports);
+
+var dist$2 = {};
+
+var hasRequiredDist$2;
+
+function requireDist$2 () {
+	if (hasRequiredDist$2) return dist$2;
+	hasRequiredDist$2 = 1;
+	Object.defineProperty(dist$2, "__esModule", { value: true });
+	dist$2.createDeferred = dist$2.deferred = void 0;
+	/**
+	 * Creates a new `DeferredPromise`
+	 *
+	 * ```typescript
+	 import {deferred} from '@kwsites/promise-deferred`;
+	 ```
+	 */
+	function deferred() {
+	    let done;
+	    let fail;
+	    let status = 'pending';
+	    const promise = new Promise((_done, _fail) => {
+	        done = _done;
+	        fail = _fail;
+	    });
+	    return {
+	        promise,
+	        done(result) {
+	            if (status === 'pending') {
+	                status = 'resolved';
+	                done(result);
+	            }
+	        },
+	        fail(error) {
+	            if (status === 'pending') {
+	                status = 'rejected';
+	                fail(error);
+	            }
+	        },
+	        get fulfilled() {
+	            return status !== 'pending';
+	        },
+	        get status() {
+	            return status;
+	        },
+	    };
+	}
+	dist$2.deferred = deferred;
+	/**
+	 * Alias of the exported `deferred` function, to help consumers wanting to use `deferred` as the
+	 * local variable name rather than the factory import name, without needing to rename on import.
+	 *
+	 * ```typescript
+	 import {createDeferred} from '@kwsites/promise-deferred`;
+	 ```
+	 */
+	dist$2.createDeferred = deferred;
+	/**
+	 * Default export allows use as:
+	 *
+	 * ```typescript
+	 import deferred from '@kwsites/promise-deferred`;
+	 ```
+	 */
+	dist$2.default = deferred;
+
+	return dist$2;
+}
+
+var distExports$1 = requireDist$2();
+
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __esm = (fn, res) => function __init() {
+  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+};
+var __commonJS = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// src/lib/args/pathspec.ts
+function pathspec(...paths) {
+  const key = new String(paths);
+  cache.set(key, paths);
+  return key;
+}
+function isPathSpec(path) {
+  return path instanceof String && cache.has(path);
+}
+function toPaths(pathSpec) {
+  return cache.get(pathSpec) || [];
+}
+var cache;
+var init_pathspec = __esm({
+  "src/lib/args/pathspec.ts"() {
+    cache = /* @__PURE__ */ new WeakMap();
+  }
+});
+
+// src/lib/errors/git-error.ts
+var GitError;
+var init_git_error = __esm({
+  "src/lib/errors/git-error.ts"() {
+    GitError = class extends Error {
+      constructor(task, message) {
+        super(message);
+        this.task = task;
+        Object.setPrototypeOf(this, new.target.prototype);
+      }
+    };
+  }
+});
+
+// src/lib/errors/git-response-error.ts
+var GitResponseError;
+var init_git_response_error = __esm({
+  "src/lib/errors/git-response-error.ts"() {
+    init_git_error();
+    GitResponseError = class extends GitError {
+      constructor(git, message) {
+        super(void 0, message || String(git));
+        this.git = git;
+      }
+    };
+  }
+});
+
+// src/lib/errors/task-configuration-error.ts
+var TaskConfigurationError;
+var init_task_configuration_error = __esm({
+  "src/lib/errors/task-configuration-error.ts"() {
+    init_git_error();
+    TaskConfigurationError = class extends GitError {
+      constructor(message) {
+        super(void 0, message);
+      }
+    };
+  }
+});
+function asFunction(source) {
+  if (typeof source !== "function") {
+    return NOOP;
+  }
+  return source;
+}
+function isUserFunction(source) {
+  return typeof source === "function" && source !== NOOP;
+}
+function splitOn(input, char) {
+  const index = input.indexOf(char);
+  if (index <= 0) {
+    return [input, ""];
+  }
+  return [input.substr(0, index), input.substr(index + 1)];
+}
+function first(input, offset = 0) {
+  return isArrayLike(input) && input.length > offset ? input[offset] : void 0;
+}
+function last(input, offset = 0) {
+  if (isArrayLike(input) && input.length > offset) {
+    return input[input.length - 1 - offset];
+  }
+}
+function isArrayLike(input) {
+  return !!(input && typeof input.length === "number");
+}
+function toLinesWithContent(input = "", trimmed2 = true, separator = "\n") {
+  return input.split(separator).reduce((output, line) => {
+    const lineContent = trimmed2 ? line.trim() : line;
+    if (lineContent) {
+      output.push(lineContent);
+    }
+    return output;
+  }, []);
+}
+function forEachLineWithContent(input, callback) {
+  return toLinesWithContent(input, true).map((line) => callback(line));
+}
+function folderExists(path) {
+  return distExports$2.exists(path, distExports$2.FOLDER);
+}
+function append(target, item) {
+  if (Array.isArray(target)) {
+    if (!target.includes(item)) {
+      target.push(item);
+    }
+  } else {
+    target.add(item);
+  }
+  return item;
+}
+function including(target, item) {
+  if (Array.isArray(target) && !target.includes(item)) {
+    target.push(item);
+  }
+  return target;
+}
+function remove(target, item) {
+  if (Array.isArray(target)) {
+    const index = target.indexOf(item);
+    if (index >= 0) {
+      target.splice(index, 1);
+    }
+  } else {
+    target.delete(item);
+  }
+  return item;
+}
+function asArray(source) {
+  return Array.isArray(source) ? source : [source];
+}
+function asCamelCase(str) {
+  return str.replace(/[\s-]+(.)/g, (_all, chr) => {
+    return chr.toUpperCase();
+  });
+}
+function asStringArray(source) {
+  return asArray(source).map(String);
+}
+function asNumber(source, onNaN = 0) {
+  if (source == null) {
+    return onNaN;
+  }
+  const num = parseInt(source, 10);
+  return isNaN(num) ? onNaN : num;
+}
+function prefixedArray(input, prefix) {
+  const output = [];
+  for (let i = 0, max = input.length; i < max; i++) {
+    output.push(prefix, input[i]);
+  }
+  return output;
+}
+function bufferToString(input) {
+  return (Array.isArray(input) ? Buffer$1.concat(input) : input).toString("utf-8");
+}
+function pick(source, properties) {
+  return Object.assign(
+    {},
+    ...properties.map((property) => property in source ? { [property]: source[property] } : {})
+  );
+}
+function delay(duration = 0) {
+  return new Promise((done) => setTimeout(done, duration));
+}
+function orVoid(input) {
+  if (input === false) {
+    return void 0;
+  }
+  return input;
+}
+var NULL$1, NOOP, objectToString;
+var init_util = __esm({
+  "src/lib/utils/util.ts"() {
+    NULL$1 = "\0";
+    NOOP = () => {
+    };
+    objectToString = Object.prototype.toString.call.bind(Object.prototype.toString);
+  }
+});
+
+// src/lib/utils/argument-filters.ts
+function filterType(input, filter, def) {
+  if (filter(input)) {
+    return input;
+  }
+  return arguments.length > 2 ? def : void 0;
+}
+function filterPrimitives(input, omit) {
+  const type = isPathSpec(input) ? "string" : typeof input;
+  return /number|string|boolean/.test(type) && (!omit || !omit.includes(type));
+}
+function filterPlainObject(input) {
+  return !!input && objectToString(input) === "[object Object]";
+}
+function filterFunction(input) {
+  return typeof input === "function";
+}
+var filterArray, filterString, filterStringArray, filterStringOrStringArray, filterHasLength;
+var init_argument_filters = __esm({
+  "src/lib/utils/argument-filters.ts"() {
+    init_util();
+    init_pathspec();
+    filterArray = (input) => {
+      return Array.isArray(input);
+    };
+    filterString = (input) => {
+      return typeof input === "string";
+    };
+    filterStringArray = (input) => {
+      return Array.isArray(input) && input.every(filterString);
+    };
+    filterStringOrStringArray = (input) => {
+      return filterString(input) || Array.isArray(input) && input.every(filterString);
+    };
+    filterHasLength = (input) => {
+      if (input == null || "number|boolean|function".includes(typeof input)) {
+        return false;
+      }
+      return Array.isArray(input) || typeof input === "string" || typeof input.length === "number";
+    };
+  }
+});
+
+// src/lib/utils/exit-codes.ts
+var ExitCodes;
+var init_exit_codes = __esm({
+  "src/lib/utils/exit-codes.ts"() {
+    ExitCodes = /* @__PURE__ */ ((ExitCodes2) => {
+      ExitCodes2[ExitCodes2["SUCCESS"] = 0] = "SUCCESS";
+      ExitCodes2[ExitCodes2["ERROR"] = 1] = "ERROR";
+      ExitCodes2[ExitCodes2["NOT_FOUND"] = -2] = "NOT_FOUND";
+      ExitCodes2[ExitCodes2["UNCLEAN"] = 128] = "UNCLEAN";
+      return ExitCodes2;
+    })(ExitCodes || {});
+  }
+});
+
+// src/lib/utils/git-output-streams.ts
+var GitOutputStreams;
+var init_git_output_streams = __esm({
+  "src/lib/utils/git-output-streams.ts"() {
+    GitOutputStreams = class _GitOutputStreams {
+      constructor(stdOut, stdErr) {
+        this.stdOut = stdOut;
+        this.stdErr = stdErr;
+      }
+      asStrings() {
+        return new _GitOutputStreams(this.stdOut.toString("utf8"), this.stdErr.toString("utf8"));
+      }
+    };
+  }
+});
+
+// src/lib/utils/line-parser.ts
+var LineParser, RemoteLineParser;
+var init_line_parser = __esm({
+  "src/lib/utils/line-parser.ts"() {
+    LineParser = class {
+      constructor(regExp, useMatches) {
+        this.matches = [];
+        this.parse = (line, target) => {
+          this.resetMatches();
+          if (!this._regExp.every((reg, index) => this.addMatch(reg, index, line(index)))) {
+            return false;
+          }
+          return this.useMatches(target, this.prepareMatches()) !== false;
+        };
+        this._regExp = Array.isArray(regExp) ? regExp : [regExp];
+        if (useMatches) {
+          this.useMatches = useMatches;
+        }
+      }
+      // @ts-ignore
+      useMatches(target, match) {
+        throw new Error(`LineParser:useMatches not implemented`);
+      }
+      resetMatches() {
+        this.matches.length = 0;
+      }
+      prepareMatches() {
+        return this.matches;
+      }
+      addMatch(reg, index, line) {
+        const matched = line && reg.exec(line);
+        if (matched) {
+          this.pushMatch(index, matched);
+        }
+        return !!matched;
+      }
+      pushMatch(_index, matched) {
+        this.matches.push(...matched.slice(1));
+      }
+    };
+    RemoteLineParser = class extends LineParser {
+      addMatch(reg, index, line) {
+        return /^remote:\s/.test(String(line)) && super.addMatch(reg, index, line);
+      }
+      pushMatch(index, matched) {
+        if (index > 0 || matched.length > 1) {
+          super.pushMatch(index, matched);
+        }
+      }
+    };
+  }
+});
+
+// src/lib/utils/simple-git-options.ts
+function createInstanceConfig(...options) {
+  const baseDir = process.cwd();
+  const config = Object.assign(
+    { baseDir, ...defaultOptions },
+    ...options.filter((o) => typeof o === "object" && o)
+  );
+  config.baseDir = config.baseDir || baseDir;
+  config.trimmed = config.trimmed === true;
+  return config;
+}
+var defaultOptions;
+var init_simple_git_options = __esm({
+  "src/lib/utils/simple-git-options.ts"() {
+    defaultOptions = {
+      binary: "git",
+      maxConcurrentProcesses: 5,
+      config: [],
+      trimmed: false
+    };
+  }
+});
+
+// src/lib/utils/task-options.ts
+function appendTaskOptions(options, commands = []) {
+  if (!filterPlainObject(options)) {
+    return commands;
+  }
+  return Object.keys(options).reduce((commands2, key) => {
+    const value = options[key];
+    if (isPathSpec(value)) {
+      commands2.push(value);
+    } else if (filterPrimitives(value, ["boolean"])) {
+      commands2.push(key + "=" + value);
+    } else if (Array.isArray(value)) {
+      for (const v of value) {
+        if (!filterPrimitives(v, ["string", "number"])) {
+          commands2.push(key + "=" + v);
+        }
+      }
+    } else {
+      commands2.push(key);
+    }
+    return commands2;
+  }, commands);
+}
+function getTrailingOptions(args, initialPrimitive = 0, objectOnly = false) {
+  const command = [];
+  for (let i = 0, max = initialPrimitive < 0 ? args.length : initialPrimitive; i < max; i++) {
+    if ("string|number".includes(typeof args[i])) {
+      command.push(String(args[i]));
+    }
+  }
+  appendTaskOptions(trailingOptionsArgument(args), command);
+  if (!objectOnly) {
+    command.push(...trailingArrayArgument(args));
+  }
+  return command;
+}
+function trailingArrayArgument(args) {
+  const hasTrailingCallback = typeof last(args) === "function";
+  return filterType(last(args, hasTrailingCallback ? 1 : 0), filterArray, []);
+}
+function trailingOptionsArgument(args) {
+  const hasTrailingCallback = filterFunction(last(args));
+  return filterType(last(args, hasTrailingCallback ? 1 : 0), filterPlainObject);
+}
+function trailingFunctionArgument(args, includeNoop = true) {
+  const callback = asFunction(last(args));
+  return includeNoop || isUserFunction(callback) ? callback : void 0;
+}
+var init_task_options = __esm({
+  "src/lib/utils/task-options.ts"() {
+    init_argument_filters();
+    init_util();
+    init_pathspec();
+  }
+});
+
+// src/lib/utils/task-parser.ts
+function callTaskParser(parser4, streams) {
+  return parser4(streams.stdOut, streams.stdErr);
+}
+function parseStringResponse(result, parsers12, texts, trim = true) {
+  asArray(texts).forEach((text) => {
+    for (let lines = toLinesWithContent(text, trim), i = 0, max = lines.length; i < max; i++) {
+      const line = (offset = 0) => {
+        if (i + offset >= max) {
+          return;
+        }
+        return lines[i + offset];
+      };
+      parsers12.some(({ parse }) => parse(line, result));
+    }
+  });
+  return result;
+}
+var init_task_parser = __esm({
+  "src/lib/utils/task-parser.ts"() {
+    init_util();
+  }
+});
+
+// src/lib/utils/index.ts
+var utils_exports = {};
+__export(utils_exports, {
+  ExitCodes: () => ExitCodes,
+  GitOutputStreams: () => GitOutputStreams,
+  LineParser: () => LineParser,
+  NOOP: () => NOOP,
+  NULL: () => NULL$1,
+  RemoteLineParser: () => RemoteLineParser,
+  append: () => append,
+  appendTaskOptions: () => appendTaskOptions,
+  asArray: () => asArray,
+  asCamelCase: () => asCamelCase,
+  asFunction: () => asFunction,
+  asNumber: () => asNumber,
+  asStringArray: () => asStringArray,
+  bufferToString: () => bufferToString,
+  callTaskParser: () => callTaskParser,
+  createInstanceConfig: () => createInstanceConfig,
+  delay: () => delay,
+  filterArray: () => filterArray,
+  filterFunction: () => filterFunction,
+  filterHasLength: () => filterHasLength,
+  filterPlainObject: () => filterPlainObject,
+  filterPrimitives: () => filterPrimitives,
+  filterString: () => filterString,
+  filterStringArray: () => filterStringArray,
+  filterStringOrStringArray: () => filterStringOrStringArray,
+  filterType: () => filterType,
+  first: () => first,
+  folderExists: () => folderExists,
+  forEachLineWithContent: () => forEachLineWithContent,
+  getTrailingOptions: () => getTrailingOptions,
+  including: () => including,
+  isUserFunction: () => isUserFunction,
+  last: () => last,
+  objectToString: () => objectToString,
+  orVoid: () => orVoid,
+  parseStringResponse: () => parseStringResponse,
+  pick: () => pick,
+  prefixedArray: () => prefixedArray,
+  remove: () => remove,
+  splitOn: () => splitOn,
+  toLinesWithContent: () => toLinesWithContent,
+  trailingFunctionArgument: () => trailingFunctionArgument,
+  trailingOptionsArgument: () => trailingOptionsArgument
+});
+var init_utils = __esm({
+  "src/lib/utils/index.ts"() {
+    init_argument_filters();
+    init_exit_codes();
+    init_git_output_streams();
+    init_line_parser();
+    init_simple_git_options();
+    init_task_options();
+    init_task_parser();
+    init_util();
+  }
+});
+
+// src/lib/tasks/check-is-repo.ts
+var check_is_repo_exports = {};
+__export(check_is_repo_exports, {
+  CheckRepoActions: () => CheckRepoActions,
+  checkIsBareRepoTask: () => checkIsBareRepoTask,
+  checkIsRepoRootTask: () => checkIsRepoRootTask,
+  checkIsRepoTask: () => checkIsRepoTask
+});
+function checkIsRepoTask(action) {
+  switch (action) {
+    case "bare" /* BARE */:
+      return checkIsBareRepoTask();
+    case "root" /* IS_REPO_ROOT */:
+      return checkIsRepoRootTask();
+  }
+  const commands = ["rev-parse", "--is-inside-work-tree"];
+  return {
+    commands,
+    format: "utf-8",
+    onError,
+    parser: parser$1
+  };
+}
+function checkIsRepoRootTask() {
+  const commands = ["rev-parse", "--git-dir"];
+  return {
+    commands,
+    format: "utf-8",
+    onError,
+    parser(path) {
+      return /^\.(git)?$/.test(path.trim());
+    }
+  };
+}
+function checkIsBareRepoTask() {
+  const commands = ["rev-parse", "--is-bare-repository"];
+  return {
+    commands,
+    format: "utf-8",
+    onError,
+    parser: parser$1
+  };
+}
+function isNotRepoMessage(error) {
+  return /(Not a git repository|Kein Git-Repository)/i.test(String(error));
+}
+var CheckRepoActions, onError, parser$1;
+var init_check_is_repo = __esm({
+  "src/lib/tasks/check-is-repo.ts"() {
+    init_utils();
+    CheckRepoActions = /* @__PURE__ */ ((CheckRepoActions2) => {
+      CheckRepoActions2["BARE"] = "bare";
+      CheckRepoActions2["IN_TREE"] = "tree";
+      CheckRepoActions2["IS_REPO_ROOT"] = "root";
+      return CheckRepoActions2;
+    })(CheckRepoActions || {});
+    onError = ({ exitCode }, error, done, fail) => {
+      if (exitCode === 128 /* UNCLEAN */ && isNotRepoMessage(error)) {
+        return done(Buffer.from("false"));
+      }
+      fail(error);
+    };
+    parser$1 = (text) => {
+      return text.trim() === "true";
+    };
+  }
+});
+
+// src/lib/responses/CleanSummary.ts
+function cleanSummaryParser(dryRun, text) {
+  const summary = new CleanResponse(dryRun);
+  const regexp = dryRun ? dryRunRemovalRegexp : removalRegexp;
+  toLinesWithContent(text).forEach((line) => {
+    const removed = line.replace(regexp, "");
+    summary.paths.push(removed);
+    (isFolderRegexp.test(removed) ? summary.folders : summary.files).push(removed);
+  });
+  return summary;
+}
+var CleanResponse, removalRegexp, dryRunRemovalRegexp, isFolderRegexp;
+var init_CleanSummary = __esm({
+  "src/lib/responses/CleanSummary.ts"() {
+    init_utils();
+    CleanResponse = class {
+      constructor(dryRun) {
+        this.dryRun = dryRun;
+        this.paths = [];
+        this.files = [];
+        this.folders = [];
+      }
+    };
+    removalRegexp = /^[a-z]+\s*/i;
+    dryRunRemovalRegexp = /^[a-z]+\s+[a-z]+\s*/i;
+    isFolderRegexp = /\/$/;
+  }
+});
+
+// src/lib/tasks/task.ts
+var task_exports = {};
+__export(task_exports, {
+  EMPTY_COMMANDS: () => EMPTY_COMMANDS,
+  adhocExecTask: () => adhocExecTask,
+  configurationErrorTask: () => configurationErrorTask,
+  isBufferTask: () => isBufferTask,
+  isEmptyTask: () => isEmptyTask,
+  straightThroughBufferTask: () => straightThroughBufferTask,
+  straightThroughStringTask: () => straightThroughStringTask
+});
+function adhocExecTask(parser4) {
+  return {
+    commands: EMPTY_COMMANDS,
+    format: "empty",
+    parser: parser4
+  };
+}
+function configurationErrorTask(error) {
+  return {
+    commands: EMPTY_COMMANDS,
+    format: "empty",
+    parser() {
+      throw typeof error === "string" ? new TaskConfigurationError(error) : error;
+    }
+  };
+}
+function straightThroughStringTask(commands, trimmed2 = false) {
+  return {
+    commands,
+    format: "utf-8",
+    parser(text) {
+      return trimmed2 ? String(text).trim() : text;
+    }
+  };
+}
+function straightThroughBufferTask(commands) {
+  return {
+    commands,
+    format: "buffer",
+    parser(buffer) {
+      return buffer;
+    }
+  };
+}
+function isBufferTask(task) {
+  return task.format === "buffer";
+}
+function isEmptyTask(task) {
+  return task.format === "empty" || !task.commands.length;
+}
+var EMPTY_COMMANDS;
+var init_task = __esm({
+  "src/lib/tasks/task.ts"() {
+    init_task_configuration_error();
+    EMPTY_COMMANDS = [];
+  }
+});
+
+// src/lib/tasks/clean.ts
+var clean_exports = {};
+__export(clean_exports, {
+  CONFIG_ERROR_INTERACTIVE_MODE: () => CONFIG_ERROR_INTERACTIVE_MODE,
+  CONFIG_ERROR_MODE_REQUIRED: () => CONFIG_ERROR_MODE_REQUIRED,
+  CONFIG_ERROR_UNKNOWN_OPTION: () => CONFIG_ERROR_UNKNOWN_OPTION,
+  CleanOptions: () => CleanOptions,
+  cleanTask: () => cleanTask,
+  cleanWithOptionsTask: () => cleanWithOptionsTask,
+  isCleanOptionsArray: () => isCleanOptionsArray
+});
+function cleanWithOptionsTask(mode, customArgs) {
+  const { cleanMode, options, valid } = getCleanOptions(mode);
+  if (!cleanMode) {
+    return configurationErrorTask(CONFIG_ERROR_MODE_REQUIRED);
+  }
+  if (!valid.options) {
+    return configurationErrorTask(CONFIG_ERROR_UNKNOWN_OPTION + JSON.stringify(mode));
+  }
+  options.push(...customArgs);
+  if (options.some(isInteractiveMode)) {
+    return configurationErrorTask(CONFIG_ERROR_INTERACTIVE_MODE);
+  }
+  return cleanTask(cleanMode, options);
+}
+function cleanTask(mode, customArgs) {
+  const commands = ["clean", `-${mode}`, ...customArgs];
+  return {
+    commands,
+    format: "utf-8",
+    parser(text) {
+      return cleanSummaryParser(mode === "n" /* DRY_RUN */, text);
+    }
+  };
+}
+function isCleanOptionsArray(input) {
+  return Array.isArray(input) && input.every((test) => CleanOptionValues.has(test));
+}
+function getCleanOptions(input) {
+  let cleanMode;
+  let options = [];
+  let valid = { cleanMode: false, options: true };
+  input.replace(/[^a-z]i/g, "").split("").forEach((char) => {
+    if (isCleanMode(char)) {
+      cleanMode = char;
+      valid.cleanMode = true;
+    } else {
+      valid.options = valid.options && isKnownOption(options[options.length] = `-${char}`);
+    }
+  });
+  return {
+    cleanMode,
+    options,
+    valid
+  };
+}
+function isCleanMode(cleanMode) {
+  return cleanMode === "f" /* FORCE */ || cleanMode === "n" /* DRY_RUN */;
+}
+function isKnownOption(option) {
+  return /^-[a-z]$/i.test(option) && CleanOptionValues.has(option.charAt(1));
+}
+function isInteractiveMode(option) {
+  if (/^-[^\-]/.test(option)) {
+    return option.indexOf("i") > 0;
+  }
+  return option === "--interactive";
+}
+var CONFIG_ERROR_INTERACTIVE_MODE, CONFIG_ERROR_MODE_REQUIRED, CONFIG_ERROR_UNKNOWN_OPTION, CleanOptions, CleanOptionValues;
+var init_clean = __esm({
+  "src/lib/tasks/clean.ts"() {
+    init_CleanSummary();
+    init_utils();
+    init_task();
+    CONFIG_ERROR_INTERACTIVE_MODE = "Git clean interactive mode is not supported";
+    CONFIG_ERROR_MODE_REQUIRED = 'Git clean mode parameter ("n" or "f") is required';
+    CONFIG_ERROR_UNKNOWN_OPTION = "Git clean unknown option found in: ";
+    CleanOptions = /* @__PURE__ */ ((CleanOptions2) => {
+      CleanOptions2["DRY_RUN"] = "n";
+      CleanOptions2["FORCE"] = "f";
+      CleanOptions2["IGNORED_INCLUDED"] = "x";
+      CleanOptions2["IGNORED_ONLY"] = "X";
+      CleanOptions2["EXCLUDING"] = "e";
+      CleanOptions2["QUIET"] = "q";
+      CleanOptions2["RECURSIVE"] = "d";
+      return CleanOptions2;
+    })(CleanOptions || {});
+    CleanOptionValues = /* @__PURE__ */ new Set([
+      "i",
+      ...asStringArray(Object.values(CleanOptions))
+    ]);
+  }
+});
+
+// src/lib/responses/ConfigList.ts
+function configListParser(text) {
+  const config = new ConfigList();
+  for (const item of configParser(text)) {
+    config.addValue(item.file, String(item.key), item.value);
+  }
+  return config;
+}
+function configGetParser(text, key) {
+  let value = null;
+  const values = [];
+  const scopes = /* @__PURE__ */ new Map();
+  for (const item of configParser(text, key)) {
+    if (item.key !== key) {
+      continue;
+    }
+    values.push(value = item.value);
+    if (!scopes.has(item.file)) {
+      scopes.set(item.file, []);
+    }
+    scopes.get(item.file).push(value);
+  }
+  return {
+    key,
+    paths: Array.from(scopes.keys()),
+    scopes,
+    value,
+    values
+  };
+}
+function configFilePath(filePath) {
+  return filePath.replace(/^(file):/, "");
+}
+function* configParser(text, requestedKey = null) {
+  const lines = text.split("\0");
+  for (let i = 0, max = lines.length - 1; i < max; ) {
+    const file = configFilePath(lines[i++]);
+    let value = lines[i++];
+    let key = requestedKey;
+    if (value.includes("\n")) {
+      const line = splitOn(value, "\n");
+      key = line[0];
+      value = line[1];
+    }
+    yield { file, key, value };
+  }
+}
+var ConfigList;
+var init_ConfigList = __esm({
+  "src/lib/responses/ConfigList.ts"() {
+    init_utils();
+    ConfigList = class {
+      constructor() {
+        this.files = [];
+        this.values = /* @__PURE__ */ Object.create(null);
+      }
+      get all() {
+        if (!this._all) {
+          this._all = this.files.reduce((all, file) => {
+            return Object.assign(all, this.values[file]);
+          }, {});
+        }
+        return this._all;
+      }
+      addFile(file) {
+        if (!(file in this.values)) {
+          const latest = last(this.files);
+          this.values[file] = latest ? Object.create(this.values[latest]) : {};
+          this.files.push(file);
+        }
+        return this.values[file];
+      }
+      addValue(file, key, value) {
+        const values = this.addFile(file);
+        if (!values.hasOwnProperty(key)) {
+          values[key] = value;
+        } else if (Array.isArray(values[key])) {
+          values[key].push(value);
+        } else {
+          values[key] = [values[key], value];
+        }
+        this._all = void 0;
+      }
+    };
+  }
+});
+
+// src/lib/tasks/config.ts
+function asConfigScope(scope, fallback) {
+  if (typeof scope === "string" && GitConfigScope.hasOwnProperty(scope)) {
+    return scope;
+  }
+  return fallback;
+}
+function addConfigTask(key, value, append2, scope) {
+  const commands = ["config", `--${scope}`];
+  if (append2) {
+    commands.push("--add");
+  }
+  commands.push(key, value);
+  return {
+    commands,
+    format: "utf-8",
+    parser(text) {
+      return text;
+    }
+  };
+}
+function getConfigTask(key, scope) {
+  const commands = ["config", "--null", "--show-origin", "--get-all", key];
+  if (scope) {
+    commands.splice(1, 0, `--${scope}`);
+  }
+  return {
+    commands,
+    format: "utf-8",
+    parser(text) {
+      return configGetParser(text, key);
+    }
+  };
+}
+function listConfigTask(scope) {
+  const commands = ["config", "--list", "--show-origin", "--null"];
+  if (scope) {
+    commands.push(`--${scope}`);
+  }
+  return {
+    commands,
+    format: "utf-8",
+    parser(text) {
+      return configListParser(text);
+    }
+  };
+}
+function config_default() {
+  return {
+    addConfig(key, value, ...rest) {
+      return this._runTask(
+        addConfigTask(
+          key,
+          value,
+          rest[0] === true,
+          asConfigScope(rest[1], "local" /* local */)
+        ),
+        trailingFunctionArgument(arguments)
+      );
+    },
+    getConfig(key, scope) {
+      return this._runTask(
+        getConfigTask(key, asConfigScope(scope, void 0)),
+        trailingFunctionArgument(arguments)
+      );
+    },
+    listConfig(...rest) {
+      return this._runTask(
+        listConfigTask(asConfigScope(rest[0], void 0)),
+        trailingFunctionArgument(arguments)
+      );
+    }
+  };
+}
+var GitConfigScope;
+var init_config = __esm({
+  "src/lib/tasks/config.ts"() {
+    init_ConfigList();
+    init_utils();
+    GitConfigScope = /* @__PURE__ */ ((GitConfigScope2) => {
+      GitConfigScope2["system"] = "system";
+      GitConfigScope2["global"] = "global";
+      GitConfigScope2["local"] = "local";
+      GitConfigScope2["worktree"] = "worktree";
+      return GitConfigScope2;
+    })(GitConfigScope || {});
+  }
+});
+
+// src/lib/tasks/diff-name-status.ts
+function isDiffNameStatus(input) {
+  return diffNameStatus.has(input);
+}
+var DiffNameStatus, diffNameStatus;
+var init_diff_name_status = __esm({
+  "src/lib/tasks/diff-name-status.ts"() {
+    DiffNameStatus = /* @__PURE__ */ ((DiffNameStatus2) => {
+      DiffNameStatus2["ADDED"] = "A";
+      DiffNameStatus2["COPIED"] = "C";
+      DiffNameStatus2["DELETED"] = "D";
+      DiffNameStatus2["MODIFIED"] = "M";
+      DiffNameStatus2["RENAMED"] = "R";
+      DiffNameStatus2["CHANGED"] = "T";
+      DiffNameStatus2["UNMERGED"] = "U";
+      DiffNameStatus2["UNKNOWN"] = "X";
+      DiffNameStatus2["BROKEN"] = "B";
+      return DiffNameStatus2;
+    })(DiffNameStatus || {});
+    diffNameStatus = new Set(Object.values(DiffNameStatus));
+  }
+});
+
+// src/lib/tasks/grep.ts
+function grepQueryBuilder(...params) {
+  return new GrepQuery().param(...params);
+}
+function parseGrep(grep) {
+  const paths = /* @__PURE__ */ new Set();
+  const results = {};
+  forEachLineWithContent(grep, (input) => {
+    const [path, line, preview] = input.split(NULL$1);
+    paths.add(path);
+    (results[path] = results[path] || []).push({
+      line: asNumber(line),
+      path,
+      preview
+    });
+  });
+  return {
+    paths,
+    results
+  };
+}
+function grep_default() {
+  return {
+    grep(searchTerm) {
+      const then = trailingFunctionArgument(arguments);
+      const options = getTrailingOptions(arguments);
+      for (const option of disallowedOptions) {
+        if (options.includes(option)) {
+          return this._runTask(
+            configurationErrorTask(`git.grep: use of "${option}" is not supported.`),
+            then
+          );
+        }
+      }
+      if (typeof searchTerm === "string") {
+        searchTerm = grepQueryBuilder().param(searchTerm);
+      }
+      const commands = ["grep", "--null", "-n", "--full-name", ...options, ...searchTerm];
+      return this._runTask(
+        {
+          commands,
+          format: "utf-8",
+          parser(stdOut) {
+            return parseGrep(stdOut);
+          }
+        },
+        then
+      );
+    }
+  };
+}
+var disallowedOptions, Query, _a$2, GrepQuery;
+var init_grep = __esm({
+  "src/lib/tasks/grep.ts"() {
+    init_utils();
+    init_task();
+    disallowedOptions = ["-h"];
+    Query = Symbol("grepQuery");
+    GrepQuery = class {
+      constructor() {
+        this[_a$2] = [];
+      }
+      *[(_a$2 = Query, Symbol.iterator)]() {
+        for (const query of this[Query]) {
+          yield query;
+        }
+      }
+      and(...and) {
+        and.length && this[Query].push("--and", "(", ...prefixedArray(and, "-e"), ")");
+        return this;
+      }
+      param(...param) {
+        this[Query].push(...prefixedArray(param, "-e"));
+        return this;
+      }
+    };
+  }
+});
+
+// src/lib/tasks/reset.ts
+var reset_exports = {};
+__export(reset_exports, {
+  ResetMode: () => ResetMode,
+  getResetMode: () => getResetMode,
+  resetTask: () => resetTask
+});
+function resetTask(mode, customArgs) {
+  const commands = ["reset"];
+  if (isValidResetMode(mode)) {
+    commands.push(`--${mode}`);
+  }
+  commands.push(...customArgs);
+  return straightThroughStringTask(commands);
+}
+function getResetMode(mode) {
+  if (isValidResetMode(mode)) {
+    return mode;
+  }
+  switch (typeof mode) {
+    case "string":
+    case "undefined":
+      return "soft" /* SOFT */;
+  }
+  return;
+}
+function isValidResetMode(mode) {
+  return ResetModes.includes(mode);
+}
+var ResetMode, ResetModes;
+var init_reset = __esm({
+  "src/lib/tasks/reset.ts"() {
+    init_task();
+    ResetMode = /* @__PURE__ */ ((ResetMode2) => {
+      ResetMode2["MIXED"] = "mixed";
+      ResetMode2["SOFT"] = "soft";
+      ResetMode2["HARD"] = "hard";
+      ResetMode2["MERGE"] = "merge";
+      ResetMode2["KEEP"] = "keep";
+      return ResetMode2;
+    })(ResetMode || {});
+    ResetModes = Array.from(Object.values(ResetMode));
+  }
+});
+function createLog() {
+  return debug("simple-git");
+}
+function prefixedLogger(to, prefix, forward) {
+  if (!prefix || !String(prefix).replace(/\s*/, "")) {
+    return !forward ? to : (message, ...args) => {
+      to(message, ...args);
+      forward(message, ...args);
+    };
+  }
+  return (message, ...args) => {
+    to(`%s ${message}`, prefix, ...args);
+    if (forward) {
+      forward(message, ...args);
+    }
+  };
+}
+function childLoggerName(name, childDebugger, { namespace: parentNamespace }) {
+  if (typeof name === "string") {
+    return name;
+  }
+  const childNamespace = childDebugger && childDebugger.namespace || "";
+  if (childNamespace.startsWith(parentNamespace)) {
+    return childNamespace.substr(parentNamespace.length + 1);
+  }
+  return childNamespace || parentNamespace;
+}
+function createLogger(label, verbose, initialStep, infoDebugger = createLog()) {
+  const labelPrefix = label && `[${label}]` || "";
+  const spawned = [];
+  const debugDebugger = typeof verbose === "string" ? infoDebugger.extend(verbose) : verbose;
+  const key = childLoggerName(filterType(verbose, filterString), debugDebugger, infoDebugger);
+  return step(initialStep);
+  function sibling(name, initial) {
+    return append(
+      spawned,
+      createLogger(label, key.replace(/^[^:]+/, name), initial, infoDebugger)
+    );
+  }
+  function step(phase) {
+    const stepPrefix = phase && `[${phase}]` || "";
+    const debug2 = debugDebugger && prefixedLogger(debugDebugger, stepPrefix) || NOOP;
+    const info = prefixedLogger(infoDebugger, `${labelPrefix} ${stepPrefix}`, debug2);
+    return Object.assign(debugDebugger ? debug2 : info, {
+      label,
+      sibling,
+      info,
+      step
+    });
+  }
+}
+var init_git_logger = __esm({
+  "src/lib/git-logger.ts"() {
+    init_utils();
+    debug.formatters.L = (value) => String(filterHasLength(value) ? value.length : "-");
+    debug.formatters.B = (value) => {
+      if (Buffer.isBuffer(value)) {
+        return value.toString("utf8");
+      }
+      return objectToString(value);
+    };
+  }
+});
+
+// src/lib/runners/tasks-pending-queue.ts
+var TasksPendingQueue;
+var init_tasks_pending_queue = __esm({
+  "src/lib/runners/tasks-pending-queue.ts"() {
+    init_git_error();
+    init_git_logger();
+    TasksPendingQueue = class _TasksPendingQueue {
+      constructor(logLabel = "GitExecutor") {
+        this.logLabel = logLabel;
+        this._queue = /* @__PURE__ */ new Map();
+      }
+      withProgress(task) {
+        return this._queue.get(task);
+      }
+      createProgress(task) {
+        const name = _TasksPendingQueue.getName(task.commands[0]);
+        const logger = createLogger(this.logLabel, name);
+        return {
+          task,
+          logger,
+          name
+        };
+      }
+      push(task) {
+        const progress = this.createProgress(task);
+        progress.logger("Adding task to the queue, commands = %o", task.commands);
+        this._queue.set(task, progress);
+        return progress;
+      }
+      fatal(err) {
+        for (const [task, { logger }] of Array.from(this._queue.entries())) {
+          if (task === err.task) {
+            logger.info(`Failed %o`, err);
+            logger(
+              `Fatal exception, any as-yet un-started tasks run through this executor will not be attempted`
+            );
+          } else {
+            logger.info(
+              `A fatal exception occurred in a previous task, the queue has been purged: %o`,
+              err.message
+            );
+          }
+          this.complete(task);
+        }
+        if (this._queue.size !== 0) {
+          throw new Error(`Queue size should be zero after fatal: ${this._queue.size}`);
+        }
+      }
+      complete(task) {
+        const progress = this.withProgress(task);
+        if (progress) {
+          this._queue.delete(task);
+        }
+      }
+      attempt(task) {
+        const progress = this.withProgress(task);
+        if (!progress) {
+          throw new GitError(void 0, "TasksPendingQueue: attempt called for an unknown task");
+        }
+        progress.logger("Starting task");
+        return progress;
+      }
+      static getName(name = "empty") {
+        return `task:${name}:${++_TasksPendingQueue.counter}`;
+      }
+      static {
+        this.counter = 0;
+      }
+    };
+  }
+});
+function pluginContext(task, commands) {
+  return {
+    method: first(task.commands) || "",
+    commands
+  };
+}
+function onErrorReceived(target, logger) {
+  return (err) => {
+    logger(`[ERROR] child process exception %o`, err);
+    target.push(Buffer.from(String(err.stack), "ascii"));
+  };
+}
+function onDataReceived(target, name, logger, output) {
+  return (buffer) => {
+    logger(`%s received %L bytes`, name, buffer);
+    output(`%B`, buffer);
+    target.push(buffer);
+  };
+}
+var GitExecutorChain;
+var init_git_executor_chain = __esm({
+  "src/lib/runners/git-executor-chain.ts"() {
+    init_git_error();
+    init_task();
+    init_utils();
+    init_tasks_pending_queue();
+    GitExecutorChain = class {
+      constructor(_executor, _scheduler, _plugins) {
+        this._executor = _executor;
+        this._scheduler = _scheduler;
+        this._plugins = _plugins;
+        this._chain = Promise.resolve();
+        this._queue = new TasksPendingQueue();
+      }
+      get cwd() {
+        return this._cwd || this._executor.cwd;
+      }
+      set cwd(cwd) {
+        this._cwd = cwd;
+      }
+      get env() {
+        return this._executor.env;
+      }
+      get outputHandler() {
+        return this._executor.outputHandler;
+      }
+      chain() {
+        return this;
+      }
+      push(task) {
+        this._queue.push(task);
+        return this._chain = this._chain.then(() => this.attemptTask(task));
+      }
+      async attemptTask(task) {
+        const onScheduleComplete = await this._scheduler.next();
+        const onQueueComplete = () => this._queue.complete(task);
+        try {
+          const { logger } = this._queue.attempt(task);
+          return await (isEmptyTask(task) ? this.attemptEmptyTask(task, logger) : this.attemptRemoteTask(task, logger));
+        } catch (e) {
+          throw this.onFatalException(task, e);
+        } finally {
+          onQueueComplete();
+          onScheduleComplete();
+        }
+      }
+      onFatalException(task, e) {
+        const gitError = e instanceof GitError ? Object.assign(e, { task }) : new GitError(task, e && String(e));
+        this._chain = Promise.resolve();
+        this._queue.fatal(gitError);
+        return gitError;
+      }
+      async attemptRemoteTask(task, logger) {
+        const binary = this._plugins.exec("spawn.binary", "", pluginContext(task, task.commands));
+        const args = this._plugins.exec(
+          "spawn.args",
+          [...task.commands],
+          pluginContext(task, task.commands)
+        );
+        const raw = await this.gitResponse(
+          task,
+          binary,
+          args,
+          this.outputHandler,
+          logger.step("SPAWN")
+        );
+        const outputStreams = await this.handleTaskData(task, args, raw, logger.step("HANDLE"));
+        logger(`passing response to task's parser as a %s`, task.format);
+        if (isBufferTask(task)) {
+          return callTaskParser(task.parser, outputStreams);
+        }
+        return callTaskParser(task.parser, outputStreams.asStrings());
+      }
+      async attemptEmptyTask(task, logger) {
+        logger(`empty task bypassing child process to call to task's parser`);
+        return task.parser(this);
+      }
+      handleTaskData(task, args, result, logger) {
+        const { exitCode, rejection, stdOut, stdErr } = result;
+        return new Promise((done, fail) => {
+          logger(`Preparing to handle process response exitCode=%d stdOut=`, exitCode);
+          const { error } = this._plugins.exec(
+            "task.error",
+            { error: rejection },
+            {
+              ...pluginContext(task, args),
+              ...result
+            }
+          );
+          if (error && task.onError) {
+            logger.info(`exitCode=%s handling with custom error handler`);
+            return task.onError(
+              result,
+              error,
+              (newStdOut) => {
+                logger.info(`custom error handler treated as success`);
+                logger(`custom error returned a %s`, objectToString(newStdOut));
+                done(
+                  new GitOutputStreams(
+                    Array.isArray(newStdOut) ? Buffer.concat(newStdOut) : newStdOut,
+                    Buffer.concat(stdErr)
+                  )
+                );
+              },
+              fail
+            );
+          }
+          if (error) {
+            logger.info(
+              `handling as error: exitCode=%s stdErr=%s rejection=%o`,
+              exitCode,
+              stdErr.length,
+              rejection
+            );
+            return fail(error);
+          }
+          logger.info(`retrieving task output complete`);
+          done(new GitOutputStreams(Buffer.concat(stdOut), Buffer.concat(stdErr)));
+        });
+      }
+      async gitResponse(task, command, args, outputHandler, logger) {
+        const outputLogger = logger.sibling("output");
+        const spawnOptions = this._plugins.exec(
+          "spawn.options",
+          {
+            cwd: this.cwd,
+            env: this.env,
+            windowsHide: true
+          },
+          pluginContext(task, task.commands)
+        );
+        return new Promise((done) => {
+          const stdOut = [];
+          const stdErr = [];
+          logger.info(`%s %o`, command, args);
+          logger("%O", spawnOptions);
+          let rejection = this._beforeSpawn(task, args);
+          if (rejection) {
+            return done({
+              stdOut,
+              stdErr,
+              exitCode: 9901,
+              rejection
+            });
+          }
+          this._plugins.exec("spawn.before", void 0, {
+            ...pluginContext(task, args),
+            kill(reason) {
+              rejection = reason || rejection;
+            }
+          });
+          const spawned = spawn(command, args, spawnOptions);
+          spawned.stdout.on(
+            "data",
+            onDataReceived(stdOut, "stdOut", logger, outputLogger.step("stdOut"))
+          );
+          spawned.stderr.on(
+            "data",
+            onDataReceived(stdErr, "stdErr", logger, outputLogger.step("stdErr"))
+          );
+          spawned.on("error", onErrorReceived(stdErr, logger));
+          if (outputHandler) {
+            logger(`Passing child process stdOut/stdErr to custom outputHandler`);
+            outputHandler(command, spawned.stdout, spawned.stderr, [...args]);
+          }
+          this._plugins.exec("spawn.after", void 0, {
+            ...pluginContext(task, args),
+            spawned,
+            close(exitCode, reason) {
+              done({
+                stdOut,
+                stdErr,
+                exitCode,
+                rejection: rejection || reason
+              });
+            },
+            kill(reason) {
+              if (spawned.killed) {
+                return;
+              }
+              rejection = reason;
+              spawned.kill("SIGINT");
+            }
+          });
+        });
+      }
+      _beforeSpawn(task, args) {
+        let rejection;
+        this._plugins.exec("spawn.before", void 0, {
+          ...pluginContext(task, args),
+          kill(reason) {
+            rejection = reason || rejection;
+          }
+        });
+        return rejection;
+      }
+    };
+  }
+});
+
+// src/lib/runners/git-executor.ts
+var git_executor_exports = {};
+__export(git_executor_exports, {
+  GitExecutor: () => GitExecutor
+});
+var GitExecutor;
+var init_git_executor = __esm({
+  "src/lib/runners/git-executor.ts"() {
+    init_git_executor_chain();
+    GitExecutor = class {
+      constructor(cwd, _scheduler, _plugins) {
+        this.cwd = cwd;
+        this._scheduler = _scheduler;
+        this._plugins = _plugins;
+        this._chain = new GitExecutorChain(this, this._scheduler, this._plugins);
+      }
+      chain() {
+        return new GitExecutorChain(this, this._scheduler, this._plugins);
+      }
+      push(task) {
+        return this._chain.push(task);
+      }
+    };
+  }
+});
+
+// src/lib/task-callback.ts
+function taskCallback(task, response, callback = NOOP) {
+  const onSuccess = (data) => {
+    callback(null, data);
+  };
+  const onError2 = (err) => {
+    if (err?.task === task) {
+      callback(
+        err instanceof GitResponseError ? addDeprecationNoticeToError(err) : err,
+        void 0
+      );
+    }
+  };
+  response.then(onSuccess, onError2);
+}
+function addDeprecationNoticeToError(err) {
+  let log = (name) => {
+    console.warn(
+      `simple-git deprecation notice: accessing GitResponseError.${name} should be GitResponseError.git.${name}, this will no longer be available in version 3`
+    );
+    log = NOOP;
+  };
+  return Object.create(err, Object.getOwnPropertyNames(err.git).reduce(descriptorReducer, {}));
+  function descriptorReducer(all, name) {
+    if (name in err) {
+      return all;
+    }
+    all[name] = {
+      enumerable: false,
+      configurable: false,
+      get() {
+        log(name);
+        return err.git[name];
+      }
+    };
+    return all;
+  }
+}
+var init_task_callback = __esm({
+  "src/lib/task-callback.ts"() {
+    init_git_response_error();
+    init_utils();
+  }
+});
+
+// src/lib/tasks/change-working-directory.ts
+function changeWorkingDirectoryTask(directory, root) {
+  return adhocExecTask((instance) => {
+    if (!folderExists(directory)) {
+      throw new Error(`Git.cwd: cannot change to non-directory "${directory}"`);
+    }
+    return (root || instance).cwd = directory;
+  });
+}
+var init_change_working_directory = __esm({
+  "src/lib/tasks/change-working-directory.ts"() {
+    init_utils();
+    init_task();
+  }
+});
+
+// src/lib/tasks/checkout.ts
+function checkoutTask(args) {
+  const commands = ["checkout", ...args];
+  if (commands[1] === "-b" && commands.includes("-B")) {
+    commands[1] = remove(commands, "-B");
+  }
+  return straightThroughStringTask(commands);
+}
+function checkout_default() {
+  return {
+    checkout() {
+      return this._runTask(
+        checkoutTask(getTrailingOptions(arguments, 1)),
+        trailingFunctionArgument(arguments)
+      );
+    },
+    checkoutBranch(branchName, startPoint) {
+      return this._runTask(
+        checkoutTask(["-b", branchName, startPoint, ...getTrailingOptions(arguments)]),
+        trailingFunctionArgument(arguments)
+      );
+    },
+    checkoutLocalBranch(branchName) {
+      return this._runTask(
+        checkoutTask(["-b", branchName, ...getTrailingOptions(arguments)]),
+        trailingFunctionArgument(arguments)
+      );
+    }
+  };
+}
+var init_checkout = __esm({
+  "src/lib/tasks/checkout.ts"() {
+    init_utils();
+    init_task();
+  }
+});
+
+// src/lib/tasks/count-objects.ts
+function countObjectsResponse() {
+  return {
+    count: 0,
+    garbage: 0,
+    inPack: 0,
+    packs: 0,
+    prunePackable: 0,
+    size: 0,
+    sizeGarbage: 0,
+    sizePack: 0
+  };
+}
+function count_objects_default() {
+  return {
+    countObjects() {
+      return this._runTask({
+        commands: ["count-objects", "--verbose"],
+        format: "utf-8",
+        parser(stdOut) {
+          return parseStringResponse(countObjectsResponse(), [parser2], stdOut);
+        }
+      });
+    }
+  };
+}
+var parser2;
+var init_count_objects = __esm({
+  "src/lib/tasks/count-objects.ts"() {
+    init_utils();
+    parser2 = new LineParser(
+      /([a-z-]+): (\d+)$/,
+      (result, [key, value]) => {
+        const property = asCamelCase(key);
+        if (result.hasOwnProperty(property)) {
+          result[property] = asNumber(value);
+        }
+      }
+    );
+  }
+});
+
+// src/lib/parsers/parse-commit.ts
+function parseCommitResult(stdOut) {
+  const result = {
+    author: null,
+    branch: "",
+    commit: "",
+    root: false,
+    summary: {
+      changes: 0,
+      insertions: 0,
+      deletions: 0
+    }
+  };
+  return parseStringResponse(result, parsers, stdOut);
+}
+var parsers;
+var init_parse_commit = __esm({
+  "src/lib/parsers/parse-commit.ts"() {
+    init_utils();
+    parsers = [
+      new LineParser(/^\[([^\s]+)( \([^)]+\))? ([^\]]+)/, (result, [branch, root, commit]) => {
+        result.branch = branch;
+        result.commit = commit;
+        result.root = !!root;
+      }),
+      new LineParser(/\s*Author:\s(.+)/i, (result, [author]) => {
+        const parts = author.split("<");
+        const email = parts.pop();
+        if (!email || !email.includes("@")) {
+          return;
+        }
+        result.author = {
+          email: email.substr(0, email.length - 1),
+          name: parts.join("<").trim()
+        };
+      }),
+      new LineParser(
+        /(\d+)[^,]*(?:,\s*(\d+)[^,]*)(?:,\s*(\d+))/g,
+        (result, [changes, insertions, deletions]) => {
+          result.summary.changes = parseInt(changes, 10) || 0;
+          result.summary.insertions = parseInt(insertions, 10) || 0;
+          result.summary.deletions = parseInt(deletions, 10) || 0;
+        }
+      ),
+      new LineParser(
+        /^(\d+)[^,]*(?:,\s*(\d+)[^(]+\(([+-]))?/,
+        (result, [changes, lines, direction]) => {
+          result.summary.changes = parseInt(changes, 10) || 0;
+          const count = parseInt(lines, 10) || 0;
+          if (direction === "-") {
+            result.summary.deletions = count;
+          } else if (direction === "+") {
+            result.summary.insertions = count;
+          }
+        }
+      )
+    ];
+  }
+});
+
+// src/lib/tasks/commit.ts
+function commitTask(message, files, customArgs) {
+  const commands = [
+    "-c",
+    "core.abbrev=40",
+    "commit",
+    ...prefixedArray(message, "-m"),
+    ...files,
+    ...customArgs
+  ];
+  return {
+    commands,
+    format: "utf-8",
+    parser: parseCommitResult
+  };
+}
+function commit_default() {
+  return {
+    commit(message, ...rest) {
+      const next = trailingFunctionArgument(arguments);
+      const task = rejectDeprecatedSignatures(message) || commitTask(
+        asArray(message),
+        asArray(filterType(rest[0], filterStringOrStringArray, [])),
+        [...filterType(rest[1], filterArray, []), ...getTrailingOptions(arguments, 0, true)]
+      );
+      return this._runTask(task, next);
+    }
+  };
+  function rejectDeprecatedSignatures(message) {
+    return !filterStringOrStringArray(message) && configurationErrorTask(
+      `git.commit: requires the commit message to be supplied as a string/string[]`
+    );
+  }
+}
+var init_commit = __esm({
+  "src/lib/tasks/commit.ts"() {
+    init_parse_commit();
+    init_utils();
+    init_task();
+  }
+});
+
+// src/lib/tasks/first-commit.ts
+function first_commit_default() {
+  return {
+    firstCommit() {
+      return this._runTask(
+        straightThroughStringTask(["rev-list", "--max-parents=0", "HEAD"], true),
+        trailingFunctionArgument(arguments)
+      );
+    }
+  };
+}
+var init_first_commit = __esm({
+  "src/lib/tasks/first-commit.ts"() {
+    init_utils();
+    init_task();
+  }
+});
+
+// src/lib/tasks/hash-object.ts
+function hashObjectTask(filePath, write) {
+  const commands = ["hash-object", filePath];
+  if (write) {
+    commands.push("-w");
+  }
+  return straightThroughStringTask(commands, true);
+}
+var init_hash_object = __esm({
+  "src/lib/tasks/hash-object.ts"() {
+    init_task();
+  }
+});
+
+// src/lib/responses/InitSummary.ts
+function parseInit(bare, path, text) {
+  const response = String(text).trim();
+  let result;
+  if (result = initResponseRegex.exec(response)) {
+    return new InitSummary(bare, path, false, result[1]);
+  }
+  if (result = reInitResponseRegex.exec(response)) {
+    return new InitSummary(bare, path, true, result[1]);
+  }
+  let gitDir = "";
+  const tokens = response.split(" ");
+  while (tokens.length) {
+    const token = tokens.shift();
+    if (token === "in") {
+      gitDir = tokens.join(" ");
+      break;
+    }
+  }
+  return new InitSummary(bare, path, /^re/i.test(response), gitDir);
+}
+var InitSummary, initResponseRegex, reInitResponseRegex;
+var init_InitSummary = __esm({
+  "src/lib/responses/InitSummary.ts"() {
+    InitSummary = class {
+      constructor(bare, path, existing, gitDir) {
+        this.bare = bare;
+        this.path = path;
+        this.existing = existing;
+        this.gitDir = gitDir;
+      }
+    };
+    initResponseRegex = /^Init.+ repository in (.+)$/;
+    reInitResponseRegex = /^Rein.+ in (.+)$/;
+  }
+});
+
+// src/lib/tasks/init.ts
+function hasBareCommand(command) {
+  return command.includes(bareCommand);
+}
+function initTask(bare = false, path, customArgs) {
+  const commands = ["init", ...customArgs];
+  if (bare && !hasBareCommand(commands)) {
+    commands.splice(1, 0, bareCommand);
+  }
+  return {
+    commands,
+    format: "utf-8",
+    parser(text) {
+      return parseInit(commands.includes("--bare"), path, text);
+    }
+  };
+}
+var bareCommand;
+var init_init = __esm({
+  "src/lib/tasks/init.ts"() {
+    init_InitSummary();
+    bareCommand = "--bare";
+  }
+});
+
+// src/lib/args/log-format.ts
+function logFormatFromCommand(customArgs) {
+  for (let i = 0; i < customArgs.length; i++) {
+    const format = logFormatRegex.exec(customArgs[i]);
+    if (format) {
+      return `--${format[1]}`;
+    }
+  }
+  return "" /* NONE */;
+}
+function isLogFormat(customArg) {
+  return logFormatRegex.test(customArg);
+}
+var logFormatRegex;
+var init_log_format = __esm({
+  "src/lib/args/log-format.ts"() {
+    logFormatRegex = /^--(stat|numstat|name-only|name-status)(=|$)/;
+  }
+});
+
+// src/lib/responses/DiffSummary.ts
+var DiffSummary;
+var init_DiffSummary = __esm({
+  "src/lib/responses/DiffSummary.ts"() {
+    DiffSummary = class {
+      constructor() {
+        this.changed = 0;
+        this.deletions = 0;
+        this.insertions = 0;
+        this.files = [];
+      }
+    };
+  }
+});
+
+// src/lib/parsers/parse-diff-summary.ts
+function getDiffParser(format = "" /* NONE */) {
+  const parser4 = diffSummaryParsers[format];
+  return (stdOut) => parseStringResponse(new DiffSummary(), parser4, stdOut, false);
+}
+var statParser, numStatParser, nameOnlyParser, nameStatusParser, diffSummaryParsers;
+var init_parse_diff_summary = __esm({
+  "src/lib/parsers/parse-diff-summary.ts"() {
+    init_log_format();
+    init_DiffSummary();
+    init_diff_name_status();
+    init_utils();
+    statParser = [
+      new LineParser(
+        /^(.+)\s+\|\s+(\d+)(\s+[+\-]+)?$/,
+        (result, [file, changes, alterations = ""]) => {
+          result.files.push({
+            file: file.trim(),
+            changes: asNumber(changes),
+            insertions: alterations.replace(/[^+]/g, "").length,
+            deletions: alterations.replace(/[^-]/g, "").length,
+            binary: false
+          });
+        }
+      ),
+      new LineParser(
+        /^(.+) \|\s+Bin ([0-9.]+) -> ([0-9.]+) ([a-z]+)/,
+        (result, [file, before, after]) => {
+          result.files.push({
+            file: file.trim(),
+            before: asNumber(before),
+            after: asNumber(after),
+            binary: true
+          });
+        }
+      ),
+      new LineParser(
+        /(\d+) files? changed\s*((?:, \d+ [^,]+){0,2})/,
+        (result, [changed, summary]) => {
+          const inserted = /(\d+) i/.exec(summary);
+          const deleted = /(\d+) d/.exec(summary);
+          result.changed = asNumber(changed);
+          result.insertions = asNumber(inserted?.[1]);
+          result.deletions = asNumber(deleted?.[1]);
+        }
+      )
+    ];
+    numStatParser = [
+      new LineParser(
+        /(\d+)\t(\d+)\t(.+)$/,
+        (result, [changesInsert, changesDelete, file]) => {
+          const insertions = asNumber(changesInsert);
+          const deletions = asNumber(changesDelete);
+          result.changed++;
+          result.insertions += insertions;
+          result.deletions += deletions;
+          result.files.push({
+            file,
+            changes: insertions + deletions,
+            insertions,
+            deletions,
+            binary: false
+          });
+        }
+      ),
+      new LineParser(/-\t-\t(.+)$/, (result, [file]) => {
+        result.changed++;
+        result.files.push({
+          file,
+          after: 0,
+          before: 0,
+          binary: true
+        });
+      })
+    ];
+    nameOnlyParser = [
+      new LineParser(/(.+)$/, (result, [file]) => {
+        result.changed++;
+        result.files.push({
+          file,
+          changes: 0,
+          insertions: 0,
+          deletions: 0,
+          binary: false
+        });
+      })
+    ];
+    nameStatusParser = [
+      new LineParser(
+        /([ACDMRTUXB])([0-9]{0,3})\t(.[^\t]*)(\t(.[^\t]*))?$/,
+        (result, [status, similarity, from, _to, to]) => {
+          result.changed++;
+          result.files.push({
+            file: to ?? from,
+            changes: 0,
+            insertions: 0,
+            deletions: 0,
+            binary: false,
+            status: orVoid(isDiffNameStatus(status) && status),
+            from: orVoid(!!to && from !== to && from),
+            similarity: asNumber(similarity)
+          });
+        }
+      )
+    ];
+    diffSummaryParsers = {
+      ["" /* NONE */]: statParser,
+      ["--stat" /* STAT */]: statParser,
+      ["--numstat" /* NUM_STAT */]: numStatParser,
+      ["--name-status" /* NAME_STATUS */]: nameStatusParser,
+      ["--name-only" /* NAME_ONLY */]: nameOnlyParser
+    };
+  }
+});
+
+// src/lib/parsers/parse-list-log-summary.ts
+function lineBuilder(tokens, fields) {
+  return fields.reduce(
+    (line, field, index) => {
+      line[field] = tokens[index] || "";
+      return line;
+    },
+    /* @__PURE__ */ Object.create({ diff: null })
+  );
+}
+function createListLogSummaryParser(splitter = SPLITTER, fields = defaultFieldNames, logFormat = "" /* NONE */) {
+  const parseDiffResult = getDiffParser(logFormat);
+  return function(stdOut) {
+    const all = toLinesWithContent(
+      stdOut.trim(),
+      false,
+      START_BOUNDARY
+    ).map(function(item) {
+      const lineDetail = item.split(COMMIT_BOUNDARY);
+      const listLogLine = lineBuilder(lineDetail[0].split(splitter), fields);
+      if (lineDetail.length > 1 && !!lineDetail[1].trim()) {
+        listLogLine.diff = parseDiffResult(lineDetail[1]);
+      }
+      return listLogLine;
+    });
+    return {
+      all,
+      latest: all.length && all[0] || null,
+      total: all.length
+    };
+  };
+}
+var START_BOUNDARY, COMMIT_BOUNDARY, SPLITTER, defaultFieldNames;
+var init_parse_list_log_summary = __esm({
+  "src/lib/parsers/parse-list-log-summary.ts"() {
+    init_utils();
+    init_parse_diff_summary();
+    init_log_format();
+    START_BOUNDARY = "\xF2\xF2\xF2\xF2\xF2\xF2 ";
+    COMMIT_BOUNDARY = " \xF2\xF2";
+    SPLITTER = " \xF2 ";
+    defaultFieldNames = ["hash", "date", "message", "refs", "author_name", "author_email"];
+  }
+});
+
+// src/lib/tasks/diff.ts
+var diff_exports = {};
+__export(diff_exports, {
+  diffSummaryTask: () => diffSummaryTask,
+  validateLogFormatConfig: () => validateLogFormatConfig
+});
+function diffSummaryTask(customArgs) {
+  let logFormat = logFormatFromCommand(customArgs);
+  const commands = ["diff"];
+  if (logFormat === "" /* NONE */) {
+    logFormat = "--stat" /* STAT */;
+    commands.push("--stat=4096");
+  }
+  commands.push(...customArgs);
+  return validateLogFormatConfig(commands) || {
+    commands,
+    format: "utf-8",
+    parser: getDiffParser(logFormat)
+  };
+}
+function validateLogFormatConfig(customArgs) {
+  const flags = customArgs.filter(isLogFormat);
+  if (flags.length > 1) {
+    return configurationErrorTask(
+      `Summary flags are mutually exclusive - pick one of ${flags.join(",")}`
+    );
+  }
+  if (flags.length && customArgs.includes("-z")) {
+    return configurationErrorTask(
+      `Summary flag ${flags} parsing is not compatible with null termination option '-z'`
+    );
+  }
+}
+var init_diff = __esm({
+  "src/lib/tasks/diff.ts"() {
+    init_log_format();
+    init_parse_diff_summary();
+    init_task();
+  }
+});
+
+// src/lib/tasks/log.ts
+function prettyFormat(format, splitter) {
+  const fields = [];
+  const formatStr = [];
+  Object.keys(format).forEach((field) => {
+    fields.push(field);
+    formatStr.push(String(format[field]));
+  });
+  return [fields, formatStr.join(splitter)];
+}
+function userOptions(input) {
+  return Object.keys(input).reduce((out, key) => {
+    if (!(key in excludeOptions)) {
+      out[key] = input[key];
+    }
+    return out;
+  }, {});
+}
+function parseLogOptions(opt = {}, customArgs = []) {
+  const splitter = filterType(opt.splitter, filterString, SPLITTER);
+  const format = filterPlainObject(opt.format) ? opt.format : {
+    hash: "%H",
+    date: opt.strictDate === false ? "%ai" : "%aI",
+    message: "%s",
+    refs: "%D",
+    body: opt.multiLine ? "%B" : "%b",
+    author_name: opt.mailMap !== false ? "%aN" : "%an",
+    author_email: opt.mailMap !== false ? "%aE" : "%ae"
+  };
+  const [fields, formatStr] = prettyFormat(format, splitter);
+  const suffix = [];
+  const command = [
+    `--pretty=format:${START_BOUNDARY}${formatStr}${COMMIT_BOUNDARY}`,
+    ...customArgs
+  ];
+  const maxCount = opt.n || opt["max-count"] || opt.maxCount;
+  if (maxCount) {
+    command.push(`--max-count=${maxCount}`);
+  }
+  if (opt.from || opt.to) {
+    const rangeOperator = opt.symmetric !== false ? "..." : "..";
+    suffix.push(`${opt.from || ""}${rangeOperator}${opt.to || ""}`);
+  }
+  if (filterString(opt.file)) {
+    command.push("--follow", pathspec(opt.file));
+  }
+  appendTaskOptions(userOptions(opt), command);
+  return {
+    fields,
+    splitter,
+    commands: [...command, ...suffix]
+  };
+}
+function logTask(splitter, fields, customArgs) {
+  const parser4 = createListLogSummaryParser(splitter, fields, logFormatFromCommand(customArgs));
+  return {
+    commands: ["log", ...customArgs],
+    format: "utf-8",
+    parser: parser4
+  };
+}
+function log_default() {
+  return {
+    log(...rest) {
+      const next = trailingFunctionArgument(arguments);
+      const options = parseLogOptions(
+        trailingOptionsArgument(arguments),
+        filterType(arguments[0], filterArray)
+      );
+      const task = rejectDeprecatedSignatures(...rest) || validateLogFormatConfig(options.commands) || createLogTask(options);
+      return this._runTask(task, next);
+    }
+  };
+  function createLogTask(options) {
+    return logTask(options.splitter, options.fields, options.commands);
+  }
+  function rejectDeprecatedSignatures(from, to) {
+    return filterString(from) && filterString(to) && configurationErrorTask(
+      `git.log(string, string) should be replaced with git.log({ from: string, to: string })`
+    );
+  }
+}
+var excludeOptions;
+var init_log = __esm({
+  "src/lib/tasks/log.ts"() {
+    init_log_format();
+    init_pathspec();
+    init_parse_list_log_summary();
+    init_utils();
+    init_task();
+    init_diff();
+    excludeOptions = /* @__PURE__ */ ((excludeOptions2) => {
+      excludeOptions2[excludeOptions2["--pretty"] = 0] = "--pretty";
+      excludeOptions2[excludeOptions2["max-count"] = 1] = "max-count";
+      excludeOptions2[excludeOptions2["maxCount"] = 2] = "maxCount";
+      excludeOptions2[excludeOptions2["n"] = 3] = "n";
+      excludeOptions2[excludeOptions2["file"] = 4] = "file";
+      excludeOptions2[excludeOptions2["format"] = 5] = "format";
+      excludeOptions2[excludeOptions2["from"] = 6] = "from";
+      excludeOptions2[excludeOptions2["to"] = 7] = "to";
+      excludeOptions2[excludeOptions2["splitter"] = 8] = "splitter";
+      excludeOptions2[excludeOptions2["symmetric"] = 9] = "symmetric";
+      excludeOptions2[excludeOptions2["mailMap"] = 10] = "mailMap";
+      excludeOptions2[excludeOptions2["multiLine"] = 11] = "multiLine";
+      excludeOptions2[excludeOptions2["strictDate"] = 12] = "strictDate";
+      return excludeOptions2;
+    })(excludeOptions || {});
+  }
+});
+
+// src/lib/responses/MergeSummary.ts
+var MergeSummaryConflict, MergeSummaryDetail;
+var init_MergeSummary = __esm({
+  "src/lib/responses/MergeSummary.ts"() {
+    MergeSummaryConflict = class {
+      constructor(reason, file = null, meta) {
+        this.reason = reason;
+        this.file = file;
+        this.meta = meta;
+      }
+      toString() {
+        return `${this.file}:${this.reason}`;
+      }
+    };
+    MergeSummaryDetail = class {
+      constructor() {
+        this.conflicts = [];
+        this.merges = [];
+        this.result = "success";
+      }
+      get failed() {
+        return this.conflicts.length > 0;
+      }
+      get reason() {
+        return this.result;
+      }
+      toString() {
+        if (this.conflicts.length) {
+          return `CONFLICTS: ${this.conflicts.join(", ")}`;
+        }
+        return "OK";
+      }
+    };
+  }
+});
+
+// src/lib/responses/PullSummary.ts
+var PullSummary, PullFailedSummary;
+var init_PullSummary = __esm({
+  "src/lib/responses/PullSummary.ts"() {
+    PullSummary = class {
+      constructor() {
+        this.remoteMessages = {
+          all: []
+        };
+        this.created = [];
+        this.deleted = [];
+        this.files = [];
+        this.deletions = {};
+        this.insertions = {};
+        this.summary = {
+          changes: 0,
+          deletions: 0,
+          insertions: 0
+        };
+      }
+    };
+    PullFailedSummary = class {
+      constructor() {
+        this.remote = "";
+        this.hash = {
+          local: "",
+          remote: ""
+        };
+        this.branch = {
+          local: "",
+          remote: ""
+        };
+        this.message = "";
+      }
+      toString() {
+        return this.message;
+      }
+    };
+  }
+});
+
+// src/lib/parsers/parse-remote-objects.ts
+function objectEnumerationResult(remoteMessages) {
+  return remoteMessages.objects = remoteMessages.objects || {
+    compressing: 0,
+    counting: 0,
+    enumerating: 0,
+    packReused: 0,
+    reused: { count: 0, delta: 0 },
+    total: { count: 0, delta: 0 }
+  };
+}
+function asObjectCount(source) {
+  const count = /^\s*(\d+)/.exec(source);
+  const delta = /delta (\d+)/i.exec(source);
+  return {
+    count: asNumber(count && count[1] || "0"),
+    delta: asNumber(delta && delta[1] || "0")
+  };
+}
+var remoteMessagesObjectParsers;
+var init_parse_remote_objects = __esm({
+  "src/lib/parsers/parse-remote-objects.ts"() {
+    init_utils();
+    remoteMessagesObjectParsers = [
+      new RemoteLineParser(
+        /^remote:\s*(enumerating|counting|compressing) objects: (\d+),/i,
+        (result, [action, count]) => {
+          const key = action.toLowerCase();
+          const enumeration = objectEnumerationResult(result.remoteMessages);
+          Object.assign(enumeration, { [key]: asNumber(count) });
+        }
+      ),
+      new RemoteLineParser(
+        /^remote:\s*(enumerating|counting|compressing) objects: \d+% \(\d+\/(\d+)\),/i,
+        (result, [action, count]) => {
+          const key = action.toLowerCase();
+          const enumeration = objectEnumerationResult(result.remoteMessages);
+          Object.assign(enumeration, { [key]: asNumber(count) });
+        }
+      ),
+      new RemoteLineParser(
+        /total ([^,]+), reused ([^,]+), pack-reused (\d+)/i,
+        (result, [total, reused, packReused]) => {
+          const objects = objectEnumerationResult(result.remoteMessages);
+          objects.total = asObjectCount(total);
+          objects.reused = asObjectCount(reused);
+          objects.packReused = asNumber(packReused);
+        }
+      )
+    ];
+  }
+});
+
+// src/lib/parsers/parse-remote-messages.ts
+function parseRemoteMessages(_stdOut, stdErr) {
+  return parseStringResponse({ remoteMessages: new RemoteMessageSummary() }, parsers2, stdErr);
+}
+var parsers2, RemoteMessageSummary;
+var init_parse_remote_messages = __esm({
+  "src/lib/parsers/parse-remote-messages.ts"() {
+    init_utils();
+    init_parse_remote_objects();
+    parsers2 = [
+      new RemoteLineParser(/^remote:\s*(.+)$/, (result, [text]) => {
+        result.remoteMessages.all.push(text.trim());
+        return false;
+      }),
+      ...remoteMessagesObjectParsers,
+      new RemoteLineParser(
+        [/create a (?:pull|merge) request/i, /\s(https?:\/\/\S+)$/],
+        (result, [pullRequestUrl]) => {
+          result.remoteMessages.pullRequestUrl = pullRequestUrl;
+        }
+      ),
+      new RemoteLineParser(
+        [/found (\d+) vulnerabilities.+\(([^)]+)\)/i, /\s(https?:\/\/\S+)$/],
+        (result, [count, summary, url]) => {
+          result.remoteMessages.vulnerabilities = {
+            count: asNumber(count),
+            summary,
+            url
+          };
+        }
+      )
+    ];
+    RemoteMessageSummary = class {
+      constructor() {
+        this.all = [];
+      }
+    };
+  }
+});
+
+// src/lib/parsers/parse-pull.ts
+function parsePullErrorResult(stdOut, stdErr) {
+  const pullError = parseStringResponse(new PullFailedSummary(), errorParsers, [stdOut, stdErr]);
+  return pullError.message && pullError;
+}
+var FILE_UPDATE_REGEX, SUMMARY_REGEX, ACTION_REGEX, parsers3, errorParsers, parsePullDetail, parsePullResult;
+var init_parse_pull = __esm({
+  "src/lib/parsers/parse-pull.ts"() {
+    init_PullSummary();
+    init_utils();
+    init_parse_remote_messages();
+    FILE_UPDATE_REGEX = /^\s*(.+?)\s+\|\s+\d+\s*(\+*)(-*)/;
+    SUMMARY_REGEX = /(\d+)\D+((\d+)\D+\(\+\))?(\D+(\d+)\D+\(-\))?/;
+    ACTION_REGEX = /^(create|delete) mode \d+ (.+)/;
+    parsers3 = [
+      new LineParser(FILE_UPDATE_REGEX, (result, [file, insertions, deletions]) => {
+        result.files.push(file);
+        if (insertions) {
+          result.insertions[file] = insertions.length;
+        }
+        if (deletions) {
+          result.deletions[file] = deletions.length;
+        }
+      }),
+      new LineParser(SUMMARY_REGEX, (result, [changes, , insertions, , deletions]) => {
+        if (insertions !== void 0 || deletions !== void 0) {
+          result.summary.changes = +changes || 0;
+          result.summary.insertions = +insertions || 0;
+          result.summary.deletions = +deletions || 0;
+          return true;
+        }
+        return false;
+      }),
+      new LineParser(ACTION_REGEX, (result, [action, file]) => {
+        append(result.files, file);
+        append(action === "create" ? result.created : result.deleted, file);
+      })
+    ];
+    errorParsers = [
+      new LineParser(/^from\s(.+)$/i, (result, [remote]) => void (result.remote = remote)),
+      new LineParser(/^fatal:\s(.+)$/, (result, [message]) => void (result.message = message)),
+      new LineParser(
+        /([a-z0-9]+)\.\.([a-z0-9]+)\s+(\S+)\s+->\s+(\S+)$/,
+        (result, [hashLocal, hashRemote, branchLocal, branchRemote]) => {
+          result.branch.local = branchLocal;
+          result.hash.local = hashLocal;
+          result.branch.remote = branchRemote;
+          result.hash.remote = hashRemote;
+        }
+      )
+    ];
+    parsePullDetail = (stdOut, stdErr) => {
+      return parseStringResponse(new PullSummary(), parsers3, [stdOut, stdErr]);
+    };
+    parsePullResult = (stdOut, stdErr) => {
+      return Object.assign(
+        new PullSummary(),
+        parsePullDetail(stdOut, stdErr),
+        parseRemoteMessages(stdOut, stdErr)
+      );
+    };
+  }
+});
+
+// src/lib/parsers/parse-merge.ts
+var parsers4, parseMergeResult, parseMergeDetail;
+var init_parse_merge = __esm({
+  "src/lib/parsers/parse-merge.ts"() {
+    init_MergeSummary();
+    init_utils();
+    init_parse_pull();
+    parsers4 = [
+      new LineParser(/^Auto-merging\s+(.+)$/, (summary, [autoMerge]) => {
+        summary.merges.push(autoMerge);
+      }),
+      new LineParser(/^CONFLICT\s+\((.+)\): Merge conflict in (.+)$/, (summary, [reason, file]) => {
+        summary.conflicts.push(new MergeSummaryConflict(reason, file));
+      }),
+      new LineParser(
+        /^CONFLICT\s+\((.+\/delete)\): (.+) deleted in (.+) and/,
+        (summary, [reason, file, deleteRef]) => {
+          summary.conflicts.push(new MergeSummaryConflict(reason, file, { deleteRef }));
+        }
+      ),
+      new LineParser(/^CONFLICT\s+\((.+)\):/, (summary, [reason]) => {
+        summary.conflicts.push(new MergeSummaryConflict(reason, null));
+      }),
+      new LineParser(/^Automatic merge failed;\s+(.+)$/, (summary, [result]) => {
+        summary.result = result;
+      })
+    ];
+    parseMergeResult = (stdOut, stdErr) => {
+      return Object.assign(parseMergeDetail(stdOut, stdErr), parsePullResult(stdOut, stdErr));
+    };
+    parseMergeDetail = (stdOut) => {
+      return parseStringResponse(new MergeSummaryDetail(), parsers4, stdOut);
+    };
+  }
+});
+
+// src/lib/tasks/merge.ts
+function mergeTask(customArgs) {
+  if (!customArgs.length) {
+    return configurationErrorTask("Git.merge requires at least one option");
+  }
+  return {
+    commands: ["merge", ...customArgs],
+    format: "utf-8",
+    parser(stdOut, stdErr) {
+      const merge = parseMergeResult(stdOut, stdErr);
+      if (merge.failed) {
+        throw new GitResponseError(merge);
+      }
+      return merge;
+    }
+  };
+}
+var init_merge = __esm({
+  "src/lib/tasks/merge.ts"() {
+    init_git_response_error();
+    init_parse_merge();
+    init_task();
+  }
+});
+
+// src/lib/parsers/parse-push.ts
+function pushResultPushedItem(local, remote, status) {
+  const deleted = status.includes("deleted");
+  const tag = status.includes("tag") || /^refs\/tags/.test(local);
+  const alreadyUpdated = !status.includes("new");
+  return {
+    deleted,
+    tag,
+    branch: !tag,
+    new: !alreadyUpdated,
+    alreadyUpdated,
+    local,
+    remote
+  };
+}
+var parsers5, parsePushResult, parsePushDetail;
+var init_parse_push = __esm({
+  "src/lib/parsers/parse-push.ts"() {
+    init_utils();
+    init_parse_remote_messages();
+    parsers5 = [
+      new LineParser(/^Pushing to (.+)$/, (result, [repo]) => {
+        result.repo = repo;
+      }),
+      new LineParser(/^updating local tracking ref '(.+)'/, (result, [local]) => {
+        result.ref = {
+          ...result.ref || {},
+          local
+        };
+      }),
+      new LineParser(/^[=*-]\s+([^:]+):(\S+)\s+\[(.+)]$/, (result, [local, remote, type]) => {
+        result.pushed.push(pushResultPushedItem(local, remote, type));
+      }),
+      new LineParser(
+        /^Branch '([^']+)' set up to track remote branch '([^']+)' from '([^']+)'/,
+        (result, [local, remote, remoteName]) => {
+          result.branch = {
+            ...result.branch || {},
+            local,
+            remote,
+            remoteName
+          };
+        }
+      ),
+      new LineParser(
+        /^([^:]+):(\S+)\s+([a-z0-9]+)\.\.([a-z0-9]+)$/,
+        (result, [local, remote, from, to]) => {
+          result.update = {
+            head: {
+              local,
+              remote
+            },
+            hash: {
+              from,
+              to
+            }
+          };
+        }
+      )
+    ];
+    parsePushResult = (stdOut, stdErr) => {
+      const pushDetail = parsePushDetail(stdOut, stdErr);
+      const responseDetail = parseRemoteMessages(stdOut, stdErr);
+      return {
+        ...pushDetail,
+        ...responseDetail
+      };
+    };
+    parsePushDetail = (stdOut, stdErr) => {
+      return parseStringResponse({ pushed: [] }, parsers5, [stdOut, stdErr]);
+    };
+  }
+});
+
+// src/lib/tasks/push.ts
+var push_exports = {};
+__export(push_exports, {
+  pushTagsTask: () => pushTagsTask,
+  pushTask: () => pushTask
+});
+function pushTagsTask(ref = {}, customArgs) {
+  append(customArgs, "--tags");
+  return pushTask(ref, customArgs);
+}
+function pushTask(ref = {}, customArgs) {
+  const commands = ["push", ...customArgs];
+  if (ref.branch) {
+    commands.splice(1, 0, ref.branch);
+  }
+  if (ref.remote) {
+    commands.splice(1, 0, ref.remote);
+  }
+  remove(commands, "-v");
+  append(commands, "--verbose");
+  append(commands, "--porcelain");
+  return {
+    commands,
+    format: "utf-8",
+    parser: parsePushResult
+  };
+}
+var init_push = __esm({
+  "src/lib/tasks/push.ts"() {
+    init_parse_push();
+    init_utils();
+  }
+});
+
+// src/lib/tasks/show.ts
+function show_default() {
+  return {
+    showBuffer() {
+      const commands = ["show", ...getTrailingOptions(arguments, 1)];
+      if (!commands.includes("--binary")) {
+        commands.splice(1, 0, "--binary");
+      }
+      return this._runTask(
+        straightThroughBufferTask(commands),
+        trailingFunctionArgument(arguments)
+      );
+    },
+    show() {
+      const commands = ["show", ...getTrailingOptions(arguments, 1)];
+      return this._runTask(
+        straightThroughStringTask(commands),
+        trailingFunctionArgument(arguments)
+      );
+    }
+  };
+}
+var init_show = __esm({
+  "src/lib/tasks/show.ts"() {
+    init_utils();
+    init_task();
+  }
+});
+
+// src/lib/responses/FileStatusSummary.ts
+var fromPathRegex, FileStatusSummary;
+var init_FileStatusSummary = __esm({
+  "src/lib/responses/FileStatusSummary.ts"() {
+    fromPathRegex = /^(.+)\0(.+)$/;
+    FileStatusSummary = class {
+      constructor(path, index, working_dir) {
+        this.path = path;
+        this.index = index;
+        this.working_dir = working_dir;
+        if (index === "R" || working_dir === "R") {
+          const detail = fromPathRegex.exec(path) || [null, path, path];
+          this.from = detail[2] || "";
+          this.path = detail[1] || "";
+        }
+      }
+    };
+  }
+});
+
+// src/lib/responses/StatusSummary.ts
+function renamedFile(line) {
+  const [to, from] = line.split(NULL$1);
+  return {
+    from: from || to,
+    to
+  };
+}
+function parser3(indexX, indexY, handler) {
+  return [`${indexX}${indexY}`, handler];
+}
+function conflicts(indexX, ...indexY) {
+  return indexY.map((y) => parser3(indexX, y, (result, file) => append(result.conflicted, file)));
+}
+function splitLine(result, lineStr) {
+  const trimmed2 = lineStr.trim();
+  switch (" ") {
+    case trimmed2.charAt(2):
+      return data(trimmed2.charAt(0), trimmed2.charAt(1), trimmed2.substr(3));
+    case trimmed2.charAt(1):
+      return data(" " /* NONE */, trimmed2.charAt(0), trimmed2.substr(2));
+    default:
+      return;
+  }
+  function data(index, workingDir, path) {
+    const raw = `${index}${workingDir}`;
+    const handler = parsers6.get(raw);
+    if (handler) {
+      handler(result, path);
+    }
+    if (raw !== "##" && raw !== "!!") {
+      result.files.push(new FileStatusSummary(path, index, workingDir));
+    }
+  }
+}
+var StatusSummary, parsers6, parseStatusSummary;
+var init_StatusSummary = __esm({
+  "src/lib/responses/StatusSummary.ts"() {
+    init_utils();
+    init_FileStatusSummary();
+    StatusSummary = class {
+      constructor() {
+        this.not_added = [];
+        this.conflicted = [];
+        this.created = [];
+        this.deleted = [];
+        this.ignored = void 0;
+        this.modified = [];
+        this.renamed = [];
+        this.files = [];
+        this.staged = [];
+        this.ahead = 0;
+        this.behind = 0;
+        this.current = null;
+        this.tracking = null;
+        this.detached = false;
+        this.isClean = () => {
+          return !this.files.length;
+        };
+      }
+    };
+    parsers6 = new Map([
+      parser3(
+        " " /* NONE */,
+        "A" /* ADDED */,
+        (result, file) => append(result.created, file)
+      ),
+      parser3(
+        " " /* NONE */,
+        "D" /* DELETED */,
+        (result, file) => append(result.deleted, file)
+      ),
+      parser3(
+        " " /* NONE */,
+        "M" /* MODIFIED */,
+        (result, file) => append(result.modified, file)
+      ),
+      parser3(
+        "A" /* ADDED */,
+        " " /* NONE */,
+        (result, file) => append(result.created, file) && append(result.staged, file)
+      ),
+      parser3(
+        "A" /* ADDED */,
+        "M" /* MODIFIED */,
+        (result, file) => append(result.created, file) && append(result.staged, file) && append(result.modified, file)
+      ),
+      parser3(
+        "D" /* DELETED */,
+        " " /* NONE */,
+        (result, file) => append(result.deleted, file) && append(result.staged, file)
+      ),
+      parser3(
+        "M" /* MODIFIED */,
+        " " /* NONE */,
+        (result, file) => append(result.modified, file) && append(result.staged, file)
+      ),
+      parser3(
+        "M" /* MODIFIED */,
+        "M" /* MODIFIED */,
+        (result, file) => append(result.modified, file) && append(result.staged, file)
+      ),
+      parser3("R" /* RENAMED */, " " /* NONE */, (result, file) => {
+        append(result.renamed, renamedFile(file));
+      }),
+      parser3("R" /* RENAMED */, "M" /* MODIFIED */, (result, file) => {
+        const renamed = renamedFile(file);
+        append(result.renamed, renamed);
+        append(result.modified, renamed.to);
+      }),
+      parser3("!" /* IGNORED */, "!" /* IGNORED */, (_result, _file) => {
+        append(_result.ignored = _result.ignored || [], _file);
+      }),
+      parser3(
+        "?" /* UNTRACKED */,
+        "?" /* UNTRACKED */,
+        (result, file) => append(result.not_added, file)
+      ),
+      ...conflicts("A" /* ADDED */, "A" /* ADDED */, "U" /* UNMERGED */),
+      ...conflicts(
+        "D" /* DELETED */,
+        "D" /* DELETED */,
+        "U" /* UNMERGED */
+      ),
+      ...conflicts(
+        "U" /* UNMERGED */,
+        "A" /* ADDED */,
+        "D" /* DELETED */,
+        "U" /* UNMERGED */
+      ),
+      [
+        "##",
+        (result, line) => {
+          const aheadReg = /ahead (\d+)/;
+          const behindReg = /behind (\d+)/;
+          const currentReg = /^(.+?(?=(?:\.{3}|\s|$)))/;
+          const trackingReg = /\.{3}(\S*)/;
+          const onEmptyBranchReg = /\son\s([\S]+)$/;
+          let regexResult;
+          regexResult = aheadReg.exec(line);
+          result.ahead = regexResult && +regexResult[1] || 0;
+          regexResult = behindReg.exec(line);
+          result.behind = regexResult && +regexResult[1] || 0;
+          regexResult = currentReg.exec(line);
+          result.current = regexResult && regexResult[1];
+          regexResult = trackingReg.exec(line);
+          result.tracking = regexResult && regexResult[1];
+          regexResult = onEmptyBranchReg.exec(line);
+          result.current = regexResult && regexResult[1] || result.current;
+          result.detached = /\(no branch\)/.test(line);
+        }
+      ]
+    ]);
+    parseStatusSummary = function(text) {
+      const lines = text.split(NULL$1);
+      const status = new StatusSummary();
+      for (let i = 0, l = lines.length; i < l; ) {
+        let line = lines[i++].trim();
+        if (!line) {
+          continue;
+        }
+        if (line.charAt(0) === "R" /* RENAMED */) {
+          line += NULL$1 + (lines[i++] || "");
+        }
+        splitLine(status, line);
+      }
+      return status;
+    };
+  }
+});
+
+// src/lib/tasks/status.ts
+function statusTask(customArgs) {
+  const commands = [
+    "status",
+    "--porcelain",
+    "-b",
+    "-u",
+    "--null",
+    ...customArgs.filter((arg) => !ignoredOptions.includes(arg))
+  ];
+  return {
+    format: "utf-8",
+    commands,
+    parser(text) {
+      return parseStatusSummary(text);
+    }
+  };
+}
+var ignoredOptions;
+var init_status = __esm({
+  "src/lib/tasks/status.ts"() {
+    init_StatusSummary();
+    ignoredOptions = ["--null", "-z"];
+  }
+});
+
+// src/lib/tasks/version.ts
+function versionResponse(major = 0, minor = 0, patch = 0, agent = "", installed = true) {
+  return Object.defineProperty(
+    {
+      major,
+      minor,
+      patch,
+      agent,
+      installed
+    },
+    "toString",
+    {
+      value() {
+        return `${this.major}.${this.minor}.${this.patch}`;
+      },
+      configurable: false,
+      enumerable: false
+    }
+  );
+}
+function notInstalledResponse() {
+  return versionResponse(0, 0, 0, "", false);
+}
+function version_default() {
+  return {
+    version() {
+      return this._runTask({
+        commands: ["--version"],
+        format: "utf-8",
+        parser: versionParser,
+        onError(result, error, done, fail) {
+          if (result.exitCode === -2 /* NOT_FOUND */) {
+            return done(Buffer.from(NOT_INSTALLED));
+          }
+          fail(error);
+        }
+      });
+    }
+  };
+}
+function versionParser(stdOut) {
+  if (stdOut === NOT_INSTALLED) {
+    return notInstalledResponse();
+  }
+  return parseStringResponse(versionResponse(0, 0, 0, stdOut), parsers7, stdOut);
+}
+var NOT_INSTALLED, parsers7;
+var init_version = __esm({
+  "src/lib/tasks/version.ts"() {
+    init_utils();
+    NOT_INSTALLED = "installed=false";
+    parsers7 = [
+      new LineParser(
+        /version (\d+)\.(\d+)\.(\d+)(?:\s*\((.+)\))?/,
+        (result, [major, minor, patch, agent = ""]) => {
+          Object.assign(
+            result,
+            versionResponse(asNumber(major), asNumber(minor), asNumber(patch), agent)
+          );
+        }
+      ),
+      new LineParser(
+        /version (\d+)\.(\d+)\.(\D+)(.+)?$/,
+        (result, [major, minor, patch, agent = ""]) => {
+          Object.assign(result, versionResponse(asNumber(major), asNumber(minor), patch, agent));
+        }
+      )
+    ];
+  }
+});
+
+// src/lib/simple-git-api.ts
+var simple_git_api_exports = {};
+__export(simple_git_api_exports, {
+  SimpleGitApi: () => SimpleGitApi
+});
+var SimpleGitApi;
+var init_simple_git_api = __esm({
+  "src/lib/simple-git-api.ts"() {
+    init_task_callback();
+    init_change_working_directory();
+    init_checkout();
+    init_count_objects();
+    init_commit();
+    init_config();
+    init_first_commit();
+    init_grep();
+    init_hash_object();
+    init_init();
+    init_log();
+    init_merge();
+    init_push();
+    init_show();
+    init_status();
+    init_task();
+    init_version();
+    init_utils();
+    SimpleGitApi = class {
+      constructor(_executor) {
+        this._executor = _executor;
+      }
+      _runTask(task, then) {
+        const chain = this._executor.chain();
+        const promise = chain.push(task);
+        if (then) {
+          taskCallback(task, promise, then);
+        }
+        return Object.create(this, {
+          then: { value: promise.then.bind(promise) },
+          catch: { value: promise.catch.bind(promise) },
+          _executor: { value: chain }
+        });
+      }
+      add(files) {
+        return this._runTask(
+          straightThroughStringTask(["add", ...asArray(files)]),
+          trailingFunctionArgument(arguments)
+        );
+      }
+      cwd(directory) {
+        const next = trailingFunctionArgument(arguments);
+        if (typeof directory === "string") {
+          return this._runTask(changeWorkingDirectoryTask(directory, this._executor), next);
+        }
+        if (typeof directory?.path === "string") {
+          return this._runTask(
+            changeWorkingDirectoryTask(
+              directory.path,
+              directory.root && this._executor || void 0
+            ),
+            next
+          );
+        }
+        return this._runTask(
+          configurationErrorTask("Git.cwd: workingDirectory must be supplied as a string"),
+          next
+        );
+      }
+      hashObject(path, write) {
+        return this._runTask(
+          hashObjectTask(path, write === true),
+          trailingFunctionArgument(arguments)
+        );
+      }
+      init(bare) {
+        return this._runTask(
+          initTask(bare === true, this._executor.cwd, getTrailingOptions(arguments)),
+          trailingFunctionArgument(arguments)
+        );
+      }
+      merge() {
+        return this._runTask(
+          mergeTask(getTrailingOptions(arguments)),
+          trailingFunctionArgument(arguments)
+        );
+      }
+      mergeFromTo(remote, branch) {
+        if (!(filterString(remote) && filterString(branch))) {
+          return this._runTask(
+            configurationErrorTask(
+              `Git.mergeFromTo requires that the 'remote' and 'branch' arguments are supplied as strings`
+            )
+          );
+        }
+        return this._runTask(
+          mergeTask([remote, branch, ...getTrailingOptions(arguments)]),
+          trailingFunctionArgument(arguments, false)
+        );
+      }
+      outputHandler(handler) {
+        this._executor.outputHandler = handler;
+        return this;
+      }
+      push() {
+        const task = pushTask(
+          {
+            remote: filterType(arguments[0], filterString),
+            branch: filterType(arguments[1], filterString)
+          },
+          getTrailingOptions(arguments)
+        );
+        return this._runTask(task, trailingFunctionArgument(arguments));
+      }
+      stash() {
+        return this._runTask(
+          straightThroughStringTask(["stash", ...getTrailingOptions(arguments)]),
+          trailingFunctionArgument(arguments)
+        );
+      }
+      status() {
+        return this._runTask(
+          statusTask(getTrailingOptions(arguments)),
+          trailingFunctionArgument(arguments)
+        );
+      }
+    };
+    Object.assign(
+      SimpleGitApi.prototype,
+      checkout_default(),
+      commit_default(),
+      config_default(),
+      count_objects_default(),
+      first_commit_default(),
+      grep_default(),
+      log_default(),
+      show_default(),
+      version_default()
+    );
+  }
+});
+
+// src/lib/runners/scheduler.ts
+var scheduler_exports = {};
+__export(scheduler_exports, {
+  Scheduler: () => Scheduler
+});
+var createScheduledTask, Scheduler;
+var init_scheduler = __esm({
+  "src/lib/runners/scheduler.ts"() {
+    init_utils();
+    init_git_logger();
+    createScheduledTask = /* @__PURE__ */ (() => {
+      let id = 0;
+      return () => {
+        id++;
+        const { promise, done } = distExports$1.createDeferred();
+        return {
+          promise,
+          done,
+          id
+        };
+      };
+    })();
+    Scheduler = class {
+      constructor(concurrency = 2) {
+        this.concurrency = concurrency;
+        this.logger = createLogger("", "scheduler");
+        this.pending = [];
+        this.running = [];
+        this.logger(`Constructed, concurrency=%s`, concurrency);
+      }
+      schedule() {
+        if (!this.pending.length || this.running.length >= this.concurrency) {
+          this.logger(
+            `Schedule attempt ignored, pending=%s running=%s concurrency=%s`,
+            this.pending.length,
+            this.running.length,
+            this.concurrency
+          );
+          return;
+        }
+        const task = append(this.running, this.pending.shift());
+        this.logger(`Attempting id=%s`, task.id);
+        task.done(() => {
+          this.logger(`Completing id=`, task.id);
+          remove(this.running, task);
+          this.schedule();
+        });
+      }
+      next() {
+        const { promise, id } = append(this.pending, createScheduledTask());
+        this.logger(`Scheduling id=%s`, id);
+        this.schedule();
+        return promise;
+      }
+    };
+  }
+});
+
+// src/lib/tasks/apply-patch.ts
+var apply_patch_exports = {};
+__export(apply_patch_exports, {
+  applyPatchTask: () => applyPatchTask
+});
+function applyPatchTask(patches, customArgs) {
+  return straightThroughStringTask(["apply", ...customArgs, ...patches]);
+}
+var init_apply_patch = __esm({
+  "src/lib/tasks/apply-patch.ts"() {
+    init_task();
+  }
+});
+
+// src/lib/responses/BranchDeleteSummary.ts
+function branchDeletionSuccess(branch, hash) {
+  return {
+    branch,
+    hash,
+    success: true
+  };
+}
+function branchDeletionFailure(branch) {
+  return {
+    branch,
+    hash: null,
+    success: false
+  };
+}
+var BranchDeletionBatch;
+var init_BranchDeleteSummary = __esm({
+  "src/lib/responses/BranchDeleteSummary.ts"() {
+    BranchDeletionBatch = class {
+      constructor() {
+        this.all = [];
+        this.branches = {};
+        this.errors = [];
+      }
+      get success() {
+        return !this.errors.length;
+      }
+    };
+  }
+});
+
+// src/lib/parsers/parse-branch-delete.ts
+function hasBranchDeletionError(data, processExitCode) {
+  return processExitCode === 1 /* ERROR */ && deleteErrorRegex.test(data);
+}
+var deleteSuccessRegex, deleteErrorRegex, parsers8, parseBranchDeletions;
+var init_parse_branch_delete = __esm({
+  "src/lib/parsers/parse-branch-delete.ts"() {
+    init_BranchDeleteSummary();
+    init_utils();
+    deleteSuccessRegex = /(\S+)\s+\(\S+\s([^)]+)\)/;
+    deleteErrorRegex = /^error[^']+'([^']+)'/m;
+    parsers8 = [
+      new LineParser(deleteSuccessRegex, (result, [branch, hash]) => {
+        const deletion = branchDeletionSuccess(branch, hash);
+        result.all.push(deletion);
+        result.branches[branch] = deletion;
+      }),
+      new LineParser(deleteErrorRegex, (result, [branch]) => {
+        const deletion = branchDeletionFailure(branch);
+        result.errors.push(deletion);
+        result.all.push(deletion);
+        result.branches[branch] = deletion;
+      })
+    ];
+    parseBranchDeletions = (stdOut, stdErr) => {
+      return parseStringResponse(new BranchDeletionBatch(), parsers8, [stdOut, stdErr]);
+    };
+  }
+});
+
+// src/lib/responses/BranchSummary.ts
+var BranchSummaryResult;
+var init_BranchSummary = __esm({
+  "src/lib/responses/BranchSummary.ts"() {
+    BranchSummaryResult = class {
+      constructor() {
+        this.all = [];
+        this.branches = {};
+        this.current = "";
+        this.detached = false;
+      }
+      push(status, detached, name, commit, label) {
+        if (status === "*" /* CURRENT */) {
+          this.detached = detached;
+          this.current = name;
+        }
+        this.all.push(name);
+        this.branches[name] = {
+          current: status === "*" /* CURRENT */,
+          linkedWorkTree: status === "+" /* LINKED */,
+          name,
+          commit,
+          label
+        };
+      }
+    };
+  }
+});
+
+// src/lib/parsers/parse-branch.ts
+function branchStatus(input) {
+  return input ? input.charAt(0) : "";
+}
+function parseBranchSummary(stdOut) {
+  return parseStringResponse(new BranchSummaryResult(), parsers9, stdOut);
+}
+var parsers9;
+var init_parse_branch = __esm({
+  "src/lib/parsers/parse-branch.ts"() {
+    init_BranchSummary();
+    init_utils();
+    parsers9 = [
+      new LineParser(
+        /^([*+]\s)?\((?:HEAD )?detached (?:from|at) (\S+)\)\s+([a-z0-9]+)\s(.*)$/,
+        (result, [current, name, commit, label]) => {
+          result.push(branchStatus(current), true, name, commit, label);
+        }
+      ),
+      new LineParser(
+        /^([*+]\s)?(\S+)\s+([a-z0-9]+)\s?(.*)$/s,
+        (result, [current, name, commit, label]) => {
+          result.push(branchStatus(current), false, name, commit, label);
+        }
+      )
+    ];
+  }
+});
+
+// src/lib/tasks/branch.ts
+var branch_exports = {};
+__export(branch_exports, {
+  branchLocalTask: () => branchLocalTask,
+  branchTask: () => branchTask,
+  containsDeleteBranchCommand: () => containsDeleteBranchCommand,
+  deleteBranchTask: () => deleteBranchTask,
+  deleteBranchesTask: () => deleteBranchesTask
+});
+function containsDeleteBranchCommand(commands) {
+  const deleteCommands = ["-d", "-D", "--delete"];
+  return commands.some((command) => deleteCommands.includes(command));
+}
+function branchTask(customArgs) {
+  const isDelete = containsDeleteBranchCommand(customArgs);
+  const commands = ["branch", ...customArgs];
+  if (commands.length === 1) {
+    commands.push("-a");
+  }
+  if (!commands.includes("-v")) {
+    commands.splice(1, 0, "-v");
+  }
+  return {
+    format: "utf-8",
+    commands,
+    parser(stdOut, stdErr) {
+      if (isDelete) {
+        return parseBranchDeletions(stdOut, stdErr).all[0];
+      }
+      return parseBranchSummary(stdOut);
+    }
+  };
+}
+function branchLocalTask() {
+  const parser4 = parseBranchSummary;
+  return {
+    format: "utf-8",
+    commands: ["branch", "-v"],
+    parser: parser4
+  };
+}
+function deleteBranchesTask(branches, forceDelete = false) {
+  return {
+    format: "utf-8",
+    commands: ["branch", "-v", forceDelete ? "-D" : "-d", ...branches],
+    parser(stdOut, stdErr) {
+      return parseBranchDeletions(stdOut, stdErr);
+    },
+    onError({ exitCode, stdOut }, error, done, fail) {
+      if (!hasBranchDeletionError(String(error), exitCode)) {
+        return fail(error);
+      }
+      done(stdOut);
+    }
+  };
+}
+function deleteBranchTask(branch, forceDelete = false) {
+  const task = {
+    format: "utf-8",
+    commands: ["branch", "-v", forceDelete ? "-D" : "-d", branch],
+    parser(stdOut, stdErr) {
+      return parseBranchDeletions(stdOut, stdErr).branches[branch];
+    },
+    onError({ exitCode, stdErr, stdOut }, error, _, fail) {
+      if (!hasBranchDeletionError(String(error), exitCode)) {
+        return fail(error);
+      }
+      throw new GitResponseError(
+        task.parser(bufferToString(stdOut), bufferToString(stdErr)),
+        String(error)
+      );
+    }
+  };
+  return task;
+}
+var init_branch = __esm({
+  "src/lib/tasks/branch.ts"() {
+    init_git_response_error();
+    init_parse_branch_delete();
+    init_parse_branch();
+    init_utils();
+  }
+});
+
+// src/lib/responses/CheckIgnore.ts
+var parseCheckIgnore;
+var init_CheckIgnore = __esm({
+  "src/lib/responses/CheckIgnore.ts"() {
+    parseCheckIgnore = (text) => {
+      return text.split(/\n/g).map((line) => line.trim()).filter((file) => !!file);
+    };
+  }
+});
+
+// src/lib/tasks/check-ignore.ts
+var check_ignore_exports = {};
+__export(check_ignore_exports, {
+  checkIgnoreTask: () => checkIgnoreTask
+});
+function checkIgnoreTask(paths) {
+  return {
+    commands: ["check-ignore", ...paths],
+    format: "utf-8",
+    parser: parseCheckIgnore
+  };
+}
+var init_check_ignore = __esm({
+  "src/lib/tasks/check-ignore.ts"() {
+    init_CheckIgnore();
+  }
+});
+
+// src/lib/tasks/clone.ts
+var clone_exports = {};
+__export(clone_exports, {
+  cloneMirrorTask: () => cloneMirrorTask,
+  cloneTask: () => cloneTask
+});
+function disallowedCommand(command) {
+  return /^--upload-pack(=|$)/.test(command);
+}
+function cloneTask(repo, directory, customArgs) {
+  const commands = ["clone", ...customArgs];
+  filterString(repo) && commands.push(repo);
+  filterString(directory) && commands.push(directory);
+  const banned = commands.find(disallowedCommand);
+  if (banned) {
+    return configurationErrorTask(`git.fetch: potential exploit argument blocked.`);
+  }
+  return straightThroughStringTask(commands);
+}
+function cloneMirrorTask(repo, directory, customArgs) {
+  append(customArgs, "--mirror");
+  return cloneTask(repo, directory, customArgs);
+}
+var init_clone = __esm({
+  "src/lib/tasks/clone.ts"() {
+    init_task();
+    init_utils();
+  }
+});
+
+// src/lib/parsers/parse-fetch.ts
+function parseFetchResult(stdOut, stdErr) {
+  const result = {
+    raw: stdOut,
+    remote: null,
+    branches: [],
+    tags: [],
+    updated: [],
+    deleted: []
+  };
+  return parseStringResponse(result, parsers10, [stdOut, stdErr]);
+}
+var parsers10;
+var init_parse_fetch = __esm({
+  "src/lib/parsers/parse-fetch.ts"() {
+    init_utils();
+    parsers10 = [
+      new LineParser(/From (.+)$/, (result, [remote]) => {
+        result.remote = remote;
+      }),
+      new LineParser(/\* \[new branch]\s+(\S+)\s*-> (.+)$/, (result, [name, tracking]) => {
+        result.branches.push({
+          name,
+          tracking
+        });
+      }),
+      new LineParser(/\* \[new tag]\s+(\S+)\s*-> (.+)$/, (result, [name, tracking]) => {
+        result.tags.push({
+          name,
+          tracking
+        });
+      }),
+      new LineParser(/- \[deleted]\s+\S+\s*-> (.+)$/, (result, [tracking]) => {
+        result.deleted.push({
+          tracking
+        });
+      }),
+      new LineParser(
+        /\s*([^.]+)\.\.(\S+)\s+(\S+)\s*-> (.+)$/,
+        (result, [from, to, name, tracking]) => {
+          result.updated.push({
+            name,
+            tracking,
+            to,
+            from
+          });
+        }
+      )
+    ];
+  }
+});
+
+// src/lib/tasks/fetch.ts
+var fetch_exports = {};
+__export(fetch_exports, {
+  fetchTask: () => fetchTask
+});
+function disallowedCommand2(command) {
+  return /^--upload-pack(=|$)/.test(command);
+}
+function fetchTask(remote, branch, customArgs) {
+  const commands = ["fetch", ...customArgs];
+  if (remote && branch) {
+    commands.push(remote, branch);
+  }
+  const banned = commands.find(disallowedCommand2);
+  if (banned) {
+    return configurationErrorTask(`git.fetch: potential exploit argument blocked.`);
+  }
+  return {
+    commands,
+    format: "utf-8",
+    parser: parseFetchResult
+  };
+}
+var init_fetch = __esm({
+  "src/lib/tasks/fetch.ts"() {
+    init_parse_fetch();
+    init_task();
+  }
+});
+
+// src/lib/parsers/parse-move.ts
+function parseMoveResult(stdOut) {
+  return parseStringResponse({ moves: [] }, parsers11, stdOut);
+}
+var parsers11;
+var init_parse_move = __esm({
+  "src/lib/parsers/parse-move.ts"() {
+    init_utils();
+    parsers11 = [
+      new LineParser(/^Renaming (.+) to (.+)$/, (result, [from, to]) => {
+        result.moves.push({ from, to });
+      })
+    ];
+  }
+});
+
+// src/lib/tasks/move.ts
+var move_exports = {};
+__export(move_exports, {
+  moveTask: () => moveTask
+});
+function moveTask(from, to) {
+  return {
+    commands: ["mv", "-v", ...asArray(from), to],
+    format: "utf-8",
+    parser: parseMoveResult
+  };
+}
+var init_move = __esm({
+  "src/lib/tasks/move.ts"() {
+    init_parse_move();
+    init_utils();
+  }
+});
+
+// src/lib/tasks/pull.ts
+var pull_exports = {};
+__export(pull_exports, {
+  pullTask: () => pullTask
+});
+function pullTask(remote, branch, customArgs) {
+  const commands = ["pull", ...customArgs];
+  if (remote && branch) {
+    commands.splice(1, 0, remote, branch);
+  }
+  return {
+    commands,
+    format: "utf-8",
+    parser(stdOut, stdErr) {
+      return parsePullResult(stdOut, stdErr);
+    },
+    onError(result, _error, _done, fail) {
+      const pullError = parsePullErrorResult(
+        bufferToString(result.stdOut),
+        bufferToString(result.stdErr)
+      );
+      if (pullError) {
+        return fail(new GitResponseError(pullError));
+      }
+      fail(_error);
+    }
+  };
+}
+var init_pull = __esm({
+  "src/lib/tasks/pull.ts"() {
+    init_git_response_error();
+    init_parse_pull();
+    init_utils();
+  }
+});
+
+// src/lib/responses/GetRemoteSummary.ts
+function parseGetRemotes(text) {
+  const remotes = {};
+  forEach(text, ([name]) => remotes[name] = { name });
+  return Object.values(remotes);
+}
+function parseGetRemotesVerbose(text) {
+  const remotes = {};
+  forEach(text, ([name, url, purpose]) => {
+    if (!remotes.hasOwnProperty(name)) {
+      remotes[name] = {
+        name,
+        refs: { fetch: "", push: "" }
+      };
+    }
+    if (purpose && url) {
+      remotes[name].refs[purpose.replace(/[^a-z]/g, "")] = url;
+    }
+  });
+  return Object.values(remotes);
+}
+function forEach(text, handler) {
+  forEachLineWithContent(text, (line) => handler(line.split(/\s+/)));
+}
+var init_GetRemoteSummary = __esm({
+  "src/lib/responses/GetRemoteSummary.ts"() {
+    init_utils();
+  }
+});
+
+// src/lib/tasks/remote.ts
+var remote_exports = {};
+__export(remote_exports, {
+  addRemoteTask: () => addRemoteTask,
+  getRemotesTask: () => getRemotesTask,
+  listRemotesTask: () => listRemotesTask,
+  remoteTask: () => remoteTask,
+  removeRemoteTask: () => removeRemoteTask
+});
+function addRemoteTask(remoteName, remoteRepo, customArgs) {
+  return straightThroughStringTask(["remote", "add", ...customArgs, remoteName, remoteRepo]);
+}
+function getRemotesTask(verbose) {
+  const commands = ["remote"];
+  if (verbose) {
+    commands.push("-v");
+  }
+  return {
+    commands,
+    format: "utf-8",
+    parser: verbose ? parseGetRemotesVerbose : parseGetRemotes
+  };
+}
+function listRemotesTask(customArgs) {
+  const commands = [...customArgs];
+  if (commands[0] !== "ls-remote") {
+    commands.unshift("ls-remote");
+  }
+  return straightThroughStringTask(commands);
+}
+function remoteTask(customArgs) {
+  const commands = [...customArgs];
+  if (commands[0] !== "remote") {
+    commands.unshift("remote");
+  }
+  return straightThroughStringTask(commands);
+}
+function removeRemoteTask(remoteName) {
+  return straightThroughStringTask(["remote", "remove", remoteName]);
+}
+var init_remote = __esm({
+  "src/lib/tasks/remote.ts"() {
+    init_GetRemoteSummary();
+    init_task();
+  }
+});
+
+// src/lib/tasks/stash-list.ts
+var stash_list_exports = {};
+__export(stash_list_exports, {
+  stashListTask: () => stashListTask
+});
+function stashListTask(opt = {}, customArgs) {
+  const options = parseLogOptions(opt);
+  const commands = ["stash", "list", ...options.commands, ...customArgs];
+  const parser4 = createListLogSummaryParser(
+    options.splitter,
+    options.fields,
+    logFormatFromCommand(commands)
+  );
+  return validateLogFormatConfig(commands) || {
+    commands,
+    format: "utf-8",
+    parser: parser4
+  };
+}
+var init_stash_list = __esm({
+  "src/lib/tasks/stash-list.ts"() {
+    init_log_format();
+    init_parse_list_log_summary();
+    init_diff();
+    init_log();
+  }
+});
+
+// src/lib/tasks/sub-module.ts
+var sub_module_exports = {};
+__export(sub_module_exports, {
+  addSubModuleTask: () => addSubModuleTask,
+  initSubModuleTask: () => initSubModuleTask,
+  subModuleTask: () => subModuleTask,
+  updateSubModuleTask: () => updateSubModuleTask
+});
+function addSubModuleTask(repo, path) {
+  return subModuleTask(["add", repo, path]);
+}
+function initSubModuleTask(customArgs) {
+  return subModuleTask(["init", ...customArgs]);
+}
+function subModuleTask(customArgs) {
+  const commands = [...customArgs];
+  if (commands[0] !== "submodule") {
+    commands.unshift("submodule");
+  }
+  return straightThroughStringTask(commands);
+}
+function updateSubModuleTask(customArgs) {
+  return subModuleTask(["update", ...customArgs]);
+}
+var init_sub_module = __esm({
+  "src/lib/tasks/sub-module.ts"() {
+    init_task();
+  }
+});
+
+// src/lib/responses/TagList.ts
+function singleSorted(a, b) {
+  const aIsNum = isNaN(a);
+  const bIsNum = isNaN(b);
+  if (aIsNum !== bIsNum) {
+    return aIsNum ? 1 : -1;
+  }
+  return aIsNum ? sorted(a, b) : 0;
+}
+function sorted(a, b) {
+  return a === b ? 0 : a > b ? 1 : -1;
+}
+function trimmed(input) {
+  return input.trim();
+}
+function toNumber(input) {
+  if (typeof input === "string") {
+    return parseInt(input.replace(/^\D+/g, ""), 10) || 0;
+  }
+  return 0;
+}
+var TagList, parseTagList;
+var init_TagList = __esm({
+  "src/lib/responses/TagList.ts"() {
+    TagList = class {
+      constructor(all, latest) {
+        this.all = all;
+        this.latest = latest;
+      }
+    };
+    parseTagList = function(data, customSort = false) {
+      const tags = data.split("\n").map(trimmed).filter(Boolean);
+      if (!customSort) {
+        tags.sort(function(tagA, tagB) {
+          const partsA = tagA.split(".");
+          const partsB = tagB.split(".");
+          if (partsA.length === 1 || partsB.length === 1) {
+            return singleSorted(toNumber(partsA[0]), toNumber(partsB[0]));
+          }
+          for (let i = 0, l = Math.max(partsA.length, partsB.length); i < l; i++) {
+            const diff = sorted(toNumber(partsA[i]), toNumber(partsB[i]));
+            if (diff) {
+              return diff;
+            }
+          }
+          return 0;
+        });
+      }
+      const latest = customSort ? tags[0] : [...tags].reverse().find((tag) => tag.indexOf(".") >= 0);
+      return new TagList(tags, latest);
+    };
+  }
+});
+
+// src/lib/tasks/tag.ts
+var tag_exports = {};
+__export(tag_exports, {
+  addAnnotatedTagTask: () => addAnnotatedTagTask,
+  addTagTask: () => addTagTask,
+  tagListTask: () => tagListTask
+});
+function tagListTask(customArgs = []) {
+  const hasCustomSort = customArgs.some((option) => /^--sort=/.test(option));
+  return {
+    format: "utf-8",
+    commands: ["tag", "-l", ...customArgs],
+    parser(text) {
+      return parseTagList(text, hasCustomSort);
+    }
+  };
+}
+function addTagTask(name) {
+  return {
+    format: "utf-8",
+    commands: ["tag", name],
+    parser() {
+      return { name };
+    }
+  };
+}
+function addAnnotatedTagTask(name, tagMessage) {
+  return {
+    format: "utf-8",
+    commands: ["tag", "-a", "-m", tagMessage, name],
+    parser() {
+      return { name };
+    }
+  };
+}
+var init_tag = __esm({
+  "src/lib/tasks/tag.ts"() {
+    init_TagList();
+  }
+});
+
+// src/git.js
+var require_git = __commonJS({
+  "src/git.js"(exports, module) {
+    var { GitExecutor: GitExecutor2 } = (init_git_executor(), __toCommonJS(git_executor_exports));
+    var { SimpleGitApi: SimpleGitApi2 } = (init_simple_git_api(), __toCommonJS(simple_git_api_exports));
+    var { Scheduler: Scheduler2 } = (init_scheduler(), __toCommonJS(scheduler_exports));
+    var { configurationErrorTask: configurationErrorTask2 } = (init_task(), __toCommonJS(task_exports));
+    var {
+      asArray: asArray2,
+      filterArray: filterArray2,
+      filterPrimitives: filterPrimitives2,
+      filterString: filterString2,
+      filterStringOrStringArray: filterStringOrStringArray2,
+      filterType: filterType2,
+      getTrailingOptions: getTrailingOptions2,
+      trailingFunctionArgument: trailingFunctionArgument2,
+      trailingOptionsArgument: trailingOptionsArgument2
+    } = (init_utils(), __toCommonJS(utils_exports));
+    var { applyPatchTask: applyPatchTask2 } = (init_apply_patch(), __toCommonJS(apply_patch_exports));
+    var {
+      branchTask: branchTask2,
+      branchLocalTask: branchLocalTask2,
+      deleteBranchesTask: deleteBranchesTask2,
+      deleteBranchTask: deleteBranchTask2
+    } = (init_branch(), __toCommonJS(branch_exports));
+    var { checkIgnoreTask: checkIgnoreTask2 } = (init_check_ignore(), __toCommonJS(check_ignore_exports));
+    var { checkIsRepoTask: checkIsRepoTask2 } = (init_check_is_repo(), __toCommonJS(check_is_repo_exports));
+    var { cloneTask: cloneTask2, cloneMirrorTask: cloneMirrorTask2 } = (init_clone(), __toCommonJS(clone_exports));
+    var { cleanWithOptionsTask: cleanWithOptionsTask2, isCleanOptionsArray: isCleanOptionsArray2 } = (init_clean(), __toCommonJS(clean_exports));
+    var { diffSummaryTask: diffSummaryTask2 } = (init_diff(), __toCommonJS(diff_exports));
+    var { fetchTask: fetchTask2 } = (init_fetch(), __toCommonJS(fetch_exports));
+    var { moveTask: moveTask2 } = (init_move(), __toCommonJS(move_exports));
+    var { pullTask: pullTask2 } = (init_pull(), __toCommonJS(pull_exports));
+    var { pushTagsTask: pushTagsTask2 } = (init_push(), __toCommonJS(push_exports));
+    var {
+      addRemoteTask: addRemoteTask2,
+      getRemotesTask: getRemotesTask2,
+      listRemotesTask: listRemotesTask2,
+      remoteTask: remoteTask2,
+      removeRemoteTask: removeRemoteTask2
+    } = (init_remote(), __toCommonJS(remote_exports));
+    var { getResetMode: getResetMode2, resetTask: resetTask2 } = (init_reset(), __toCommonJS(reset_exports));
+    var { stashListTask: stashListTask2 } = (init_stash_list(), __toCommonJS(stash_list_exports));
+    var {
+      addSubModuleTask: addSubModuleTask2,
+      initSubModuleTask: initSubModuleTask2,
+      subModuleTask: subModuleTask2,
+      updateSubModuleTask: updateSubModuleTask2
+    } = (init_sub_module(), __toCommonJS(sub_module_exports));
+    var { addAnnotatedTagTask: addAnnotatedTagTask2, addTagTask: addTagTask2, tagListTask: tagListTask2 } = (init_tag(), __toCommonJS(tag_exports));
+    var { straightThroughBufferTask: straightThroughBufferTask2, straightThroughStringTask: straightThroughStringTask2 } = (init_task(), __toCommonJS(task_exports));
+    function Git2(options, plugins) {
+      this._plugins = plugins;
+      this._executor = new GitExecutor2(
+        options.baseDir,
+        new Scheduler2(options.maxConcurrentProcesses),
+        plugins
+      );
+      this._trimmed = options.trimmed;
+    }
+    (Git2.prototype = Object.create(SimpleGitApi2.prototype)).constructor = Git2;
+    Git2.prototype.customBinary = function(command) {
+      this._plugins.reconfigure("binary", command);
+      return this;
+    };
+    Git2.prototype.env = function(name, value) {
+      if (arguments.length === 1 && typeof name === "object") {
+        this._executor.env = name;
+      } else {
+        (this._executor.env = this._executor.env || {})[name] = value;
+      }
+      return this;
+    };
+    Git2.prototype.stashList = function(options) {
+      return this._runTask(
+        stashListTask2(
+          trailingOptionsArgument2(arguments) || {},
+          filterArray2(options) && options || []
+        ),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    function createCloneTask(api, task, repoPath, localPath) {
+      if (typeof repoPath !== "string") {
+        return configurationErrorTask2(`git.${api}() requires a string 'repoPath'`);
+      }
+      return task(repoPath, filterType2(localPath, filterString2), getTrailingOptions2(arguments));
+    }
+    Git2.prototype.clone = function() {
+      return this._runTask(
+        createCloneTask("clone", cloneTask2, ...arguments),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.mirror = function() {
+      return this._runTask(
+        createCloneTask("mirror", cloneMirrorTask2, ...arguments),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.mv = function(from, to) {
+      return this._runTask(moveTask2(from, to), trailingFunctionArgument2(arguments));
+    };
+    Git2.prototype.checkoutLatestTag = function(then) {
+      var git = this;
+      return this.pull(function() {
+        git.tags(function(err, tags) {
+          git.checkout(tags.latest, then);
+        });
+      });
+    };
+    Git2.prototype.pull = function(remote, branch, options, then) {
+      return this._runTask(
+        pullTask2(
+          filterType2(remote, filterString2),
+          filterType2(branch, filterString2),
+          getTrailingOptions2(arguments)
+        ),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.fetch = function(remote, branch) {
+      return this._runTask(
+        fetchTask2(
+          filterType2(remote, filterString2),
+          filterType2(branch, filterString2),
+          getTrailingOptions2(arguments)
+        ),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.silent = function(silence) {
+      console.warn(
+        "simple-git deprecation notice: git.silent: logging should be configured using the `debug` library / `DEBUG` environment variable, this will be an error in version 3"
+      );
+      return this;
+    };
+    Git2.prototype.tags = function(options, then) {
+      return this._runTask(
+        tagListTask2(getTrailingOptions2(arguments)),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.rebase = function() {
+      return this._runTask(
+        straightThroughStringTask2(["rebase", ...getTrailingOptions2(arguments)]),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.reset = function(mode) {
+      return this._runTask(
+        resetTask2(getResetMode2(mode), getTrailingOptions2(arguments)),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.revert = function(commit) {
+      const next = trailingFunctionArgument2(arguments);
+      if (typeof commit !== "string") {
+        return this._runTask(configurationErrorTask2("Commit must be a string"), next);
+      }
+      return this._runTask(
+        straightThroughStringTask2(["revert", ...getTrailingOptions2(arguments, 0, true), commit]),
+        next
+      );
+    };
+    Git2.prototype.addTag = function(name) {
+      const task = typeof name === "string" ? addTagTask2(name) : configurationErrorTask2("Git.addTag requires a tag name");
+      return this._runTask(task, trailingFunctionArgument2(arguments));
+    };
+    Git2.prototype.addAnnotatedTag = function(tagName, tagMessage) {
+      return this._runTask(
+        addAnnotatedTagTask2(tagName, tagMessage),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.deleteLocalBranch = function(branchName, forceDelete, then) {
+      return this._runTask(
+        deleteBranchTask2(branchName, typeof forceDelete === "boolean" ? forceDelete : false),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.deleteLocalBranches = function(branchNames, forceDelete, then) {
+      return this._runTask(
+        deleteBranchesTask2(branchNames, typeof forceDelete === "boolean" ? forceDelete : false),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.branch = function(options, then) {
+      return this._runTask(
+        branchTask2(getTrailingOptions2(arguments)),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.branchLocal = function(then) {
+      return this._runTask(branchLocalTask2(), trailingFunctionArgument2(arguments));
+    };
+    Git2.prototype.raw = function(commands) {
+      const createRestCommands = !Array.isArray(commands);
+      const command = [].slice.call(createRestCommands ? arguments : commands, 0);
+      for (let i = 0; i < command.length && createRestCommands; i++) {
+        if (!filterPrimitives2(command[i])) {
+          command.splice(i, command.length - i);
+          break;
+        }
+      }
+      command.push(...getTrailingOptions2(arguments, 0, true));
+      var next = trailingFunctionArgument2(arguments);
+      if (!command.length) {
+        return this._runTask(
+          configurationErrorTask2("Raw: must supply one or more command to execute"),
+          next
+        );
+      }
+      return this._runTask(straightThroughStringTask2(command, this._trimmed), next);
+    };
+    Git2.prototype.submoduleAdd = function(repo, path, then) {
+      return this._runTask(addSubModuleTask2(repo, path), trailingFunctionArgument2(arguments));
+    };
+    Git2.prototype.submoduleUpdate = function(args, then) {
+      return this._runTask(
+        updateSubModuleTask2(getTrailingOptions2(arguments, true)),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.submoduleInit = function(args, then) {
+      return this._runTask(
+        initSubModuleTask2(getTrailingOptions2(arguments, true)),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.subModule = function(options, then) {
+      return this._runTask(
+        subModuleTask2(getTrailingOptions2(arguments)),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.listRemote = function() {
+      return this._runTask(
+        listRemotesTask2(getTrailingOptions2(arguments)),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.addRemote = function(remoteName, remoteRepo, then) {
+      return this._runTask(
+        addRemoteTask2(remoteName, remoteRepo, getTrailingOptions2(arguments)),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.removeRemote = function(remoteName, then) {
+      return this._runTask(removeRemoteTask2(remoteName), trailingFunctionArgument2(arguments));
+    };
+    Git2.prototype.getRemotes = function(verbose, then) {
+      return this._runTask(getRemotesTask2(verbose === true), trailingFunctionArgument2(arguments));
+    };
+    Git2.prototype.remote = function(options, then) {
+      return this._runTask(
+        remoteTask2(getTrailingOptions2(arguments)),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.tag = function(options, then) {
+      const command = getTrailingOptions2(arguments);
+      if (command[0] !== "tag") {
+        command.unshift("tag");
+      }
+      return this._runTask(straightThroughStringTask2(command), trailingFunctionArgument2(arguments));
+    };
+    Git2.prototype.updateServerInfo = function(then) {
+      return this._runTask(
+        straightThroughStringTask2(["update-server-info"]),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.pushTags = function(remote, then) {
+      const task = pushTagsTask2(
+        { remote: filterType2(remote, filterString2) },
+        getTrailingOptions2(arguments)
+      );
+      return this._runTask(task, trailingFunctionArgument2(arguments));
+    };
+    Git2.prototype.rm = function(files) {
+      return this._runTask(
+        straightThroughStringTask2(["rm", "-f", ...asArray2(files)]),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.rmKeepLocal = function(files) {
+      return this._runTask(
+        straightThroughStringTask2(["rm", "--cached", ...asArray2(files)]),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.catFile = function(options, then) {
+      return this._catFile("utf-8", arguments);
+    };
+    Git2.prototype.binaryCatFile = function() {
+      return this._catFile("buffer", arguments);
+    };
+    Git2.prototype._catFile = function(format, args) {
+      var handler = trailingFunctionArgument2(args);
+      var command = ["cat-file"];
+      var options = args[0];
+      if (typeof options === "string") {
+        return this._runTask(
+          configurationErrorTask2("Git.catFile: options must be supplied as an array of strings"),
+          handler
+        );
+      }
+      if (Array.isArray(options)) {
+        command.push.apply(command, options);
+      }
+      const task = format === "buffer" ? straightThroughBufferTask2(command) : straightThroughStringTask2(command);
+      return this._runTask(task, handler);
+    };
+    Git2.prototype.diff = function(options, then) {
+      const task = filterString2(options) ? configurationErrorTask2(
+        "git.diff: supplying options as a single string is no longer supported, switch to an array of strings"
+      ) : straightThroughStringTask2(["diff", ...getTrailingOptions2(arguments)]);
+      return this._runTask(task, trailingFunctionArgument2(arguments));
+    };
+    Git2.prototype.diffSummary = function() {
+      return this._runTask(
+        diffSummaryTask2(getTrailingOptions2(arguments, 1)),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.applyPatch = function(patches) {
+      const task = !filterStringOrStringArray2(patches) ? configurationErrorTask2(
+        `git.applyPatch requires one or more string patches as the first argument`
+      ) : applyPatchTask2(asArray2(patches), getTrailingOptions2([].slice.call(arguments, 1)));
+      return this._runTask(task, trailingFunctionArgument2(arguments));
+    };
+    Git2.prototype.revparse = function() {
+      const commands = ["rev-parse", ...getTrailingOptions2(arguments, true)];
+      return this._runTask(
+        straightThroughStringTask2(commands, true),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.clean = function(mode, options, then) {
+      const usingCleanOptionsArray = isCleanOptionsArray2(mode);
+      const cleanMode = usingCleanOptionsArray && mode.join("") || filterType2(mode, filterString2) || "";
+      const customArgs = getTrailingOptions2([].slice.call(arguments, usingCleanOptionsArray ? 1 : 0));
+      return this._runTask(
+        cleanWithOptionsTask2(cleanMode, customArgs),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.exec = function(then) {
+      const task = {
+        commands: [],
+        format: "utf-8",
+        parser() {
+          if (typeof then === "function") {
+            then();
+          }
+        }
+      };
+      return this._runTask(task);
+    };
+    Git2.prototype.clearQueue = function() {
+      return this;
+    };
+    Git2.prototype.checkIgnore = function(pathnames, then) {
+      return this._runTask(
+        checkIgnoreTask2(asArray2(filterType2(pathnames, filterStringOrStringArray2, []))),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    Git2.prototype.checkIsRepo = function(checkType, then) {
+      return this._runTask(
+        checkIsRepoTask2(filterType2(checkType, filterString2)),
+        trailingFunctionArgument2(arguments)
+      );
+    };
+    module.exports = Git2;
+  }
+});
+
+// src/lib/api.ts
+init_pathspec();
+
+// src/lib/errors/git-construct-error.ts
+init_git_error();
+var GitConstructError = class extends GitError {
+  constructor(config, message) {
+    super(void 0, message);
+    this.config = config;
+  }
+};
+
+// src/lib/api.ts
+init_git_error();
+
+// src/lib/errors/git-plugin-error.ts
+init_git_error();
+var GitPluginError = class extends GitError {
+  constructor(task, plugin, message) {
+    super(task, message);
+    this.task = task;
+    this.plugin = plugin;
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+};
+
+// src/lib/api.ts
+init_git_response_error();
+init_task_configuration_error();
+init_check_is_repo();
+init_clean();
+init_config();
+init_diff_name_status();
+init_grep();
+init_reset();
+
+// src/lib/plugins/abort-plugin.ts
+function abortPlugin(signal) {
+  if (!signal) {
+    return;
+  }
+  const onSpawnAfter = {
+    type: "spawn.after",
+    action(_data, context) {
+      function kill() {
+        context.kill(new GitPluginError(void 0, "abort", "Abort signal received"));
+      }
+      signal.addEventListener("abort", kill);
+      context.spawned.on("close", () => signal.removeEventListener("abort", kill));
+    }
+  };
+  const onSpawnBefore = {
+    type: "spawn.before",
+    action(_data, context) {
+      if (signal.aborted) {
+        context.kill(new GitPluginError(void 0, "abort", "Abort already signaled"));
+      }
+    }
+  };
+  return [onSpawnBefore, onSpawnAfter];
+}
+
+// src/lib/plugins/block-unsafe-operations-plugin.ts
+function isConfigSwitch(arg) {
+  return typeof arg === "string" && arg.trim().toLowerCase() === "-c";
+}
+function preventProtocolOverride(arg, next) {
+  if (!isConfigSwitch(arg)) {
+    return;
+  }
+  if (!/^\s*protocol(.[a-z]+)?.allow/.test(next)) {
+    return;
+  }
+  throw new GitPluginError(
+    void 0,
+    "unsafe",
+    "Configuring protocol.allow is not permitted without enabling allowUnsafeExtProtocol"
+  );
+}
+function preventUploadPack(arg, method) {
+  if (/^\s*--(upload|receive)-pack/.test(arg)) {
+    throw new GitPluginError(
+      void 0,
+      "unsafe",
+      `Use of --upload-pack or --receive-pack is not permitted without enabling allowUnsafePack`
+    );
+  }
+  if (method === "clone" && /^\s*-u\b/.test(arg)) {
+    throw new GitPluginError(
+      void 0,
+      "unsafe",
+      `Use of clone with option -u is not permitted without enabling allowUnsafePack`
+    );
+  }
+  if (method === "push" && /^\s*--exec\b/.test(arg)) {
+    throw new GitPluginError(
+      void 0,
+      "unsafe",
+      `Use of push with option --exec is not permitted without enabling allowUnsafePack`
+    );
+  }
+}
+function blockUnsafeOperationsPlugin({
+  allowUnsafeProtocolOverride = false,
+  allowUnsafePack = false
+} = {}) {
+  return {
+    type: "spawn.args",
+    action(args, context) {
+      args.forEach((current, index) => {
+        const next = index < args.length ? args[index + 1] : "";
+        allowUnsafeProtocolOverride || preventProtocolOverride(current, next);
+        allowUnsafePack || preventUploadPack(current, context.method);
+      });
+      return args;
+    }
+  };
+}
+
+// src/lib/plugins/command-config-prefixing-plugin.ts
+init_utils();
+function commandConfigPrefixingPlugin(configuration) {
+  const prefix = prefixedArray(configuration, "-c");
+  return {
+    type: "spawn.args",
+    action(data) {
+      return [...prefix, ...data];
+    }
+  };
+}
+
+// src/lib/plugins/completion-detection.plugin.ts
+init_utils();
+var never = distExports$1.deferred().promise;
+function completionDetectionPlugin({
+  onClose = true,
+  onExit = 50
+} = {}) {
+  function createEvents() {
+    let exitCode = -1;
+    const events = {
+      close: distExports$1.deferred(),
+      closeTimeout: distExports$1.deferred(),
+      exit: distExports$1.deferred(),
+      exitTimeout: distExports$1.deferred()
+    };
+    const result = Promise.race([
+      onClose === false ? never : events.closeTimeout.promise,
+      onExit === false ? never : events.exitTimeout.promise
+    ]);
+    configureTimeout(onClose, events.close, events.closeTimeout);
+    configureTimeout(onExit, events.exit, events.exitTimeout);
+    return {
+      close(code) {
+        exitCode = code;
+        events.close.done();
+      },
+      exit(code) {
+        exitCode = code;
+        events.exit.done();
+      },
+      get exitCode() {
+        return exitCode;
+      },
+      result
+    };
+  }
+  function configureTimeout(flag, event, timeout) {
+    if (flag === false) {
+      return;
+    }
+    (flag === true ? event.promise : event.promise.then(() => delay(flag))).then(timeout.done);
+  }
+  return {
+    type: "spawn.after",
+    async action(_data, { spawned, close }) {
+      const events = createEvents();
+      let deferClose = true;
+      let quickClose = () => void (deferClose = false);
+      spawned.stdout?.on("data", quickClose);
+      spawned.stderr?.on("data", quickClose);
+      spawned.on("error", quickClose);
+      spawned.on("close", (code) => events.close(code));
+      spawned.on("exit", (code) => events.exit(code));
+      try {
+        await events.result;
+        if (deferClose) {
+          await delay(50);
+        }
+        close(events.exitCode);
+      } catch (err) {
+        close(events.exitCode, err);
+      }
+    }
+  };
+}
+
+// src/lib/plugins/custom-binary.plugin.ts
+init_utils();
+var WRONG_NUMBER_ERR = `Invalid value supplied for custom binary, requires a single string or an array containing either one or two strings`;
+var WRONG_CHARS_ERR = `Invalid value supplied for custom binary, restricted characters must be removed or supply the unsafe.allowUnsafeCustomBinary option`;
+function isBadArgument(arg) {
+  return !arg || !/^([a-z]:)?([a-z0-9/.\\_-]+)$/i.test(arg);
+}
+function toBinaryConfig(input, allowUnsafe) {
+  if (input.length < 1 || input.length > 2) {
+    throw new GitPluginError(void 0, "binary", WRONG_NUMBER_ERR);
+  }
+  const isBad = input.some(isBadArgument);
+  if (isBad) {
+    if (allowUnsafe) {
+      console.warn(WRONG_CHARS_ERR);
+    } else {
+      throw new GitPluginError(void 0, "binary", WRONG_CHARS_ERR);
+    }
+  }
+  const [binary, prefix] = input;
+  return {
+    binary,
+    prefix
+  };
+}
+function customBinaryPlugin(plugins, input = ["git"], allowUnsafe = false) {
+  let config = toBinaryConfig(asArray(input), allowUnsafe);
+  plugins.on("binary", (input2) => {
+    config = toBinaryConfig(asArray(input2), allowUnsafe);
+  });
+  plugins.append("spawn.binary", () => {
+    return config.binary;
+  });
+  plugins.append("spawn.args", (data) => {
+    return config.prefix ? [config.prefix, ...data] : data;
+  });
+}
+
+// src/lib/plugins/error-detection.plugin.ts
+init_git_error();
+function isTaskError(result) {
+  return !!(result.exitCode && result.stdErr.length);
+}
+function getErrorMessage(result) {
+  return Buffer.concat([...result.stdOut, ...result.stdErr]);
+}
+function errorDetectionHandler(overwrite = false, isError = isTaskError, errorMessage = getErrorMessage) {
+  return (error, result) => {
+    if (!overwrite && error || !isError(result)) {
+      return error;
+    }
+    return errorMessage(result);
+  };
+}
+function errorDetectionPlugin(config) {
+  return {
+    type: "task.error",
+    action(data, context) {
+      const error = config(data.error, {
+        stdErr: context.stdErr,
+        stdOut: context.stdOut,
+        exitCode: context.exitCode
+      });
+      if (Buffer.isBuffer(error)) {
+        return { error: new GitError(void 0, error.toString("utf-8")) };
+      }
+      return {
+        error
+      };
+    }
+  };
+}
+
+// src/lib/plugins/plugin-store.ts
+init_utils();
+var PluginStore = class {
+  constructor() {
+    this.plugins = /* @__PURE__ */ new Set();
+    this.events = new EventEmitter();
+  }
+  on(type, listener) {
+    this.events.on(type, listener);
+  }
+  reconfigure(type, data) {
+    this.events.emit(type, data);
+  }
+  append(type, action) {
+    const plugin = append(this.plugins, { type, action });
+    return () => this.plugins.delete(plugin);
+  }
+  add(plugin) {
+    const plugins = [];
+    asArray(plugin).forEach((plugin2) => plugin2 && this.plugins.add(append(plugins, plugin2)));
+    return () => {
+      plugins.forEach((plugin2) => this.plugins.delete(plugin2));
+    };
+  }
+  exec(type, data, context) {
+    let output = data;
+    const contextual = Object.freeze(Object.create(context));
+    for (const plugin of this.plugins) {
+      if (plugin.type === type) {
+        output = plugin.action(output, contextual);
+      }
+    }
+    return output;
+  }
+};
+
+// src/lib/plugins/progress-monitor-plugin.ts
+init_utils();
+function progressMonitorPlugin(progress) {
+  const progressCommand = "--progress";
+  const progressMethods = ["checkout", "clone", "fetch", "pull", "push"];
+  const onProgress = {
+    type: "spawn.after",
+    action(_data, context) {
+      if (!context.commands.includes(progressCommand)) {
+        return;
+      }
+      context.spawned.stderr?.on("data", (chunk) => {
+        const message = /^([\s\S]+?):\s*(\d+)% \((\d+)\/(\d+)\)/.exec(chunk.toString("utf8"));
+        if (!message) {
+          return;
+        }
+        progress({
+          method: context.method,
+          stage: progressEventStage(message[1]),
+          progress: asNumber(message[2]),
+          processed: asNumber(message[3]),
+          total: asNumber(message[4])
+        });
+      });
+    }
+  };
+  const onArgs = {
+    type: "spawn.args",
+    action(args, context) {
+      if (!progressMethods.includes(context.method)) {
+        return args;
+      }
+      return including(args, progressCommand);
+    }
+  };
+  return [onArgs, onProgress];
+}
+function progressEventStage(input) {
+  return String(input.toLowerCase().split(" ", 1)) || "unknown";
+}
+
+// src/lib/plugins/spawn-options-plugin.ts
+init_utils();
+function spawnOptionsPlugin(spawnOptions) {
+  const options = pick(spawnOptions, ["uid", "gid"]);
+  return {
+    type: "spawn.options",
+    action(data) {
+      return { ...options, ...data };
+    }
+  };
+}
+
+// src/lib/plugins/timout-plugin.ts
+function timeoutPlugin({
+  block,
+  stdErr = true,
+  stdOut = true
+}) {
+  if (block > 0) {
+    return {
+      type: "spawn.after",
+      action(_data, context) {
+        let timeout;
+        function wait() {
+          timeout && clearTimeout(timeout);
+          timeout = setTimeout(kill, block);
+        }
+        function stop() {
+          context.spawned.stdout?.off("data", wait);
+          context.spawned.stderr?.off("data", wait);
+          context.spawned.off("exit", stop);
+          context.spawned.off("close", stop);
+          timeout && clearTimeout(timeout);
+        }
+        function kill() {
+          stop();
+          context.kill(new GitPluginError(void 0, "timeout", `block timeout reached`));
+        }
+        stdOut && context.spawned.stdout?.on("data", wait);
+        stdErr && context.spawned.stderr?.on("data", wait);
+        context.spawned.on("exit", stop);
+        context.spawned.on("close", stop);
+        wait();
+      }
+    };
+  }
+}
+
+// src/lib/plugins/suffix-paths.plugin.ts
+init_pathspec();
+function suffixPathsPlugin() {
+  return {
+    type: "spawn.args",
+    action(data) {
+      const prefix = [];
+      let suffix;
+      function append2(args) {
+        (suffix = suffix || []).push(...args);
+      }
+      for (let i = 0; i < data.length; i++) {
+        const param = data[i];
+        if (isPathSpec(param)) {
+          append2(toPaths(param));
+          continue;
+        }
+        if (param === "--") {
+          append2(
+            data.slice(i + 1).flatMap((item) => isPathSpec(item) && toPaths(item) || item)
+          );
+          break;
+        }
+        prefix.push(param);
+      }
+      return !suffix ? prefix : [...prefix, "--", ...suffix.map(String)];
+    }
+  };
+}
+
+// src/lib/git-factory.ts
+init_utils();
+var Git = require_git();
+function gitInstanceFactory(baseDir, options) {
+  const plugins = new PluginStore();
+  const config = createInstanceConfig(
+    baseDir && (typeof baseDir === "string" ? { baseDir } : baseDir) || {},
+    options
+  );
+  if (!folderExists(config.baseDir)) {
+    throw new GitConstructError(
+      config,
+      `Cannot use simple-git on a directory that does not exist`
+    );
+  }
+  if (Array.isArray(config.config)) {
+    plugins.add(commandConfigPrefixingPlugin(config.config));
+  }
+  plugins.add(blockUnsafeOperationsPlugin(config.unsafe));
+  plugins.add(suffixPathsPlugin());
+  plugins.add(completionDetectionPlugin(config.completion));
+  config.abort && plugins.add(abortPlugin(config.abort));
+  config.progress && plugins.add(progressMonitorPlugin(config.progress));
+  config.timeout && plugins.add(timeoutPlugin(config.timeout));
+  config.spawnOptions && plugins.add(spawnOptionsPlugin(config.spawnOptions));
+  plugins.add(errorDetectionPlugin(errorDetectionHandler(true)));
+  config.errors && plugins.add(errorDetectionPlugin(config.errors));
+  customBinaryPlugin(plugins, config.binary, config.unsafe?.allowUnsafeCustomBinary);
+  return new Git(config, plugins);
+}
+
+// src/lib/runners/promise-wrapped.ts
+init_git_response_error();
+
+// src/esm.mjs
+var simpleGit = gitInstanceFactory;
+
+/**
+ * Low-level git operations wrapper.
+ *
+ * This module provides a GitClient class that wraps simple-git for common git operations
+ * like cloning, fetching, diffing, branching, and pushing. It includes token masking for
+ * secure logging and provides utility functions for cloning pull request repositories
+ * and computing PR diffs.
+ *
+ * Use this module when you need direct git operations. For higher-level GitHub PR workflows,
+ * see pullRequests.ts instead.
+ */
+function maskSecret(value, secret) {
+    if (!secret || !value) {
+        return value;
+    }
+    return value.split(secret).join('***');
+}
+class GitClient {
+    git;
+    token;
+    constructor(cwd, token) {
+        const options = {
+            baseDir: cwd,
+            binary: 'git',
+            maxConcurrentProcesses: 6,
+            trimmed: false,
+            config: [
+                'core.quotepath=false' // Prevent escaping of non-ASCII characters
+            ]
+        };
+        this.git = simpleGit(options);
+        this.token = token;
+        // Set large buffer for diffs
+        this.git.env('GIT_TERMINAL_PROMPT', '0');
+    }
+    logCommand(command) {
+        const masked = this.token ? maskSecret(command, this.token) : command;
+        coreExports.info(`git ${masked}`);
+    }
+    maskError(error) {
+        if (!this.token)
+            return error;
+        const maskedMessage = maskSecret(error.message, this.token);
+        return new Error(maskedMessage);
+    }
+    async clone(remoteUrl, targetDir, branch) {
+        this.logCommand(`clone --origin origin --branch ${branch} [URL] ${targetDir}`);
+        try {
+            await this.git.clone(remoteUrl, targetDir, [
+                '--origin',
+                'origin',
+                '--branch',
+                branch
+            ]);
+        }
+        catch (error) {
+            throw this.maskError(error);
+        }
+    }
+    async fetch(ref) {
+        this.logCommand(`fetch origin ${ref}`);
+        try {
+            await this.git.fetch(['origin', ref]);
+        }
+        catch (error) {
+            throw this.maskError(error);
+        }
+    }
+    async diff(range, options) {
+        const args = [];
+        if (options?.stat) {
+            args.push('--stat');
+        }
+        if (options?.unified !== undefined) {
+            args.push(`--unified=${options.unified}`);
+        }
+        if (range) {
+            args.push(range);
+        }
+        const command = `diff ${args.join(' ')}`;
+        this.logCommand(command);
+        try {
+            const result = await this.git.diff(args);
+            return result;
+        }
+        catch (error) {
+            throw this.maskError(error);
+        }
+    }
+    async checkoutNewBranch(branchName) {
+        this.logCommand(`checkout -b ${branchName}`);
+        try {
+            await this.git.checkoutLocalBranch(branchName);
+        }
+        catch (error) {
+            throw this.maskError(error);
+        }
+    }
+    async applyPatch(patchPath) {
+        this.logCommand(`apply --whitespace=nowarn ${patchPath}`);
+        try {
+            await this.git.raw(['apply', '--whitespace=nowarn', patchPath]);
+        }
+        catch (error) {
+            throw this.maskError(error);
+        }
+    }
+    async status() {
+        this.logCommand('status --porcelain');
+        try {
+            const result = await this.git.status(['--porcelain']);
+            return result.files
+                .map((f) => `${f.index}${f.working_dir} ${f.path}`)
+                .join('\n');
+        }
+        catch (error) {
+            throw this.maskError(error);
+        }
+    }
+    async config(key, value) {
+        this.logCommand(`config ${key} ${value}`);
+        try {
+            await this.git.addConfig(key, value);
+        }
+        catch (error) {
+            throw this.maskError(error);
+        }
+    }
+    async addAll() {
+        this.logCommand('add --all');
+        try {
+            await this.git.add('--all');
+        }
+        catch (error) {
+            throw this.maskError(error);
+        }
+    }
+    async commit(message) {
+        this.logCommand(`commit -m "${message}"`);
+        try {
+            await this.git.commit(message);
+        }
+        catch (error) {
+            throw this.maskError(error);
+        }
+    }
+    async push(branchName) {
+        this.logCommand(`push --set-upstream origin ${branchName}`);
+        try {
+            await this.git.push(['--set-upstream', 'origin', branchName]);
+        }
+        catch (error) {
+            throw this.maskError(error);
+        }
+    }
+    async raw(args) {
+        this.logCommand(args.join(' '));
+        try {
+            return await this.git.raw(args);
+        }
+        catch (error) {
+            throw this.maskError(error);
+        }
+    }
+}
+async function clonePullRequestRepository(token, owner, repo, pullRequest) {
+    const tempBaseDir = await fsPromises.mkdtemp(path$1.join(require$$0.tmpdir(), 'tensorzero-pr-'));
+    const repoDir = path$1.join(tempBaseDir, 'repo');
+    const remoteUrl = `https://x-access-token:${token}@github.com/${owner}/${repo}.git`;
+    // Create a temporary git client for cloning
+    const tempGit = new GitClient(process.cwd(), token);
+    try {
+        await tempGit.clone(remoteUrl, repoDir, pullRequest.head.ref);
+    }
+    catch (error) {
+        await fsPromises.rm(tempBaseDir, { recursive: true, force: true });
+        throw error;
+    }
+    // Create the actual git client for the cloned repo
+    const git = new GitClient(repoDir, token);
+    const cleanup = async () => {
+        await fsPromises.rm(tempBaseDir, { recursive: true, force: true });
+    };
+    return { repoDir, cleanup, git };
+}
+async function getPullRequestDiff(token, owner, repo, pullRequest) {
+    const { git, cleanup } = await clonePullRequestRepository(token, owner, repo, pullRequest);
+    try {
+        coreExports.info(`Fetching base branch ${pullRequest.base.ref} for diff computation.`);
+        await git.fetch(pullRequest.base.ref);
+        coreExports.info(`Ensuring head branch ${pullRequest.head.ref} is up to date for diff computation.`);
+        await git.fetch(pullRequest.head.ref);
+        const diffRange = `origin/${pullRequest.base.ref}...${pullRequest.head.sha}`;
+        coreExports.info(`Computing diff summary with range ${diffRange}.`);
+        const diffSummary = await git.diff(diffRange, { stat: true });
+        coreExports.info(`Computing full diff with range ${diffRange}.`);
+        const fullDiff = await git.diff(diffRange);
+        return {
+            diffSummary,
+            fullDiff
+        };
+    }
+    finally {
+        await cleanup();
+    }
+}
+
+/**
+ * High-level GitHub pull request operations.
+ *
+ * This module provides functions for working with GitHub pull requests, including:
+ * - Creating follow-up PRs with automated fixes based on LLM-generated diffs
+ * - Fetching failed workflow run logs using the GitHub CLI
+ *
+ * These functions orchestrate git operations (from git.ts) and GitHub API calls
+ * to implement complete PR workflows. Use this module for PR-related business logic
+ * rather than low-level git operations.
+ */
+const execFileAsync = promisify(execFile);
+/**
+ * Create a follow-up PR directly from the working directory where changes were made
+ * This avoids the double-clone bug and patch application issues
+ */
+async function createFollowupPrFromWorkingDir({ octokit, owner, repo, pullRequest, git, reasoning }, outputDir) {
+    // Check if this is a fork PR (we can't push to forks)
+    if (pullRequest.base.repo?.id !== pullRequest.head.repo?.id) {
+        coreExports.warning('Original PR branch lives in a fork; skipping follow-up PR creation.');
+        return undefined;
+    }
+    // Check for changes
+    const status = await git.status();
+    if (!status.trim()) {
+        coreExports.info('No changes to commit; skipping follow-up PR creation.');
+        return undefined;
+    }
+    // Create a new branch for the fix
+    const fixBranchName = `tensorzero/pr-${pullRequest.number}-${Date.now()}`;
+    coreExports.info(`Creating new branch: ${fixBranchName}`);
+    await git.checkoutNewBranch(fixBranchName);
+    // Configure git user
+    await git.config('user.email', 'hello@tensorzero.com');
+    await git.config('user.name', 'TensorZero-Experimental-CI-Bot[bot]');
+    // Commit all changes
+    await git.addAll();
+    await git.commit(`chore: automated fix for PR #${pullRequest.number}`);
+    // Push to remote
+    coreExports.info(`Pushing branch ${fixBranchName} to origin`);
+    await git.push(fixBranchName);
+    // Create the pull request
+    const prTitle = `Automated follow-up for #${pullRequest.number}`;
+    const prBodyLines = [
+        `This pull request was generated automatically in response to failing CI on #${pullRequest.number}.`,
+        '',
+        'The proposed changes were produced by mini-swe-agent running directly in the repository.'
+    ];
+    // Add reasoning if available
+    if (reasoning && reasoning.trim()) {
+        prBodyLines.push('');
+        prBodyLines.push('## Fix Details');
+        prBodyLines.push('');
+        prBodyLines.push(reasoning.trim());
+    }
+    const prBody = prBodyLines.join('\n');
+    coreExports.info(`Creating PR: ${prTitle}`);
+    const createdPr = await octokit.rest.pulls.create({
+        owner,
+        repo,
+        base: pullRequest.head.ref,
+        head: fixBranchName,
+        title: prTitle,
+        body: prBody
+    });
+    if (outputDir) {
+        await fsPromises.writeFile(path$1.join(outputDir, 'followup-pr-payload.json'), JSON.stringify(createdPr, null, 2));
+    }
+    return {
+        number: createdPr.data.number,
+        id: createdPr.data.id,
+        htmlUrl: createdPr.data.html_url
+    };
+}
+async function getFailedWorkflowRunLogs(workflowRunId, owner, repo) {
+    // Validate that owner and repo are provided
+    if (!owner || !repo) {
+        throw new Error('Owner and repo are required to fetch workflow run logs via API');
+    }
+    try {
+        // First, fetch the list of jobs for this workflow run
+        const jobsArgs = [
+            'api',
+            `repos/${owner}/${repo}/actions/runs/${workflowRunId}/jobs`,
+            '--paginate'
+        ];
+        const { stdout: jobsOutput } = await execFileAsync('gh', jobsArgs, {
+            maxBuffer: 20 * 1024 * 1024,
+            encoding: 'utf-8'
+        });
+        const jobsData = JSON.parse(jobsOutput);
+        const jobs = (jobsData.jobs || []);
+        // Filter to failed jobs
+        const failedJobs = jobs.filter((job) => job.conclusion && job.conclusion !== 'success');
+        if (failedJobs.length === 0) {
+            coreExports.warning(`No failed jobs found for workflow run ${workflowRunId}`);
+            return '';
+        }
+        // Fetch logs for each failed job
+        const logPromises = failedJobs.map(async (job) => {
+            try {
+                const logsArgs = [
+                    'api',
+                    `repos/${owner}/${repo}/actions/jobs/${job.id}/logs`,
+                    '--paginate'
+                ];
+                const { stdout: logs } = await execFileAsync('gh', logsArgs, {
+                    maxBuffer: 20 * 1024 * 1024,
+                    encoding: 'utf-8'
+                });
+                return `\n=== Job: ${job.name} (ID: ${job.id}) ===\n${logs}\n`;
+            }
+            catch (error) {
+                const errorMessage = error instanceof Error ? error.message : `${error}`;
+                coreExports.warning(`Failed to fetch logs for job ${job.name} (${job.id}): ${errorMessage}`);
+                return `\n=== Job: ${job.name} (ID: ${job.id}) ===\n[Failed to fetch logs: ${errorMessage}]\n`;
+            }
+        });
+        const allLogs = await Promise.all(logPromises);
+        const combinedLogs = allLogs.join('\n');
+        if (!combinedLogs.trim()) {
+            throw new Error(`Did not receive any logs for workflow ${workflowRunId}`);
+        }
+        return combinedLogs;
+    }
+    catch (error) {
+        const errorMessage = error instanceof Error ? error.message : `${error}`;
+        throw new Error(`Failed to fetch workflow run logs: ${errorMessage}`);
+    }
+}
+
+/**
+ * GitHub Actions adapter - extracts context and converts to AgentRunnerInput
+ */
+function parseActionInputs() {
+    const token = coreExports.getInput('token')?.trim();
+    if (!token) {
+        throw new Error('A GitHub token is required. Provide one via the `token` input.');
+    }
+    const modeInput = coreExports.getInput('mode')?.trim() || 'full';
+    if (modeInput !== 'patch-only' && modeInput !== 'full') {
+        throw new Error(`Invalid mode: ${modeInput}. Must be "patch-only" or "full".`);
+    }
+    const mode = modeInput;
+    const tensorZeroBaseUrl = coreExports.getInput('tensorzero-base-url')?.trim();
+    const outputArtifactsDirInput = coreExports.getInput('output-artifacts-dir');
+    const outputArtifactsDir = outputArtifactsDirInput
+        ? outputArtifactsDirInput.trim() || undefined
+        : undefined;
+    const clickhouseUrl = coreExports.getInput('clickhouse-url')?.trim();
+    const clickhouseTable = coreExports.getInput('clickhouse-table')?.trim();
+    const clickhouse = clickhouseUrl && clickhouseTable
+        ? { url: clickhouseUrl, table: clickhouseTable }
+        : undefined;
+    return {
+        token,
+        mode,
+        tensorZeroBaseUrl,
+        outputArtifactsDir,
+        clickhouse
+    };
+}
+/**
+ * Check if PR is eligible for fix
+ */
+function isPullRequestEligibleForFix() {
+    // If the workflow run is not associated with a single pull request, we don't want to fix it.
+    if (githubExports.context.payload.workflow_run?.pull_requests?.length !== 1) {
+        coreExports.warning(`Workflow run is not associated with a single pull request; skipping action.`);
+        return false;
+    }
+    const pullRequest = githubExports.context.payload.workflow_run.pull_requests[0];
+    if (!pullRequest) {
+        coreExports.warning(`Workflow run is not associated with a pull request; skipping action.`);
+        return false;
+    }
+    // If the pull request originates from a fork, we don't want to fix it.
+    if (pullRequest.head.repo?.id !== pullRequest.base.repo?.id) {
+        coreExports.warning(`PR originates from a fork: base repo is ${pullRequest.base.repo?.name}, but PR branch is from ${pullRequest.head.repo?.name}; skipping action.`);
+        return false;
+    }
+    // If the workflow run did not fail, we don't want to fix it.
+    if (githubExports.context.payload.workflow_run.conclusion !== 'failure') {
+        coreExports.warning(`Workflow run did not fail (conclusion ${githubExports.context.payload.workflow_run.conclusion}); skipping action.`);
+        return false;
+    }
+    // If the pull request is not targeting the main branch, we don't want to fix it.
+    if (pullRequest.base?.ref !== githubExports.context.payload.repository?.default_branch) {
+        coreExports.warning(`PR is not targeting the main branch: PR branch is ${pullRequest.base?.ref}, but main branch is ${githubExports.context.payload.repository?.default_branch}; skipping action.`);
+        return false;
+    }
+    coreExports.info(`PR is eligible for fix.`);
+    return true;
+}
+/**
+ * Fetch workflow job status
+ */
+async function getJobStatus(jobsUrl, token) {
+    const response = await fetch(jobsUrl, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28'
+        }
+    });
+    if (!response.ok) {
+        let errorBody = '';
+        try {
+            errorBody = await response.text();
+        }
+        catch {
+            // Ignore error when reading error body
+        }
+        throw new Error(`Failed to load workflow jobs from ${jobsUrl}: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody}` : ''}`);
+    }
+    return (await response.json());
+}
+/**
+ * Get all failed jobs from workflow
+ */
+function getAllFailedJobs(workflowJobsStatus) {
+    return (workflowJobsStatus.jobs ?? [])
+        .filter((job) => job.conclusion !== 'success')
+        .map((job) => ({
+        name: job.name,
+        conclusion: job.conclusion,
+        html_url: job.html_url,
+        failed_steps: (job.steps ?? [])
+            .filter((step) => step.conclusion && step.conclusion !== 'success')
+            .map((step) => ({
+            name: step.name,
+            status: step.status,
+            conclusion: step.conclusion
+        }))
+    }));
+}
+/**
+ * Extract PR information from GitHub Actions context
+ */
+async function extractPullRequestInfo(octokit, owner, repo) {
+    const workflow_run_payload = githubExports.context.payload['workflow_run'];
+    const pullRequest = workflow_run_payload.pull_requests?.[0];
+    if (!pullRequest) {
+        return null;
+    }
+    // Fetch full PR details to get description
+    const prResponse = await octokit.rest.pulls.get({
+        owner,
+        repo,
+        pull_number: pullRequest.number
+    });
+    return {
+        owner,
+        repo,
+        number: pullRequest.number,
+        headSha: workflow_run_payload.head_sha,
+        headRef: workflow_run_payload.head_branch,
+        baseRef: pullRequest.base?.ref,
+        htmlUrl: pullRequest.html_url,
+        description: prResponse.data.body
+    };
+}
+/**
+ * Extract CI failure information from GitHub Actions context
+ */
+async function extractCIFailureInfo(token, owner, repo) {
+    const workflow_run_payload = githubExports.context.payload['workflow_run'];
+    const runId = workflow_run_payload.id;
+    if (!runId) {
+        return null;
+    }
+    if (workflow_run_payload.conclusion !== 'failure') {
+        return null;
+    }
+    // Fetch jobs from the workflow run
+    const jobsUrl = workflow_run_payload.jobs_url;
+    if (!jobsUrl) {
+        throw new Error('Missing jobs_url from workflow_run');
+    }
+    coreExports.info(`Fetching jobs from: ${jobsUrl}`);
+    const workflowJobsStatus = await getJobStatus(jobsUrl, token);
+    const failedJobs = getAllFailedJobs(workflowJobsStatus);
+    // Gather failure logs
+    const failureLogs = await getFailedWorkflowRunLogs(runId, owner, repo);
+    return {
+        workflowRunId: runId,
+        workflowRunUrl: workflow_run_payload.html_url,
+        failedJobs,
+        failureLogs
+    };
+}
+/**
+ * Create AgentRunnerInput from GitHub Actions context
+ */
+async function createAgentInputFromGitHubActions() {
+    // Check if PR is eligible
+    if (!isPullRequestEligibleForFix()) {
+        coreExports.warning(`Pull request is not eligible for fix. Skipping action.`);
+        return null;
+    }
+    // Parse action inputs
+    const inputs = parseActionInputs();
+    const { token, mode, outputArtifactsDir, clickhouse, tensorZeroBaseUrl }  = inputs;
+    const patchOnly = mode === 'patch-only';
+    if (patchOnly) {
+        coreExports.info('Running in patch-only mode - will generate patch without creating PR');
+    }
+    // Mask the token
+    coreExports.setSecret(token);
+    // Get repo info
+    const { owner, repo } = githubExports.context.repo;
+    const octokit = githubExports.getOctokit(token);
+    // Extract PR information
+    const pullRequest = await extractPullRequestInfo(octokit, owner, repo);
+    if (!pullRequest) {
+        coreExports.warning('Unable to identify the pull request; skipping action.');
+        return null;
+    }
+    // Extract CI failure information
+    const ciFailure = await extractCIFailureInfo(token, owner, repo);
+    if (!ciFailure) {
+        coreExports.warning('No CI failure information available; skipping action.');
+        return null;
+    }
+    return {
+        octokit,
+        token,
+        pullRequest,
+        ciFailure,
+        mode: 'live', // GitHub Actions always runs in live mode
+        patchOnly,
+        outputDir: outputArtifactsDir,
+        clickhouse,
+        tensorZero: {
+            baseUrl: tensorZeroBaseUrl,
+        },
+        agent: {
+            costLimit: 3.0, // Default for GitHub Actions
+            timeout: 30 // 30 minutes
+        }
+    };
+}
+/**
+ * Set action outputs for patch-only mode
+ */
+function setActionOutputs(outputs) {
+    coreExports.setOutput('has-changes', outputs.hasChanges ? 'true' : 'false');
+    if (outputs.patchFile) {
+        coreExports.setOutput('patch-file', outputs.patchFile);
+    }
+    if (outputs.metadataFile) {
+        coreExports.setOutput('metadata-file', outputs.metadataFile);
+    }
+}
+
+/**
+ * Parse the agent's completion output from the final command
+ */
+function parseAgentCompletion(output) {
+    const lines = output.trim().split('\n');
+    let reasoning = '';
+    for (const line of lines) {
+        const trimmedLine = line.trim();
+        if (trimmedLine.startsWith('REASONING:')) {
+            reasoning = trimmedLine.replace('REASONING:', '').trim();
+        }
+        else if (!trimmedLine.startsWith('COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT')) {
+            // If it's not a known prefix, append to reasoning
+            if (reasoning) {
+                reasoning += ' ' + trimmedLine;
+            }
+            else if (!trimmedLine) {
+                continue;
+            }
+        }
+    }
+    if (!reasoning) {
+        reasoning = 'Agent completed task without providing reasoning';
+    }
+    return { reasoning };
+}
+
+/**
+ * Run the mini-swe-agent with the given configuration
+ */
+async function runMiniSweAgent(config) {
+    const { task, cwd, tensorZeroGatewayUrl,
+    // trajectoryOutputPath is ignored - we always use temp file now
+    costLimit = 3.0, modelName, timeout = 30 * 60 * 1000, // 30 minutes
+    prNumber } = config;
+    // Create a temporary trajectory file that we'll delete after reading
+    const tempTrajectoryPath = path$2.join(os.tmpdir(), `agent_trajectory_${Date.now()}_${Math.random().toString(36).substring(7)}.json`);
+    // Build command arguments
+    const args = [
+        '-t',
+        task,
+        '-o',
+        tempTrajectoryPath,
+        '-l',
+        costLimit.toString(),
+        '--exit-immediately',
+        '-y' // YOLO mode - don't ask for confirmation
+    ];
+    if (modelName) {
+        args.push('-m', modelName);
+    }
+    if (prNumber !== undefined) {
+        args.push('--tag', `pr_number=${prNumber}`);
+    }
+    // Set up environment variables
+    const env = {
+        ...process.env,
+        // Use HTTP gateway mode instead of embedded gateway
+        TENSORZERO_GATEWAY_URL: tensorZeroGatewayUrl,
+        // Skip mini-swe-agent's interactive first-time setup
+        MSWEA_CONFIGURED: 'true',
+        // Set a dummy model name to satisfy mini-swe-agent's model name check
+        // (TensorZero model class doesn't actually use this, but get_model_name() requires it)
+        MSWEA_MODEL_NAME: 'tensorzero',
+        // Ensure Python output is unbuffered for better logging
+        PYTHONUNBUFFERED: '1'
+    };
+    console.log(`Running mini-swe-agent with task: ${task}`);
+    console.log(`Working directory: ${cwd}`);
+    console.log(`TensorZero gateway URL: ${tensorZeroGatewayUrl}`);
+    console.log(`MSWEA_CONFIGURED: ${env.MSWEA_CONFIGURED}`);
+    return new Promise((resolve, reject) => {
+        const proc = spawn$1('uv', ['run', '--project', process.cwd(), 'mini', ...args], {
+            cwd,
+            env,
+            stdio: ['pipe', 'pipe', 'pipe']
+        });
+        let stdout = '';
+        let stderr = '';
+        proc.stdout?.on('data', (data) => {
+            const chunk = data.toString();
+            stdout += chunk;
+            console.log(`[mini-swe-agent] ${chunk}`);
+        });
+        proc.stderr?.on('data', (data) => {
+            const chunk = data.toString();
+            stderr += chunk;
+            console.error(`[mini-swe-agent] ${chunk}`);
+        });
+        // Set up timeout
+        const timeoutId = setTimeout(() => {
+            proc.kill('SIGTERM');
+            reject(new Error(`mini-swe-agent timed out after ${timeout / 1000} seconds`));
+        }, timeout);
+        proc.on('close', (code) => {
+            clearTimeout(timeoutId);
+            console.log(`mini-swe-agent exited with code ${code}`);
+            // Read the trajectory file from temp location
+            let trajectory;
+            try {
+                const trajectoryContent = fs.readFileSync(tempTrajectoryPath, 'utf-8');
+                trajectory = JSON.parse(trajectoryContent);
+            }
+            catch (error) {
+                reject(new Error(`Failed to read trajectory file: ${error instanceof Error ? error.message : String(error)}`));
+                return;
+            }
+            finally {
+                // Delete the temporary trajectory file
+                try {
+                    if (fs.existsSync(tempTrajectoryPath)) {
+                        fs.unlinkSync(tempTrajectoryPath);
+                        console.log('Deleted temporary trajectory file');
+                    }
+                }
+                catch (error) {
+                    console.warn(`Failed to delete temporary trajectory file: ${error instanceof Error ? error.message : String(error)}`);
+                }
+            }
+            // Parse the completion output from the trajectory
+            const completion = parseAgentCompletion(trajectory.info.submission);
+            resolve({
+                completion,
+                trajectory,
+                episodeId: trajectory.info.episode_id,
+                stdout,
+                stderr,
+                exitCode: code
+            });
+        });
+        proc.on('error', (error) => {
+            clearTimeout(timeoutId);
+            reject(new Error(`Failed to spawn mini-swe-agent: ${error instanceof Error ? error.message : String(error)}`));
+        });
+    });
+}
+
+/**
+ * Generate a markdown document describing the CI failure for the agent to read
+ */
+function generateCIFailureContextMarkdown(context) {
+    const { repoFullName, branch, prNumber, workflowRunId, workflowRunUrl, prUrl, prDescription, failedJobs, diffSummary, fullDiff, failureLogs } = context;
+    let markdown = `# CI Failure Context
+
+## Overview
+
+- **Repository**: ${repoFullName}
+- **Branch**: ${branch}
+- **Pull Request**: #${prNumber}
+- **PR URL**: ${prUrl}${workflowRunId ? `\n- **Workflow Run ID**: ${workflowRunId}` : ''}${workflowRunUrl ? `\n- **Workflow Run URL**: ${workflowRunUrl}` : ''}
+`;
+    // Add PR description if available
+    if (prDescription) {
+        markdown += `
+## Pull Request Description
+
+${prDescription}
+`;
+    }
+    markdown += `
+## Your Task
+
+Fix the CI failures in this pull request. The tests and checks are failing, and you need to:
+
+1. Analyze the failure logs below to understand what went wrong
+2. Review the PR diff to understand what changes were made
+3. Make targeted fixes to resolve the failures
+4. Run validation commands to ensure your fixes work
+
+## Failed Jobs and Steps
+
+`;
+    for (const job of failedJobs) {
+        markdown += `### Job: ${job.name}\n\n`;
+        if (job.conclusion) {
+            markdown += `- **Conclusion**: ${job.conclusion}\n`;
+        }
+        if (job.html_url) {
+            markdown += `- **URL**: ${job.html_url}\n`;
+        }
+        markdown += `\n**Failed Steps:**\n\n`;
+        for (const step of job.failed_steps) {
+            markdown += `- **${step.name}**\n`;
+            markdown += `  - Status: ${step.status ?? 'unknown'}\n`;
+            markdown += `  - Conclusion: ${step.conclusion ?? 'unknown'}\n`;
+        }
+        markdown += `\n`;
+    }
+    markdown += `## PR Diff Summary
+
+\`\`\`
+${diffSummary}
+\`\`\`
+
+## Full PR Diff
+
+\`\`\`diff
+${fullDiff}
+\`\`\`
+
+## Failure Logs
+
+\`\`\`
+${failureLogs}
+\`\`\`
+
+## Validation Instructions
+
+After making your changes, you MUST validate them by running:
+
+1. **The specific failing tests** - Rerun the tests that failed to ensure they now pass
+2. **Linters and formatters** - Run code quality tools to ensure your changes meet style guidelines
+3. **Build the project** - Ensure the project still compiles/builds successfully
+4. **Language-specific checks** - Run type checkers, cargo clippy, etc. as appropriate
+
+When you've successfully fixed and validated the changes, output your completion using the completion command format described in your system instructions.
+
+Good luck!
+`;
+    return markdown;
+}
+/**
+ * Write the CI failure context to a file in the repository
+ */
+function writeCIFailureContextFile(repoPath, context) {
+    const markdown = generateCIFailureContextMarkdown(context);
+    const filePath = path$2.join(repoPath, 'ci_failure_context.md');
+    fs.writeFileSync(filePath, markdown, { encoding: 'utf-8' });
+    return filePath;
 }
 
 var dist$1 = {};
@@ -31405,7 +38110,7 @@ function requireLogger$1 () {
 	    const ts = new Date().toISOString();
 	    return `[${ts}][${level}][@clickhouse/client][${module}] ${message}`;
 	}
-	
+
 	return logger$1;
 }
 
@@ -31716,7 +38421,7 @@ function requireConfig$1 () {
 	    }
 	    return enumObject[trimmed];
 	}
-	
+
 	return config$1;
 }
 
@@ -31955,7 +38660,7 @@ function requireClient$1 () {
 	    }
 	    return `INSERT INTO ${params.table.trim()}${columnsPart} FORMAT ${format}`;
 	}
-	
+
 	return client;
 }
 
@@ -32045,7 +38750,7 @@ function requireFormatter () {
 		    }
 		    throw new Error(`The client does not support JSON encoding in [${format}] format.`);
 		}
-		
+
 	} (formatter));
 	return formatter;
 }
@@ -32171,7 +38876,7 @@ function requireFormat_query_params () {
 	const CarriageReturnASCII = 13;
 	const SingleQuoteASCII = 39;
 	const BackslashASCII = 92;
-	
+
 	return format_query_params;
 }
 
@@ -32205,7 +38910,7 @@ function requireSettings () {
 	    }
 	}
 	settings.SettingsMap = SettingsMap;
-	
+
 	return settings;
 }
 
@@ -32232,7 +38937,7 @@ function requireFormat_query_settings () {
 	    }
 	    throw new Error(`Unsupported value in query settings: [${value}].`);
 	}
-	
+
 	return format_query_settings;
 }
 
@@ -32264,7 +38969,7 @@ function requireData_formatter () {
 		Object.defineProperty(exports, "formatQueryParams", { enumerable: true, get: function () { return format_query_params_1.formatQueryParams; } });
 		var format_query_settings_1 = requireFormat_query_settings();
 		Object.defineProperty(exports, "formatQuerySettings", { enumerable: true, get: function () { return format_query_settings_1.formatQuerySettings; } });
-		
+
 	} (data_formatter));
 	return data_formatter;
 }
@@ -32345,7 +39050,7 @@ function requireError$1 () {
 	    }
 	    return err;
 	}
-	
+
 	return error;
 }
 
@@ -32371,7 +39076,7 @@ function requireError () {
 		};
 		Object.defineProperty(exports, "__esModule", { value: true });
 		__exportStar(requireError$1(), exports);
-		
+
 	} (error$1));
 	return error$1;
 }
@@ -32411,7 +39116,7 @@ function requireClickhouse_types () {
 	        'exception' in row &&
 	        Object.keys(row).length === 1);
 	}
-	
+
 	return clickhouse_types;
 }
 
@@ -32968,7 +39673,7 @@ function requireColumn_types () {
 		const ZeroASCII = 48;
 		const NineASCII = 57;
 		const BackslashASCII = 92;
-		
+
 	} (column_types));
 	return column_types;
 }
@@ -32995,7 +39700,7 @@ function requireParse () {
 		};
 		Object.defineProperty(exports, "__esModule", { value: true });
 		__exportStar(requireColumn_types(), exports);
-		
+
 	} (parse));
 	return parse;
 }
@@ -33044,7 +39749,7 @@ function requireConnection$1 () {
 	        'username' in auth &&
 	        'password' in auth);
 	}
-	
+
 	return connection$1;
 }
 
@@ -33062,7 +39767,7 @@ function requireSleep () {
 	        resolve(void 0);
 	    }, ms));
 	}
-	
+
 	return sleep$1;
 }
 
@@ -33133,7 +39838,7 @@ function requireUrl () {
 	    }
 	    return new URLSearchParams(entries);
 	}
-	
+
 	return url;
 }
 
@@ -33161,7 +39866,7 @@ function requireUtils$2 () {
 		__exportStar(requireConnection$1(), exports);
 		__exportStar(requireSleep(), exports);
 		__exportStar(requireUrl(), exports);
-		
+
 	} (utils$2));
 	return utils$2;
 }
@@ -33222,7 +39927,7 @@ function requireDist$1 () {
 		var error_2 = requireError();
 		Object.defineProperty(exports, "getCurrentStackTrace", { enumerable: true, get: function () { return error_2.getCurrentStackTrace; } });
 		Object.defineProperty(exports, "enhanceStackTrace", { enumerable: true, get: function () { return error_2.enhanceStackTrace; } });
-		
+
 	} (dist));
 	return dist;
 }
@@ -33286,7 +39991,7 @@ function requireStream$1 () {
 	        },
 	    });
 	}
-	
+
 	return stream$1;
 }
 
@@ -33352,7 +40057,7 @@ function requireEncoder () {
 	        console.error(err);
 	    }
 	}
-	
+
 	return encoder;
 }
 
@@ -33369,7 +40074,7 @@ function requireProcess () {
 	function getProcessVersion() {
 	    return process.version;
 	}
-	
+
 	return process$1;
 }
 
@@ -33386,7 +40091,7 @@ function requireVersion () {
 	hasRequiredVersion = 1;
 	Object.defineProperty(version, "__esModule", { value: true });
 	version.default = '1.12.1';
-	
+
 	return version;
 }
 
@@ -33433,7 +40138,7 @@ function requireRuntime$1 () {
 	};
 	Object.defineProperty(runtime$1, "__esModule", { value: true });
 	runtime$1.Runtime = void 0;
-	const os = __importStar(require$$0$a);
+	const os = __importStar(os__default);
 	const version_1 = __importDefault(requireVersion());
 	/** Indirect export of package version and node version for easier mocking since Node.js 22.18 */
 	class Runtime {
@@ -33457,7 +40162,7 @@ function requireRuntime$1 () {
 	    writable: true,
 	    value: os.platform()
 	});
-	
+
 	return runtime$1;
 }
 
@@ -33485,7 +40190,7 @@ function requireUser_agent () {
 	        ? `${application_id} ${defaultUserAgent}`
 	        : defaultUserAgent;
 	}
-	
+
 	return user_agent;
 }
 
@@ -33514,7 +40219,7 @@ function requireUtils$1 () {
 		__exportStar(requireEncoder(), exports);
 		__exportStar(requireProcess(), exports);
 		__exportStar(requireUser_agent(), exports);
-		
+
 	} (utils$1));
 	return utils$1;
 }
@@ -33558,7 +40263,7 @@ function requireCompression () {
 	function isDecompressionError(result) {
 	    return result.error !== undefined;
 	}
-	
+
 	return compression;
 }
 
@@ -33602,7 +40307,7 @@ function requireStream () {
 	        stream.on('close', onClose);
 	    });
 	}
-	
+
 	return stream;
 }
 
@@ -34248,7 +40953,7 @@ function requireNode_base_connection () {
 	}
 	node_base_connection.NodeBaseConnection = NodeBaseConnection;
 	const PingQuery = `SELECT 'ping'`;
-	
+
 	return node_base_connection;
 }
 
@@ -34291,7 +40996,7 @@ function requireNode_http_connection () {
 	    }
 	}
 	node_http_connection.NodeHttpConnection = NodeHttpConnection;
-	
+
 	return node_http_connection;
 }
 
@@ -34372,7 +41077,7 @@ function requireNode_https_connection () {
 	    }
 	}
 	node_https_connection.NodeHttpsConnection = NodeHttpsConnection;
-	
+
 	return node_https_connection;
 }
 
@@ -34430,7 +41135,7 @@ function requireNode_custom_agent_connection () {
 	    }
 	}
 	node_custom_agent_connection.NodeCustomAgentConnection = NodeCustomAgentConnection;
-	
+
 	return node_custom_agent_connection;
 }
 
@@ -34478,7 +41183,7 @@ function requireCreate_connection () {
 	    }
 	}
 	create_connection.NodeConnectionFactory = NodeConnectionFactory;
-	
+
 	return create_connection;
 }
 
@@ -34507,7 +41212,7 @@ function requireConnection () {
 		__exportStar(requireNode_http_connection(), exports);
 		__exportStar(requireNode_https_connection(), exports);
 		__exportStar(requireCreate_connection(), exports);
-		
+
 	} (connection));
 	return connection;
 }
@@ -34710,7 +41415,7 @@ function requireResult_set () {
 	result_set.ResultSet = ResultSet;
 	const streamAlreadyConsumedMessage = 'Stream has been already consumed';
 	const resultSetClosedMessage = 'ResultSet has been closed';
-	
+
 	return result_set;
 }
 
@@ -34796,7 +41501,7 @@ function requireConfig () {
 	        response_headers,
 	    })),
 	};
-	
+
 	return config;
 }
 
@@ -34823,7 +41528,7 @@ function requireClient () {
 	        ...(config || {}),
 	    });
 	}
-	
+
 	return client$1;
 }
 
@@ -34855,7 +41560,7 @@ function requireDist () {
 		Object.defineProperty(exports, "isRow", { enumerable: true, get: function () { return client_common_1.isRow; } });
 		Object.defineProperty(exports, "isException", { enumerable: true, get: function () { return client_common_1.isException; } });
 		Object.defineProperty(exports, "TupleParam", { enumerable: true, get: function () { return client_common_1.TupleParam; } });
-		
+
 	} (dist$1));
 	return dist$1;
 }
@@ -34900,8 +41605,7 @@ async function createPullRequestToInferenceRecord(request, config, dependencies)
                 {
                     pull_request_id: request.pullRequestId,
                     inference_id: request.inferenceId,
-                    episode_id: request.episodeId,
-                    original_pull_request_url: request.originalPullRequestUrl
+                    episode_id: request.episodeId
                 }
             ],
             format: 'JSONEachRow'
@@ -34914,211 +41618,8497 @@ async function createPullRequestToInferenceRecord(request, config, dependencies)
     }
 }
 
-const execFileAsync = promisify(execFile);
-function maskSecret(value, secret) {
-    if (!secret || !value) {
-        return value;
-    }
-    return value.split(secret).join('***');
+function commonjsRequire(path) {
+	throw new Error('Could not dynamically require "' + path + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
 }
-async function execGit(args, options = {}) {
-    const { cwd, token } = options;
-    const commandString = maskSecret(`git ${args.join(' ')}`, token);
-    coreExports.info(commandString);
-    try {
-        const result = await execFileAsync('git', args, {
-            cwd,
-            env: {
-                ...process.env,
-                GIT_TERMINAL_PROMPT: '0'
-            },
-            maxBuffer: 20 * 1024 * 1024,
-            encoding: 'utf-8'
-        });
-        return {
-            stdout: result.stdout ?? '',
-            stderr: result.stderr ?? ''
-        };
-    }
-    catch (error) {
-        const err = error;
-        const stderr = err.stderr || err.stdout || err.message;
-        throw new Error(`${commandString} failed: ${maskSecret(stderr, token)}`);
-    }
+
+var handlebars = {exports: {}};
+
+var handlebars_runtime = {exports: {}};
+
+var base$1 = {};
+
+var utils = {};
+
+var hasRequiredUtils;
+
+function requireUtils () {
+	if (hasRequiredUtils) return utils;
+	hasRequiredUtils = 1;
+
+	utils.__esModule = true;
+	utils.extend = extend;
+	utils.indexOf = indexOf;
+	utils.escapeExpression = escapeExpression;
+	utils.isEmpty = isEmpty;
+	utils.createFrame = createFrame;
+	utils.blockParams = blockParams;
+	utils.appendContextPath = appendContextPath;
+	var escape = {
+	  '&': '&amp;',
+	  '<': '&lt;',
+	  '>': '&gt;',
+	  '"': '&quot;',
+	  "'": '&#x27;',
+	  '`': '&#x60;',
+	  '=': '&#x3D;'
+	};
+
+	var badChars = /[&<>"'`=]/g,
+	    possible = /[&<>"'`=]/;
+
+	function escapeChar(chr) {
+	  return escape[chr];
+	}
+
+	function extend(obj /* , ...source */) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    for (var key in arguments[i]) {
+	      if (Object.prototype.hasOwnProperty.call(arguments[i], key)) {
+	        obj[key] = arguments[i][key];
+	      }
+	    }
+	  }
+
+	  return obj;
+	}
+
+	var toString = Object.prototype.toString;
+
+	utils.toString = toString;
+	// Sourced from lodash
+	// https://github.com/bestiejs/lodash/blob/master/LICENSE.txt
+	/* eslint-disable func-style */
+	var isFunction = function isFunction(value) {
+	  return typeof value === 'function';
+	};
+	// fallback for older versions of Chrome and Safari
+	/* istanbul ignore next */
+	if (isFunction(/x/)) {
+	  utils.isFunction = isFunction = function (value) {
+	    return typeof value === 'function' && toString.call(value) === '[object Function]';
+	  };
+	}
+	utils.isFunction = isFunction;
+
+	/* eslint-enable func-style */
+
+	/* istanbul ignore next */
+	var isArray = Array.isArray || function (value) {
+	  return value && typeof value === 'object' ? toString.call(value) === '[object Array]' : false;
+	};
+
+	utils.isArray = isArray;
+	// Older IE versions do not directly support indexOf so we must implement our own, sadly.
+
+	function indexOf(array, value) {
+	  for (var i = 0, len = array.length; i < len; i++) {
+	    if (array[i] === value) {
+	      return i;
+	    }
+	  }
+	  return -1;
+	}
+
+	function escapeExpression(string) {
+	  if (typeof string !== 'string') {
+	    // don't escape SafeStrings, since they're already safe
+	    if (string && string.toHTML) {
+	      return string.toHTML();
+	    } else if (string == null) {
+	      return '';
+	    } else if (!string) {
+	      return string + '';
+	    }
+
+	    // Force a string conversion as this will be done by the append regardless and
+	    // the regex test will do this transparently behind the scenes, causing issues if
+	    // an object's to string has escaped characters in it.
+	    string = '' + string;
+	  }
+
+	  if (!possible.test(string)) {
+	    return string;
+	  }
+	  return string.replace(badChars, escapeChar);
+	}
+
+	function isEmpty(value) {
+	  if (!value && value !== 0) {
+	    return true;
+	  } else if (isArray(value) && value.length === 0) {
+	    return true;
+	  } else {
+	    return false;
+	  }
+	}
+
+	function createFrame(object) {
+	  var frame = extend({}, object);
+	  frame._parent = object;
+	  return frame;
+	}
+
+	function blockParams(params, ids) {
+	  params.path = ids;
+	  return params;
+	}
+
+	function appendContextPath(contextPath, id) {
+	  return (contextPath ? contextPath + '.' : '') + id;
+	}
+
+	return utils;
 }
-async function clonePullRequestRepository(options) {
-    const { token, owner, repo, pullRequest } = options;
-    const tempBaseDir = await fsPromises.mkdtemp(path$1.join(require$$0.tmpdir(), 'tensorzero-pr-'));
-    const repoDir = path$1.join(tempBaseDir, 'repo');
-    const remoteUrl = `https://x-access-token:${token}@github.com/${owner}/${repo}.git`;
-    const maskedRemoteUrl = maskSecret(remoteUrl, token);
-    try {
-        await execGit([
-            'clone',
-            '--origin',
-            'origin',
-            '--branch',
-            pullRequest.head.ref,
-            remoteUrl,
-            repoDir
-        ], { token });
-    }
-    catch (error) {
-        await fsPromises.rm(tempBaseDir, { recursive: true, force: true });
-        throw error;
-    }
-    const cleanup = async () => {
-        await fsPromises.rm(tempBaseDir, { recursive: true, force: true });
-    };
-    return { repoDir, cleanup, remoteUrl, maskedRemoteUrl };
+
+var exception = {exports: {}};
+
+var hasRequiredException;
+
+function requireException () {
+	if (hasRequiredException) return exception.exports;
+	hasRequiredException = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		var errorProps = ['description', 'fileName', 'lineNumber', 'endLineNumber', 'message', 'name', 'number', 'stack'];
+
+		function Exception(message, node) {
+		  var loc = node && node.loc,
+		      line = undefined,
+		      endLineNumber = undefined,
+		      column = undefined,
+		      endColumn = undefined;
+
+		  if (loc) {
+		    line = loc.start.line;
+		    endLineNumber = loc.end.line;
+		    column = loc.start.column;
+		    endColumn = loc.end.column;
+
+		    message += ' - ' + line + ':' + column;
+		  }
+
+		  var tmp = Error.prototype.constructor.call(this, message);
+
+		  // Unfortunately errors are not enumerable in Chrome (at least), so `for prop in tmp` doesn't work.
+		  for (var idx = 0; idx < errorProps.length; idx++) {
+		    this[errorProps[idx]] = tmp[errorProps[idx]];
+		  }
+
+		  /* istanbul ignore else */
+		  if (Error.captureStackTrace) {
+		    Error.captureStackTrace(this, Exception);
+		  }
+
+		  try {
+		    if (loc) {
+		      this.lineNumber = line;
+		      this.endLineNumber = endLineNumber;
+
+		      // Work around issue under safari where we can't directly set the column value
+		      /* istanbul ignore next */
+		      if (Object.defineProperty) {
+		        Object.defineProperty(this, 'column', {
+		          value: column,
+		          enumerable: true
+		        });
+		        Object.defineProperty(this, 'endColumn', {
+		          value: endColumn,
+		          enumerable: true
+		        });
+		      } else {
+		        this.column = column;
+		        this.endColumn = endColumn;
+		      }
+		    }
+		  } catch (nop) {
+		    /* Ignore if the browser is very particular */
+		  }
+		}
+
+		Exception.prototype = new Error();
+
+		exports['default'] = Exception;
+		module.exports = exports['default'];
+
+	} (exception, exception.exports));
+	return exception.exports;
 }
-async function createFollowupPr({ octokit, token, owner, repo, pullRequest, diff }, outputDir) {
-    const trimmedDiff = diff.trim();
-    if (!trimmedDiff) {
-        coreExports.info('Diff content empty after trimming; skipping follow-up PR creation.');
+
+var helpers$1 = {};
+
+var blockHelperMissing = {exports: {}};
+
+var hasRequiredBlockHelperMissing;
+
+function requireBlockHelperMissing () {
+	if (hasRequiredBlockHelperMissing) return blockHelperMissing.exports;
+	hasRequiredBlockHelperMissing = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+
+		var _utils = requireUtils();
+
+		exports['default'] = function (instance) {
+		  instance.registerHelper('blockHelperMissing', function (context, options) {
+		    var inverse = options.inverse,
+		        fn = options.fn;
+
+		    if (context === true) {
+		      return fn(this);
+		    } else if (context === false || context == null) {
+		      return inverse(this);
+		    } else if (_utils.isArray(context)) {
+		      if (context.length > 0) {
+		        if (options.ids) {
+		          options.ids = [options.name];
+		        }
+
+		        return instance.helpers.each(context, options);
+		      } else {
+		        return inverse(this);
+		      }
+		    } else {
+		      if (options.data && options.ids) {
+		        var data = _utils.createFrame(options.data);
+		        data.contextPath = _utils.appendContextPath(options.data.contextPath, options.name);
+		        options = { data: data };
+		      }
+
+		      return fn(context, options);
+		    }
+		  });
+		};
+
+		module.exports = exports['default'];
+
+	} (blockHelperMissing, blockHelperMissing.exports));
+	return blockHelperMissing.exports;
+}
+
+var each = {exports: {}};
+
+var hasRequiredEach;
+
+function requireEach () {
+	if (hasRequiredEach) return each.exports;
+	hasRequiredEach = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		// istanbul ignore next
+
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+		var _utils = requireUtils();
+
+		var _exception = requireException();
+
+		var _exception2 = _interopRequireDefault(_exception);
+
+		exports['default'] = function (instance) {
+		  instance.registerHelper('each', function (context, options) {
+		    if (!options) {
+		      throw new _exception2['default']('Must pass iterator to #each');
+		    }
+
+		    var fn = options.fn,
+		        inverse = options.inverse,
+		        i = 0,
+		        ret = '',
+		        data = undefined,
+		        contextPath = undefined;
+
+		    if (options.data && options.ids) {
+		      contextPath = _utils.appendContextPath(options.data.contextPath, options.ids[0]) + '.';
+		    }
+
+		    if (_utils.isFunction(context)) {
+		      context = context.call(this);
+		    }
+
+		    if (options.data) {
+		      data = _utils.createFrame(options.data);
+		    }
+
+		    function execIteration(field, index, last) {
+		      if (data) {
+		        data.key = field;
+		        data.index = index;
+		        data.first = index === 0;
+		        data.last = !!last;
+
+		        if (contextPath) {
+		          data.contextPath = contextPath + field;
+		        }
+		      }
+
+		      ret = ret + fn(context[field], {
+		        data: data,
+		        blockParams: _utils.blockParams([context[field], field], [contextPath + field, null])
+		      });
+		    }
+
+		    if (context && typeof context === 'object') {
+		      if (_utils.isArray(context)) {
+		        for (var j = context.length; i < j; i++) {
+		          if (i in context) {
+		            execIteration(i, i, i === context.length - 1);
+		          }
+		        }
+		      } else if (typeof Symbol === 'function' && context[Symbol.iterator]) {
+		        var newContext = [];
+		        var iterator = context[Symbol.iterator]();
+		        for (var it = iterator.next(); !it.done; it = iterator.next()) {
+		          newContext.push(it.value);
+		        }
+		        context = newContext;
+		        for (var j = context.length; i < j; i++) {
+		          execIteration(i, i, i === context.length - 1);
+		        }
+		      } else {
+		        (function () {
+		          var priorKey = undefined;
+
+		          Object.keys(context).forEach(function (key) {
+		            // We're running the iterations one step out of sync so we can detect
+		            // the last iteration without have to scan the object twice and create
+		            // an itermediate keys array.
+		            if (priorKey !== undefined) {
+		              execIteration(priorKey, i - 1);
+		            }
+		            priorKey = key;
+		            i++;
+		          });
+		          if (priorKey !== undefined) {
+		            execIteration(priorKey, i - 1, true);
+		          }
+		        })();
+		      }
+		    }
+
+		    if (i === 0) {
+		      ret = inverse(this);
+		    }
+
+		    return ret;
+		  });
+		};
+
+		module.exports = exports['default'];
+
+	} (each, each.exports));
+	return each.exports;
+}
+
+var helperMissing = {exports: {}};
+
+var hasRequiredHelperMissing;
+
+function requireHelperMissing () {
+	if (hasRequiredHelperMissing) return helperMissing.exports;
+	hasRequiredHelperMissing = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		// istanbul ignore next
+
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+		var _exception = requireException();
+
+		var _exception2 = _interopRequireDefault(_exception);
+
+		exports['default'] = function (instance) {
+		  instance.registerHelper('helperMissing', function () /* [args, ]options */{
+		    if (arguments.length === 1) {
+		      // A missing field in a {{foo}} construct.
+		      return undefined;
+		    } else {
+		      // Someone is actually trying to call something, blow up.
+		      throw new _exception2['default']('Missing helper: "' + arguments[arguments.length - 1].name + '"');
+		    }
+		  });
+		};
+
+		module.exports = exports['default'];
+
+	} (helperMissing, helperMissing.exports));
+	return helperMissing.exports;
+}
+
+var _if = {exports: {}};
+
+var hasRequired_if;
+
+function require_if () {
+	if (hasRequired_if) return _if.exports;
+	hasRequired_if = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		// istanbul ignore next
+
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+		var _utils = requireUtils();
+
+		var _exception = requireException();
+
+		var _exception2 = _interopRequireDefault(_exception);
+
+		exports['default'] = function (instance) {
+		  instance.registerHelper('if', function (conditional, options) {
+		    if (arguments.length != 2) {
+		      throw new _exception2['default']('#if requires exactly one argument');
+		    }
+		    if (_utils.isFunction(conditional)) {
+		      conditional = conditional.call(this);
+		    }
+
+		    // Default behavior is to render the positive path if the value is truthy and not empty.
+		    // The `includeZero` option may be set to treat the condtional as purely not empty based on the
+		    // behavior of isEmpty. Effectively this determines if 0 is handled by the positive path or negative.
+		    if (!options.hash.includeZero && !conditional || _utils.isEmpty(conditional)) {
+		      return options.inverse(this);
+		    } else {
+		      return options.fn(this);
+		    }
+		  });
+
+		  instance.registerHelper('unless', function (conditional, options) {
+		    if (arguments.length != 2) {
+		      throw new _exception2['default']('#unless requires exactly one argument');
+		    }
+		    return instance.helpers['if'].call(this, conditional, {
+		      fn: options.inverse,
+		      inverse: options.fn,
+		      hash: options.hash
+		    });
+		  });
+		};
+
+		module.exports = exports['default'];
+
+	} (_if, _if.exports));
+	return _if.exports;
+}
+
+var log = {exports: {}};
+
+var hasRequiredLog;
+
+function requireLog () {
+	if (hasRequiredLog) return log.exports;
+	hasRequiredLog = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+
+		exports['default'] = function (instance) {
+		  instance.registerHelper('log', function () /* message, options */{
+		    var args = [undefined],
+		        options = arguments[arguments.length - 1];
+		    for (var i = 0; i < arguments.length - 1; i++) {
+		      args.push(arguments[i]);
+		    }
+
+		    var level = 1;
+		    if (options.hash.level != null) {
+		      level = options.hash.level;
+		    } else if (options.data && options.data.level != null) {
+		      level = options.data.level;
+		    }
+		    args[0] = level;
+
+		    instance.log.apply(instance, args);
+		  });
+		};
+
+		module.exports = exports['default'];
+
+	} (log, log.exports));
+	return log.exports;
+}
+
+var lookup = {exports: {}};
+
+var hasRequiredLookup;
+
+function requireLookup () {
+	if (hasRequiredLookup) return lookup.exports;
+	hasRequiredLookup = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+
+		exports['default'] = function (instance) {
+		  instance.registerHelper('lookup', function (obj, field, options) {
+		    if (!obj) {
+		      // Note for 5.0: Change to "obj == null" in 5.0
+		      return obj;
+		    }
+		    return options.lookupProperty(obj, field);
+		  });
+		};
+
+		module.exports = exports['default'];
+
+	} (lookup, lookup.exports));
+	return lookup.exports;
+}
+
+var _with = {exports: {}};
+
+var hasRequired_with;
+
+function require_with () {
+	if (hasRequired_with) return _with.exports;
+	hasRequired_with = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		// istanbul ignore next
+
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+		var _utils = requireUtils();
+
+		var _exception = requireException();
+
+		var _exception2 = _interopRequireDefault(_exception);
+
+		exports['default'] = function (instance) {
+		  instance.registerHelper('with', function (context, options) {
+		    if (arguments.length != 2) {
+		      throw new _exception2['default']('#with requires exactly one argument');
+		    }
+		    if (_utils.isFunction(context)) {
+		      context = context.call(this);
+		    }
+
+		    var fn = options.fn;
+
+		    if (!_utils.isEmpty(context)) {
+		      var data = options.data;
+		      if (options.data && options.ids) {
+		        data = _utils.createFrame(options.data);
+		        data.contextPath = _utils.appendContextPath(options.data.contextPath, options.ids[0]);
+		      }
+
+		      return fn(context, {
+		        data: data,
+		        blockParams: _utils.blockParams([context], [data && data.contextPath])
+		      });
+		    } else {
+		      return options.inverse(this);
+		    }
+		  });
+		};
+
+		module.exports = exports['default'];
+
+	} (_with, _with.exports));
+	return _with.exports;
+}
+
+var hasRequiredHelpers$1;
+
+function requireHelpers$1 () {
+	if (hasRequiredHelpers$1) return helpers$1;
+	hasRequiredHelpers$1 = 1;
+
+	helpers$1.__esModule = true;
+	helpers$1.registerDefaultHelpers = registerDefaultHelpers;
+	helpers$1.moveHelperToHooks = moveHelperToHooks;
+	// istanbul ignore next
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _helpersBlockHelperMissing = requireBlockHelperMissing();
+
+	var _helpersBlockHelperMissing2 = _interopRequireDefault(_helpersBlockHelperMissing);
+
+	var _helpersEach = requireEach();
+
+	var _helpersEach2 = _interopRequireDefault(_helpersEach);
+
+	var _helpersHelperMissing = requireHelperMissing();
+
+	var _helpersHelperMissing2 = _interopRequireDefault(_helpersHelperMissing);
+
+	var _helpersIf = require_if();
+
+	var _helpersIf2 = _interopRequireDefault(_helpersIf);
+
+	var _helpersLog = requireLog();
+
+	var _helpersLog2 = _interopRequireDefault(_helpersLog);
+
+	var _helpersLookup = requireLookup();
+
+	var _helpersLookup2 = _interopRequireDefault(_helpersLookup);
+
+	var _helpersWith = require_with();
+
+	var _helpersWith2 = _interopRequireDefault(_helpersWith);
+
+	function registerDefaultHelpers(instance) {
+	  _helpersBlockHelperMissing2['default'](instance);
+	  _helpersEach2['default'](instance);
+	  _helpersHelperMissing2['default'](instance);
+	  _helpersIf2['default'](instance);
+	  _helpersLog2['default'](instance);
+	  _helpersLookup2['default'](instance);
+	  _helpersWith2['default'](instance);
+	}
+
+	function moveHelperToHooks(instance, helperName, keepHelper) {
+	  if (instance.helpers[helperName]) {
+	    instance.hooks[helperName] = instance.helpers[helperName];
+	    if (!keepHelper) {
+	      delete instance.helpers[helperName];
+	    }
+	  }
+	}
+
+	return helpers$1;
+}
+
+var decorators = {};
+
+var inline = {exports: {}};
+
+var hasRequiredInline;
+
+function requireInline () {
+	if (hasRequiredInline) return inline.exports;
+	hasRequiredInline = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+
+		var _utils = requireUtils();
+
+		exports['default'] = function (instance) {
+		  instance.registerDecorator('inline', function (fn, props, container, options) {
+		    var ret = fn;
+		    if (!props.partials) {
+		      props.partials = {};
+		      ret = function (context, options) {
+		        // Create a new partials stack frame prior to exec.
+		        var original = container.partials;
+		        container.partials = _utils.extend({}, original, props.partials);
+		        var ret = fn(context, options);
+		        container.partials = original;
+		        return ret;
+		      };
+		    }
+
+		    props.partials[options.args[0]] = options.fn;
+
+		    return ret;
+		  });
+		};
+
+		module.exports = exports['default'];
+
+	} (inline, inline.exports));
+	return inline.exports;
+}
+
+var hasRequiredDecorators;
+
+function requireDecorators () {
+	if (hasRequiredDecorators) return decorators;
+	hasRequiredDecorators = 1;
+
+	decorators.__esModule = true;
+	decorators.registerDefaultDecorators = registerDefaultDecorators;
+	// istanbul ignore next
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _decoratorsInline = requireInline();
+
+	var _decoratorsInline2 = _interopRequireDefault(_decoratorsInline);
+
+	function registerDefaultDecorators(instance) {
+	  _decoratorsInline2['default'](instance);
+	}
+
+	return decorators;
+}
+
+var logger = {exports: {}};
+
+var hasRequiredLogger;
+
+function requireLogger () {
+	if (hasRequiredLogger) return logger.exports;
+	hasRequiredLogger = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+
+		var _utils = requireUtils();
+
+		var logger = {
+		  methodMap: ['debug', 'info', 'warn', 'error'],
+		  level: 'info',
+
+		  // Maps a given level value to the `methodMap` indexes above.
+		  lookupLevel: function lookupLevel(level) {
+		    if (typeof level === 'string') {
+		      var levelMap = _utils.indexOf(logger.methodMap, level.toLowerCase());
+		      if (levelMap >= 0) {
+		        level = levelMap;
+		      } else {
+		        level = parseInt(level, 10);
+		      }
+		    }
+
+		    return level;
+		  },
+
+		  // Can be overridden in the host environment
+		  log: function log(level) {
+		    level = logger.lookupLevel(level);
+
+		    if (typeof console !== 'undefined' && logger.lookupLevel(logger.level) <= level) {
+		      var method = logger.methodMap[level];
+		      // eslint-disable-next-line no-console
+		      if (!console[method]) {
+		        method = 'log';
+		      }
+
+		      for (var _len = arguments.length, message = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+		        message[_key - 1] = arguments[_key];
+		      }
+
+		      console[method].apply(console, message); // eslint-disable-line no-console
+		    }
+		  }
+		};
+
+		exports['default'] = logger;
+		module.exports = exports['default'];
+
+	} (logger, logger.exports));
+	return logger.exports;
+}
+
+var protoAccess = {};
+
+var createNewLookupObject = {};
+
+var hasRequiredCreateNewLookupObject;
+
+function requireCreateNewLookupObject () {
+	if (hasRequiredCreateNewLookupObject) return createNewLookupObject;
+	hasRequiredCreateNewLookupObject = 1;
+
+	createNewLookupObject.__esModule = true;
+	createNewLookupObject.createNewLookupObject = createNewLookupObject$1;
+
+	var _utils = requireUtils();
+
+	/**
+	 * Create a new object with "null"-prototype to avoid truthy results on prototype properties.
+	 * The resulting object can be used with "object[property]" to check if a property exists
+	 * @param {...object} sources a varargs parameter of source objects that will be merged
+	 * @returns {object}
+	 */
+
+	function createNewLookupObject$1() {
+	  for (var _len = arguments.length, sources = Array(_len), _key = 0; _key < _len; _key++) {
+	    sources[_key] = arguments[_key];
+	  }
+
+	  return _utils.extend.apply(undefined, [Object.create(null)].concat(sources));
+	}
+
+	return createNewLookupObject;
+}
+
+var hasRequiredProtoAccess;
+
+function requireProtoAccess () {
+	if (hasRequiredProtoAccess) return protoAccess;
+	hasRequiredProtoAccess = 1;
+
+	protoAccess.__esModule = true;
+	protoAccess.createProtoAccessControl = createProtoAccessControl;
+	protoAccess.resultIsAllowed = resultIsAllowed;
+	protoAccess.resetLoggedProperties = resetLoggedProperties;
+	// istanbul ignore next
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _createNewLookupObject = requireCreateNewLookupObject();
+
+	var _logger = requireLogger();
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var loggedProperties = Object.create(null);
+
+	function createProtoAccessControl(runtimeOptions) {
+	  var defaultMethodWhiteList = Object.create(null);
+	  defaultMethodWhiteList['constructor'] = false;
+	  defaultMethodWhiteList['__defineGetter__'] = false;
+	  defaultMethodWhiteList['__defineSetter__'] = false;
+	  defaultMethodWhiteList['__lookupGetter__'] = false;
+
+	  var defaultPropertyWhiteList = Object.create(null);
+	  // eslint-disable-next-line no-proto
+	  defaultPropertyWhiteList['__proto__'] = false;
+
+	  return {
+	    properties: {
+	      whitelist: _createNewLookupObject.createNewLookupObject(defaultPropertyWhiteList, runtimeOptions.allowedProtoProperties),
+	      defaultValue: runtimeOptions.allowProtoPropertiesByDefault
+	    },
+	    methods: {
+	      whitelist: _createNewLookupObject.createNewLookupObject(defaultMethodWhiteList, runtimeOptions.allowedProtoMethods),
+	      defaultValue: runtimeOptions.allowProtoMethodsByDefault
+	    }
+	  };
+	}
+
+	function resultIsAllowed(result, protoAccessControl, propertyName) {
+	  if (typeof result === 'function') {
+	    return checkWhiteList(protoAccessControl.methods, propertyName);
+	  } else {
+	    return checkWhiteList(protoAccessControl.properties, propertyName);
+	  }
+	}
+
+	function checkWhiteList(protoAccessControlForType, propertyName) {
+	  if (protoAccessControlForType.whitelist[propertyName] !== undefined) {
+	    return protoAccessControlForType.whitelist[propertyName] === true;
+	  }
+	  if (protoAccessControlForType.defaultValue !== undefined) {
+	    return protoAccessControlForType.defaultValue;
+	  }
+	  logUnexpecedPropertyAccessOnce(propertyName);
+	  return false;
+	}
+
+	function logUnexpecedPropertyAccessOnce(propertyName) {
+	  if (loggedProperties[propertyName] !== true) {
+	    loggedProperties[propertyName] = true;
+	    _logger2['default'].log('error', 'Handlebars: Access has been denied to resolve the property "' + propertyName + '" because it is not an "own property" of its parent.\n' + 'You can add a runtime option to disable the check or this warning:\n' + 'See https://handlebarsjs.com/api-reference/runtime-options.html#options-to-control-prototype-access for details');
+	  }
+	}
+
+	function resetLoggedProperties() {
+	  Object.keys(loggedProperties).forEach(function (propertyName) {
+	    delete loggedProperties[propertyName];
+	  });
+	}
+
+	return protoAccess;
+}
+
+var hasRequiredBase$1;
+
+function requireBase$1 () {
+	if (hasRequiredBase$1) return base$1;
+	hasRequiredBase$1 = 1;
+
+	base$1.__esModule = true;
+	base$1.HandlebarsEnvironment = HandlebarsEnvironment;
+	// istanbul ignore next
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _utils = requireUtils();
+
+	var _exception = requireException();
+
+	var _exception2 = _interopRequireDefault(_exception);
+
+	var _helpers = requireHelpers$1();
+
+	var _decorators = requireDecorators();
+
+	var _logger = requireLogger();
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _internalProtoAccess = requireProtoAccess();
+
+	var VERSION = '4.7.8';
+	base$1.VERSION = VERSION;
+	var COMPILER_REVISION = 8;
+	base$1.COMPILER_REVISION = COMPILER_REVISION;
+	var LAST_COMPATIBLE_COMPILER_REVISION = 7;
+
+	base$1.LAST_COMPATIBLE_COMPILER_REVISION = LAST_COMPATIBLE_COMPILER_REVISION;
+	var REVISION_CHANGES = {
+	  1: '<= 1.0.rc.2', // 1.0.rc.2 is actually rev2 but doesn't report it
+	  2: '== 1.0.0-rc.3',
+	  3: '== 1.0.0-rc.4',
+	  4: '== 1.x.x',
+	  5: '== 2.0.0-alpha.x',
+	  6: '>= 2.0.0-beta.1',
+	  7: '>= 4.0.0 <4.3.0',
+	  8: '>= 4.3.0'
+	};
+
+	base$1.REVISION_CHANGES = REVISION_CHANGES;
+	var objectType = '[object Object]';
+
+	function HandlebarsEnvironment(helpers, partials, decorators) {
+	  this.helpers = helpers || {};
+	  this.partials = partials || {};
+	  this.decorators = decorators || {};
+
+	  _helpers.registerDefaultHelpers(this);
+	  _decorators.registerDefaultDecorators(this);
+	}
+
+	HandlebarsEnvironment.prototype = {
+	  constructor: HandlebarsEnvironment,
+
+	  logger: _logger2['default'],
+	  log: _logger2['default'].log,
+
+	  registerHelper: function registerHelper(name, fn) {
+	    if (_utils.toString.call(name) === objectType) {
+	      if (fn) {
+	        throw new _exception2['default']('Arg not supported with multiple helpers');
+	      }
+	      _utils.extend(this.helpers, name);
+	    } else {
+	      this.helpers[name] = fn;
+	    }
+	  },
+	  unregisterHelper: function unregisterHelper(name) {
+	    delete this.helpers[name];
+	  },
+
+	  registerPartial: function registerPartial(name, partial) {
+	    if (_utils.toString.call(name) === objectType) {
+	      _utils.extend(this.partials, name);
+	    } else {
+	      if (typeof partial === 'undefined') {
+	        throw new _exception2['default']('Attempting to register a partial called "' + name + '" as undefined');
+	      }
+	      this.partials[name] = partial;
+	    }
+	  },
+	  unregisterPartial: function unregisterPartial(name) {
+	    delete this.partials[name];
+	  },
+
+	  registerDecorator: function registerDecorator(name, fn) {
+	    if (_utils.toString.call(name) === objectType) {
+	      if (fn) {
+	        throw new _exception2['default']('Arg not supported with multiple decorators');
+	      }
+	      _utils.extend(this.decorators, name);
+	    } else {
+	      this.decorators[name] = fn;
+	    }
+	  },
+	  unregisterDecorator: function unregisterDecorator(name) {
+	    delete this.decorators[name];
+	  },
+	  /**
+	   * Reset the memory of illegal property accesses that have already been logged.
+	   * @deprecated should only be used in handlebars test-cases
+	   */
+	  resetLoggedPropertyAccesses: function resetLoggedPropertyAccesses() {
+	    _internalProtoAccess.resetLoggedProperties();
+	  }
+	};
+
+	var log = _logger2['default'].log;
+
+	base$1.log = log;
+	base$1.createFrame = _utils.createFrame;
+	base$1.logger = _logger2['default'];
+
+	return base$1;
+}
+
+var safeString = {exports: {}};
+
+var hasRequiredSafeString;
+
+function requireSafeString () {
+	if (hasRequiredSafeString) return safeString.exports;
+	hasRequiredSafeString = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		function SafeString(string) {
+		  this.string = string;
+		}
+
+		SafeString.prototype.toString = SafeString.prototype.toHTML = function () {
+		  return '' + this.string;
+		};
+
+		exports['default'] = SafeString;
+		module.exports = exports['default'];
+
+	} (safeString, safeString.exports));
+	return safeString.exports;
+}
+
+var runtime = {};
+
+var wrapHelper = {};
+
+var hasRequiredWrapHelper;
+
+function requireWrapHelper () {
+	if (hasRequiredWrapHelper) return wrapHelper;
+	hasRequiredWrapHelper = 1;
+
+	wrapHelper.__esModule = true;
+	wrapHelper.wrapHelper = wrapHelper$1;
+
+	function wrapHelper$1(helper, transformOptionsFn) {
+	  if (typeof helper !== 'function') {
+	    // This should not happen, but apparently it does in https://github.com/wycats/handlebars.js/issues/1639
+	    // We try to make the wrapper least-invasive by not wrapping it, if the helper is not a function.
+	    return helper;
+	  }
+	  var wrapper = function wrapper() /* dynamic arguments */{
+	    var options = arguments[arguments.length - 1];
+	    arguments[arguments.length - 1] = transformOptionsFn(options);
+	    return helper.apply(this, arguments);
+	  };
+	  return wrapper;
+	}
+
+	return wrapHelper;
+}
+
+var hasRequiredRuntime;
+
+function requireRuntime () {
+	if (hasRequiredRuntime) return runtime;
+	hasRequiredRuntime = 1;
+
+	runtime.__esModule = true;
+	runtime.checkRevision = checkRevision;
+	runtime.template = template;
+	runtime.wrapProgram = wrapProgram;
+	runtime.resolvePartial = resolvePartial;
+	runtime.invokePartial = invokePartial;
+	runtime.noop = noop;
+	// istanbul ignore next
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	// istanbul ignore next
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+	var _utils = requireUtils();
+
+	var Utils = _interopRequireWildcard(_utils);
+
+	var _exception = requireException();
+
+	var _exception2 = _interopRequireDefault(_exception);
+
+	var _base = requireBase$1();
+
+	var _helpers = requireHelpers$1();
+
+	var _internalWrapHelper = requireWrapHelper();
+
+	var _internalProtoAccess = requireProtoAccess();
+
+	function checkRevision(compilerInfo) {
+	  var compilerRevision = compilerInfo && compilerInfo[0] || 1,
+	      currentRevision = _base.COMPILER_REVISION;
+
+	  if (compilerRevision >= _base.LAST_COMPATIBLE_COMPILER_REVISION && compilerRevision <= _base.COMPILER_REVISION) {
+	    return;
+	  }
+
+	  if (compilerRevision < _base.LAST_COMPATIBLE_COMPILER_REVISION) {
+	    var runtimeVersions = _base.REVISION_CHANGES[currentRevision],
+	        compilerVersions = _base.REVISION_CHANGES[compilerRevision];
+	    throw new _exception2['default']('Template was precompiled with an older version of Handlebars than the current runtime. ' + 'Please update your precompiler to a newer version (' + runtimeVersions + ') or downgrade your runtime to an older version (' + compilerVersions + ').');
+	  } else {
+	    // Use the embedded version info since the runtime doesn't know about this revision yet
+	    throw new _exception2['default']('Template was precompiled with a newer version of Handlebars than the current runtime. ' + 'Please update your runtime to a newer version (' + compilerInfo[1] + ').');
+	  }
+	}
+
+	function template(templateSpec, env) {
+	  /* istanbul ignore next */
+	  if (!env) {
+	    throw new _exception2['default']('No environment passed to template');
+	  }
+	  if (!templateSpec || !templateSpec.main) {
+	    throw new _exception2['default']('Unknown template object: ' + typeof templateSpec);
+	  }
+
+	  templateSpec.main.decorator = templateSpec.main_d;
+
+	  // Note: Using env.VM references rather than local var references throughout this section to allow
+	  // for external users to override these as pseudo-supported APIs.
+	  env.VM.checkRevision(templateSpec.compiler);
+
+	  // backwards compatibility for precompiled templates with compiler-version 7 (<4.3.0)
+	  var templateWasPrecompiledWithCompilerV7 = templateSpec.compiler && templateSpec.compiler[0] === 7;
+
+	  function invokePartialWrapper(partial, context, options) {
+	    if (options.hash) {
+	      context = Utils.extend({}, context, options.hash);
+	      if (options.ids) {
+	        options.ids[0] = true;
+	      }
+	    }
+	    partial = env.VM.resolvePartial.call(this, partial, context, options);
+
+	    var extendedOptions = Utils.extend({}, options, {
+	      hooks: this.hooks,
+	      protoAccessControl: this.protoAccessControl
+	    });
+
+	    var result = env.VM.invokePartial.call(this, partial, context, extendedOptions);
+
+	    if (result == null && env.compile) {
+	      options.partials[options.name] = env.compile(partial, templateSpec.compilerOptions, env);
+	      result = options.partials[options.name](context, extendedOptions);
+	    }
+	    if (result != null) {
+	      if (options.indent) {
+	        var lines = result.split('\n');
+	        for (var i = 0, l = lines.length; i < l; i++) {
+	          if (!lines[i] && i + 1 === l) {
+	            break;
+	          }
+
+	          lines[i] = options.indent + lines[i];
+	        }
+	        result = lines.join('\n');
+	      }
+	      return result;
+	    } else {
+	      throw new _exception2['default']('The partial ' + options.name + ' could not be compiled when running in runtime-only mode');
+	    }
+	  }
+
+	  // Just add water
+	  var container = {
+	    strict: function strict(obj, name, loc) {
+	      if (!obj || !(name in obj)) {
+	        throw new _exception2['default']('"' + name + '" not defined in ' + obj, {
+	          loc: loc
+	        });
+	      }
+	      return container.lookupProperty(obj, name);
+	    },
+	    lookupProperty: function lookupProperty(parent, propertyName) {
+	      var result = parent[propertyName];
+	      if (result == null) {
+	        return result;
+	      }
+	      if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+	        return result;
+	      }
+
+	      if (_internalProtoAccess.resultIsAllowed(result, container.protoAccessControl, propertyName)) {
+	        return result;
+	      }
+	      return undefined;
+	    },
+	    lookup: function lookup(depths, name) {
+	      var len = depths.length;
+	      for (var i = 0; i < len; i++) {
+	        var result = depths[i] && container.lookupProperty(depths[i], name);
+	        if (result != null) {
+	          return depths[i][name];
+	        }
+	      }
+	    },
+	    lambda: function lambda(current, context) {
+	      return typeof current === 'function' ? current.call(context) : current;
+	    },
+
+	    escapeExpression: Utils.escapeExpression,
+	    invokePartial: invokePartialWrapper,
+
+	    fn: function fn(i) {
+	      var ret = templateSpec[i];
+	      ret.decorator = templateSpec[i + '_d'];
+	      return ret;
+	    },
+
+	    programs: [],
+	    program: function program(i, data, declaredBlockParams, blockParams, depths) {
+	      var programWrapper = this.programs[i],
+	          fn = this.fn(i);
+	      if (data || depths || blockParams || declaredBlockParams) {
+	        programWrapper = wrapProgram(this, i, fn, data, declaredBlockParams, blockParams, depths);
+	      } else if (!programWrapper) {
+	        programWrapper = this.programs[i] = wrapProgram(this, i, fn);
+	      }
+	      return programWrapper;
+	    },
+
+	    data: function data(value, depth) {
+	      while (value && depth--) {
+	        value = value._parent;
+	      }
+	      return value;
+	    },
+	    mergeIfNeeded: function mergeIfNeeded(param, common) {
+	      var obj = param || common;
+
+	      if (param && common && param !== common) {
+	        obj = Utils.extend({}, common, param);
+	      }
+
+	      return obj;
+	    },
+	    // An empty object to use as replacement for null-contexts
+	    nullContext: Object.seal({}),
+
+	    noop: env.VM.noop,
+	    compilerInfo: templateSpec.compiler
+	  };
+
+	  function ret(context) {
+	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	    var data = options.data;
+
+	    ret._setup(options);
+	    if (!options.partial && templateSpec.useData) {
+	      data = initData(context, data);
+	    }
+	    var depths = undefined,
+	        blockParams = templateSpec.useBlockParams ? [] : undefined;
+	    if (templateSpec.useDepths) {
+	      if (options.depths) {
+	        depths = context != options.depths[0] ? [context].concat(options.depths) : options.depths;
+	      } else {
+	        depths = [context];
+	      }
+	    }
+
+	    function main(context /*, options*/) {
+	      return '' + templateSpec.main(container, context, container.helpers, container.partials, data, blockParams, depths);
+	    }
+
+	    main = executeDecorators(templateSpec.main, main, container, options.depths || [], data, blockParams);
+	    return main(context, options);
+	  }
+
+	  ret.isTop = true;
+
+	  ret._setup = function (options) {
+	    if (!options.partial) {
+	      var mergedHelpers = Utils.extend({}, env.helpers, options.helpers);
+	      wrapHelpersToPassLookupProperty(mergedHelpers, container);
+	      container.helpers = mergedHelpers;
+
+	      if (templateSpec.usePartial) {
+	        // Use mergeIfNeeded here to prevent compiling global partials multiple times
+	        container.partials = container.mergeIfNeeded(options.partials, env.partials);
+	      }
+	      if (templateSpec.usePartial || templateSpec.useDecorators) {
+	        container.decorators = Utils.extend({}, env.decorators, options.decorators);
+	      }
+
+	      container.hooks = {};
+	      container.protoAccessControl = _internalProtoAccess.createProtoAccessControl(options);
+
+	      var keepHelperInHelpers = options.allowCallsToHelperMissing || templateWasPrecompiledWithCompilerV7;
+	      _helpers.moveHelperToHooks(container, 'helperMissing', keepHelperInHelpers);
+	      _helpers.moveHelperToHooks(container, 'blockHelperMissing', keepHelperInHelpers);
+	    } else {
+	      container.protoAccessControl = options.protoAccessControl; // internal option
+	      container.helpers = options.helpers;
+	      container.partials = options.partials;
+	      container.decorators = options.decorators;
+	      container.hooks = options.hooks;
+	    }
+	  };
+
+	  ret._child = function (i, data, blockParams, depths) {
+	    if (templateSpec.useBlockParams && !blockParams) {
+	      throw new _exception2['default']('must pass block params');
+	    }
+	    if (templateSpec.useDepths && !depths) {
+	      throw new _exception2['default']('must pass parent depths');
+	    }
+
+	    return wrapProgram(container, i, templateSpec[i], data, 0, blockParams, depths);
+	  };
+	  return ret;
+	}
+
+	function wrapProgram(container, i, fn, data, declaredBlockParams, blockParams, depths) {
+	  function prog(context) {
+	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	    var currentDepths = depths;
+	    if (depths && context != depths[0] && !(context === container.nullContext && depths[0] === null)) {
+	      currentDepths = [context].concat(depths);
+	    }
+
+	    return fn(container, context, container.helpers, container.partials, options.data || data, blockParams && [options.blockParams].concat(blockParams), currentDepths);
+	  }
+
+	  prog = executeDecorators(fn, prog, container, depths, data, blockParams);
+
+	  prog.program = i;
+	  prog.depth = depths ? depths.length : 0;
+	  prog.blockParams = declaredBlockParams || 0;
+	  return prog;
+	}
+
+	/**
+	 * This is currently part of the official API, therefore implementation details should not be changed.
+	 */
+
+	function resolvePartial(partial, context, options) {
+	  if (!partial) {
+	    if (options.name === '@partial-block') {
+	      partial = options.data['partial-block'];
+	    } else {
+	      partial = options.partials[options.name];
+	    }
+	  } else if (!partial.call && !options.name) {
+	    // This is a dynamic partial that returned a string
+	    options.name = partial;
+	    partial = options.partials[partial];
+	  }
+	  return partial;
+	}
+
+	function invokePartial(partial, context, options) {
+	  // Use the current closure context to save the partial-block if this partial
+	  var currentPartialBlock = options.data && options.data['partial-block'];
+	  options.partial = true;
+	  if (options.ids) {
+	    options.data.contextPath = options.ids[0] || options.data.contextPath;
+	  }
+
+	  var partialBlock = undefined;
+	  if (options.fn && options.fn !== noop) {
+	    (function () {
+	      options.data = _base.createFrame(options.data);
+	      // Wrapper function to get access to currentPartialBlock from the closure
+	      var fn = options.fn;
+	      partialBlock = options.data['partial-block'] = function partialBlockWrapper(context) {
+	        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	        // Restore the partial-block from the closure for the execution of the block
+	        // i.e. the part inside the block of the partial call.
+	        options.data = _base.createFrame(options.data);
+	        options.data['partial-block'] = currentPartialBlock;
+	        return fn(context, options);
+	      };
+	      if (fn.partials) {
+	        options.partials = Utils.extend({}, options.partials, fn.partials);
+	      }
+	    })();
+	  }
+
+	  if (partial === undefined && partialBlock) {
+	    partial = partialBlock;
+	  }
+
+	  if (partial === undefined) {
+	    throw new _exception2['default']('The partial ' + options.name + ' could not be found');
+	  } else if (partial instanceof Function) {
+	    return partial(context, options);
+	  }
+	}
+
+	function noop() {
+	  return '';
+	}
+
+	function initData(context, data) {
+	  if (!data || !('root' in data)) {
+	    data = data ? _base.createFrame(data) : {};
+	    data.root = context;
+	  }
+	  return data;
+	}
+
+	function executeDecorators(fn, prog, container, depths, data, blockParams) {
+	  if (fn.decorator) {
+	    var props = {};
+	    prog = fn.decorator(prog, props, container, depths && depths[0], data, blockParams, depths);
+	    Utils.extend(prog, props);
+	  }
+	  return prog;
+	}
+
+	function wrapHelpersToPassLookupProperty(mergedHelpers, container) {
+	  Object.keys(mergedHelpers).forEach(function (helperName) {
+	    var helper = mergedHelpers[helperName];
+	    mergedHelpers[helperName] = passLookupPropertyOption(helper, container);
+	  });
+	}
+
+	function passLookupPropertyOption(helper, container) {
+	  var lookupProperty = container.lookupProperty;
+	  return _internalWrapHelper.wrapHelper(helper, function (options) {
+	    return Utils.extend({ lookupProperty: lookupProperty }, options);
+	  });
+	}
+
+	return runtime;
+}
+
+var noConflict = {exports: {}};
+
+/* global globalThis */
+
+var hasRequiredNoConflict;
+
+function requireNoConflict () {
+	if (hasRequiredNoConflict) return noConflict.exports;
+	hasRequiredNoConflict = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+
+		exports['default'] = function (Handlebars) {
+		  /* istanbul ignore next */
+		  // https://mathiasbynens.be/notes/globalthis
+		  (function () {
+		    if (typeof globalThis === 'object') return;
+		    Object.prototype.__defineGetter__('__magic__', function () {
+		      return this;
+		    });
+		    __magic__.globalThis = __magic__; // eslint-disable-line no-undef
+		    delete Object.prototype.__magic__;
+		  })();
+
+		  var $Handlebars = globalThis.Handlebars;
+
+		  /* istanbul ignore next */
+		  Handlebars.noConflict = function () {
+		    if (globalThis.Handlebars === Handlebars) {
+		      globalThis.Handlebars = $Handlebars;
+		    }
+		    return Handlebars;
+		  };
+		};
+
+		module.exports = exports['default'];
+
+	} (noConflict, noConflict.exports));
+	return noConflict.exports;
+}
+
+var hasRequiredHandlebars_runtime;
+
+function requireHandlebars_runtime () {
+	if (hasRequiredHandlebars_runtime) return handlebars_runtime.exports;
+	hasRequiredHandlebars_runtime = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		// istanbul ignore next
+
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+		// istanbul ignore next
+
+		function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+		var _handlebarsBase = requireBase$1();
+
+		var base = _interopRequireWildcard(_handlebarsBase);
+
+		// Each of these augment the Handlebars object. No need to setup here.
+		// (This is done to easily share code between commonjs and browse envs)
+
+		var _handlebarsSafeString = requireSafeString();
+
+		var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
+
+		var _handlebarsException = requireException();
+
+		var _handlebarsException2 = _interopRequireDefault(_handlebarsException);
+
+		var _handlebarsUtils = requireUtils();
+
+		var Utils = _interopRequireWildcard(_handlebarsUtils);
+
+		var _handlebarsRuntime = requireRuntime();
+
+		var runtime = _interopRequireWildcard(_handlebarsRuntime);
+
+		var _handlebarsNoConflict = requireNoConflict();
+
+		var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
+
+		// For compatibility and usage outside of module systems, make the Handlebars object a namespace
+		function create() {
+		  var hb = new base.HandlebarsEnvironment();
+
+		  Utils.extend(hb, base);
+		  hb.SafeString = _handlebarsSafeString2['default'];
+		  hb.Exception = _handlebarsException2['default'];
+		  hb.Utils = Utils;
+		  hb.escapeExpression = Utils.escapeExpression;
+
+		  hb.VM = runtime;
+		  hb.template = function (spec) {
+		    return runtime.template(spec, hb);
+		  };
+
+		  return hb;
+		}
+
+		var inst = create();
+		inst.create = create;
+
+		_handlebarsNoConflict2['default'](inst);
+
+		inst['default'] = inst;
+
+		exports['default'] = inst;
+		module.exports = exports['default'];
+
+	} (handlebars_runtime, handlebars_runtime.exports));
+	return handlebars_runtime.exports;
+}
+
+var ast = {exports: {}};
+
+var hasRequiredAst;
+
+function requireAst () {
+	if (hasRequiredAst) return ast.exports;
+	hasRequiredAst = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		var AST = {
+		  // Public API used to evaluate derived attributes regarding AST nodes
+		  helpers: {
+		    // a mustache is definitely a helper if:
+		    // * it is an eligible helper, and
+		    // * it has at least one parameter or hash segment
+		    helperExpression: function helperExpression(node) {
+		      return node.type === 'SubExpression' || (node.type === 'MustacheStatement' || node.type === 'BlockStatement') && !!(node.params && node.params.length || node.hash);
+		    },
+
+		    scopedId: function scopedId(path) {
+		      return (/^\.|this\b/.test(path.original)
+		      );
+		    },
+
+		    // an ID is simple if it only has one part, and that part is not
+		    // `..` or `this`.
+		    simpleId: function simpleId(path) {
+		      return path.parts.length === 1 && !AST.helpers.scopedId(path) && !path.depth;
+		    }
+		  }
+		};
+
+		// Must be exported as an object rather than the root of the module as the jison lexer
+		// must modify the object to operate properly.
+		exports['default'] = AST;
+		module.exports = exports['default'];
+
+	} (ast, ast.exports));
+	return ast.exports;
+}
+
+var base = {};
+
+var parser = {exports: {}};
+
+var hasRequiredParser;
+
+function requireParser () {
+	if (hasRequiredParser) return parser.exports;
+	hasRequiredParser = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		var handlebars = (function () {
+		    var parser = { trace: function trace() {},
+		        yy: {},
+		        symbols_: { "error": 2, "root": 3, "program": 4, "EOF": 5, "program_repetition0": 6, "statement": 7, "mustache": 8, "block": 9, "rawBlock": 10, "partial": 11, "partialBlock": 12, "content": 13, "COMMENT": 14, "CONTENT": 15, "openRawBlock": 16, "rawBlock_repetition0": 17, "END_RAW_BLOCK": 18, "OPEN_RAW_BLOCK": 19, "helperName": 20, "openRawBlock_repetition0": 21, "openRawBlock_option0": 22, "CLOSE_RAW_BLOCK": 23, "openBlock": 24, "block_option0": 25, "closeBlock": 26, "openInverse": 27, "block_option1": 28, "OPEN_BLOCK": 29, "openBlock_repetition0": 30, "openBlock_option0": 31, "openBlock_option1": 32, "CLOSE": 33, "OPEN_INVERSE": 34, "openInverse_repetition0": 35, "openInverse_option0": 36, "openInverse_option1": 37, "openInverseChain": 38, "OPEN_INVERSE_CHAIN": 39, "openInverseChain_repetition0": 40, "openInverseChain_option0": 41, "openInverseChain_option1": 42, "inverseAndProgram": 43, "INVERSE": 44, "inverseChain": 45, "inverseChain_option0": 46, "OPEN_ENDBLOCK": 47, "OPEN": 48, "mustache_repetition0": 49, "mustache_option0": 50, "OPEN_UNESCAPED": 51, "mustache_repetition1": 52, "mustache_option1": 53, "CLOSE_UNESCAPED": 54, "OPEN_PARTIAL": 55, "partialName": 56, "partial_repetition0": 57, "partial_option0": 58, "openPartialBlock": 59, "OPEN_PARTIAL_BLOCK": 60, "openPartialBlock_repetition0": 61, "openPartialBlock_option0": 62, "param": 63, "sexpr": 64, "OPEN_SEXPR": 65, "sexpr_repetition0": 66, "sexpr_option0": 67, "CLOSE_SEXPR": 68, "hash": 69, "hash_repetition_plus0": 70, "hashSegment": 71, "ID": 72, "EQUALS": 73, "blockParams": 74, "OPEN_BLOCK_PARAMS": 75, "blockParams_repetition_plus0": 76, "CLOSE_BLOCK_PARAMS": 77, "path": 78, "dataName": 79, "STRING": 80, "NUMBER": 81, "BOOLEAN": 82, "UNDEFINED": 83, "NULL": 84, "DATA": 85, "pathSegments": 86, "SEP": 87, "$accept": 0, "$end": 1 },
+		        terminals_: { 2: "error", 5: "EOF", 14: "COMMENT", 15: "CONTENT", 18: "END_RAW_BLOCK", 19: "OPEN_RAW_BLOCK", 23: "CLOSE_RAW_BLOCK", 29: "OPEN_BLOCK", 33: "CLOSE", 34: "OPEN_INVERSE", 39: "OPEN_INVERSE_CHAIN", 44: "INVERSE", 47: "OPEN_ENDBLOCK", 48: "OPEN", 51: "OPEN_UNESCAPED", 54: "CLOSE_UNESCAPED", 55: "OPEN_PARTIAL", 60: "OPEN_PARTIAL_BLOCK", 65: "OPEN_SEXPR", 68: "CLOSE_SEXPR", 72: "ID", 73: "EQUALS", 75: "OPEN_BLOCK_PARAMS", 77: "CLOSE_BLOCK_PARAMS", 80: "STRING", 81: "NUMBER", 82: "BOOLEAN", 83: "UNDEFINED", 84: "NULL", 85: "DATA", 87: "SEP" },
+		        productions_: [0, [3, 2], [4, 1], [7, 1], [7, 1], [7, 1], [7, 1], [7, 1], [7, 1], [7, 1], [13, 1], [10, 3], [16, 5], [9, 4], [9, 4], [24, 6], [27, 6], [38, 6], [43, 2], [45, 3], [45, 1], [26, 3], [8, 5], [8, 5], [11, 5], [12, 3], [59, 5], [63, 1], [63, 1], [64, 5], [69, 1], [71, 3], [74, 3], [20, 1], [20, 1], [20, 1], [20, 1], [20, 1], [20, 1], [20, 1], [56, 1], [56, 1], [79, 2], [78, 1], [86, 3], [86, 1], [6, 0], [6, 2], [17, 0], [17, 2], [21, 0], [21, 2], [22, 0], [22, 1], [25, 0], [25, 1], [28, 0], [28, 1], [30, 0], [30, 2], [31, 0], [31, 1], [32, 0], [32, 1], [35, 0], [35, 2], [36, 0], [36, 1], [37, 0], [37, 1], [40, 0], [40, 2], [41, 0], [41, 1], [42, 0], [42, 1], [46, 0], [46, 1], [49, 0], [49, 2], [50, 0], [50, 1], [52, 0], [52, 2], [53, 0], [53, 1], [57, 0], [57, 2], [58, 0], [58, 1], [61, 0], [61, 2], [62, 0], [62, 1], [66, 0], [66, 2], [67, 0], [67, 1], [70, 1], [70, 2], [76, 1], [76, 2]],
+		        performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate, $$, _$) {
+
+		            var $0 = $$.length - 1;
+		            switch (yystate) {
+		                case 1:
+		                    return $$[$0 - 1];
+		                case 2:
+		                    this.$ = yy.prepareProgram($$[$0]);
+		                    break;
+		                case 3:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 4:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 5:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 6:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 7:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 8:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 9:
+		                    this.$ = {
+		                        type: 'CommentStatement',
+		                        value: yy.stripComment($$[$0]),
+		                        strip: yy.stripFlags($$[$0], $$[$0]),
+		                        loc: yy.locInfo(this._$)
+		                    };
+
+		                    break;
+		                case 10:
+		                    this.$ = {
+		                        type: 'ContentStatement',
+		                        original: $$[$0],
+		                        value: $$[$0],
+		                        loc: yy.locInfo(this._$)
+		                    };
+
+		                    break;
+		                case 11:
+		                    this.$ = yy.prepareRawBlock($$[$0 - 2], $$[$0 - 1], $$[$0], this._$);
+		                    break;
+		                case 12:
+		                    this.$ = { path: $$[$0 - 3], params: $$[$0 - 2], hash: $$[$0 - 1] };
+		                    break;
+		                case 13:
+		                    this.$ = yy.prepareBlock($$[$0 - 3], $$[$0 - 2], $$[$0 - 1], $$[$0], false, this._$);
+		                    break;
+		                case 14:
+		                    this.$ = yy.prepareBlock($$[$0 - 3], $$[$0 - 2], $$[$0 - 1], $$[$0], true, this._$);
+		                    break;
+		                case 15:
+		                    this.$ = { open: $$[$0 - 5], path: $$[$0 - 4], params: $$[$0 - 3], hash: $$[$0 - 2], blockParams: $$[$0 - 1], strip: yy.stripFlags($$[$0 - 5], $$[$0]) };
+		                    break;
+		                case 16:
+		                    this.$ = { path: $$[$0 - 4], params: $$[$0 - 3], hash: $$[$0 - 2], blockParams: $$[$0 - 1], strip: yy.stripFlags($$[$0 - 5], $$[$0]) };
+		                    break;
+		                case 17:
+		                    this.$ = { path: $$[$0 - 4], params: $$[$0 - 3], hash: $$[$0 - 2], blockParams: $$[$0 - 1], strip: yy.stripFlags($$[$0 - 5], $$[$0]) };
+		                    break;
+		                case 18:
+		                    this.$ = { strip: yy.stripFlags($$[$0 - 1], $$[$0 - 1]), program: $$[$0] };
+		                    break;
+		                case 19:
+		                    var inverse = yy.prepareBlock($$[$0 - 2], $$[$0 - 1], $$[$0], $$[$0], false, this._$),
+		                        program = yy.prepareProgram([inverse], $$[$0 - 1].loc);
+		                    program.chained = true;
+
+		                    this.$ = { strip: $$[$0 - 2].strip, program: program, chain: true };
+
+		                    break;
+		                case 20:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 21:
+		                    this.$ = { path: $$[$0 - 1], strip: yy.stripFlags($$[$0 - 2], $$[$0]) };
+		                    break;
+		                case 22:
+		                    this.$ = yy.prepareMustache($$[$0 - 3], $$[$0 - 2], $$[$0 - 1], $$[$0 - 4], yy.stripFlags($$[$0 - 4], $$[$0]), this._$);
+		                    break;
+		                case 23:
+		                    this.$ = yy.prepareMustache($$[$0 - 3], $$[$0 - 2], $$[$0 - 1], $$[$0 - 4], yy.stripFlags($$[$0 - 4], $$[$0]), this._$);
+		                    break;
+		                case 24:
+		                    this.$ = {
+		                        type: 'PartialStatement',
+		                        name: $$[$0 - 3],
+		                        params: $$[$0 - 2],
+		                        hash: $$[$0 - 1],
+		                        indent: '',
+		                        strip: yy.stripFlags($$[$0 - 4], $$[$0]),
+		                        loc: yy.locInfo(this._$)
+		                    };
+
+		                    break;
+		                case 25:
+		                    this.$ = yy.preparePartialBlock($$[$0 - 2], $$[$0 - 1], $$[$0], this._$);
+		                    break;
+		                case 26:
+		                    this.$ = { path: $$[$0 - 3], params: $$[$0 - 2], hash: $$[$0 - 1], strip: yy.stripFlags($$[$0 - 4], $$[$0]) };
+		                    break;
+		                case 27:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 28:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 29:
+		                    this.$ = {
+		                        type: 'SubExpression',
+		                        path: $$[$0 - 3],
+		                        params: $$[$0 - 2],
+		                        hash: $$[$0 - 1],
+		                        loc: yy.locInfo(this._$)
+		                    };
+
+		                    break;
+		                case 30:
+		                    this.$ = { type: 'Hash', pairs: $$[$0], loc: yy.locInfo(this._$) };
+		                    break;
+		                case 31:
+		                    this.$ = { type: 'HashPair', key: yy.id($$[$0 - 2]), value: $$[$0], loc: yy.locInfo(this._$) };
+		                    break;
+		                case 32:
+		                    this.$ = yy.id($$[$0 - 1]);
+		                    break;
+		                case 33:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 34:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 35:
+		                    this.$ = { type: 'StringLiteral', value: $$[$0], original: $$[$0], loc: yy.locInfo(this._$) };
+		                    break;
+		                case 36:
+		                    this.$ = { type: 'NumberLiteral', value: Number($$[$0]), original: Number($$[$0]), loc: yy.locInfo(this._$) };
+		                    break;
+		                case 37:
+		                    this.$ = { type: 'BooleanLiteral', value: $$[$0] === 'true', original: $$[$0] === 'true', loc: yy.locInfo(this._$) };
+		                    break;
+		                case 38:
+		                    this.$ = { type: 'UndefinedLiteral', original: undefined, value: undefined, loc: yy.locInfo(this._$) };
+		                    break;
+		                case 39:
+		                    this.$ = { type: 'NullLiteral', original: null, value: null, loc: yy.locInfo(this._$) };
+		                    break;
+		                case 40:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 41:
+		                    this.$ = $$[$0];
+		                    break;
+		                case 42:
+		                    this.$ = yy.preparePath(true, $$[$0], this._$);
+		                    break;
+		                case 43:
+		                    this.$ = yy.preparePath(false, $$[$0], this._$);
+		                    break;
+		                case 44:
+		                    $$[$0 - 2].push({ part: yy.id($$[$0]), original: $$[$0], separator: $$[$0 - 1] });this.$ = $$[$0 - 2];
+		                    break;
+		                case 45:
+		                    this.$ = [{ part: yy.id($$[$0]), original: $$[$0] }];
+		                    break;
+		                case 46:
+		                    this.$ = [];
+		                    break;
+		                case 47:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		                case 48:
+		                    this.$ = [];
+		                    break;
+		                case 49:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		                case 50:
+		                    this.$ = [];
+		                    break;
+		                case 51:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		                case 58:
+		                    this.$ = [];
+		                    break;
+		                case 59:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		                case 64:
+		                    this.$ = [];
+		                    break;
+		                case 65:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		                case 70:
+		                    this.$ = [];
+		                    break;
+		                case 71:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		                case 78:
+		                    this.$ = [];
+		                    break;
+		                case 79:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		                case 82:
+		                    this.$ = [];
+		                    break;
+		                case 83:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		                case 86:
+		                    this.$ = [];
+		                    break;
+		                case 87:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		                case 90:
+		                    this.$ = [];
+		                    break;
+		                case 91:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		                case 94:
+		                    this.$ = [];
+		                    break;
+		                case 95:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		                case 98:
+		                    this.$ = [$$[$0]];
+		                    break;
+		                case 99:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		                case 100:
+		                    this.$ = [$$[$0]];
+		                    break;
+		                case 101:
+		                    $$[$0 - 1].push($$[$0]);
+		                    break;
+		            }
+		        },
+		        table: [{ 3: 1, 4: 2, 5: [2, 46], 6: 3, 14: [2, 46], 15: [2, 46], 19: [2, 46], 29: [2, 46], 34: [2, 46], 48: [2, 46], 51: [2, 46], 55: [2, 46], 60: [2, 46] }, { 1: [3] }, { 5: [1, 4] }, { 5: [2, 2], 7: 5, 8: 6, 9: 7, 10: 8, 11: 9, 12: 10, 13: 11, 14: [1, 12], 15: [1, 20], 16: 17, 19: [1, 23], 24: 15, 27: 16, 29: [1, 21], 34: [1, 22], 39: [2, 2], 44: [2, 2], 47: [2, 2], 48: [1, 13], 51: [1, 14], 55: [1, 18], 59: 19, 60: [1, 24] }, { 1: [2, 1] }, { 5: [2, 47], 14: [2, 47], 15: [2, 47], 19: [2, 47], 29: [2, 47], 34: [2, 47], 39: [2, 47], 44: [2, 47], 47: [2, 47], 48: [2, 47], 51: [2, 47], 55: [2, 47], 60: [2, 47] }, { 5: [2, 3], 14: [2, 3], 15: [2, 3], 19: [2, 3], 29: [2, 3], 34: [2, 3], 39: [2, 3], 44: [2, 3], 47: [2, 3], 48: [2, 3], 51: [2, 3], 55: [2, 3], 60: [2, 3] }, { 5: [2, 4], 14: [2, 4], 15: [2, 4], 19: [2, 4], 29: [2, 4], 34: [2, 4], 39: [2, 4], 44: [2, 4], 47: [2, 4], 48: [2, 4], 51: [2, 4], 55: [2, 4], 60: [2, 4] }, { 5: [2, 5], 14: [2, 5], 15: [2, 5], 19: [2, 5], 29: [2, 5], 34: [2, 5], 39: [2, 5], 44: [2, 5], 47: [2, 5], 48: [2, 5], 51: [2, 5], 55: [2, 5], 60: [2, 5] }, { 5: [2, 6], 14: [2, 6], 15: [2, 6], 19: [2, 6], 29: [2, 6], 34: [2, 6], 39: [2, 6], 44: [2, 6], 47: [2, 6], 48: [2, 6], 51: [2, 6], 55: [2, 6], 60: [2, 6] }, { 5: [2, 7], 14: [2, 7], 15: [2, 7], 19: [2, 7], 29: [2, 7], 34: [2, 7], 39: [2, 7], 44: [2, 7], 47: [2, 7], 48: [2, 7], 51: [2, 7], 55: [2, 7], 60: [2, 7] }, { 5: [2, 8], 14: [2, 8], 15: [2, 8], 19: [2, 8], 29: [2, 8], 34: [2, 8], 39: [2, 8], 44: [2, 8], 47: [2, 8], 48: [2, 8], 51: [2, 8], 55: [2, 8], 60: [2, 8] }, { 5: [2, 9], 14: [2, 9], 15: [2, 9], 19: [2, 9], 29: [2, 9], 34: [2, 9], 39: [2, 9], 44: [2, 9], 47: [2, 9], 48: [2, 9], 51: [2, 9], 55: [2, 9], 60: [2, 9] }, { 20: 25, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 36, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 4: 37, 6: 3, 14: [2, 46], 15: [2, 46], 19: [2, 46], 29: [2, 46], 34: [2, 46], 39: [2, 46], 44: [2, 46], 47: [2, 46], 48: [2, 46], 51: [2, 46], 55: [2, 46], 60: [2, 46] }, { 4: 38, 6: 3, 14: [2, 46], 15: [2, 46], 19: [2, 46], 29: [2, 46], 34: [2, 46], 44: [2, 46], 47: [2, 46], 48: [2, 46], 51: [2, 46], 55: [2, 46], 60: [2, 46] }, { 15: [2, 48], 17: 39, 18: [2, 48] }, { 20: 41, 56: 40, 64: 42, 65: [1, 43], 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 4: 44, 6: 3, 14: [2, 46], 15: [2, 46], 19: [2, 46], 29: [2, 46], 34: [2, 46], 47: [2, 46], 48: [2, 46], 51: [2, 46], 55: [2, 46], 60: [2, 46] }, { 5: [2, 10], 14: [2, 10], 15: [2, 10], 18: [2, 10], 19: [2, 10], 29: [2, 10], 34: [2, 10], 39: [2, 10], 44: [2, 10], 47: [2, 10], 48: [2, 10], 51: [2, 10], 55: [2, 10], 60: [2, 10] }, { 20: 45, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 46, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 47, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 41, 56: 48, 64: 42, 65: [1, 43], 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 33: [2, 78], 49: 49, 65: [2, 78], 72: [2, 78], 80: [2, 78], 81: [2, 78], 82: [2, 78], 83: [2, 78], 84: [2, 78], 85: [2, 78] }, { 23: [2, 33], 33: [2, 33], 54: [2, 33], 65: [2, 33], 68: [2, 33], 72: [2, 33], 75: [2, 33], 80: [2, 33], 81: [2, 33], 82: [2, 33], 83: [2, 33], 84: [2, 33], 85: [2, 33] }, { 23: [2, 34], 33: [2, 34], 54: [2, 34], 65: [2, 34], 68: [2, 34], 72: [2, 34], 75: [2, 34], 80: [2, 34], 81: [2, 34], 82: [2, 34], 83: [2, 34], 84: [2, 34], 85: [2, 34] }, { 23: [2, 35], 33: [2, 35], 54: [2, 35], 65: [2, 35], 68: [2, 35], 72: [2, 35], 75: [2, 35], 80: [2, 35], 81: [2, 35], 82: [2, 35], 83: [2, 35], 84: [2, 35], 85: [2, 35] }, { 23: [2, 36], 33: [2, 36], 54: [2, 36], 65: [2, 36], 68: [2, 36], 72: [2, 36], 75: [2, 36], 80: [2, 36], 81: [2, 36], 82: [2, 36], 83: [2, 36], 84: [2, 36], 85: [2, 36] }, { 23: [2, 37], 33: [2, 37], 54: [2, 37], 65: [2, 37], 68: [2, 37], 72: [2, 37], 75: [2, 37], 80: [2, 37], 81: [2, 37], 82: [2, 37], 83: [2, 37], 84: [2, 37], 85: [2, 37] }, { 23: [2, 38], 33: [2, 38], 54: [2, 38], 65: [2, 38], 68: [2, 38], 72: [2, 38], 75: [2, 38], 80: [2, 38], 81: [2, 38], 82: [2, 38], 83: [2, 38], 84: [2, 38], 85: [2, 38] }, { 23: [2, 39], 33: [2, 39], 54: [2, 39], 65: [2, 39], 68: [2, 39], 72: [2, 39], 75: [2, 39], 80: [2, 39], 81: [2, 39], 82: [2, 39], 83: [2, 39], 84: [2, 39], 85: [2, 39] }, { 23: [2, 43], 33: [2, 43], 54: [2, 43], 65: [2, 43], 68: [2, 43], 72: [2, 43], 75: [2, 43], 80: [2, 43], 81: [2, 43], 82: [2, 43], 83: [2, 43], 84: [2, 43], 85: [2, 43], 87: [1, 50] }, { 72: [1, 35], 86: 51 }, { 23: [2, 45], 33: [2, 45], 54: [2, 45], 65: [2, 45], 68: [2, 45], 72: [2, 45], 75: [2, 45], 80: [2, 45], 81: [2, 45], 82: [2, 45], 83: [2, 45], 84: [2, 45], 85: [2, 45], 87: [2, 45] }, { 52: 52, 54: [2, 82], 65: [2, 82], 72: [2, 82], 80: [2, 82], 81: [2, 82], 82: [2, 82], 83: [2, 82], 84: [2, 82], 85: [2, 82] }, { 25: 53, 38: 55, 39: [1, 57], 43: 56, 44: [1, 58], 45: 54, 47: [2, 54] }, { 28: 59, 43: 60, 44: [1, 58], 47: [2, 56] }, { 13: 62, 15: [1, 20], 18: [1, 61] }, { 33: [2, 86], 57: 63, 65: [2, 86], 72: [2, 86], 80: [2, 86], 81: [2, 86], 82: [2, 86], 83: [2, 86], 84: [2, 86], 85: [2, 86] }, { 33: [2, 40], 65: [2, 40], 72: [2, 40], 80: [2, 40], 81: [2, 40], 82: [2, 40], 83: [2, 40], 84: [2, 40], 85: [2, 40] }, { 33: [2, 41], 65: [2, 41], 72: [2, 41], 80: [2, 41], 81: [2, 41], 82: [2, 41], 83: [2, 41], 84: [2, 41], 85: [2, 41] }, { 20: 64, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 26: 65, 47: [1, 66] }, { 30: 67, 33: [2, 58], 65: [2, 58], 72: [2, 58], 75: [2, 58], 80: [2, 58], 81: [2, 58], 82: [2, 58], 83: [2, 58], 84: [2, 58], 85: [2, 58] }, { 33: [2, 64], 35: 68, 65: [2, 64], 72: [2, 64], 75: [2, 64], 80: [2, 64], 81: [2, 64], 82: [2, 64], 83: [2, 64], 84: [2, 64], 85: [2, 64] }, { 21: 69, 23: [2, 50], 65: [2, 50], 72: [2, 50], 80: [2, 50], 81: [2, 50], 82: [2, 50], 83: [2, 50], 84: [2, 50], 85: [2, 50] }, { 33: [2, 90], 61: 70, 65: [2, 90], 72: [2, 90], 80: [2, 90], 81: [2, 90], 82: [2, 90], 83: [2, 90], 84: [2, 90], 85: [2, 90] }, { 20: 74, 33: [2, 80], 50: 71, 63: 72, 64: 75, 65: [1, 43], 69: 73, 70: 76, 71: 77, 72: [1, 78], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 72: [1, 79] }, { 23: [2, 42], 33: [2, 42], 54: [2, 42], 65: [2, 42], 68: [2, 42], 72: [2, 42], 75: [2, 42], 80: [2, 42], 81: [2, 42], 82: [2, 42], 83: [2, 42], 84: [2, 42], 85: [2, 42], 87: [1, 50] }, { 20: 74, 53: 80, 54: [2, 84], 63: 81, 64: 75, 65: [1, 43], 69: 82, 70: 76, 71: 77, 72: [1, 78], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 26: 83, 47: [1, 66] }, { 47: [2, 55] }, { 4: 84, 6: 3, 14: [2, 46], 15: [2, 46], 19: [2, 46], 29: [2, 46], 34: [2, 46], 39: [2, 46], 44: [2, 46], 47: [2, 46], 48: [2, 46], 51: [2, 46], 55: [2, 46], 60: [2, 46] }, { 47: [2, 20] }, { 20: 85, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 4: 86, 6: 3, 14: [2, 46], 15: [2, 46], 19: [2, 46], 29: [2, 46], 34: [2, 46], 47: [2, 46], 48: [2, 46], 51: [2, 46], 55: [2, 46], 60: [2, 46] }, { 26: 87, 47: [1, 66] }, { 47: [2, 57] }, { 5: [2, 11], 14: [2, 11], 15: [2, 11], 19: [2, 11], 29: [2, 11], 34: [2, 11], 39: [2, 11], 44: [2, 11], 47: [2, 11], 48: [2, 11], 51: [2, 11], 55: [2, 11], 60: [2, 11] }, { 15: [2, 49], 18: [2, 49] }, { 20: 74, 33: [2, 88], 58: 88, 63: 89, 64: 75, 65: [1, 43], 69: 90, 70: 76, 71: 77, 72: [1, 78], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 65: [2, 94], 66: 91, 68: [2, 94], 72: [2, 94], 80: [2, 94], 81: [2, 94], 82: [2, 94], 83: [2, 94], 84: [2, 94], 85: [2, 94] }, { 5: [2, 25], 14: [2, 25], 15: [2, 25], 19: [2, 25], 29: [2, 25], 34: [2, 25], 39: [2, 25], 44: [2, 25], 47: [2, 25], 48: [2, 25], 51: [2, 25], 55: [2, 25], 60: [2, 25] }, { 20: 92, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 74, 31: 93, 33: [2, 60], 63: 94, 64: 75, 65: [1, 43], 69: 95, 70: 76, 71: 77, 72: [1, 78], 75: [2, 60], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 74, 33: [2, 66], 36: 96, 63: 97, 64: 75, 65: [1, 43], 69: 98, 70: 76, 71: 77, 72: [1, 78], 75: [2, 66], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 74, 22: 99, 23: [2, 52], 63: 100, 64: 75, 65: [1, 43], 69: 101, 70: 76, 71: 77, 72: [1, 78], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 74, 33: [2, 92], 62: 102, 63: 103, 64: 75, 65: [1, 43], 69: 104, 70: 76, 71: 77, 72: [1, 78], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 33: [1, 105] }, { 33: [2, 79], 65: [2, 79], 72: [2, 79], 80: [2, 79], 81: [2, 79], 82: [2, 79], 83: [2, 79], 84: [2, 79], 85: [2, 79] }, { 33: [2, 81] }, { 23: [2, 27], 33: [2, 27], 54: [2, 27], 65: [2, 27], 68: [2, 27], 72: [2, 27], 75: [2, 27], 80: [2, 27], 81: [2, 27], 82: [2, 27], 83: [2, 27], 84: [2, 27], 85: [2, 27] }, { 23: [2, 28], 33: [2, 28], 54: [2, 28], 65: [2, 28], 68: [2, 28], 72: [2, 28], 75: [2, 28], 80: [2, 28], 81: [2, 28], 82: [2, 28], 83: [2, 28], 84: [2, 28], 85: [2, 28] }, { 23: [2, 30], 33: [2, 30], 54: [2, 30], 68: [2, 30], 71: 106, 72: [1, 107], 75: [2, 30] }, { 23: [2, 98], 33: [2, 98], 54: [2, 98], 68: [2, 98], 72: [2, 98], 75: [2, 98] }, { 23: [2, 45], 33: [2, 45], 54: [2, 45], 65: [2, 45], 68: [2, 45], 72: [2, 45], 73: [1, 108], 75: [2, 45], 80: [2, 45], 81: [2, 45], 82: [2, 45], 83: [2, 45], 84: [2, 45], 85: [2, 45], 87: [2, 45] }, { 23: [2, 44], 33: [2, 44], 54: [2, 44], 65: [2, 44], 68: [2, 44], 72: [2, 44], 75: [2, 44], 80: [2, 44], 81: [2, 44], 82: [2, 44], 83: [2, 44], 84: [2, 44], 85: [2, 44], 87: [2, 44] }, { 54: [1, 109] }, { 54: [2, 83], 65: [2, 83], 72: [2, 83], 80: [2, 83], 81: [2, 83], 82: [2, 83], 83: [2, 83], 84: [2, 83], 85: [2, 83] }, { 54: [2, 85] }, { 5: [2, 13], 14: [2, 13], 15: [2, 13], 19: [2, 13], 29: [2, 13], 34: [2, 13], 39: [2, 13], 44: [2, 13], 47: [2, 13], 48: [2, 13], 51: [2, 13], 55: [2, 13], 60: [2, 13] }, { 38: 55, 39: [1, 57], 43: 56, 44: [1, 58], 45: 111, 46: 110, 47: [2, 76] }, { 33: [2, 70], 40: 112, 65: [2, 70], 72: [2, 70], 75: [2, 70], 80: [2, 70], 81: [2, 70], 82: [2, 70], 83: [2, 70], 84: [2, 70], 85: [2, 70] }, { 47: [2, 18] }, { 5: [2, 14], 14: [2, 14], 15: [2, 14], 19: [2, 14], 29: [2, 14], 34: [2, 14], 39: [2, 14], 44: [2, 14], 47: [2, 14], 48: [2, 14], 51: [2, 14], 55: [2, 14], 60: [2, 14] }, { 33: [1, 113] }, { 33: [2, 87], 65: [2, 87], 72: [2, 87], 80: [2, 87], 81: [2, 87], 82: [2, 87], 83: [2, 87], 84: [2, 87], 85: [2, 87] }, { 33: [2, 89] }, { 20: 74, 63: 115, 64: 75, 65: [1, 43], 67: 114, 68: [2, 96], 69: 116, 70: 76, 71: 77, 72: [1, 78], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 33: [1, 117] }, { 32: 118, 33: [2, 62], 74: 119, 75: [1, 120] }, { 33: [2, 59], 65: [2, 59], 72: [2, 59], 75: [2, 59], 80: [2, 59], 81: [2, 59], 82: [2, 59], 83: [2, 59], 84: [2, 59], 85: [2, 59] }, { 33: [2, 61], 75: [2, 61] }, { 33: [2, 68], 37: 121, 74: 122, 75: [1, 120] }, { 33: [2, 65], 65: [2, 65], 72: [2, 65], 75: [2, 65], 80: [2, 65], 81: [2, 65], 82: [2, 65], 83: [2, 65], 84: [2, 65], 85: [2, 65] }, { 33: [2, 67], 75: [2, 67] }, { 23: [1, 123] }, { 23: [2, 51], 65: [2, 51], 72: [2, 51], 80: [2, 51], 81: [2, 51], 82: [2, 51], 83: [2, 51], 84: [2, 51], 85: [2, 51] }, { 23: [2, 53] }, { 33: [1, 124] }, { 33: [2, 91], 65: [2, 91], 72: [2, 91], 80: [2, 91], 81: [2, 91], 82: [2, 91], 83: [2, 91], 84: [2, 91], 85: [2, 91] }, { 33: [2, 93] }, { 5: [2, 22], 14: [2, 22], 15: [2, 22], 19: [2, 22], 29: [2, 22], 34: [2, 22], 39: [2, 22], 44: [2, 22], 47: [2, 22], 48: [2, 22], 51: [2, 22], 55: [2, 22], 60: [2, 22] }, { 23: [2, 99], 33: [2, 99], 54: [2, 99], 68: [2, 99], 72: [2, 99], 75: [2, 99] }, { 73: [1, 108] }, { 20: 74, 63: 125, 64: 75, 65: [1, 43], 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 5: [2, 23], 14: [2, 23], 15: [2, 23], 19: [2, 23], 29: [2, 23], 34: [2, 23], 39: [2, 23], 44: [2, 23], 47: [2, 23], 48: [2, 23], 51: [2, 23], 55: [2, 23], 60: [2, 23] }, { 47: [2, 19] }, { 47: [2, 77] }, { 20: 74, 33: [2, 72], 41: 126, 63: 127, 64: 75, 65: [1, 43], 69: 128, 70: 76, 71: 77, 72: [1, 78], 75: [2, 72], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 5: [2, 24], 14: [2, 24], 15: [2, 24], 19: [2, 24], 29: [2, 24], 34: [2, 24], 39: [2, 24], 44: [2, 24], 47: [2, 24], 48: [2, 24], 51: [2, 24], 55: [2, 24], 60: [2, 24] }, { 68: [1, 129] }, { 65: [2, 95], 68: [2, 95], 72: [2, 95], 80: [2, 95], 81: [2, 95], 82: [2, 95], 83: [2, 95], 84: [2, 95], 85: [2, 95] }, { 68: [2, 97] }, { 5: [2, 21], 14: [2, 21], 15: [2, 21], 19: [2, 21], 29: [2, 21], 34: [2, 21], 39: [2, 21], 44: [2, 21], 47: [2, 21], 48: [2, 21], 51: [2, 21], 55: [2, 21], 60: [2, 21] }, { 33: [1, 130] }, { 33: [2, 63] }, { 72: [1, 132], 76: 131 }, { 33: [1, 133] }, { 33: [2, 69] }, { 15: [2, 12], 18: [2, 12] }, { 14: [2, 26], 15: [2, 26], 19: [2, 26], 29: [2, 26], 34: [2, 26], 47: [2, 26], 48: [2, 26], 51: [2, 26], 55: [2, 26], 60: [2, 26] }, { 23: [2, 31], 33: [2, 31], 54: [2, 31], 68: [2, 31], 72: [2, 31], 75: [2, 31] }, { 33: [2, 74], 42: 134, 74: 135, 75: [1, 120] }, { 33: [2, 71], 65: [2, 71], 72: [2, 71], 75: [2, 71], 80: [2, 71], 81: [2, 71], 82: [2, 71], 83: [2, 71], 84: [2, 71], 85: [2, 71] }, { 33: [2, 73], 75: [2, 73] }, { 23: [2, 29], 33: [2, 29], 54: [2, 29], 65: [2, 29], 68: [2, 29], 72: [2, 29], 75: [2, 29], 80: [2, 29], 81: [2, 29], 82: [2, 29], 83: [2, 29], 84: [2, 29], 85: [2, 29] }, { 14: [2, 15], 15: [2, 15], 19: [2, 15], 29: [2, 15], 34: [2, 15], 39: [2, 15], 44: [2, 15], 47: [2, 15], 48: [2, 15], 51: [2, 15], 55: [2, 15], 60: [2, 15] }, { 72: [1, 137], 77: [1, 136] }, { 72: [2, 100], 77: [2, 100] }, { 14: [2, 16], 15: [2, 16], 19: [2, 16], 29: [2, 16], 34: [2, 16], 44: [2, 16], 47: [2, 16], 48: [2, 16], 51: [2, 16], 55: [2, 16], 60: [2, 16] }, { 33: [1, 138] }, { 33: [2, 75] }, { 33: [2, 32] }, { 72: [2, 101], 77: [2, 101] }, { 14: [2, 17], 15: [2, 17], 19: [2, 17], 29: [2, 17], 34: [2, 17], 39: [2, 17], 44: [2, 17], 47: [2, 17], 48: [2, 17], 51: [2, 17], 55: [2, 17], 60: [2, 17] }],
+		        defaultActions: { 4: [2, 1], 54: [2, 55], 56: [2, 20], 60: [2, 57], 73: [2, 81], 82: [2, 85], 86: [2, 18], 90: [2, 89], 101: [2, 53], 104: [2, 93], 110: [2, 19], 111: [2, 77], 116: [2, 97], 119: [2, 63], 122: [2, 69], 135: [2, 75], 136: [2, 32] },
+		        parseError: function parseError(str, hash) {
+		            throw new Error(str);
+		        },
+		        parse: function parse(input) {
+		            var self = this,
+		                stack = [0],
+		                vstack = [null],
+		                lstack = [],
+		                table = this.table,
+		                yytext = "",
+		                yylineno = 0,
+		                yyleng = 0;
+		            this.lexer.setInput(input);
+		            this.lexer.yy = this.yy;
+		            this.yy.lexer = this.lexer;
+		            this.yy.parser = this;
+		            if (typeof this.lexer.yylloc == "undefined") this.lexer.yylloc = {};
+		            var yyloc = this.lexer.yylloc;
+		            lstack.push(yyloc);
+		            var ranges = this.lexer.options && this.lexer.options.ranges;
+		            if (typeof this.yy.parseError === "function") this.parseError = this.yy.parseError;
+		            function lex() {
+		                var token;
+		                token = self.lexer.lex() || 1;
+		                if (typeof token !== "number") {
+		                    token = self.symbols_[token] || token;
+		                }
+		                return token;
+		            }
+		            var symbol,
+		                state,
+		                action,
+		                r,
+		                yyval = {},
+		                p,
+		                len,
+		                newState,
+		                expected;
+		            while (true) {
+		                state = stack[stack.length - 1];
+		                if (this.defaultActions[state]) {
+		                    action = this.defaultActions[state];
+		                } else {
+		                    if (symbol === null || typeof symbol == "undefined") {
+		                        symbol = lex();
+		                    }
+		                    action = table[state] && table[state][symbol];
+		                }
+		                if (typeof action === "undefined" || !action.length || !action[0]) {
+		                    var errStr = "";
+		                    {
+		                        expected = [];
+		                        for (p in table[state]) if (this.terminals_[p] && p > 2) {
+		                            expected.push("'" + this.terminals_[p] + "'");
+		                        }
+		                        if (this.lexer.showPosition) {
+		                            errStr = "Parse error on line " + (yylineno + 1) + ":\n" + this.lexer.showPosition() + "\nExpecting " + expected.join(", ") + ", got '" + (this.terminals_[symbol] || symbol) + "'";
+		                        } else {
+		                            errStr = "Parse error on line " + (yylineno + 1) + ": Unexpected " + (symbol == 1 ? "end of input" : "'" + (this.terminals_[symbol] || symbol) + "'");
+		                        }
+		                        this.parseError(errStr, { text: this.lexer.match, token: this.terminals_[symbol] || symbol, line: this.lexer.yylineno, loc: yyloc, expected: expected });
+		                    }
+		                }
+		                if (action[0] instanceof Array && action.length > 1) {
+		                    throw new Error("Parse Error: multiple actions possible at state: " + state + ", token: " + symbol);
+		                }
+		                switch (action[0]) {
+		                    case 1:
+		                        stack.push(symbol);
+		                        vstack.push(this.lexer.yytext);
+		                        lstack.push(this.lexer.yylloc);
+		                        stack.push(action[1]);
+		                        symbol = null;
+		                        {
+		                            yyleng = this.lexer.yyleng;
+		                            yytext = this.lexer.yytext;
+		                            yylineno = this.lexer.yylineno;
+		                            yyloc = this.lexer.yylloc;
+		                        }
+		                        break;
+		                    case 2:
+		                        len = this.productions_[action[1]][1];
+		                        yyval.$ = vstack[vstack.length - len];
+		                        yyval._$ = { first_line: lstack[lstack.length - (len || 1)].first_line, last_line: lstack[lstack.length - 1].last_line, first_column: lstack[lstack.length - (len || 1)].first_column, last_column: lstack[lstack.length - 1].last_column };
+		                        if (ranges) {
+		                            yyval._$.range = [lstack[lstack.length - (len || 1)].range[0], lstack[lstack.length - 1].range[1]];
+		                        }
+		                        r = this.performAction.call(yyval, yytext, yyleng, yylineno, this.yy, action[1], vstack, lstack);
+		                        if (typeof r !== "undefined") {
+		                            return r;
+		                        }
+		                        if (len) {
+		                            stack = stack.slice(0, -1 * len * 2);
+		                            vstack = vstack.slice(0, -1 * len);
+		                            lstack = lstack.slice(0, -1 * len);
+		                        }
+		                        stack.push(this.productions_[action[1]][0]);
+		                        vstack.push(yyval.$);
+		                        lstack.push(yyval._$);
+		                        newState = table[stack[stack.length - 2]][stack[stack.length - 1]];
+		                        stack.push(newState);
+		                        break;
+		                    case 3:
+		                        return true;
+		                }
+		            }
+		            return true;
+		        }
+		    };
+		    /* Jison generated lexer */
+		    var lexer = (function () {
+		        var lexer = { EOF: 1,
+		            parseError: function parseError(str, hash) {
+		                if (this.yy.parser) {
+		                    this.yy.parser.parseError(str, hash);
+		                } else {
+		                    throw new Error(str);
+		                }
+		            },
+		            setInput: function setInput(input) {
+		                this._input = input;
+		                this._more = this._less = this.done = false;
+		                this.yylineno = this.yyleng = 0;
+		                this.yytext = this.matched = this.match = '';
+		                this.conditionStack = ['INITIAL'];
+		                this.yylloc = { first_line: 1, first_column: 0, last_line: 1, last_column: 0 };
+		                if (this.options.ranges) this.yylloc.range = [0, 0];
+		                this.offset = 0;
+		                return this;
+		            },
+		            input: function input() {
+		                var ch = this._input[0];
+		                this.yytext += ch;
+		                this.yyleng++;
+		                this.offset++;
+		                this.match += ch;
+		                this.matched += ch;
+		                var lines = ch.match(/(?:\r\n?|\n).*/g);
+		                if (lines) {
+		                    this.yylineno++;
+		                    this.yylloc.last_line++;
+		                } else {
+		                    this.yylloc.last_column++;
+		                }
+		                if (this.options.ranges) this.yylloc.range[1]++;
+
+		                this._input = this._input.slice(1);
+		                return ch;
+		            },
+		            unput: function unput(ch) {
+		                var len = ch.length;
+		                var lines = ch.split(/(?:\r\n?|\n)/g);
+
+		                this._input = ch + this._input;
+		                this.yytext = this.yytext.substr(0, this.yytext.length - len - 1);
+		                //this.yyleng -= len;
+		                this.offset -= len;
+		                var oldLines = this.match.split(/(?:\r\n?|\n)/g);
+		                this.match = this.match.substr(0, this.match.length - 1);
+		                this.matched = this.matched.substr(0, this.matched.length - 1);
+
+		                if (lines.length - 1) this.yylineno -= lines.length - 1;
+		                var r = this.yylloc.range;
+
+		                this.yylloc = { first_line: this.yylloc.first_line,
+		                    last_line: this.yylineno + 1,
+		                    first_column: this.yylloc.first_column,
+		                    last_column: lines ? (lines.length === oldLines.length ? this.yylloc.first_column : 0) + oldLines[oldLines.length - lines.length].length - lines[0].length : this.yylloc.first_column - len
+		                };
+
+		                if (this.options.ranges) {
+		                    this.yylloc.range = [r[0], r[0] + this.yyleng - len];
+		                }
+		                return this;
+		            },
+		            more: function more() {
+		                this._more = true;
+		                return this;
+		            },
+		            less: function less(n) {
+		                this.unput(this.match.slice(n));
+		            },
+		            pastInput: function pastInput() {
+		                var past = this.matched.substr(0, this.matched.length - this.match.length);
+		                return (past.length > 20 ? '...' : '') + past.substr(-20).replace(/\n/g, "");
+		            },
+		            upcomingInput: function upcomingInput() {
+		                var next = this.match;
+		                if (next.length < 20) {
+		                    next += this._input.substr(0, 20 - next.length);
+		                }
+		                return (next.substr(0, 20) + (next.length > 20 ? '...' : '')).replace(/\n/g, "");
+		            },
+		            showPosition: function showPosition() {
+		                var pre = this.pastInput();
+		                var c = new Array(pre.length + 1).join("-");
+		                return pre + this.upcomingInput() + "\n" + c + "^";
+		            },
+		            next: function next() {
+		                if (this.done) {
+		                    return this.EOF;
+		                }
+		                if (!this._input) this.done = true;
+
+		                var token, match, tempMatch, index, lines;
+		                if (!this._more) {
+		                    this.yytext = '';
+		                    this.match = '';
+		                }
+		                var rules = this._currentRules();
+		                for (var i = 0; i < rules.length; i++) {
+		                    tempMatch = this._input.match(this.rules[rules[i]]);
+		                    if (tempMatch && (!match || tempMatch[0].length > match[0].length)) {
+		                        match = tempMatch;
+		                        index = i;
+		                        if (!this.options.flex) break;
+		                    }
+		                }
+		                if (match) {
+		                    lines = match[0].match(/(?:\r\n?|\n).*/g);
+		                    if (lines) this.yylineno += lines.length;
+		                    this.yylloc = { first_line: this.yylloc.last_line,
+		                        last_line: this.yylineno + 1,
+		                        first_column: this.yylloc.last_column,
+		                        last_column: lines ? lines[lines.length - 1].length - lines[lines.length - 1].match(/\r?\n?/)[0].length : this.yylloc.last_column + match[0].length };
+		                    this.yytext += match[0];
+		                    this.match += match[0];
+		                    this.matches = match;
+		                    this.yyleng = this.yytext.length;
+		                    if (this.options.ranges) {
+		                        this.yylloc.range = [this.offset, this.offset += this.yyleng];
+		                    }
+		                    this._more = false;
+		                    this._input = this._input.slice(match[0].length);
+		                    this.matched += match[0];
+		                    token = this.performAction.call(this, this.yy, this, rules[index], this.conditionStack[this.conditionStack.length - 1]);
+		                    if (this.done && this._input) this.done = false;
+		                    if (token) return token;else return;
+		                }
+		                if (this._input === "") {
+		                    return this.EOF;
+		                } else {
+		                    return this.parseError('Lexical error on line ' + (this.yylineno + 1) + '. Unrecognized text.\n' + this.showPosition(), { text: "", token: null, line: this.yylineno });
+		                }
+		            },
+		            lex: function lex() {
+		                var r = this.next();
+		                if (typeof r !== 'undefined') {
+		                    return r;
+		                } else {
+		                    return this.lex();
+		                }
+		            },
+		            begin: function begin(condition) {
+		                this.conditionStack.push(condition);
+		            },
+		            popState: function popState() {
+		                return this.conditionStack.pop();
+		            },
+		            _currentRules: function _currentRules() {
+		                return this.conditions[this.conditionStack[this.conditionStack.length - 1]].rules;
+		            },
+		            topState: function topState() {
+		                return this.conditionStack[this.conditionStack.length - 2];
+		            },
+		            pushState: function begin(condition) {
+		                this.begin(condition);
+		            } };
+		        lexer.options = {};
+		        lexer.performAction = function anonymous(yy, yy_, $avoiding_name_collisions, YY_START) {
+
+		            function strip(start, end) {
+		                return yy_.yytext = yy_.yytext.substring(start, yy_.yyleng - end + start);
+		            }
+		            switch ($avoiding_name_collisions) {
+		                case 0:
+		                    if (yy_.yytext.slice(-2) === "\\\\") {
+		                        strip(0, 1);
+		                        this.begin("mu");
+		                    } else if (yy_.yytext.slice(-1) === "\\") {
+		                        strip(0, 1);
+		                        this.begin("emu");
+		                    } else {
+		                        this.begin("mu");
+		                    }
+		                    if (yy_.yytext) return 15;
+
+		                    break;
+		                case 1:
+		                    return 15;
+		                case 2:
+		                    this.popState();
+		                    return 15;
+		                case 3:
+		                    this.begin('raw');return 15;
+		                case 4:
+		                    this.popState();
+		                    // Should be using `this.topState()` below, but it currently
+		                    // returns the second top instead of the first top. Opened an
+		                    // issue about it at https://github.com/zaach/jison/issues/291
+		                    if (this.conditionStack[this.conditionStack.length - 1] === 'raw') {
+		                        return 15;
+		                    } else {
+		                        strip(5, 9);
+		                        return 'END_RAW_BLOCK';
+		                    }
+		                case 5:
+		                    return 15;
+		                case 6:
+		                    this.popState();
+		                    return 14;
+		                case 7:
+		                    return 65;
+		                case 8:
+		                    return 68;
+		                case 9:
+		                    return 19;
+		                case 10:
+		                    this.popState();
+		                    this.begin('raw');
+		                    return 23;
+		                case 11:
+		                    return 55;
+		                case 12:
+		                    return 60;
+		                case 13:
+		                    return 29;
+		                case 14:
+		                    return 47;
+		                case 15:
+		                    this.popState();return 44;
+		                case 16:
+		                    this.popState();return 44;
+		                case 17:
+		                    return 34;
+		                case 18:
+		                    return 39;
+		                case 19:
+		                    return 51;
+		                case 20:
+		                    return 48;
+		                case 21:
+		                    this.unput(yy_.yytext);
+		                    this.popState();
+		                    this.begin('com');
+
+		                    break;
+		                case 22:
+		                    this.popState();
+		                    return 14;
+		                case 23:
+		                    return 48;
+		                case 24:
+		                    return 73;
+		                case 25:
+		                    return 72;
+		                case 26:
+		                    return 72;
+		                case 27:
+		                    return 87;
+		                case 28:
+		                    // ignore whitespace
+		                    break;
+		                case 29:
+		                    this.popState();return 54;
+		                case 30:
+		                    this.popState();return 33;
+		                case 31:
+		                    yy_.yytext = strip(1, 2).replace(/\\"/g, '"');return 80;
+		                case 32:
+		                    yy_.yytext = strip(1, 2).replace(/\\'/g, "'");return 80;
+		                case 33:
+		                    return 85;
+		                case 34:
+		                    return 82;
+		                case 35:
+		                    return 82;
+		                case 36:
+		                    return 83;
+		                case 37:
+		                    return 84;
+		                case 38:
+		                    return 81;
+		                case 39:
+		                    return 75;
+		                case 40:
+		                    return 77;
+		                case 41:
+		                    return 72;
+		                case 42:
+		                    yy_.yytext = yy_.yytext.replace(/\\([\\\]])/g, '$1');return 72;
+		                case 43:
+		                    return 'INVALID';
+		                case 44:
+		                    return 5;
+		            }
+		        };
+		        lexer.rules = [/^(?:[^\x00]*?(?=(\{\{)))/, /^(?:[^\x00]+)/, /^(?:[^\x00]{2,}?(?=(\{\{|\\\{\{|\\\\\{\{|$)))/, /^(?:\{\{\{\{(?=[^/]))/, /^(?:\{\{\{\{\/[^\s!"#%-,\.\/;->@\[-\^`\{-~]+(?=[=}\s\/.])\}\}\}\})/, /^(?:[^\x00]+?(?=(\{\{\{\{)))/, /^(?:[\s\S]*?--(~)?\}\})/, /^(?:\()/, /^(?:\))/, /^(?:\{\{\{\{)/, /^(?:\}\}\}\})/, /^(?:\{\{(~)?>)/, /^(?:\{\{(~)?#>)/, /^(?:\{\{(~)?#\*?)/, /^(?:\{\{(~)?\/)/, /^(?:\{\{(~)?\^\s*(~)?\}\})/, /^(?:\{\{(~)?\s*else\s*(~)?\}\})/, /^(?:\{\{(~)?\^)/, /^(?:\{\{(~)?\s*else\b)/, /^(?:\{\{(~)?\{)/, /^(?:\{\{(~)?&)/, /^(?:\{\{(~)?!--)/, /^(?:\{\{(~)?![\s\S]*?\}\})/, /^(?:\{\{(~)?\*?)/, /^(?:=)/, /^(?:\.\.)/, /^(?:\.(?=([=~}\s\/.)|])))/, /^(?:[\/.])/, /^(?:\s+)/, /^(?:\}(~)?\}\})/, /^(?:(~)?\}\})/, /^(?:"(\\["]|[^"])*")/, /^(?:'(\\[']|[^'])*')/, /^(?:@)/, /^(?:true(?=([~}\s)])))/, /^(?:false(?=([~}\s)])))/, /^(?:undefined(?=([~}\s)])))/, /^(?:null(?=([~}\s)])))/, /^(?:-?[0-9]+(?:\.[0-9]+)?(?=([~}\s)])))/, /^(?:as\s+\|)/, /^(?:\|)/, /^(?:([^\s!"#%-,\.\/;->@\[-\^`\{-~]+(?=([=~}\s\/.)|]))))/, /^(?:\[(\\\]|[^\]])*\])/, /^(?:.)/, /^(?:$)/];
+		        lexer.conditions = { "mu": { "rules": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44], "inclusive": false }, "emu": { "rules": [2], "inclusive": false }, "com": { "rules": [6], "inclusive": false }, "raw": { "rules": [3, 4, 5], "inclusive": false }, "INITIAL": { "rules": [0, 1, 44], "inclusive": true } };
+		        return lexer;
+		    })();
+		    parser.lexer = lexer;
+		    function Parser() {
+		        this.yy = {};
+		    }Parser.prototype = parser;parser.Parser = Parser;
+		    return new Parser();
+		})();exports["default"] = handlebars;
+		module.exports = exports["default"];
+
+	} (parser, parser.exports));
+	return parser.exports;
+}
+
+var whitespaceControl = {exports: {}};
+
+var visitor = {exports: {}};
+
+var hasRequiredVisitor;
+
+function requireVisitor () {
+	if (hasRequiredVisitor) return visitor.exports;
+	hasRequiredVisitor = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		// istanbul ignore next
+
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+		var _exception = requireException();
+
+		var _exception2 = _interopRequireDefault(_exception);
+
+		function Visitor() {
+		  this.parents = [];
+		}
+
+		Visitor.prototype = {
+		  constructor: Visitor,
+		  mutating: false,
+
+		  // Visits a given value. If mutating, will replace the value if necessary.
+		  acceptKey: function acceptKey(node, name) {
+		    var value = this.accept(node[name]);
+		    if (this.mutating) {
+		      // Hacky sanity check: This may have a few false positives for type for the helper
+		      // methods but will generally do the right thing without a lot of overhead.
+		      if (value && !Visitor.prototype[value.type]) {
+		        throw new _exception2['default']('Unexpected node type "' + value.type + '" found when accepting ' + name + ' on ' + node.type);
+		      }
+		      node[name] = value;
+		    }
+		  },
+
+		  // Performs an accept operation with added sanity check to ensure
+		  // required keys are not removed.
+		  acceptRequired: function acceptRequired(node, name) {
+		    this.acceptKey(node, name);
+
+		    if (!node[name]) {
+		      throw new _exception2['default'](node.type + ' requires ' + name);
+		    }
+		  },
+
+		  // Traverses a given array. If mutating, empty respnses will be removed
+		  // for child elements.
+		  acceptArray: function acceptArray(array) {
+		    for (var i = 0, l = array.length; i < l; i++) {
+		      this.acceptKey(array, i);
+
+		      if (!array[i]) {
+		        array.splice(i, 1);
+		        i--;
+		        l--;
+		      }
+		    }
+		  },
+
+		  accept: function accept(object) {
+		    if (!object) {
+		      return;
+		    }
+
+		    /* istanbul ignore next: Sanity code */
+		    if (!this[object.type]) {
+		      throw new _exception2['default']('Unknown type: ' + object.type, object);
+		    }
+
+		    if (this.current) {
+		      this.parents.unshift(this.current);
+		    }
+		    this.current = object;
+
+		    var ret = this[object.type](object);
+
+		    this.current = this.parents.shift();
+
+		    if (!this.mutating || ret) {
+		      return ret;
+		    } else if (ret !== false) {
+		      return object;
+		    }
+		  },
+
+		  Program: function Program(program) {
+		    this.acceptArray(program.body);
+		  },
+
+		  MustacheStatement: visitSubExpression,
+		  Decorator: visitSubExpression,
+
+		  BlockStatement: visitBlock,
+		  DecoratorBlock: visitBlock,
+
+		  PartialStatement: visitPartial,
+		  PartialBlockStatement: function PartialBlockStatement(partial) {
+		    visitPartial.call(this, partial);
+
+		    this.acceptKey(partial, 'program');
+		  },
+
+		  ContentStatement: function ContentStatement() /* content */{},
+		  CommentStatement: function CommentStatement() /* comment */{},
+
+		  SubExpression: visitSubExpression,
+
+		  PathExpression: function PathExpression() /* path */{},
+
+		  StringLiteral: function StringLiteral() /* string */{},
+		  NumberLiteral: function NumberLiteral() /* number */{},
+		  BooleanLiteral: function BooleanLiteral() /* bool */{},
+		  UndefinedLiteral: function UndefinedLiteral() /* literal */{},
+		  NullLiteral: function NullLiteral() /* literal */{},
+
+		  Hash: function Hash(hash) {
+		    this.acceptArray(hash.pairs);
+		  },
+		  HashPair: function HashPair(pair) {
+		    this.acceptRequired(pair, 'value');
+		  }
+		};
+
+		function visitSubExpression(mustache) {
+		  this.acceptRequired(mustache, 'path');
+		  this.acceptArray(mustache.params);
+		  this.acceptKey(mustache, 'hash');
+		}
+		function visitBlock(block) {
+		  visitSubExpression.call(this, block);
+
+		  this.acceptKey(block, 'program');
+		  this.acceptKey(block, 'inverse');
+		}
+		function visitPartial(partial) {
+		  this.acceptRequired(partial, 'name');
+		  this.acceptArray(partial.params);
+		  this.acceptKey(partial, 'hash');
+		}
+
+		exports['default'] = Visitor;
+		module.exports = exports['default'];
+
+	} (visitor, visitor.exports));
+	return visitor.exports;
+}
+
+var hasRequiredWhitespaceControl;
+
+function requireWhitespaceControl () {
+	if (hasRequiredWhitespaceControl) return whitespaceControl.exports;
+	hasRequiredWhitespaceControl = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		// istanbul ignore next
+
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+		var _visitor = requireVisitor();
+
+		var _visitor2 = _interopRequireDefault(_visitor);
+
+		function WhitespaceControl() {
+		  var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+		  this.options = options;
+		}
+		WhitespaceControl.prototype = new _visitor2['default']();
+
+		WhitespaceControl.prototype.Program = function (program) {
+		  var doStandalone = !this.options.ignoreStandalone;
+
+		  var isRoot = !this.isRootSeen;
+		  this.isRootSeen = true;
+
+		  var body = program.body;
+		  for (var i = 0, l = body.length; i < l; i++) {
+		    var current = body[i],
+		        strip = this.accept(current);
+
+		    if (!strip) {
+		      continue;
+		    }
+
+		    var _isPrevWhitespace = isPrevWhitespace(body, i, isRoot),
+		        _isNextWhitespace = isNextWhitespace(body, i, isRoot),
+		        openStandalone = strip.openStandalone && _isPrevWhitespace,
+		        closeStandalone = strip.closeStandalone && _isNextWhitespace,
+		        inlineStandalone = strip.inlineStandalone && _isPrevWhitespace && _isNextWhitespace;
+
+		    if (strip.close) {
+		      omitRight(body, i, true);
+		    }
+		    if (strip.open) {
+		      omitLeft(body, i, true);
+		    }
+
+		    if (doStandalone && inlineStandalone) {
+		      omitRight(body, i);
+
+		      if (omitLeft(body, i)) {
+		        // If we are on a standalone node, save the indent info for partials
+		        if (current.type === 'PartialStatement') {
+		          // Pull out the whitespace from the final line
+		          current.indent = /([ \t]+$)/.exec(body[i - 1].original)[1];
+		        }
+		      }
+		    }
+		    if (doStandalone && openStandalone) {
+		      omitRight((current.program || current.inverse).body);
+
+		      // Strip out the previous content node if it's whitespace only
+		      omitLeft(body, i);
+		    }
+		    if (doStandalone && closeStandalone) {
+		      // Always strip the next node
+		      omitRight(body, i);
+
+		      omitLeft((current.inverse || current.program).body);
+		    }
+		  }
+
+		  return program;
+		};
+
+		WhitespaceControl.prototype.BlockStatement = WhitespaceControl.prototype.DecoratorBlock = WhitespaceControl.prototype.PartialBlockStatement = function (block) {
+		  this.accept(block.program);
+		  this.accept(block.inverse);
+
+		  // Find the inverse program that is involed with whitespace stripping.
+		  var program = block.program || block.inverse,
+		      inverse = block.program && block.inverse,
+		      firstInverse = inverse,
+		      lastInverse = inverse;
+
+		  if (inverse && inverse.chained) {
+		    firstInverse = inverse.body[0].program;
+
+		    // Walk the inverse chain to find the last inverse that is actually in the chain.
+		    while (lastInverse.chained) {
+		      lastInverse = lastInverse.body[lastInverse.body.length - 1].program;
+		    }
+		  }
+
+		  var strip = {
+		    open: block.openStrip.open,
+		    close: block.closeStrip.close,
+
+		    // Determine the standalone candiacy. Basically flag our content as being possibly standalone
+		    // so our parent can determine if we actually are standalone
+		    openStandalone: isNextWhitespace(program.body),
+		    closeStandalone: isPrevWhitespace((firstInverse || program).body)
+		  };
+
+		  if (block.openStrip.close) {
+		    omitRight(program.body, null, true);
+		  }
+
+		  if (inverse) {
+		    var inverseStrip = block.inverseStrip;
+
+		    if (inverseStrip.open) {
+		      omitLeft(program.body, null, true);
+		    }
+
+		    if (inverseStrip.close) {
+		      omitRight(firstInverse.body, null, true);
+		    }
+		    if (block.closeStrip.open) {
+		      omitLeft(lastInverse.body, null, true);
+		    }
+
+		    // Find standalone else statments
+		    if (!this.options.ignoreStandalone && isPrevWhitespace(program.body) && isNextWhitespace(firstInverse.body)) {
+		      omitLeft(program.body);
+		      omitRight(firstInverse.body);
+		    }
+		  } else if (block.closeStrip.open) {
+		    omitLeft(program.body, null, true);
+		  }
+
+		  return strip;
+		};
+
+		WhitespaceControl.prototype.Decorator = WhitespaceControl.prototype.MustacheStatement = function (mustache) {
+		  return mustache.strip;
+		};
+
+		WhitespaceControl.prototype.PartialStatement = WhitespaceControl.prototype.CommentStatement = function (node) {
+		  /* istanbul ignore next */
+		  var strip = node.strip || {};
+		  return {
+		    inlineStandalone: true,
+		    open: strip.open,
+		    close: strip.close
+		  };
+		};
+
+		function isPrevWhitespace(body, i, isRoot) {
+		  if (i === undefined) {
+		    i = body.length;
+		  }
+
+		  // Nodes that end with newlines are considered whitespace (but are special
+		  // cased for strip operations)
+		  var prev = body[i - 1],
+		      sibling = body[i - 2];
+		  if (!prev) {
+		    return isRoot;
+		  }
+
+		  if (prev.type === 'ContentStatement') {
+		    return (sibling || !isRoot ? /\r?\n\s*?$/ : /(^|\r?\n)\s*?$/).test(prev.original);
+		  }
+		}
+		function isNextWhitespace(body, i, isRoot) {
+		  if (i === undefined) {
+		    i = -1;
+		  }
+
+		  var next = body[i + 1],
+		      sibling = body[i + 2];
+		  if (!next) {
+		    return isRoot;
+		  }
+
+		  if (next.type === 'ContentStatement') {
+		    return (sibling || !isRoot ? /^\s*?\r?\n/ : /^\s*?(\r?\n|$)/).test(next.original);
+		  }
+		}
+
+		// Marks the node to the right of the position as omitted.
+		// I.e. {{foo}}' ' will mark the ' ' node as omitted.
+		//
+		// If i is undefined, then the first child will be marked as such.
+		//
+		// If mulitple is truthy then all whitespace will be stripped out until non-whitespace
+		// content is met.
+		function omitRight(body, i, multiple) {
+		  var current = body[i == null ? 0 : i + 1];
+		  if (!current || current.type !== 'ContentStatement' || !multiple && current.rightStripped) {
+		    return;
+		  }
+
+		  var original = current.value;
+		  current.value = current.value.replace(multiple ? /^\s+/ : /^[ \t]*\r?\n?/, '');
+		  current.rightStripped = current.value !== original;
+		}
+
+		// Marks the node to the left of the position as omitted.
+		// I.e. ' '{{foo}} will mark the ' ' node as omitted.
+		//
+		// If i is undefined then the last child will be marked as such.
+		//
+		// If mulitple is truthy then all whitespace will be stripped out until non-whitespace
+		// content is met.
+		function omitLeft(body, i, multiple) {
+		  var current = body[i == null ? body.length - 1 : i - 1];
+		  if (!current || current.type !== 'ContentStatement' || !multiple && current.leftStripped) {
+		    return;
+		  }
+
+		  // We omit the last node if it's whitespace only and not preceded by a non-content node.
+		  var original = current.value;
+		  current.value = current.value.replace(multiple ? /\s+$/ : /[ \t]+$/, '');
+		  current.leftStripped = current.value !== original;
+		  return current.leftStripped;
+		}
+
+		exports['default'] = WhitespaceControl;
+		module.exports = exports['default'];
+
+	} (whitespaceControl, whitespaceControl.exports));
+	return whitespaceControl.exports;
+}
+
+var helpers = {};
+
+var hasRequiredHelpers;
+
+function requireHelpers () {
+	if (hasRequiredHelpers) return helpers;
+	hasRequiredHelpers = 1;
+
+	helpers.__esModule = true;
+	helpers.SourceLocation = SourceLocation;
+	helpers.id = id;
+	helpers.stripFlags = stripFlags;
+	helpers.stripComment = stripComment;
+	helpers.preparePath = preparePath;
+	helpers.prepareMustache = prepareMustache;
+	helpers.prepareRawBlock = prepareRawBlock;
+	helpers.prepareBlock = prepareBlock;
+	helpers.prepareProgram = prepareProgram;
+	helpers.preparePartialBlock = preparePartialBlock;
+	// istanbul ignore next
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _exception = requireException();
+
+	var _exception2 = _interopRequireDefault(_exception);
+
+	function validateClose(open, close) {
+	  close = close.path ? close.path.original : close;
+
+	  if (open.path.original !== close) {
+	    var errorNode = { loc: open.path.loc };
+
+	    throw new _exception2['default'](open.path.original + " doesn't match " + close, errorNode);
+	  }
+	}
+
+	function SourceLocation(source, locInfo) {
+	  this.source = source;
+	  this.start = {
+	    line: locInfo.first_line,
+	    column: locInfo.first_column
+	  };
+	  this.end = {
+	    line: locInfo.last_line,
+	    column: locInfo.last_column
+	  };
+	}
+
+	function id(token) {
+	  if (/^\[.*\]$/.test(token)) {
+	    return token.substring(1, token.length - 1);
+	  } else {
+	    return token;
+	  }
+	}
+
+	function stripFlags(open, close) {
+	  return {
+	    open: open.charAt(2) === '~',
+	    close: close.charAt(close.length - 3) === '~'
+	  };
+	}
+
+	function stripComment(comment) {
+	  return comment.replace(/^\{\{~?!-?-?/, '').replace(/-?-?~?\}\}$/, '');
+	}
+
+	function preparePath(data, parts, loc) {
+	  loc = this.locInfo(loc);
+
+	  var original = data ? '@' : '',
+	      dig = [],
+	      depth = 0;
+
+	  for (var i = 0, l = parts.length; i < l; i++) {
+	    var part = parts[i].part,
+
+	    // If we have [] syntax then we do not treat path references as operators,
+	    // i.e. foo.[this] resolves to approximately context.foo['this']
+	    isLiteral = parts[i].original !== part;
+	    original += (parts[i].separator || '') + part;
+
+	    if (!isLiteral && (part === '..' || part === '.' || part === 'this')) {
+	      if (dig.length > 0) {
+	        throw new _exception2['default']('Invalid path: ' + original, { loc: loc });
+	      } else if (part === '..') {
+	        depth++;
+	      }
+	    } else {
+	      dig.push(part);
+	    }
+	  }
+
+	  return {
+	    type: 'PathExpression',
+	    data: data,
+	    depth: depth,
+	    parts: dig,
+	    original: original,
+	    loc: loc
+	  };
+	}
+
+	function prepareMustache(path, params, hash, open, strip, locInfo) {
+	  // Must use charAt to support IE pre-10
+	  var escapeFlag = open.charAt(3) || open.charAt(2),
+	      escaped = escapeFlag !== '{' && escapeFlag !== '&';
+
+	  var decorator = /\*/.test(open);
+	  return {
+	    type: decorator ? 'Decorator' : 'MustacheStatement',
+	    path: path,
+	    params: params,
+	    hash: hash,
+	    escaped: escaped,
+	    strip: strip,
+	    loc: this.locInfo(locInfo)
+	  };
+	}
+
+	function prepareRawBlock(openRawBlock, contents, close, locInfo) {
+	  validateClose(openRawBlock, close);
+
+	  locInfo = this.locInfo(locInfo);
+	  var program = {
+	    type: 'Program',
+	    body: contents,
+	    strip: {},
+	    loc: locInfo
+	  };
+
+	  return {
+	    type: 'BlockStatement',
+	    path: openRawBlock.path,
+	    params: openRawBlock.params,
+	    hash: openRawBlock.hash,
+	    program: program,
+	    openStrip: {},
+	    inverseStrip: {},
+	    closeStrip: {},
+	    loc: locInfo
+	  };
+	}
+
+	function prepareBlock(openBlock, program, inverseAndProgram, close, inverted, locInfo) {
+	  if (close && close.path) {
+	    validateClose(openBlock, close);
+	  }
+
+	  var decorator = /\*/.test(openBlock.open);
+
+	  program.blockParams = openBlock.blockParams;
+
+	  var inverse = undefined,
+	      inverseStrip = undefined;
+
+	  if (inverseAndProgram) {
+	    if (decorator) {
+	      throw new _exception2['default']('Unexpected inverse block on decorator', inverseAndProgram);
+	    }
+
+	    if (inverseAndProgram.chain) {
+	      inverseAndProgram.program.body[0].closeStrip = close.strip;
+	    }
+
+	    inverseStrip = inverseAndProgram.strip;
+	    inverse = inverseAndProgram.program;
+	  }
+
+	  if (inverted) {
+	    inverted = inverse;
+	    inverse = program;
+	    program = inverted;
+	  }
+
+	  return {
+	    type: decorator ? 'DecoratorBlock' : 'BlockStatement',
+	    path: openBlock.path,
+	    params: openBlock.params,
+	    hash: openBlock.hash,
+	    program: program,
+	    inverse: inverse,
+	    openStrip: openBlock.strip,
+	    inverseStrip: inverseStrip,
+	    closeStrip: close && close.strip,
+	    loc: this.locInfo(locInfo)
+	  };
+	}
+
+	function prepareProgram(statements, loc) {
+	  if (!loc && statements.length) {
+	    var firstLoc = statements[0].loc,
+	        lastLoc = statements[statements.length - 1].loc;
+
+	    /* istanbul ignore else */
+	    if (firstLoc && lastLoc) {
+	      loc = {
+	        source: firstLoc.source,
+	        start: {
+	          line: firstLoc.start.line,
+	          column: firstLoc.start.column
+	        },
+	        end: {
+	          line: lastLoc.end.line,
+	          column: lastLoc.end.column
+	        }
+	      };
+	    }
+	  }
+
+	  return {
+	    type: 'Program',
+	    body: statements,
+	    strip: {},
+	    loc: loc
+	  };
+	}
+
+	function preparePartialBlock(open, program, close, locInfo) {
+	  validateClose(open, close);
+
+	  return {
+	    type: 'PartialBlockStatement',
+	    name: open.path,
+	    params: open.params,
+	    hash: open.hash,
+	    program: program,
+	    openStrip: open.strip,
+	    closeStrip: close && close.strip,
+	    loc: this.locInfo(locInfo)
+	  };
+	}
+
+	return helpers;
+}
+
+var hasRequiredBase;
+
+function requireBase () {
+	if (hasRequiredBase) return base;
+	hasRequiredBase = 1;
+
+	base.__esModule = true;
+	base.parseWithoutProcessing = parseWithoutProcessing;
+	base.parse = parse;
+	// istanbul ignore next
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+	// istanbul ignore next
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _parser = requireParser();
+
+	var _parser2 = _interopRequireDefault(_parser);
+
+	var _whitespaceControl = requireWhitespaceControl();
+
+	var _whitespaceControl2 = _interopRequireDefault(_whitespaceControl);
+
+	var _helpers = requireHelpers();
+
+	var Helpers = _interopRequireWildcard(_helpers);
+
+	var _utils = requireUtils();
+
+	base.parser = _parser2['default'];
+
+	var yy = {};
+	_utils.extend(yy, Helpers);
+
+	function parseWithoutProcessing(input, options) {
+	  // Just return if an already-compiled AST was passed in.
+	  if (input.type === 'Program') {
+	    return input;
+	  }
+
+	  _parser2['default'].yy = yy;
+
+	  // Altering the shared object here, but this is ok as parser is a sync operation
+	  yy.locInfo = function (locInfo) {
+	    return new yy.SourceLocation(options && options.srcName, locInfo);
+	  };
+
+	  var ast = _parser2['default'].parse(input);
+
+	  return ast;
+	}
+
+	function parse(input, options) {
+	  var ast = parseWithoutProcessing(input, options);
+	  var strip = new _whitespaceControl2['default'](options);
+
+	  return strip.accept(ast);
+	}
+
+	return base;
+}
+
+var compiler = {};
+
+/* eslint-disable new-cap */
+
+var hasRequiredCompiler;
+
+function requireCompiler () {
+	if (hasRequiredCompiler) return compiler;
+	hasRequiredCompiler = 1;
+
+	compiler.__esModule = true;
+	compiler.Compiler = Compiler;
+	compiler.precompile = precompile;
+	compiler.compile = compile;
+	// istanbul ignore next
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _exception = requireException();
+
+	var _exception2 = _interopRequireDefault(_exception);
+
+	var _utils = requireUtils();
+
+	var _ast = requireAst();
+
+	var _ast2 = _interopRequireDefault(_ast);
+
+	var slice = [].slice;
+
+	function Compiler() {}
+
+	// the foundHelper register will disambiguate helper lookup from finding a
+	// function in a context. This is necessary for mustache compatibility, which
+	// requires that context functions in blocks are evaluated by blockHelperMissing,
+	// and then proceed as if the resulting value was provided to blockHelperMissing.
+
+	Compiler.prototype = {
+	  compiler: Compiler,
+
+	  equals: function equals(other) {
+	    var len = this.opcodes.length;
+	    if (other.opcodes.length !== len) {
+	      return false;
+	    }
+
+	    for (var i = 0; i < len; i++) {
+	      var opcode = this.opcodes[i],
+	          otherOpcode = other.opcodes[i];
+	      if (opcode.opcode !== otherOpcode.opcode || !argEquals(opcode.args, otherOpcode.args)) {
+	        return false;
+	      }
+	    }
+
+	    // We know that length is the same between the two arrays because they are directly tied
+	    // to the opcode behavior above.
+	    len = this.children.length;
+	    for (var i = 0; i < len; i++) {
+	      if (!this.children[i].equals(other.children[i])) {
+	        return false;
+	      }
+	    }
+
+	    return true;
+	  },
+
+	  guid: 0,
+
+	  compile: function compile(program, options) {
+	    this.sourceNode = [];
+	    this.opcodes = [];
+	    this.children = [];
+	    this.options = options;
+	    this.stringParams = options.stringParams;
+	    this.trackIds = options.trackIds;
+
+	    options.blockParams = options.blockParams || [];
+
+	    options.knownHelpers = _utils.extend(Object.create(null), {
+	      helperMissing: true,
+	      blockHelperMissing: true,
+	      each: true,
+	      'if': true,
+	      unless: true,
+	      'with': true,
+	      log: true,
+	      lookup: true
+	    }, options.knownHelpers);
+
+	    return this.accept(program);
+	  },
+
+	  compileProgram: function compileProgram(program) {
+	    var childCompiler = new this.compiler(),
+	        // eslint-disable-line new-cap
+	    result = childCompiler.compile(program, this.options),
+	        guid = this.guid++;
+
+	    this.usePartial = this.usePartial || result.usePartial;
+
+	    this.children[guid] = result;
+	    this.useDepths = this.useDepths || result.useDepths;
+
+	    return guid;
+	  },
+
+	  accept: function accept(node) {
+	    /* istanbul ignore next: Sanity code */
+	    if (!this[node.type]) {
+	      throw new _exception2['default']('Unknown type: ' + node.type, node);
+	    }
+
+	    this.sourceNode.unshift(node);
+	    var ret = this[node.type](node);
+	    this.sourceNode.shift();
+	    return ret;
+	  },
+
+	  Program: function Program(program) {
+	    this.options.blockParams.unshift(program.blockParams);
+
+	    var body = program.body,
+	        bodyLength = body.length;
+	    for (var i = 0; i < bodyLength; i++) {
+	      this.accept(body[i]);
+	    }
+
+	    this.options.blockParams.shift();
+
+	    this.isSimple = bodyLength === 1;
+	    this.blockParams = program.blockParams ? program.blockParams.length : 0;
+
+	    return this;
+	  },
+
+	  BlockStatement: function BlockStatement(block) {
+	    transformLiteralToPath(block);
+
+	    var program = block.program,
+	        inverse = block.inverse;
+
+	    program = program && this.compileProgram(program);
+	    inverse = inverse && this.compileProgram(inverse);
+
+	    var type = this.classifySexpr(block);
+
+	    if (type === 'helper') {
+	      this.helperSexpr(block, program, inverse);
+	    } else if (type === 'simple') {
+	      this.simpleSexpr(block);
+
+	      // now that the simple mustache is resolved, we need to
+	      // evaluate it by executing `blockHelperMissing`
+	      this.opcode('pushProgram', program);
+	      this.opcode('pushProgram', inverse);
+	      this.opcode('emptyHash');
+	      this.opcode('blockValue', block.path.original);
+	    } else {
+	      this.ambiguousSexpr(block, program, inverse);
+
+	      // now that the simple mustache is resolved, we need to
+	      // evaluate it by executing `blockHelperMissing`
+	      this.opcode('pushProgram', program);
+	      this.opcode('pushProgram', inverse);
+	      this.opcode('emptyHash');
+	      this.opcode('ambiguousBlockValue');
+	    }
+
+	    this.opcode('append');
+	  },
+
+	  DecoratorBlock: function DecoratorBlock(decorator) {
+	    var program = decorator.program && this.compileProgram(decorator.program);
+	    var params = this.setupFullMustacheParams(decorator, program, undefined),
+	        path = decorator.path;
+
+	    this.useDecorators = true;
+	    this.opcode('registerDecorator', params.length, path.original);
+	  },
+
+	  PartialStatement: function PartialStatement(partial) {
+	    this.usePartial = true;
+
+	    var program = partial.program;
+	    if (program) {
+	      program = this.compileProgram(partial.program);
+	    }
+
+	    var params = partial.params;
+	    if (params.length > 1) {
+	      throw new _exception2['default']('Unsupported number of partial arguments: ' + params.length, partial);
+	    } else if (!params.length) {
+	      if (this.options.explicitPartialContext) {
+	        this.opcode('pushLiteral', 'undefined');
+	      } else {
+	        params.push({ type: 'PathExpression', parts: [], depth: 0 });
+	      }
+	    }
+
+	    var partialName = partial.name.original,
+	        isDynamic = partial.name.type === 'SubExpression';
+	    if (isDynamic) {
+	      this.accept(partial.name);
+	    }
+
+	    this.setupFullMustacheParams(partial, program, undefined, true);
+
+	    var indent = partial.indent || '';
+	    if (this.options.preventIndent && indent) {
+	      this.opcode('appendContent', indent);
+	      indent = '';
+	    }
+
+	    this.opcode('invokePartial', isDynamic, partialName, indent);
+	    this.opcode('append');
+	  },
+	  PartialBlockStatement: function PartialBlockStatement(partialBlock) {
+	    this.PartialStatement(partialBlock);
+	  },
+
+	  MustacheStatement: function MustacheStatement(mustache) {
+	    this.SubExpression(mustache);
+
+	    if (mustache.escaped && !this.options.noEscape) {
+	      this.opcode('appendEscaped');
+	    } else {
+	      this.opcode('append');
+	    }
+	  },
+	  Decorator: function Decorator(decorator) {
+	    this.DecoratorBlock(decorator);
+	  },
+
+	  ContentStatement: function ContentStatement(content) {
+	    if (content.value) {
+	      this.opcode('appendContent', content.value);
+	    }
+	  },
+
+	  CommentStatement: function CommentStatement() {},
+
+	  SubExpression: function SubExpression(sexpr) {
+	    transformLiteralToPath(sexpr);
+	    var type = this.classifySexpr(sexpr);
+
+	    if (type === 'simple') {
+	      this.simpleSexpr(sexpr);
+	    } else if (type === 'helper') {
+	      this.helperSexpr(sexpr);
+	    } else {
+	      this.ambiguousSexpr(sexpr);
+	    }
+	  },
+	  ambiguousSexpr: function ambiguousSexpr(sexpr, program, inverse) {
+	    var path = sexpr.path,
+	        name = path.parts[0],
+	        isBlock = program != null || inverse != null;
+
+	    this.opcode('getContext', path.depth);
+
+	    this.opcode('pushProgram', program);
+	    this.opcode('pushProgram', inverse);
+
+	    path.strict = true;
+	    this.accept(path);
+
+	    this.opcode('invokeAmbiguous', name, isBlock);
+	  },
+
+	  simpleSexpr: function simpleSexpr(sexpr) {
+	    var path = sexpr.path;
+	    path.strict = true;
+	    this.accept(path);
+	    this.opcode('resolvePossibleLambda');
+	  },
+
+	  helperSexpr: function helperSexpr(sexpr, program, inverse) {
+	    var params = this.setupFullMustacheParams(sexpr, program, inverse),
+	        path = sexpr.path,
+	        name = path.parts[0];
+
+	    if (this.options.knownHelpers[name]) {
+	      this.opcode('invokeKnownHelper', params.length, name);
+	    } else if (this.options.knownHelpersOnly) {
+	      throw new _exception2['default']('You specified knownHelpersOnly, but used the unknown helper ' + name, sexpr);
+	    } else {
+	      path.strict = true;
+	      path.falsy = true;
+
+	      this.accept(path);
+	      this.opcode('invokeHelper', params.length, path.original, _ast2['default'].helpers.simpleId(path));
+	    }
+	  },
+
+	  PathExpression: function PathExpression(path) {
+	    this.addDepth(path.depth);
+	    this.opcode('getContext', path.depth);
+
+	    var name = path.parts[0],
+	        scoped = _ast2['default'].helpers.scopedId(path),
+	        blockParamId = !path.depth && !scoped && this.blockParamIndex(name);
+
+	    if (blockParamId) {
+	      this.opcode('lookupBlockParam', blockParamId, path.parts);
+	    } else if (!name) {
+	      // Context reference, i.e. `{{foo .}}` or `{{foo ..}}`
+	      this.opcode('pushContext');
+	    } else if (path.data) {
+	      this.options.data = true;
+	      this.opcode('lookupData', path.depth, path.parts, path.strict);
+	    } else {
+	      this.opcode('lookupOnContext', path.parts, path.falsy, path.strict, scoped);
+	    }
+	  },
+
+	  StringLiteral: function StringLiteral(string) {
+	    this.opcode('pushString', string.value);
+	  },
+
+	  NumberLiteral: function NumberLiteral(number) {
+	    this.opcode('pushLiteral', number.value);
+	  },
+
+	  BooleanLiteral: function BooleanLiteral(bool) {
+	    this.opcode('pushLiteral', bool.value);
+	  },
+
+	  UndefinedLiteral: function UndefinedLiteral() {
+	    this.opcode('pushLiteral', 'undefined');
+	  },
+
+	  NullLiteral: function NullLiteral() {
+	    this.opcode('pushLiteral', 'null');
+	  },
+
+	  Hash: function Hash(hash) {
+	    var pairs = hash.pairs,
+	        i = 0,
+	        l = pairs.length;
+
+	    this.opcode('pushHash');
+
+	    for (; i < l; i++) {
+	      this.pushParam(pairs[i].value);
+	    }
+	    while (i--) {
+	      this.opcode('assignToHash', pairs[i].key);
+	    }
+	    this.opcode('popHash');
+	  },
+
+	  // HELPERS
+	  opcode: function opcode(name) {
+	    this.opcodes.push({
+	      opcode: name,
+	      args: slice.call(arguments, 1),
+	      loc: this.sourceNode[0].loc
+	    });
+	  },
+
+	  addDepth: function addDepth(depth) {
+	    if (!depth) {
+	      return;
+	    }
+
+	    this.useDepths = true;
+	  },
+
+	  classifySexpr: function classifySexpr(sexpr) {
+	    var isSimple = _ast2['default'].helpers.simpleId(sexpr.path);
+
+	    var isBlockParam = isSimple && !!this.blockParamIndex(sexpr.path.parts[0]);
+
+	    // a mustache is an eligible helper if:
+	    // * its id is simple (a single part, not `this` or `..`)
+	    var isHelper = !isBlockParam && _ast2['default'].helpers.helperExpression(sexpr);
+
+	    // if a mustache is an eligible helper but not a definite
+	    // helper, it is ambiguous, and will be resolved in a later
+	    // pass or at runtime.
+	    var isEligible = !isBlockParam && (isHelper || isSimple);
+
+	    // if ambiguous, we can possibly resolve the ambiguity now
+	    // An eligible helper is one that does not have a complex path, i.e. `this.foo`, `../foo` etc.
+	    if (isEligible && !isHelper) {
+	      var _name = sexpr.path.parts[0],
+	          options = this.options;
+	      if (options.knownHelpers[_name]) {
+	        isHelper = true;
+	      } else if (options.knownHelpersOnly) {
+	        isEligible = false;
+	      }
+	    }
+
+	    if (isHelper) {
+	      return 'helper';
+	    } else if (isEligible) {
+	      return 'ambiguous';
+	    } else {
+	      return 'simple';
+	    }
+	  },
+
+	  pushParams: function pushParams(params) {
+	    for (var i = 0, l = params.length; i < l; i++) {
+	      this.pushParam(params[i]);
+	    }
+	  },
+
+	  pushParam: function pushParam(val) {
+	    var value = val.value != null ? val.value : val.original || '';
+
+	    if (this.stringParams) {
+	      if (value.replace) {
+	        value = value.replace(/^(\.?\.\/)*/g, '').replace(/\//g, '.');
+	      }
+
+	      if (val.depth) {
+	        this.addDepth(val.depth);
+	      }
+	      this.opcode('getContext', val.depth || 0);
+	      this.opcode('pushStringParam', value, val.type);
+
+	      if (val.type === 'SubExpression') {
+	        // SubExpressions get evaluated and passed in
+	        // in string params mode.
+	        this.accept(val);
+	      }
+	    } else {
+	      if (this.trackIds) {
+	        var blockParamIndex = undefined;
+	        if (val.parts && !_ast2['default'].helpers.scopedId(val) && !val.depth) {
+	          blockParamIndex = this.blockParamIndex(val.parts[0]);
+	        }
+	        if (blockParamIndex) {
+	          var blockParamChild = val.parts.slice(1).join('.');
+	          this.opcode('pushId', 'BlockParam', blockParamIndex, blockParamChild);
+	        } else {
+	          value = val.original || value;
+	          if (value.replace) {
+	            value = value.replace(/^this(?:\.|$)/, '').replace(/^\.\//, '').replace(/^\.$/, '');
+	          }
+
+	          this.opcode('pushId', val.type, value);
+	        }
+	      }
+	      this.accept(val);
+	    }
+	  },
+
+	  setupFullMustacheParams: function setupFullMustacheParams(sexpr, program, inverse, omitEmpty) {
+	    var params = sexpr.params;
+	    this.pushParams(params);
+
+	    this.opcode('pushProgram', program);
+	    this.opcode('pushProgram', inverse);
+
+	    if (sexpr.hash) {
+	      this.accept(sexpr.hash);
+	    } else {
+	      this.opcode('emptyHash', omitEmpty);
+	    }
+
+	    return params;
+	  },
+
+	  blockParamIndex: function blockParamIndex(name) {
+	    for (var depth = 0, len = this.options.blockParams.length; depth < len; depth++) {
+	      var blockParams = this.options.blockParams[depth],
+	          param = blockParams && _utils.indexOf(blockParams, name);
+	      if (blockParams && param >= 0) {
+	        return [depth, param];
+	      }
+	    }
+	  }
+	};
+
+	function precompile(input, options, env) {
+	  if (input == null || typeof input !== 'string' && input.type !== 'Program') {
+	    throw new _exception2['default']('You must pass a string or Handlebars AST to Handlebars.precompile. You passed ' + input);
+	  }
+
+	  options = options || {};
+	  if (!('data' in options)) {
+	    options.data = true;
+	  }
+	  if (options.compat) {
+	    options.useDepths = true;
+	  }
+
+	  var ast = env.parse(input, options),
+	      environment = new env.Compiler().compile(ast, options);
+	  return new env.JavaScriptCompiler().compile(environment, options);
+	}
+
+	function compile(input, options, env) {
+	  if (options === undefined) options = {};
+
+	  if (input == null || typeof input !== 'string' && input.type !== 'Program') {
+	    throw new _exception2['default']('You must pass a string or Handlebars AST to Handlebars.compile. You passed ' + input);
+	  }
+
+	  options = _utils.extend({}, options);
+	  if (!('data' in options)) {
+	    options.data = true;
+	  }
+	  if (options.compat) {
+	    options.useDepths = true;
+	  }
+
+	  var compiled = undefined;
+
+	  function compileInput() {
+	    var ast = env.parse(input, options),
+	        environment = new env.Compiler().compile(ast, options),
+	        templateSpec = new env.JavaScriptCompiler().compile(environment, options, undefined, true);
+	    return env.template(templateSpec);
+	  }
+
+	  // Template is only compiled on first use and cached after that point.
+	  function ret(context, execOptions) {
+	    if (!compiled) {
+	      compiled = compileInput();
+	    }
+	    return compiled.call(this, context, execOptions);
+	  }
+	  ret._setup = function (setupOptions) {
+	    if (!compiled) {
+	      compiled = compileInput();
+	    }
+	    return compiled._setup(setupOptions);
+	  };
+	  ret._child = function (i, data, blockParams, depths) {
+	    if (!compiled) {
+	      compiled = compileInput();
+	    }
+	    return compiled._child(i, data, blockParams, depths);
+	  };
+	  return ret;
+	}
+
+	function argEquals(a, b) {
+	  if (a === b) {
+	    return true;
+	  }
+
+	  if (_utils.isArray(a) && _utils.isArray(b) && a.length === b.length) {
+	    for (var i = 0; i < a.length; i++) {
+	      if (!argEquals(a[i], b[i])) {
+	        return false;
+	      }
+	    }
+	    return true;
+	  }
+	}
+
+	function transformLiteralToPath(sexpr) {
+	  if (!sexpr.path.parts) {
+	    var literal = sexpr.path;
+	    // Casting to string here to make false and 0 literal values play nicely with the rest
+	    // of the system.
+	    sexpr.path = {
+	      type: 'PathExpression',
+	      data: false,
+	      depth: 0,
+	      parts: [literal.original + ''],
+	      original: literal.original + '',
+	      loc: literal.loc
+	    };
+	  }
+	}
+
+	return compiler;
+}
+
+var javascriptCompiler = {exports: {}};
+
+var codeGen = {exports: {}};
+
+var sourceMap = {};
+
+var sourceMapGenerator = {};
+
+var base64Vlq = {};
+
+var base64 = {};
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+
+var hasRequiredBase64;
+
+function requireBase64 () {
+	if (hasRequiredBase64) return base64;
+	hasRequiredBase64 = 1;
+	/*
+	 * Copyright 2011 Mozilla Foundation and contributors
+	 * Licensed under the New BSD license. See LICENSE or:
+	 * http://opensource.org/licenses/BSD-3-Clause
+	 */
+
+	var intToCharMap = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.split('');
+
+	/**
+	 * Encode an integer in the range of 0 to 63 to a single base 64 digit.
+	 */
+	base64.encode = function (number) {
+	  if (0 <= number && number < intToCharMap.length) {
+	    return intToCharMap[number];
+	  }
+	  throw new TypeError("Must be between 0 and 63: " + number);
+	};
+
+	/**
+	 * Decode a single base 64 character code digit to an integer. Returns -1 on
+	 * failure.
+	 */
+	base64.decode = function (charCode) {
+	  var bigA = 65;     // 'A'
+	  var bigZ = 90;     // 'Z'
+
+	  var littleA = 97;  // 'a'
+	  var littleZ = 122; // 'z'
+
+	  var zero = 48;     // '0'
+	  var nine = 57;     // '9'
+
+	  var plus = 43;     // '+'
+	  var slash = 47;    // '/'
+
+	  var littleOffset = 26;
+	  var numberOffset = 52;
+
+	  // 0 - 25: ABCDEFGHIJKLMNOPQRSTUVWXYZ
+	  if (bigA <= charCode && charCode <= bigZ) {
+	    return (charCode - bigA);
+	  }
+
+	  // 26 - 51: abcdefghijklmnopqrstuvwxyz
+	  if (littleA <= charCode && charCode <= littleZ) {
+	    return (charCode - littleA + littleOffset);
+	  }
+
+	  // 52 - 61: 0123456789
+	  if (zero <= charCode && charCode <= nine) {
+	    return (charCode - zero + numberOffset);
+	  }
+
+	  // 62: +
+	  if (charCode == plus) {
+	    return 62;
+	  }
+
+	  // 63: /
+	  if (charCode == slash) {
+	    return 63;
+	  }
+
+	  // Invalid base64 digit.
+	  return -1;
+	};
+	return base64;
+}
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+
+var hasRequiredBase64Vlq;
+
+function requireBase64Vlq () {
+	if (hasRequiredBase64Vlq) return base64Vlq;
+	hasRequiredBase64Vlq = 1;
+	/*
+	 * Copyright 2011 Mozilla Foundation and contributors
+	 * Licensed under the New BSD license. See LICENSE or:
+	 * http://opensource.org/licenses/BSD-3-Clause
+	 *
+	 * Based on the Base 64 VLQ implementation in Closure Compiler:
+	 * https://code.google.com/p/closure-compiler/source/browse/trunk/src/com/google/debugging/sourcemap/Base64VLQ.java
+	 *
+	 * Copyright 2011 The Closure Compiler Authors. All rights reserved.
+	 * Redistribution and use in source and binary forms, with or without
+	 * modification, are permitted provided that the following conditions are
+	 * met:
+	 *
+	 *  * Redistributions of source code must retain the above copyright
+	 *    notice, this list of conditions and the following disclaimer.
+	 *  * Redistributions in binary form must reproduce the above
+	 *    copyright notice, this list of conditions and the following
+	 *    disclaimer in the documentation and/or other materials provided
+	 *    with the distribution.
+	 *  * Neither the name of Google Inc. nor the names of its
+	 *    contributors may be used to endorse or promote products derived
+	 *    from this software without specific prior written permission.
+	 *
+	 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+	 * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+	 * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+	 * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+	 * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+	 * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+	 * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+	 * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+	 * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+	 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+	 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+	 */
+
+	var base64 = requireBase64();
+
+	// A single base 64 digit can contain 6 bits of data. For the base 64 variable
+	// length quantities we use in the source map spec, the first bit is the sign,
+	// the next four bits are the actual value, and the 6th bit is the
+	// continuation bit. The continuation bit tells us whether there are more
+	// digits in this value following this digit.
+	//
+	//   Continuation
+	//   |    Sign
+	//   |    |
+	//   V    V
+	//   101011
+
+	var VLQ_BASE_SHIFT = 5;
+
+	// binary: 100000
+	var VLQ_BASE = 1 << VLQ_BASE_SHIFT;
+
+	// binary: 011111
+	var VLQ_BASE_MASK = VLQ_BASE - 1;
+
+	// binary: 100000
+	var VLQ_CONTINUATION_BIT = VLQ_BASE;
+
+	/**
+	 * Converts from a two-complement value to a value where the sign bit is
+	 * placed in the least significant bit.  For example, as decimals:
+	 *   1 becomes 2 (10 binary), -1 becomes 3 (11 binary)
+	 *   2 becomes 4 (100 binary), -2 becomes 5 (101 binary)
+	 */
+	function toVLQSigned(aValue) {
+	  return aValue < 0
+	    ? ((-aValue) << 1) + 1
+	    : (aValue << 1) + 0;
+	}
+
+	/**
+	 * Converts to a two-complement value from a value where the sign bit is
+	 * placed in the least significant bit.  For example, as decimals:
+	 *   2 (10 binary) becomes 1, 3 (11 binary) becomes -1
+	 *   4 (100 binary) becomes 2, 5 (101 binary) becomes -2
+	 */
+	function fromVLQSigned(aValue) {
+	  var isNegative = (aValue & 1) === 1;
+	  var shifted = aValue >> 1;
+	  return isNegative
+	    ? -shifted
+	    : shifted;
+	}
+
+	/**
+	 * Returns the base 64 VLQ encoded value.
+	 */
+	base64Vlq.encode = function base64VLQ_encode(aValue) {
+	  var encoded = "";
+	  var digit;
+
+	  var vlq = toVLQSigned(aValue);
+
+	  do {
+	    digit = vlq & VLQ_BASE_MASK;
+	    vlq >>>= VLQ_BASE_SHIFT;
+	    if (vlq > 0) {
+	      // There are still more digits in this value, so we must make sure the
+	      // continuation bit is marked.
+	      digit |= VLQ_CONTINUATION_BIT;
+	    }
+	    encoded += base64.encode(digit);
+	  } while (vlq > 0);
+
+	  return encoded;
+	};
+
+	/**
+	 * Decodes the next base 64 VLQ value from the given string and returns the
+	 * value and the rest of the string via the out parameter.
+	 */
+	base64Vlq.decode = function base64VLQ_decode(aStr, aIndex, aOutParam) {
+	  var strLen = aStr.length;
+	  var result = 0;
+	  var shift = 0;
+	  var continuation, digit;
+
+	  do {
+	    if (aIndex >= strLen) {
+	      throw new Error("Expected more digits in base 64 VLQ value.");
+	    }
+
+	    digit = base64.decode(aStr.charCodeAt(aIndex++));
+	    if (digit === -1) {
+	      throw new Error("Invalid base64 digit: " + aStr.charAt(aIndex - 1));
+	    }
+
+	    continuation = !!(digit & VLQ_CONTINUATION_BIT);
+	    digit &= VLQ_BASE_MASK;
+	    result = result + (digit << shift);
+	    shift += VLQ_BASE_SHIFT;
+	  } while (continuation);
+
+	  aOutParam.value = fromVLQSigned(result);
+	  aOutParam.rest = aIndex;
+	};
+	return base64Vlq;
+}
+
+var util = {};
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+
+var hasRequiredUtil;
+
+function requireUtil () {
+	if (hasRequiredUtil) return util;
+	hasRequiredUtil = 1;
+	(function (exports) {
+		/*
+		 * Copyright 2011 Mozilla Foundation and contributors
+		 * Licensed under the New BSD license. See LICENSE or:
+		 * http://opensource.org/licenses/BSD-3-Clause
+		 */
+
+		/**
+		 * This is a helper function for getting values from parameter/options
+		 * objects.
+		 *
+		 * @param args The object we are extracting values from
+		 * @param name The name of the property we are getting.
+		 * @param defaultValue An optional value to return if the property is missing
+		 * from the object. If this is not specified and the property is missing, an
+		 * error will be thrown.
+		 */
+		function getArg(aArgs, aName, aDefaultValue) {
+		  if (aName in aArgs) {
+		    return aArgs[aName];
+		  } else if (arguments.length === 3) {
+		    return aDefaultValue;
+		  } else {
+		    throw new Error('"' + aName + '" is a required argument.');
+		  }
+		}
+		exports.getArg = getArg;
+
+		var urlRegexp = /^(?:([\w+\-.]+):)?\/\/(?:(\w+:\w+)@)?([\w.-]*)(?::(\d+))?(.*)$/;
+		var dataUrlRegexp = /^data:.+\,.+$/;
+
+		function urlParse(aUrl) {
+		  var match = aUrl.match(urlRegexp);
+		  if (!match) {
+		    return null;
+		  }
+		  return {
+		    scheme: match[1],
+		    auth: match[2],
+		    host: match[3],
+		    port: match[4],
+		    path: match[5]
+		  };
+		}
+		exports.urlParse = urlParse;
+
+		function urlGenerate(aParsedUrl) {
+		  var url = '';
+		  if (aParsedUrl.scheme) {
+		    url += aParsedUrl.scheme + ':';
+		  }
+		  url += '//';
+		  if (aParsedUrl.auth) {
+		    url += aParsedUrl.auth + '@';
+		  }
+		  if (aParsedUrl.host) {
+		    url += aParsedUrl.host;
+		  }
+		  if (aParsedUrl.port) {
+		    url += ":" + aParsedUrl.port;
+		  }
+		  if (aParsedUrl.path) {
+		    url += aParsedUrl.path;
+		  }
+		  return url;
+		}
+		exports.urlGenerate = urlGenerate;
+
+		/**
+		 * Normalizes a path, or the path portion of a URL:
+		 *
+		 * - Replaces consecutive slashes with one slash.
+		 * - Removes unnecessary '.' parts.
+		 * - Removes unnecessary '<dir>/..' parts.
+		 *
+		 * Based on code in the Node.js 'path' core module.
+		 *
+		 * @param aPath The path or url to normalize.
+		 */
+		function normalize(aPath) {
+		  var path = aPath;
+		  var url = urlParse(aPath);
+		  if (url) {
+		    if (!url.path) {
+		      return aPath;
+		    }
+		    path = url.path;
+		  }
+		  var isAbsolute = exports.isAbsolute(path);
+
+		  var parts = path.split(/\/+/);
+		  for (var part, up = 0, i = parts.length - 1; i >= 0; i--) {
+		    part = parts[i];
+		    if (part === '.') {
+		      parts.splice(i, 1);
+		    } else if (part === '..') {
+		      up++;
+		    } else if (up > 0) {
+		      if (part === '') {
+		        // The first part is blank if the path is absolute. Trying to go
+		        // above the root is a no-op. Therefore we can remove all '..' parts
+		        // directly after the root.
+		        parts.splice(i + 1, up);
+		        up = 0;
+		      } else {
+		        parts.splice(i, 2);
+		        up--;
+		      }
+		    }
+		  }
+		  path = parts.join('/');
+
+		  if (path === '') {
+		    path = isAbsolute ? '/' : '.';
+		  }
+
+		  if (url) {
+		    url.path = path;
+		    return urlGenerate(url);
+		  }
+		  return path;
+		}
+		exports.normalize = normalize;
+
+		/**
+		 * Joins two paths/URLs.
+		 *
+		 * @param aRoot The root path or URL.
+		 * @param aPath The path or URL to be joined with the root.
+		 *
+		 * - If aPath is a URL or a data URI, aPath is returned, unless aPath is a
+		 *   scheme-relative URL: Then the scheme of aRoot, if any, is prepended
+		 *   first.
+		 * - Otherwise aPath is a path. If aRoot is a URL, then its path portion
+		 *   is updated with the result and aRoot is returned. Otherwise the result
+		 *   is returned.
+		 *   - If aPath is absolute, the result is aPath.
+		 *   - Otherwise the two paths are joined with a slash.
+		 * - Joining for example 'http://' and 'www.example.com' is also supported.
+		 */
+		function join(aRoot, aPath) {
+		  if (aRoot === "") {
+		    aRoot = ".";
+		  }
+		  if (aPath === "") {
+		    aPath = ".";
+		  }
+		  var aPathUrl = urlParse(aPath);
+		  var aRootUrl = urlParse(aRoot);
+		  if (aRootUrl) {
+		    aRoot = aRootUrl.path || '/';
+		  }
+
+		  // `join(foo, '//www.example.org')`
+		  if (aPathUrl && !aPathUrl.scheme) {
+		    if (aRootUrl) {
+		      aPathUrl.scheme = aRootUrl.scheme;
+		    }
+		    return urlGenerate(aPathUrl);
+		  }
+
+		  if (aPathUrl || aPath.match(dataUrlRegexp)) {
+		    return aPath;
+		  }
+
+		  // `join('http://', 'www.example.com')`
+		  if (aRootUrl && !aRootUrl.host && !aRootUrl.path) {
+		    aRootUrl.host = aPath;
+		    return urlGenerate(aRootUrl);
+		  }
+
+		  var joined = aPath.charAt(0) === '/'
+		    ? aPath
+		    : normalize(aRoot.replace(/\/+$/, '') + '/' + aPath);
+
+		  if (aRootUrl) {
+		    aRootUrl.path = joined;
+		    return urlGenerate(aRootUrl);
+		  }
+		  return joined;
+		}
+		exports.join = join;
+
+		exports.isAbsolute = function (aPath) {
+		  return aPath.charAt(0) === '/' || urlRegexp.test(aPath);
+		};
+
+		/**
+		 * Make a path relative to a URL or another path.
+		 *
+		 * @param aRoot The root path or URL.
+		 * @param aPath The path or URL to be made relative to aRoot.
+		 */
+		function relative(aRoot, aPath) {
+		  if (aRoot === "") {
+		    aRoot = ".";
+		  }
+
+		  aRoot = aRoot.replace(/\/$/, '');
+
+		  // It is possible for the path to be above the root. In this case, simply
+		  // checking whether the root is a prefix of the path won't work. Instead, we
+		  // need to remove components from the root one by one, until either we find
+		  // a prefix that fits, or we run out of components to remove.
+		  var level = 0;
+		  while (aPath.indexOf(aRoot + '/') !== 0) {
+		    var index = aRoot.lastIndexOf("/");
+		    if (index < 0) {
+		      return aPath;
+		    }
+
+		    // If the only part of the root that is left is the scheme (i.e. http://,
+		    // file:///, etc.), one or more slashes (/), or simply nothing at all, we
+		    // have exhausted all components, so the path is not relative to the root.
+		    aRoot = aRoot.slice(0, index);
+		    if (aRoot.match(/^([^\/]+:\/)?\/*$/)) {
+		      return aPath;
+		    }
+
+		    ++level;
+		  }
+
+		  // Make sure we add a "../" for each component we removed from the root.
+		  return Array(level + 1).join("../") + aPath.substr(aRoot.length + 1);
+		}
+		exports.relative = relative;
+
+		var supportsNullProto = (function () {
+		  var obj = Object.create(null);
+		  return !('__proto__' in obj);
+		}());
+
+		function identity (s) {
+		  return s;
+		}
+
+		/**
+		 * Because behavior goes wacky when you set `__proto__` on objects, we
+		 * have to prefix all the strings in our set with an arbitrary character.
+		 *
+		 * See https://github.com/mozilla/source-map/pull/31 and
+		 * https://github.com/mozilla/source-map/issues/30
+		 *
+		 * @param String aStr
+		 */
+		function toSetString(aStr) {
+		  if (isProtoString(aStr)) {
+		    return '$' + aStr;
+		  }
+
+		  return aStr;
+		}
+		exports.toSetString = supportsNullProto ? identity : toSetString;
+
+		function fromSetString(aStr) {
+		  if (isProtoString(aStr)) {
+		    return aStr.slice(1);
+		  }
+
+		  return aStr;
+		}
+		exports.fromSetString = supportsNullProto ? identity : fromSetString;
+
+		function isProtoString(s) {
+		  if (!s) {
+		    return false;
+		  }
+
+		  var length = s.length;
+
+		  if (length < 9 /* "__proto__".length */) {
+		    return false;
+		  }
+
+		  if (s.charCodeAt(length - 1) !== 95  /* '_' */ ||
+		      s.charCodeAt(length - 2) !== 95  /* '_' */ ||
+		      s.charCodeAt(length - 3) !== 111 /* 'o' */ ||
+		      s.charCodeAt(length - 4) !== 116 /* 't' */ ||
+		      s.charCodeAt(length - 5) !== 111 /* 'o' */ ||
+		      s.charCodeAt(length - 6) !== 114 /* 'r' */ ||
+		      s.charCodeAt(length - 7) !== 112 /* 'p' */ ||
+		      s.charCodeAt(length - 8) !== 95  /* '_' */ ||
+		      s.charCodeAt(length - 9) !== 95  /* '_' */) {
+		    return false;
+		  }
+
+		  for (var i = length - 10; i >= 0; i--) {
+		    if (s.charCodeAt(i) !== 36 /* '$' */) {
+		      return false;
+		    }
+		  }
+
+		  return true;
+		}
+
+		/**
+		 * Comparator between two mappings where the original positions are compared.
+		 *
+		 * Optionally pass in `true` as `onlyCompareGenerated` to consider two
+		 * mappings with the same original source/line/column, but different generated
+		 * line and column the same. Useful when searching for a mapping with a
+		 * stubbed out mapping.
+		 */
+		function compareByOriginalPositions(mappingA, mappingB, onlyCompareOriginal) {
+		  var cmp = strcmp(mappingA.source, mappingB.source);
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  cmp = mappingA.originalLine - mappingB.originalLine;
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  cmp = mappingA.originalColumn - mappingB.originalColumn;
+		  if (cmp !== 0 || onlyCompareOriginal) {
+		    return cmp;
+		  }
+
+		  cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  cmp = mappingA.generatedLine - mappingB.generatedLine;
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  return strcmp(mappingA.name, mappingB.name);
+		}
+		exports.compareByOriginalPositions = compareByOriginalPositions;
+
+		/**
+		 * Comparator between two mappings with deflated source and name indices where
+		 * the generated positions are compared.
+		 *
+		 * Optionally pass in `true` as `onlyCompareGenerated` to consider two
+		 * mappings with the same generated line and column, but different
+		 * source/name/original line and column the same. Useful when searching for a
+		 * mapping with a stubbed out mapping.
+		 */
+		function compareByGeneratedPositionsDeflated(mappingA, mappingB, onlyCompareGenerated) {
+		  var cmp = mappingA.generatedLine - mappingB.generatedLine;
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+		  if (cmp !== 0 || onlyCompareGenerated) {
+		    return cmp;
+		  }
+
+		  cmp = strcmp(mappingA.source, mappingB.source);
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  cmp = mappingA.originalLine - mappingB.originalLine;
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  cmp = mappingA.originalColumn - mappingB.originalColumn;
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  return strcmp(mappingA.name, mappingB.name);
+		}
+		exports.compareByGeneratedPositionsDeflated = compareByGeneratedPositionsDeflated;
+
+		function strcmp(aStr1, aStr2) {
+		  if (aStr1 === aStr2) {
+		    return 0;
+		  }
+
+		  if (aStr1 === null) {
+		    return 1; // aStr2 !== null
+		  }
+
+		  if (aStr2 === null) {
+		    return -1; // aStr1 !== null
+		  }
+
+		  if (aStr1 > aStr2) {
+		    return 1;
+		  }
+
+		  return -1;
+		}
+
+		/**
+		 * Comparator between two mappings with inflated source and name strings where
+		 * the generated positions are compared.
+		 */
+		function compareByGeneratedPositionsInflated(mappingA, mappingB) {
+		  var cmp = mappingA.generatedLine - mappingB.generatedLine;
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  cmp = strcmp(mappingA.source, mappingB.source);
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  cmp = mappingA.originalLine - mappingB.originalLine;
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  cmp = mappingA.originalColumn - mappingB.originalColumn;
+		  if (cmp !== 0) {
+		    return cmp;
+		  }
+
+		  return strcmp(mappingA.name, mappingB.name);
+		}
+		exports.compareByGeneratedPositionsInflated = compareByGeneratedPositionsInflated;
+
+		/**
+		 * Strip any JSON XSSI avoidance prefix from the string (as documented
+		 * in the source maps specification), and then parse the string as
+		 * JSON.
+		 */
+		function parseSourceMapInput(str) {
+		  return JSON.parse(str.replace(/^\)]}'[^\n]*\n/, ''));
+		}
+		exports.parseSourceMapInput = parseSourceMapInput;
+
+		/**
+		 * Compute the URL of a source given the the source root, the source's
+		 * URL, and the source map's URL.
+		 */
+		function computeSourceURL(sourceRoot, sourceURL, sourceMapURL) {
+		  sourceURL = sourceURL || '';
+
+		  if (sourceRoot) {
+		    // This follows what Chrome does.
+		    if (sourceRoot[sourceRoot.length - 1] !== '/' && sourceURL[0] !== '/') {
+		      sourceRoot += '/';
+		    }
+		    // The spec says:
+		    //   Line 4: An optional source root, useful for relocating source
+		    //   files on a server or removing repeated values in the
+		    //   “sources” entry.  This value is prepended to the individual
+		    //   entries in the “source” field.
+		    sourceURL = sourceRoot + sourceURL;
+		  }
+
+		  // Historically, SourceMapConsumer did not take the sourceMapURL as
+		  // a parameter.  This mode is still somewhat supported, which is why
+		  // this code block is conditional.  However, it's preferable to pass
+		  // the source map URL to SourceMapConsumer, so that this function
+		  // can implement the source URL resolution algorithm as outlined in
+		  // the spec.  This block is basically the equivalent of:
+		  //    new URL(sourceURL, sourceMapURL).toString()
+		  // ... except it avoids using URL, which wasn't available in the
+		  // older releases of node still supported by this library.
+		  //
+		  // The spec says:
+		  //   If the sources are not absolute URLs after prepending of the
+		  //   “sourceRoot”, the sources are resolved relative to the
+		  //   SourceMap (like resolving script src in a html document).
+		  if (sourceMapURL) {
+		    var parsed = urlParse(sourceMapURL);
+		    if (!parsed) {
+		      throw new Error("sourceMapURL could not be parsed");
+		    }
+		    if (parsed.path) {
+		      // Strip the last path component, but keep the "/".
+		      var index = parsed.path.lastIndexOf('/');
+		      if (index >= 0) {
+		        parsed.path = parsed.path.substring(0, index + 1);
+		      }
+		    }
+		    sourceURL = join(urlGenerate(parsed), sourceURL);
+		  }
+
+		  return normalize(sourceURL);
+		}
+		exports.computeSourceURL = computeSourceURL;
+	} (util));
+	return util;
+}
+
+var arraySet = {};
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+
+var hasRequiredArraySet;
+
+function requireArraySet () {
+	if (hasRequiredArraySet) return arraySet;
+	hasRequiredArraySet = 1;
+	/*
+	 * Copyright 2011 Mozilla Foundation and contributors
+	 * Licensed under the New BSD license. See LICENSE or:
+	 * http://opensource.org/licenses/BSD-3-Clause
+	 */
+
+	var util = requireUtil();
+	var has = Object.prototype.hasOwnProperty;
+	var hasNativeMap = typeof Map !== "undefined";
+
+	/**
+	 * A data structure which is a combination of an array and a set. Adding a new
+	 * member is O(1), testing for membership is O(1), and finding the index of an
+	 * element is O(1). Removing elements from the set is not supported. Only
+	 * strings are supported for membership.
+	 */
+	function ArraySet() {
+	  this._array = [];
+	  this._set = hasNativeMap ? new Map() : Object.create(null);
+	}
+
+	/**
+	 * Static method for creating ArraySet instances from an existing array.
+	 */
+	ArraySet.fromArray = function ArraySet_fromArray(aArray, aAllowDuplicates) {
+	  var set = new ArraySet();
+	  for (var i = 0, len = aArray.length; i < len; i++) {
+	    set.add(aArray[i], aAllowDuplicates);
+	  }
+	  return set;
+	};
+
+	/**
+	 * Return how many unique items are in this ArraySet. If duplicates have been
+	 * added, than those do not count towards the size.
+	 *
+	 * @returns Number
+	 */
+	ArraySet.prototype.size = function ArraySet_size() {
+	  return hasNativeMap ? this._set.size : Object.getOwnPropertyNames(this._set).length;
+	};
+
+	/**
+	 * Add the given string to this set.
+	 *
+	 * @param String aStr
+	 */
+	ArraySet.prototype.add = function ArraySet_add(aStr, aAllowDuplicates) {
+	  var sStr = hasNativeMap ? aStr : util.toSetString(aStr);
+	  var isDuplicate = hasNativeMap ? this.has(aStr) : has.call(this._set, sStr);
+	  var idx = this._array.length;
+	  if (!isDuplicate || aAllowDuplicates) {
+	    this._array.push(aStr);
+	  }
+	  if (!isDuplicate) {
+	    if (hasNativeMap) {
+	      this._set.set(aStr, idx);
+	    } else {
+	      this._set[sStr] = idx;
+	    }
+	  }
+	};
+
+	/**
+	 * Is the given string a member of this set?
+	 *
+	 * @param String aStr
+	 */
+	ArraySet.prototype.has = function ArraySet_has(aStr) {
+	  if (hasNativeMap) {
+	    return this._set.has(aStr);
+	  } else {
+	    var sStr = util.toSetString(aStr);
+	    return has.call(this._set, sStr);
+	  }
+	};
+
+	/**
+	 * What is the index of the given string in the array?
+	 *
+	 * @param String aStr
+	 */
+	ArraySet.prototype.indexOf = function ArraySet_indexOf(aStr) {
+	  if (hasNativeMap) {
+	    var idx = this._set.get(aStr);
+	    if (idx >= 0) {
+	        return idx;
+	    }
+	  } else {
+	    var sStr = util.toSetString(aStr);
+	    if (has.call(this._set, sStr)) {
+	      return this._set[sStr];
+	    }
+	  }
+
+	  throw new Error('"' + aStr + '" is not in the set.');
+	};
+
+	/**
+	 * What is the element at the given index?
+	 *
+	 * @param Number aIdx
+	 */
+	ArraySet.prototype.at = function ArraySet_at(aIdx) {
+	  if (aIdx >= 0 && aIdx < this._array.length) {
+	    return this._array[aIdx];
+	  }
+	  throw new Error('No element indexed by ' + aIdx);
+	};
+
+	/**
+	 * Returns the array representation of this set (which has the proper indices
+	 * indicated by indexOf). Note that this is a copy of the internal array used
+	 * for storing the members so that no one can mess with internal state.
+	 */
+	ArraySet.prototype.toArray = function ArraySet_toArray() {
+	  return this._array.slice();
+	};
+
+	arraySet.ArraySet = ArraySet;
+	return arraySet;
+}
+
+var mappingList = {};
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+
+var hasRequiredMappingList;
+
+function requireMappingList () {
+	if (hasRequiredMappingList) return mappingList;
+	hasRequiredMappingList = 1;
+	/*
+	 * Copyright 2014 Mozilla Foundation and contributors
+	 * Licensed under the New BSD license. See LICENSE or:
+	 * http://opensource.org/licenses/BSD-3-Clause
+	 */
+
+	var util = requireUtil();
+
+	/**
+	 * Determine whether mappingB is after mappingA with respect to generated
+	 * position.
+	 */
+	function generatedPositionAfter(mappingA, mappingB) {
+	  // Optimized for most common case
+	  var lineA = mappingA.generatedLine;
+	  var lineB = mappingB.generatedLine;
+	  var columnA = mappingA.generatedColumn;
+	  var columnB = mappingB.generatedColumn;
+	  return lineB > lineA || lineB == lineA && columnB >= columnA ||
+	         util.compareByGeneratedPositionsInflated(mappingA, mappingB) <= 0;
+	}
+
+	/**
+	 * A data structure to provide a sorted view of accumulated mappings in a
+	 * performance conscious manner. It trades a neglibable overhead in general
+	 * case for a large speedup in case of mappings being added in order.
+	 */
+	function MappingList() {
+	  this._array = [];
+	  this._sorted = true;
+	  // Serves as infimum
+	  this._last = {generatedLine: -1, generatedColumn: 0};
+	}
+
+	/**
+	 * Iterate through internal items. This method takes the same arguments that
+	 * `Array.prototype.forEach` takes.
+	 *
+	 * NOTE: The order of the mappings is NOT guaranteed.
+	 */
+	MappingList.prototype.unsortedForEach =
+	  function MappingList_forEach(aCallback, aThisArg) {
+	    this._array.forEach(aCallback, aThisArg);
+	  };
+
+	/**
+	 * Add the given source mapping.
+	 *
+	 * @param Object aMapping
+	 */
+	MappingList.prototype.add = function MappingList_add(aMapping) {
+	  if (generatedPositionAfter(this._last, aMapping)) {
+	    this._last = aMapping;
+	    this._array.push(aMapping);
+	  } else {
+	    this._sorted = false;
+	    this._array.push(aMapping);
+	  }
+	};
+
+	/**
+	 * Returns the flat, sorted array of mappings. The mappings are sorted by
+	 * generated position.
+	 *
+	 * WARNING: This method returns internal data without copying, for
+	 * performance. The return value must NOT be mutated, and should be treated as
+	 * an immutable borrow. If you want to take ownership, you must make your own
+	 * copy.
+	 */
+	MappingList.prototype.toArray = function MappingList_toArray() {
+	  if (!this._sorted) {
+	    this._array.sort(util.compareByGeneratedPositionsInflated);
+	    this._sorted = true;
+	  }
+	  return this._array;
+	};
+
+	mappingList.MappingList = MappingList;
+	return mappingList;
+}
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+
+var hasRequiredSourceMapGenerator;
+
+function requireSourceMapGenerator () {
+	if (hasRequiredSourceMapGenerator) return sourceMapGenerator;
+	hasRequiredSourceMapGenerator = 1;
+	/*
+	 * Copyright 2011 Mozilla Foundation and contributors
+	 * Licensed under the New BSD license. See LICENSE or:
+	 * http://opensource.org/licenses/BSD-3-Clause
+	 */
+
+	var base64VLQ = requireBase64Vlq();
+	var util = requireUtil();
+	var ArraySet = requireArraySet().ArraySet;
+	var MappingList = requireMappingList().MappingList;
+
+	/**
+	 * An instance of the SourceMapGenerator represents a source map which is
+	 * being built incrementally. You may pass an object with the following
+	 * properties:
+	 *
+	 *   - file: The filename of the generated source.
+	 *   - sourceRoot: A root for all relative URLs in this source map.
+	 */
+	function SourceMapGenerator(aArgs) {
+	  if (!aArgs) {
+	    aArgs = {};
+	  }
+	  this._file = util.getArg(aArgs, 'file', null);
+	  this._sourceRoot = util.getArg(aArgs, 'sourceRoot', null);
+	  this._skipValidation = util.getArg(aArgs, 'skipValidation', false);
+	  this._sources = new ArraySet();
+	  this._names = new ArraySet();
+	  this._mappings = new MappingList();
+	  this._sourcesContents = null;
+	}
+
+	SourceMapGenerator.prototype._version = 3;
+
+	/**
+	 * Creates a new SourceMapGenerator based on a SourceMapConsumer
+	 *
+	 * @param aSourceMapConsumer The SourceMap.
+	 */
+	SourceMapGenerator.fromSourceMap =
+	  function SourceMapGenerator_fromSourceMap(aSourceMapConsumer) {
+	    var sourceRoot = aSourceMapConsumer.sourceRoot;
+	    var generator = new SourceMapGenerator({
+	      file: aSourceMapConsumer.file,
+	      sourceRoot: sourceRoot
+	    });
+	    aSourceMapConsumer.eachMapping(function (mapping) {
+	      var newMapping = {
+	        generated: {
+	          line: mapping.generatedLine,
+	          column: mapping.generatedColumn
+	        }
+	      };
+
+	      if (mapping.source != null) {
+	        newMapping.source = mapping.source;
+	        if (sourceRoot != null) {
+	          newMapping.source = util.relative(sourceRoot, newMapping.source);
+	        }
+
+	        newMapping.original = {
+	          line: mapping.originalLine,
+	          column: mapping.originalColumn
+	        };
+
+	        if (mapping.name != null) {
+	          newMapping.name = mapping.name;
+	        }
+	      }
+
+	      generator.addMapping(newMapping);
+	    });
+	    aSourceMapConsumer.sources.forEach(function (sourceFile) {
+	      var sourceRelative = sourceFile;
+	      if (sourceRoot !== null) {
+	        sourceRelative = util.relative(sourceRoot, sourceFile);
+	      }
+
+	      if (!generator._sources.has(sourceRelative)) {
+	        generator._sources.add(sourceRelative);
+	      }
+
+	      var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+	      if (content != null) {
+	        generator.setSourceContent(sourceFile, content);
+	      }
+	    });
+	    return generator;
+	  };
+
+	/**
+	 * Add a single mapping from original source line and column to the generated
+	 * source's line and column for this source map being created. The mapping
+	 * object should have the following properties:
+	 *
+	 *   - generated: An object with the generated line and column positions.
+	 *   - original: An object with the original line and column positions.
+	 *   - source: The original source file (relative to the sourceRoot).
+	 *   - name: An optional original token name for this mapping.
+	 */
+	SourceMapGenerator.prototype.addMapping =
+	  function SourceMapGenerator_addMapping(aArgs) {
+	    var generated = util.getArg(aArgs, 'generated');
+	    var original = util.getArg(aArgs, 'original', null);
+	    var source = util.getArg(aArgs, 'source', null);
+	    var name = util.getArg(aArgs, 'name', null);
+
+	    if (!this._skipValidation) {
+	      this._validateMapping(generated, original, source, name);
+	    }
+
+	    if (source != null) {
+	      source = String(source);
+	      if (!this._sources.has(source)) {
+	        this._sources.add(source);
+	      }
+	    }
+
+	    if (name != null) {
+	      name = String(name);
+	      if (!this._names.has(name)) {
+	        this._names.add(name);
+	      }
+	    }
+
+	    this._mappings.add({
+	      generatedLine: generated.line,
+	      generatedColumn: generated.column,
+	      originalLine: original != null && original.line,
+	      originalColumn: original != null && original.column,
+	      source: source,
+	      name: name
+	    });
+	  };
+
+	/**
+	 * Set the source content for a source file.
+	 */
+	SourceMapGenerator.prototype.setSourceContent =
+	  function SourceMapGenerator_setSourceContent(aSourceFile, aSourceContent) {
+	    var source = aSourceFile;
+	    if (this._sourceRoot != null) {
+	      source = util.relative(this._sourceRoot, source);
+	    }
+
+	    if (aSourceContent != null) {
+	      // Add the source content to the _sourcesContents map.
+	      // Create a new _sourcesContents map if the property is null.
+	      if (!this._sourcesContents) {
+	        this._sourcesContents = Object.create(null);
+	      }
+	      this._sourcesContents[util.toSetString(source)] = aSourceContent;
+	    } else if (this._sourcesContents) {
+	      // Remove the source file from the _sourcesContents map.
+	      // If the _sourcesContents map is empty, set the property to null.
+	      delete this._sourcesContents[util.toSetString(source)];
+	      if (Object.keys(this._sourcesContents).length === 0) {
+	        this._sourcesContents = null;
+	      }
+	    }
+	  };
+
+	/**
+	 * Applies the mappings of a sub-source-map for a specific source file to the
+	 * source map being generated. Each mapping to the supplied source file is
+	 * rewritten using the supplied source map. Note: The resolution for the
+	 * resulting mappings is the minimium of this map and the supplied map.
+	 *
+	 * @param aSourceMapConsumer The source map to be applied.
+	 * @param aSourceFile Optional. The filename of the source file.
+	 *        If omitted, SourceMapConsumer's file property will be used.
+	 * @param aSourceMapPath Optional. The dirname of the path to the source map
+	 *        to be applied. If relative, it is relative to the SourceMapConsumer.
+	 *        This parameter is needed when the two source maps aren't in the same
+	 *        directory, and the source map to be applied contains relative source
+	 *        paths. If so, those relative source paths need to be rewritten
+	 *        relative to the SourceMapGenerator.
+	 */
+	SourceMapGenerator.prototype.applySourceMap =
+	  function SourceMapGenerator_applySourceMap(aSourceMapConsumer, aSourceFile, aSourceMapPath) {
+	    var sourceFile = aSourceFile;
+	    // If aSourceFile is omitted, we will use the file property of the SourceMap
+	    if (aSourceFile == null) {
+	      if (aSourceMapConsumer.file == null) {
+	        throw new Error(
+	          'SourceMapGenerator.prototype.applySourceMap requires either an explicit source file, ' +
+	          'or the source map\'s "file" property. Both were omitted.'
+	        );
+	      }
+	      sourceFile = aSourceMapConsumer.file;
+	    }
+	    var sourceRoot = this._sourceRoot;
+	    // Make "sourceFile" relative if an absolute Url is passed.
+	    if (sourceRoot != null) {
+	      sourceFile = util.relative(sourceRoot, sourceFile);
+	    }
+	    // Applying the SourceMap can add and remove items from the sources and
+	    // the names array.
+	    var newSources = new ArraySet();
+	    var newNames = new ArraySet();
+
+	    // Find mappings for the "sourceFile"
+	    this._mappings.unsortedForEach(function (mapping) {
+	      if (mapping.source === sourceFile && mapping.originalLine != null) {
+	        // Check if it can be mapped by the source map, then update the mapping.
+	        var original = aSourceMapConsumer.originalPositionFor({
+	          line: mapping.originalLine,
+	          column: mapping.originalColumn
+	        });
+	        if (original.source != null) {
+	          // Copy mapping
+	          mapping.source = original.source;
+	          if (aSourceMapPath != null) {
+	            mapping.source = util.join(aSourceMapPath, mapping.source);
+	          }
+	          if (sourceRoot != null) {
+	            mapping.source = util.relative(sourceRoot, mapping.source);
+	          }
+	          mapping.originalLine = original.line;
+	          mapping.originalColumn = original.column;
+	          if (original.name != null) {
+	            mapping.name = original.name;
+	          }
+	        }
+	      }
+
+	      var source = mapping.source;
+	      if (source != null && !newSources.has(source)) {
+	        newSources.add(source);
+	      }
+
+	      var name = mapping.name;
+	      if (name != null && !newNames.has(name)) {
+	        newNames.add(name);
+	      }
+
+	    }, this);
+	    this._sources = newSources;
+	    this._names = newNames;
+
+	    // Copy sourcesContents of applied map.
+	    aSourceMapConsumer.sources.forEach(function (sourceFile) {
+	      var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+	      if (content != null) {
+	        if (aSourceMapPath != null) {
+	          sourceFile = util.join(aSourceMapPath, sourceFile);
+	        }
+	        if (sourceRoot != null) {
+	          sourceFile = util.relative(sourceRoot, sourceFile);
+	        }
+	        this.setSourceContent(sourceFile, content);
+	      }
+	    }, this);
+	  };
+
+	/**
+	 * A mapping can have one of the three levels of data:
+	 *
+	 *   1. Just the generated position.
+	 *   2. The Generated position, original position, and original source.
+	 *   3. Generated and original position, original source, as well as a name
+	 *      token.
+	 *
+	 * To maintain consistency, we validate that any new mapping being added falls
+	 * in to one of these categories.
+	 */
+	SourceMapGenerator.prototype._validateMapping =
+	  function SourceMapGenerator_validateMapping(aGenerated, aOriginal, aSource,
+	                                              aName) {
+	    // When aOriginal is truthy but has empty values for .line and .column,
+	    // it is most likely a programmer error. In this case we throw a very
+	    // specific error message to try to guide them the right way.
+	    // For example: https://github.com/Polymer/polymer-bundler/pull/519
+	    if (aOriginal && typeof aOriginal.line !== 'number' && typeof aOriginal.column !== 'number') {
+	        throw new Error(
+	            'original.line and original.column are not numbers -- you probably meant to omit ' +
+	            'the original mapping entirely and only map the generated position. If so, pass ' +
+	            'null for the original mapping instead of an object with empty or null values.'
+	        );
+	    }
+
+	    if (aGenerated && 'line' in aGenerated && 'column' in aGenerated
+	        && aGenerated.line > 0 && aGenerated.column >= 0
+	        && !aOriginal && !aSource && !aName) {
+	      // Case 1.
+	      return;
+	    }
+	    else if (aGenerated && 'line' in aGenerated && 'column' in aGenerated
+	             && aOriginal && 'line' in aOriginal && 'column' in aOriginal
+	             && aGenerated.line > 0 && aGenerated.column >= 0
+	             && aOriginal.line > 0 && aOriginal.column >= 0
+	             && aSource) {
+	      // Cases 2 and 3.
+	      return;
+	    }
+	    else {
+	      throw new Error('Invalid mapping: ' + JSON.stringify({
+	        generated: aGenerated,
+	        source: aSource,
+	        original: aOriginal,
+	        name: aName
+	      }));
+	    }
+	  };
+
+	/**
+	 * Serialize the accumulated mappings in to the stream of base 64 VLQs
+	 * specified by the source map format.
+	 */
+	SourceMapGenerator.prototype._serializeMappings =
+	  function SourceMapGenerator_serializeMappings() {
+	    var previousGeneratedColumn = 0;
+	    var previousGeneratedLine = 1;
+	    var previousOriginalColumn = 0;
+	    var previousOriginalLine = 0;
+	    var previousName = 0;
+	    var previousSource = 0;
+	    var result = '';
+	    var next;
+	    var mapping;
+	    var nameIdx;
+	    var sourceIdx;
+
+	    var mappings = this._mappings.toArray();
+	    for (var i = 0, len = mappings.length; i < len; i++) {
+	      mapping = mappings[i];
+	      next = '';
+
+	      if (mapping.generatedLine !== previousGeneratedLine) {
+	        previousGeneratedColumn = 0;
+	        while (mapping.generatedLine !== previousGeneratedLine) {
+	          next += ';';
+	          previousGeneratedLine++;
+	        }
+	      }
+	      else {
+	        if (i > 0) {
+	          if (!util.compareByGeneratedPositionsInflated(mapping, mappings[i - 1])) {
+	            continue;
+	          }
+	          next += ',';
+	        }
+	      }
+
+	      next += base64VLQ.encode(mapping.generatedColumn
+	                                 - previousGeneratedColumn);
+	      previousGeneratedColumn = mapping.generatedColumn;
+
+	      if (mapping.source != null) {
+	        sourceIdx = this._sources.indexOf(mapping.source);
+	        next += base64VLQ.encode(sourceIdx - previousSource);
+	        previousSource = sourceIdx;
+
+	        // lines are stored 0-based in SourceMap spec version 3
+	        next += base64VLQ.encode(mapping.originalLine - 1
+	                                   - previousOriginalLine);
+	        previousOriginalLine = mapping.originalLine - 1;
+
+	        next += base64VLQ.encode(mapping.originalColumn
+	                                   - previousOriginalColumn);
+	        previousOriginalColumn = mapping.originalColumn;
+
+	        if (mapping.name != null) {
+	          nameIdx = this._names.indexOf(mapping.name);
+	          next += base64VLQ.encode(nameIdx - previousName);
+	          previousName = nameIdx;
+	        }
+	      }
+
+	      result += next;
+	    }
+
+	    return result;
+	  };
+
+	SourceMapGenerator.prototype._generateSourcesContent =
+	  function SourceMapGenerator_generateSourcesContent(aSources, aSourceRoot) {
+	    return aSources.map(function (source) {
+	      if (!this._sourcesContents) {
+	        return null;
+	      }
+	      if (aSourceRoot != null) {
+	        source = util.relative(aSourceRoot, source);
+	      }
+	      var key = util.toSetString(source);
+	      return Object.prototype.hasOwnProperty.call(this._sourcesContents, key)
+	        ? this._sourcesContents[key]
+	        : null;
+	    }, this);
+	  };
+
+	/**
+	 * Externalize the source map.
+	 */
+	SourceMapGenerator.prototype.toJSON =
+	  function SourceMapGenerator_toJSON() {
+	    var map = {
+	      version: this._version,
+	      sources: this._sources.toArray(),
+	      names: this._names.toArray(),
+	      mappings: this._serializeMappings()
+	    };
+	    if (this._file != null) {
+	      map.file = this._file;
+	    }
+	    if (this._sourceRoot != null) {
+	      map.sourceRoot = this._sourceRoot;
+	    }
+	    if (this._sourcesContents) {
+	      map.sourcesContent = this._generateSourcesContent(map.sources, map.sourceRoot);
+	    }
+
+	    return map;
+	  };
+
+	/**
+	 * Render the source map being generated to a string.
+	 */
+	SourceMapGenerator.prototype.toString =
+	  function SourceMapGenerator_toString() {
+	    return JSON.stringify(this.toJSON());
+	  };
+
+	sourceMapGenerator.SourceMapGenerator = SourceMapGenerator;
+	return sourceMapGenerator;
+}
+
+var sourceMapConsumer = {};
+
+var binarySearch = {};
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+
+var hasRequiredBinarySearch;
+
+function requireBinarySearch () {
+	if (hasRequiredBinarySearch) return binarySearch;
+	hasRequiredBinarySearch = 1;
+	(function (exports) {
+		/*
+		 * Copyright 2011 Mozilla Foundation and contributors
+		 * Licensed under the New BSD license. See LICENSE or:
+		 * http://opensource.org/licenses/BSD-3-Clause
+		 */
+
+		exports.GREATEST_LOWER_BOUND = 1;
+		exports.LEAST_UPPER_BOUND = 2;
+
+		/**
+		 * Recursive implementation of binary search.
+		 *
+		 * @param aLow Indices here and lower do not contain the needle.
+		 * @param aHigh Indices here and higher do not contain the needle.
+		 * @param aNeedle The element being searched for.
+		 * @param aHaystack The non-empty array being searched.
+		 * @param aCompare Function which takes two elements and returns -1, 0, or 1.
+		 * @param aBias Either 'binarySearch.GREATEST_LOWER_BOUND' or
+		 *     'binarySearch.LEAST_UPPER_BOUND'. Specifies whether to return the
+		 *     closest element that is smaller than or greater than the one we are
+		 *     searching for, respectively, if the exact element cannot be found.
+		 */
+		function recursiveSearch(aLow, aHigh, aNeedle, aHaystack, aCompare, aBias) {
+		  // This function terminates when one of the following is true:
+		  //
+		  //   1. We find the exact element we are looking for.
+		  //
+		  //   2. We did not find the exact element, but we can return the index of
+		  //      the next-closest element.
+		  //
+		  //   3. We did not find the exact element, and there is no next-closest
+		  //      element than the one we are searching for, so we return -1.
+		  var mid = Math.floor((aHigh - aLow) / 2) + aLow;
+		  var cmp = aCompare(aNeedle, aHaystack[mid], true);
+		  if (cmp === 0) {
+		    // Found the element we are looking for.
+		    return mid;
+		  }
+		  else if (cmp > 0) {
+		    // Our needle is greater than aHaystack[mid].
+		    if (aHigh - mid > 1) {
+		      // The element is in the upper half.
+		      return recursiveSearch(mid, aHigh, aNeedle, aHaystack, aCompare, aBias);
+		    }
+
+		    // The exact needle element was not found in this haystack. Determine if
+		    // we are in termination case (3) or (2) and return the appropriate thing.
+		    if (aBias == exports.LEAST_UPPER_BOUND) {
+		      return aHigh < aHaystack.length ? aHigh : -1;
+		    } else {
+		      return mid;
+		    }
+		  }
+		  else {
+		    // Our needle is less than aHaystack[mid].
+		    if (mid - aLow > 1) {
+		      // The element is in the lower half.
+		      return recursiveSearch(aLow, mid, aNeedle, aHaystack, aCompare, aBias);
+		    }
+
+		    // we are in termination case (3) or (2) and return the appropriate thing.
+		    if (aBias == exports.LEAST_UPPER_BOUND) {
+		      return mid;
+		    } else {
+		      return aLow < 0 ? -1 : aLow;
+		    }
+		  }
+		}
+
+		/**
+		 * This is an implementation of binary search which will always try and return
+		 * the index of the closest element if there is no exact hit. This is because
+		 * mappings between original and generated line/col pairs are single points,
+		 * and there is an implicit region between each of them, so a miss just means
+		 * that you aren't on the very start of a region.
+		 *
+		 * @param aNeedle The element you are looking for.
+		 * @param aHaystack The array that is being searched.
+		 * @param aCompare A function which takes the needle and an element in the
+		 *     array and returns -1, 0, or 1 depending on whether the needle is less
+		 *     than, equal to, or greater than the element, respectively.
+		 * @param aBias Either 'binarySearch.GREATEST_LOWER_BOUND' or
+		 *     'binarySearch.LEAST_UPPER_BOUND'. Specifies whether to return the
+		 *     closest element that is smaller than or greater than the one we are
+		 *     searching for, respectively, if the exact element cannot be found.
+		 *     Defaults to 'binarySearch.GREATEST_LOWER_BOUND'.
+		 */
+		exports.search = function search(aNeedle, aHaystack, aCompare, aBias) {
+		  if (aHaystack.length === 0) {
+		    return -1;
+		  }
+
+		  var index = recursiveSearch(-1, aHaystack.length, aNeedle, aHaystack,
+		                              aCompare, aBias || exports.GREATEST_LOWER_BOUND);
+		  if (index < 0) {
+		    return -1;
+		  }
+
+		  // We have found either the exact element, or the next-closest element than
+		  // the one we are searching for. However, there may be more than one such
+		  // element. Make sure we always return the smallest of these.
+		  while (index - 1 >= 0) {
+		    if (aCompare(aHaystack[index], aHaystack[index - 1], true) !== 0) {
+		      break;
+		    }
+		    --index;
+		  }
+
+		  return index;
+		};
+	} (binarySearch));
+	return binarySearch;
+}
+
+var quickSort = {};
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+
+var hasRequiredQuickSort;
+
+function requireQuickSort () {
+	if (hasRequiredQuickSort) return quickSort;
+	hasRequiredQuickSort = 1;
+	/*
+	 * Copyright 2011 Mozilla Foundation and contributors
+	 * Licensed under the New BSD license. See LICENSE or:
+	 * http://opensource.org/licenses/BSD-3-Clause
+	 */
+
+	// It turns out that some (most?) JavaScript engines don't self-host
+	// `Array.prototype.sort`. This makes sense because C++ will likely remain
+	// faster than JS when doing raw CPU-intensive sorting. However, when using a
+	// custom comparator function, calling back and forth between the VM's C++ and
+	// JIT'd JS is rather slow *and* loses JIT type information, resulting in
+	// worse generated code for the comparator function than would be optimal. In
+	// fact, when sorting with a comparator, these costs outweigh the benefits of
+	// sorting in C++. By using our own JS-implemented Quick Sort (below), we get
+	// a ~3500ms mean speed-up in `bench/bench.html`.
+
+	/**
+	 * Swap the elements indexed by `x` and `y` in the array `ary`.
+	 *
+	 * @param {Array} ary
+	 *        The array.
+	 * @param {Number} x
+	 *        The index of the first item.
+	 * @param {Number} y
+	 *        The index of the second item.
+	 */
+	function swap(ary, x, y) {
+	  var temp = ary[x];
+	  ary[x] = ary[y];
+	  ary[y] = temp;
+	}
+
+	/**
+	 * Returns a random integer within the range `low .. high` inclusive.
+	 *
+	 * @param {Number} low
+	 *        The lower bound on the range.
+	 * @param {Number} high
+	 *        The upper bound on the range.
+	 */
+	function randomIntInRange(low, high) {
+	  return Math.round(low + (Math.random() * (high - low)));
+	}
+
+	/**
+	 * The Quick Sort algorithm.
+	 *
+	 * @param {Array} ary
+	 *        An array to sort.
+	 * @param {function} comparator
+	 *        Function to use to compare two items.
+	 * @param {Number} p
+	 *        Start index of the array
+	 * @param {Number} r
+	 *        End index of the array
+	 */
+	function doQuickSort(ary, comparator, p, r) {
+	  // If our lower bound is less than our upper bound, we (1) partition the
+	  // array into two pieces and (2) recurse on each half. If it is not, this is
+	  // the empty array and our base case.
+
+	  if (p < r) {
+	    // (1) Partitioning.
+	    //
+	    // The partitioning chooses a pivot between `p` and `r` and moves all
+	    // elements that are less than or equal to the pivot to the before it, and
+	    // all the elements that are greater than it after it. The effect is that
+	    // once partition is done, the pivot is in the exact place it will be when
+	    // the array is put in sorted order, and it will not need to be moved
+	    // again. This runs in O(n) time.
+
+	    // Always choose a random pivot so that an input array which is reverse
+	    // sorted does not cause O(n^2) running time.
+	    var pivotIndex = randomIntInRange(p, r);
+	    var i = p - 1;
+
+	    swap(ary, pivotIndex, r);
+	    var pivot = ary[r];
+
+	    // Immediately after `j` is incremented in this loop, the following hold
+	    // true:
+	    //
+	    //   * Every element in `ary[p .. i]` is less than or equal to the pivot.
+	    //
+	    //   * Every element in `ary[i+1 .. j-1]` is greater than the pivot.
+	    for (var j = p; j < r; j++) {
+	      if (comparator(ary[j], pivot) <= 0) {
+	        i += 1;
+	        swap(ary, i, j);
+	      }
+	    }
+
+	    swap(ary, i + 1, j);
+	    var q = i + 1;
+
+	    // (2) Recurse on each half.
+
+	    doQuickSort(ary, comparator, p, q - 1);
+	    doQuickSort(ary, comparator, q + 1, r);
+	  }
+	}
+
+	/**
+	 * Sort the given array in-place with the given comparator function.
+	 *
+	 * @param {Array} ary
+	 *        An array to sort.
+	 * @param {function} comparator
+	 *        Function to use to compare two items.
+	 */
+	quickSort.quickSort = function (ary, comparator) {
+	  doQuickSort(ary, comparator, 0, ary.length - 1);
+	};
+	return quickSort;
+}
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+
+var hasRequiredSourceMapConsumer;
+
+function requireSourceMapConsumer () {
+	if (hasRequiredSourceMapConsumer) return sourceMapConsumer;
+	hasRequiredSourceMapConsumer = 1;
+	/*
+	 * Copyright 2011 Mozilla Foundation and contributors
+	 * Licensed under the New BSD license. See LICENSE or:
+	 * http://opensource.org/licenses/BSD-3-Clause
+	 */
+
+	var util = requireUtil();
+	var binarySearch = requireBinarySearch();
+	var ArraySet = requireArraySet().ArraySet;
+	var base64VLQ = requireBase64Vlq();
+	var quickSort = requireQuickSort().quickSort;
+
+	function SourceMapConsumer(aSourceMap, aSourceMapURL) {
+	  var sourceMap = aSourceMap;
+	  if (typeof aSourceMap === 'string') {
+	    sourceMap = util.parseSourceMapInput(aSourceMap);
+	  }
+
+	  return sourceMap.sections != null
+	    ? new IndexedSourceMapConsumer(sourceMap, aSourceMapURL)
+	    : new BasicSourceMapConsumer(sourceMap, aSourceMapURL);
+	}
+
+	SourceMapConsumer.fromSourceMap = function(aSourceMap, aSourceMapURL) {
+	  return BasicSourceMapConsumer.fromSourceMap(aSourceMap, aSourceMapURL);
+	};
+
+	/**
+	 * The version of the source mapping spec that we are consuming.
+	 */
+	SourceMapConsumer.prototype._version = 3;
+
+	// `__generatedMappings` and `__originalMappings` are arrays that hold the
+	// parsed mapping coordinates from the source map's "mappings" attribute. They
+	// are lazily instantiated, accessed via the `_generatedMappings` and
+	// `_originalMappings` getters respectively, and we only parse the mappings
+	// and create these arrays once queried for a source location. We jump through
+	// these hoops because there can be many thousands of mappings, and parsing
+	// them is expensive, so we only want to do it if we must.
+	//
+	// Each object in the arrays is of the form:
+	//
+	//     {
+	//       generatedLine: The line number in the generated code,
+	//       generatedColumn: The column number in the generated code,
+	//       source: The path to the original source file that generated this
+	//               chunk of code,
+	//       originalLine: The line number in the original source that
+	//                     corresponds to this chunk of generated code,
+	//       originalColumn: The column number in the original source that
+	//                       corresponds to this chunk of generated code,
+	//       name: The name of the original symbol which generated this chunk of
+	//             code.
+	//     }
+	//
+	// All properties except for `generatedLine` and `generatedColumn` can be
+	// `null`.
+	//
+	// `_generatedMappings` is ordered by the generated positions.
+	//
+	// `_originalMappings` is ordered by the original positions.
+
+	SourceMapConsumer.prototype.__generatedMappings = null;
+	Object.defineProperty(SourceMapConsumer.prototype, '_generatedMappings', {
+	  configurable: true,
+	  enumerable: true,
+	  get: function () {
+	    if (!this.__generatedMappings) {
+	      this._parseMappings(this._mappings, this.sourceRoot);
+	    }
+
+	    return this.__generatedMappings;
+	  }
+	});
+
+	SourceMapConsumer.prototype.__originalMappings = null;
+	Object.defineProperty(SourceMapConsumer.prototype, '_originalMappings', {
+	  configurable: true,
+	  enumerable: true,
+	  get: function () {
+	    if (!this.__originalMappings) {
+	      this._parseMappings(this._mappings, this.sourceRoot);
+	    }
+
+	    return this.__originalMappings;
+	  }
+	});
+
+	SourceMapConsumer.prototype._charIsMappingSeparator =
+	  function SourceMapConsumer_charIsMappingSeparator(aStr, index) {
+	    var c = aStr.charAt(index);
+	    return c === ";" || c === ",";
+	  };
+
+	/**
+	 * Parse the mappings in a string in to a data structure which we can easily
+	 * query (the ordered arrays in the `this.__generatedMappings` and
+	 * `this.__originalMappings` properties).
+	 */
+	SourceMapConsumer.prototype._parseMappings =
+	  function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+	    throw new Error("Subclasses must implement _parseMappings");
+	  };
+
+	SourceMapConsumer.GENERATED_ORDER = 1;
+	SourceMapConsumer.ORIGINAL_ORDER = 2;
+
+	SourceMapConsumer.GREATEST_LOWER_BOUND = 1;
+	SourceMapConsumer.LEAST_UPPER_BOUND = 2;
+
+	/**
+	 * Iterate over each mapping between an original source/line/column and a
+	 * generated line/column in this source map.
+	 *
+	 * @param Function aCallback
+	 *        The function that is called with each mapping.
+	 * @param Object aContext
+	 *        Optional. If specified, this object will be the value of `this` every
+	 *        time that `aCallback` is called.
+	 * @param aOrder
+	 *        Either `SourceMapConsumer.GENERATED_ORDER` or
+	 *        `SourceMapConsumer.ORIGINAL_ORDER`. Specifies whether you want to
+	 *        iterate over the mappings sorted by the generated file's line/column
+	 *        order or the original's source/line/column order, respectively. Defaults to
+	 *        `SourceMapConsumer.GENERATED_ORDER`.
+	 */
+	SourceMapConsumer.prototype.eachMapping =
+	  function SourceMapConsumer_eachMapping(aCallback, aContext, aOrder) {
+	    var context = aContext || null;
+	    var order = aOrder || SourceMapConsumer.GENERATED_ORDER;
+
+	    var mappings;
+	    switch (order) {
+	    case SourceMapConsumer.GENERATED_ORDER:
+	      mappings = this._generatedMappings;
+	      break;
+	    case SourceMapConsumer.ORIGINAL_ORDER:
+	      mappings = this._originalMappings;
+	      break;
+	    default:
+	      throw new Error("Unknown order of iteration.");
+	    }
+
+	    var sourceRoot = this.sourceRoot;
+	    mappings.map(function (mapping) {
+	      var source = mapping.source === null ? null : this._sources.at(mapping.source);
+	      source = util.computeSourceURL(sourceRoot, source, this._sourceMapURL);
+	      return {
+	        source: source,
+	        generatedLine: mapping.generatedLine,
+	        generatedColumn: mapping.generatedColumn,
+	        originalLine: mapping.originalLine,
+	        originalColumn: mapping.originalColumn,
+	        name: mapping.name === null ? null : this._names.at(mapping.name)
+	      };
+	    }, this).forEach(aCallback, context);
+	  };
+
+	/**
+	 * Returns all generated line and column information for the original source,
+	 * line, and column provided. If no column is provided, returns all mappings
+	 * corresponding to a either the line we are searching for or the next
+	 * closest line that has any mappings. Otherwise, returns all mappings
+	 * corresponding to the given line and either the column we are searching for
+	 * or the next closest column that has any offsets.
+	 *
+	 * The only argument is an object with the following properties:
+	 *
+	 *   - source: The filename of the original source.
+	 *   - line: The line number in the original source.  The line number is 1-based.
+	 *   - column: Optional. the column number in the original source.
+	 *    The column number is 0-based.
+	 *
+	 * and an array of objects is returned, each with the following properties:
+	 *
+	 *   - line: The line number in the generated source, or null.  The
+	 *    line number is 1-based.
+	 *   - column: The column number in the generated source, or null.
+	 *    The column number is 0-based.
+	 */
+	SourceMapConsumer.prototype.allGeneratedPositionsFor =
+	  function SourceMapConsumer_allGeneratedPositionsFor(aArgs) {
+	    var line = util.getArg(aArgs, 'line');
+
+	    // When there is no exact match, BasicSourceMapConsumer.prototype._findMapping
+	    // returns the index of the closest mapping less than the needle. By
+	    // setting needle.originalColumn to 0, we thus find the last mapping for
+	    // the given line, provided such a mapping exists.
+	    var needle = {
+	      source: util.getArg(aArgs, 'source'),
+	      originalLine: line,
+	      originalColumn: util.getArg(aArgs, 'column', 0)
+	    };
+
+	    needle.source = this._findSourceIndex(needle.source);
+	    if (needle.source < 0) {
+	      return [];
+	    }
+
+	    var mappings = [];
+
+	    var index = this._findMapping(needle,
+	                                  this._originalMappings,
+	                                  "originalLine",
+	                                  "originalColumn",
+	                                  util.compareByOriginalPositions,
+	                                  binarySearch.LEAST_UPPER_BOUND);
+	    if (index >= 0) {
+	      var mapping = this._originalMappings[index];
+
+	      if (aArgs.column === undefined) {
+	        var originalLine = mapping.originalLine;
+
+	        // Iterate until either we run out of mappings, or we run into
+	        // a mapping for a different line than the one we found. Since
+	        // mappings are sorted, this is guaranteed to find all mappings for
+	        // the line we found.
+	        while (mapping && mapping.originalLine === originalLine) {
+	          mappings.push({
+	            line: util.getArg(mapping, 'generatedLine', null),
+	            column: util.getArg(mapping, 'generatedColumn', null),
+	            lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
+	          });
+
+	          mapping = this._originalMappings[++index];
+	        }
+	      } else {
+	        var originalColumn = mapping.originalColumn;
+
+	        // Iterate until either we run out of mappings, or we run into
+	        // a mapping for a different line than the one we were searching for.
+	        // Since mappings are sorted, this is guaranteed to find all mappings for
+	        // the line we are searching for.
+	        while (mapping &&
+	               mapping.originalLine === line &&
+	               mapping.originalColumn == originalColumn) {
+	          mappings.push({
+	            line: util.getArg(mapping, 'generatedLine', null),
+	            column: util.getArg(mapping, 'generatedColumn', null),
+	            lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
+	          });
+
+	          mapping = this._originalMappings[++index];
+	        }
+	      }
+	    }
+
+	    return mappings;
+	  };
+
+	sourceMapConsumer.SourceMapConsumer = SourceMapConsumer;
+
+	/**
+	 * A BasicSourceMapConsumer instance represents a parsed source map which we can
+	 * query for information about the original file positions by giving it a file
+	 * position in the generated source.
+	 *
+	 * The first parameter is the raw source map (either as a JSON string, or
+	 * already parsed to an object). According to the spec, source maps have the
+	 * following attributes:
+	 *
+	 *   - version: Which version of the source map spec this map is following.
+	 *   - sources: An array of URLs to the original source files.
+	 *   - names: An array of identifiers which can be referrenced by individual mappings.
+	 *   - sourceRoot: Optional. The URL root from which all sources are relative.
+	 *   - sourcesContent: Optional. An array of contents of the original source files.
+	 *   - mappings: A string of base64 VLQs which contain the actual mappings.
+	 *   - file: Optional. The generated file this source map is associated with.
+	 *
+	 * Here is an example source map, taken from the source map spec[0]:
+	 *
+	 *     {
+	 *       version : 3,
+	 *       file: "out.js",
+	 *       sourceRoot : "",
+	 *       sources: ["foo.js", "bar.js"],
+	 *       names: ["src", "maps", "are", "fun"],
+	 *       mappings: "AA,AB;;ABCDE;"
+	 *     }
+	 *
+	 * The second parameter, if given, is a string whose value is the URL
+	 * at which the source map was found.  This URL is used to compute the
+	 * sources array.
+	 *
+	 * [0]: https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1#
+	 */
+	function BasicSourceMapConsumer(aSourceMap, aSourceMapURL) {
+	  var sourceMap = aSourceMap;
+	  if (typeof aSourceMap === 'string') {
+	    sourceMap = util.parseSourceMapInput(aSourceMap);
+	  }
+
+	  var version = util.getArg(sourceMap, 'version');
+	  var sources = util.getArg(sourceMap, 'sources');
+	  // Sass 3.3 leaves out the 'names' array, so we deviate from the spec (which
+	  // requires the array) to play nice here.
+	  var names = util.getArg(sourceMap, 'names', []);
+	  var sourceRoot = util.getArg(sourceMap, 'sourceRoot', null);
+	  var sourcesContent = util.getArg(sourceMap, 'sourcesContent', null);
+	  var mappings = util.getArg(sourceMap, 'mappings');
+	  var file = util.getArg(sourceMap, 'file', null);
+
+	  // Once again, Sass deviates from the spec and supplies the version as a
+	  // string rather than a number, so we use loose equality checking here.
+	  if (version != this._version) {
+	    throw new Error('Unsupported version: ' + version);
+	  }
+
+	  if (sourceRoot) {
+	    sourceRoot = util.normalize(sourceRoot);
+	  }
+
+	  sources = sources
+	    .map(String)
+	    // Some source maps produce relative source paths like "./foo.js" instead of
+	    // "foo.js".  Normalize these first so that future comparisons will succeed.
+	    // See bugzil.la/1090768.
+	    .map(util.normalize)
+	    // Always ensure that absolute sources are internally stored relative to
+	    // the source root, if the source root is absolute. Not doing this would
+	    // be particularly problematic when the source root is a prefix of the
+	    // source (valid, but why??). See github issue #199 and bugzil.la/1188982.
+	    .map(function (source) {
+	      return sourceRoot && util.isAbsolute(sourceRoot) && util.isAbsolute(source)
+	        ? util.relative(sourceRoot, source)
+	        : source;
+	    });
+
+	  // Pass `true` below to allow duplicate names and sources. While source maps
+	  // are intended to be compressed and deduplicated, the TypeScript compiler
+	  // sometimes generates source maps with duplicates in them. See Github issue
+	  // #72 and bugzil.la/889492.
+	  this._names = ArraySet.fromArray(names.map(String), true);
+	  this._sources = ArraySet.fromArray(sources, true);
+
+	  this._absoluteSources = this._sources.toArray().map(function (s) {
+	    return util.computeSourceURL(sourceRoot, s, aSourceMapURL);
+	  });
+
+	  this.sourceRoot = sourceRoot;
+	  this.sourcesContent = sourcesContent;
+	  this._mappings = mappings;
+	  this._sourceMapURL = aSourceMapURL;
+	  this.file = file;
+	}
+
+	BasicSourceMapConsumer.prototype = Object.create(SourceMapConsumer.prototype);
+	BasicSourceMapConsumer.prototype.consumer = SourceMapConsumer;
+
+	/**
+	 * Utility function to find the index of a source.  Returns -1 if not
+	 * found.
+	 */
+	BasicSourceMapConsumer.prototype._findSourceIndex = function(aSource) {
+	  var relativeSource = aSource;
+	  if (this.sourceRoot != null) {
+	    relativeSource = util.relative(this.sourceRoot, relativeSource);
+	  }
+
+	  if (this._sources.has(relativeSource)) {
+	    return this._sources.indexOf(relativeSource);
+	  }
+
+	  // Maybe aSource is an absolute URL as returned by |sources|.  In
+	  // this case we can't simply undo the transform.
+	  var i;
+	  for (i = 0; i < this._absoluteSources.length; ++i) {
+	    if (this._absoluteSources[i] == aSource) {
+	      return i;
+	    }
+	  }
+
+	  return -1;
+	};
+
+	/**
+	 * Create a BasicSourceMapConsumer from a SourceMapGenerator.
+	 *
+	 * @param SourceMapGenerator aSourceMap
+	 *        The source map that will be consumed.
+	 * @param String aSourceMapURL
+	 *        The URL at which the source map can be found (optional)
+	 * @returns BasicSourceMapConsumer
+	 */
+	BasicSourceMapConsumer.fromSourceMap =
+	  function SourceMapConsumer_fromSourceMap(aSourceMap, aSourceMapURL) {
+	    var smc = Object.create(BasicSourceMapConsumer.prototype);
+
+	    var names = smc._names = ArraySet.fromArray(aSourceMap._names.toArray(), true);
+	    var sources = smc._sources = ArraySet.fromArray(aSourceMap._sources.toArray(), true);
+	    smc.sourceRoot = aSourceMap._sourceRoot;
+	    smc.sourcesContent = aSourceMap._generateSourcesContent(smc._sources.toArray(),
+	                                                            smc.sourceRoot);
+	    smc.file = aSourceMap._file;
+	    smc._sourceMapURL = aSourceMapURL;
+	    smc._absoluteSources = smc._sources.toArray().map(function (s) {
+	      return util.computeSourceURL(smc.sourceRoot, s, aSourceMapURL);
+	    });
+
+	    // Because we are modifying the entries (by converting string sources and
+	    // names to indices into the sources and names ArraySets), we have to make
+	    // a copy of the entry or else bad things happen. Shared mutable state
+	    // strikes again! See github issue #191.
+
+	    var generatedMappings = aSourceMap._mappings.toArray().slice();
+	    var destGeneratedMappings = smc.__generatedMappings = [];
+	    var destOriginalMappings = smc.__originalMappings = [];
+
+	    for (var i = 0, length = generatedMappings.length; i < length; i++) {
+	      var srcMapping = generatedMappings[i];
+	      var destMapping = new Mapping;
+	      destMapping.generatedLine = srcMapping.generatedLine;
+	      destMapping.generatedColumn = srcMapping.generatedColumn;
+
+	      if (srcMapping.source) {
+	        destMapping.source = sources.indexOf(srcMapping.source);
+	        destMapping.originalLine = srcMapping.originalLine;
+	        destMapping.originalColumn = srcMapping.originalColumn;
+
+	        if (srcMapping.name) {
+	          destMapping.name = names.indexOf(srcMapping.name);
+	        }
+
+	        destOriginalMappings.push(destMapping);
+	      }
+
+	      destGeneratedMappings.push(destMapping);
+	    }
+
+	    quickSort(smc.__originalMappings, util.compareByOriginalPositions);
+
+	    return smc;
+	  };
+
+	/**
+	 * The version of the source mapping spec that we are consuming.
+	 */
+	BasicSourceMapConsumer.prototype._version = 3;
+
+	/**
+	 * The list of original sources.
+	 */
+	Object.defineProperty(BasicSourceMapConsumer.prototype, 'sources', {
+	  get: function () {
+	    return this._absoluteSources.slice();
+	  }
+	});
+
+	/**
+	 * Provide the JIT with a nice shape / hidden class.
+	 */
+	function Mapping() {
+	  this.generatedLine = 0;
+	  this.generatedColumn = 0;
+	  this.source = null;
+	  this.originalLine = null;
+	  this.originalColumn = null;
+	  this.name = null;
+	}
+
+	/**
+	 * Parse the mappings in a string in to a data structure which we can easily
+	 * query (the ordered arrays in the `this.__generatedMappings` and
+	 * `this.__originalMappings` properties).
+	 */
+	BasicSourceMapConsumer.prototype._parseMappings =
+	  function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+	    var generatedLine = 1;
+	    var previousGeneratedColumn = 0;
+	    var previousOriginalLine = 0;
+	    var previousOriginalColumn = 0;
+	    var previousSource = 0;
+	    var previousName = 0;
+	    var length = aStr.length;
+	    var index = 0;
+	    var cachedSegments = {};
+	    var temp = {};
+	    var originalMappings = [];
+	    var generatedMappings = [];
+	    var mapping, str, segment, end, value;
+
+	    while (index < length) {
+	      if (aStr.charAt(index) === ';') {
+	        generatedLine++;
+	        index++;
+	        previousGeneratedColumn = 0;
+	      }
+	      else if (aStr.charAt(index) === ',') {
+	        index++;
+	      }
+	      else {
+	        mapping = new Mapping();
+	        mapping.generatedLine = generatedLine;
+
+	        // Because each offset is encoded relative to the previous one,
+	        // many segments often have the same encoding. We can exploit this
+	        // fact by caching the parsed variable length fields of each segment,
+	        // allowing us to avoid a second parse if we encounter the same
+	        // segment again.
+	        for (end = index; end < length; end++) {
+	          if (this._charIsMappingSeparator(aStr, end)) {
+	            break;
+	          }
+	        }
+	        str = aStr.slice(index, end);
+
+	        segment = cachedSegments[str];
+	        if (segment) {
+	          index += str.length;
+	        } else {
+	          segment = [];
+	          while (index < end) {
+	            base64VLQ.decode(aStr, index, temp);
+	            value = temp.value;
+	            index = temp.rest;
+	            segment.push(value);
+	          }
+
+	          if (segment.length === 2) {
+	            throw new Error('Found a source, but no line and column');
+	          }
+
+	          if (segment.length === 3) {
+	            throw new Error('Found a source and line, but no column');
+	          }
+
+	          cachedSegments[str] = segment;
+	        }
+
+	        // Generated column.
+	        mapping.generatedColumn = previousGeneratedColumn + segment[0];
+	        previousGeneratedColumn = mapping.generatedColumn;
+
+	        if (segment.length > 1) {
+	          // Original source.
+	          mapping.source = previousSource + segment[1];
+	          previousSource += segment[1];
+
+	          // Original line.
+	          mapping.originalLine = previousOriginalLine + segment[2];
+	          previousOriginalLine = mapping.originalLine;
+	          // Lines are stored 0-based
+	          mapping.originalLine += 1;
+
+	          // Original column.
+	          mapping.originalColumn = previousOriginalColumn + segment[3];
+	          previousOriginalColumn = mapping.originalColumn;
+
+	          if (segment.length > 4) {
+	            // Original name.
+	            mapping.name = previousName + segment[4];
+	            previousName += segment[4];
+	          }
+	        }
+
+	        generatedMappings.push(mapping);
+	        if (typeof mapping.originalLine === 'number') {
+	          originalMappings.push(mapping);
+	        }
+	      }
+	    }
+
+	    quickSort(generatedMappings, util.compareByGeneratedPositionsDeflated);
+	    this.__generatedMappings = generatedMappings;
+
+	    quickSort(originalMappings, util.compareByOriginalPositions);
+	    this.__originalMappings = originalMappings;
+	  };
+
+	/**
+	 * Find the mapping that best matches the hypothetical "needle" mapping that
+	 * we are searching for in the given "haystack" of mappings.
+	 */
+	BasicSourceMapConsumer.prototype._findMapping =
+	  function SourceMapConsumer_findMapping(aNeedle, aMappings, aLineName,
+	                                         aColumnName, aComparator, aBias) {
+	    // To return the position we are searching for, we must first find the
+	    // mapping for the given position and then return the opposite position it
+	    // points to. Because the mappings are sorted, we can use binary search to
+	    // find the best mapping.
+
+	    if (aNeedle[aLineName] <= 0) {
+	      throw new TypeError('Line must be greater than or equal to 1, got '
+	                          + aNeedle[aLineName]);
+	    }
+	    if (aNeedle[aColumnName] < 0) {
+	      throw new TypeError('Column must be greater than or equal to 0, got '
+	                          + aNeedle[aColumnName]);
+	    }
+
+	    return binarySearch.search(aNeedle, aMappings, aComparator, aBias);
+	  };
+
+	/**
+	 * Compute the last column for each generated mapping. The last column is
+	 * inclusive.
+	 */
+	BasicSourceMapConsumer.prototype.computeColumnSpans =
+	  function SourceMapConsumer_computeColumnSpans() {
+	    for (var index = 0; index < this._generatedMappings.length; ++index) {
+	      var mapping = this._generatedMappings[index];
+
+	      // Mappings do not contain a field for the last generated columnt. We
+	      // can come up with an optimistic estimate, however, by assuming that
+	      // mappings are contiguous (i.e. given two consecutive mappings, the
+	      // first mapping ends where the second one starts).
+	      if (index + 1 < this._generatedMappings.length) {
+	        var nextMapping = this._generatedMappings[index + 1];
+
+	        if (mapping.generatedLine === nextMapping.generatedLine) {
+	          mapping.lastGeneratedColumn = nextMapping.generatedColumn - 1;
+	          continue;
+	        }
+	      }
+
+	      // The last mapping for each line spans the entire line.
+	      mapping.lastGeneratedColumn = Infinity;
+	    }
+	  };
+
+	/**
+	 * Returns the original source, line, and column information for the generated
+	 * source's line and column positions provided. The only argument is an object
+	 * with the following properties:
+	 *
+	 *   - line: The line number in the generated source.  The line number
+	 *     is 1-based.
+	 *   - column: The column number in the generated source.  The column
+	 *     number is 0-based.
+	 *   - bias: Either 'SourceMapConsumer.GREATEST_LOWER_BOUND' or
+	 *     'SourceMapConsumer.LEAST_UPPER_BOUND'. Specifies whether to return the
+	 *     closest element that is smaller than or greater than the one we are
+	 *     searching for, respectively, if the exact element cannot be found.
+	 *     Defaults to 'SourceMapConsumer.GREATEST_LOWER_BOUND'.
+	 *
+	 * and an object is returned with the following properties:
+	 *
+	 *   - source: The original source file, or null.
+	 *   - line: The line number in the original source, or null.  The
+	 *     line number is 1-based.
+	 *   - column: The column number in the original source, or null.  The
+	 *     column number is 0-based.
+	 *   - name: The original identifier, or null.
+	 */
+	BasicSourceMapConsumer.prototype.originalPositionFor =
+	  function SourceMapConsumer_originalPositionFor(aArgs) {
+	    var needle = {
+	      generatedLine: util.getArg(aArgs, 'line'),
+	      generatedColumn: util.getArg(aArgs, 'column')
+	    };
+
+	    var index = this._findMapping(
+	      needle,
+	      this._generatedMappings,
+	      "generatedLine",
+	      "generatedColumn",
+	      util.compareByGeneratedPositionsDeflated,
+	      util.getArg(aArgs, 'bias', SourceMapConsumer.GREATEST_LOWER_BOUND)
+	    );
+
+	    if (index >= 0) {
+	      var mapping = this._generatedMappings[index];
+
+	      if (mapping.generatedLine === needle.generatedLine) {
+	        var source = util.getArg(mapping, 'source', null);
+	        if (source !== null) {
+	          source = this._sources.at(source);
+	          source = util.computeSourceURL(this.sourceRoot, source, this._sourceMapURL);
+	        }
+	        var name = util.getArg(mapping, 'name', null);
+	        if (name !== null) {
+	          name = this._names.at(name);
+	        }
+	        return {
+	          source: source,
+	          line: util.getArg(mapping, 'originalLine', null),
+	          column: util.getArg(mapping, 'originalColumn', null),
+	          name: name
+	        };
+	      }
+	    }
+
+	    return {
+	      source: null,
+	      line: null,
+	      column: null,
+	      name: null
+	    };
+	  };
+
+	/**
+	 * Return true if we have the source content for every source in the source
+	 * map, false otherwise.
+	 */
+	BasicSourceMapConsumer.prototype.hasContentsOfAllSources =
+	  function BasicSourceMapConsumer_hasContentsOfAllSources() {
+	    if (!this.sourcesContent) {
+	      return false;
+	    }
+	    return this.sourcesContent.length >= this._sources.size() &&
+	      !this.sourcesContent.some(function (sc) { return sc == null; });
+	  };
+
+	/**
+	 * Returns the original source content. The only argument is the url of the
+	 * original source file. Returns null if no original source content is
+	 * available.
+	 */
+	BasicSourceMapConsumer.prototype.sourceContentFor =
+	  function SourceMapConsumer_sourceContentFor(aSource, nullOnMissing) {
+	    if (!this.sourcesContent) {
+	      return null;
+	    }
+
+	    var index = this._findSourceIndex(aSource);
+	    if (index >= 0) {
+	      return this.sourcesContent[index];
+	    }
+
+	    var relativeSource = aSource;
+	    if (this.sourceRoot != null) {
+	      relativeSource = util.relative(this.sourceRoot, relativeSource);
+	    }
+
+	    var url;
+	    if (this.sourceRoot != null
+	        && (url = util.urlParse(this.sourceRoot))) {
+	      // XXX: file:// URIs and absolute paths lead to unexpected behavior for
+	      // many users. We can help them out when they expect file:// URIs to
+	      // behave like it would if they were running a local HTTP server. See
+	      // https://bugzilla.mozilla.org/show_bug.cgi?id=885597.
+	      var fileUriAbsPath = relativeSource.replace(/^file:\/\//, "");
+	      if (url.scheme == "file"
+	          && this._sources.has(fileUriAbsPath)) {
+	        return this.sourcesContent[this._sources.indexOf(fileUriAbsPath)]
+	      }
+
+	      if ((!url.path || url.path == "/")
+	          && this._sources.has("/" + relativeSource)) {
+	        return this.sourcesContent[this._sources.indexOf("/" + relativeSource)];
+	      }
+	    }
+
+	    // This function is used recursively from
+	    // IndexedSourceMapConsumer.prototype.sourceContentFor. In that case, we
+	    // don't want to throw if we can't find the source - we just want to
+	    // return null, so we provide a flag to exit gracefully.
+	    if (nullOnMissing) {
+	      return null;
+	    }
+	    else {
+	      throw new Error('"' + relativeSource + '" is not in the SourceMap.');
+	    }
+	  };
+
+	/**
+	 * Returns the generated line and column information for the original source,
+	 * line, and column positions provided. The only argument is an object with
+	 * the following properties:
+	 *
+	 *   - source: The filename of the original source.
+	 *   - line: The line number in the original source.  The line number
+	 *     is 1-based.
+	 *   - column: The column number in the original source.  The column
+	 *     number is 0-based.
+	 *   - bias: Either 'SourceMapConsumer.GREATEST_LOWER_BOUND' or
+	 *     'SourceMapConsumer.LEAST_UPPER_BOUND'. Specifies whether to return the
+	 *     closest element that is smaller than or greater than the one we are
+	 *     searching for, respectively, if the exact element cannot be found.
+	 *     Defaults to 'SourceMapConsumer.GREATEST_LOWER_BOUND'.
+	 *
+	 * and an object is returned with the following properties:
+	 *
+	 *   - line: The line number in the generated source, or null.  The
+	 *     line number is 1-based.
+	 *   - column: The column number in the generated source, or null.
+	 *     The column number is 0-based.
+	 */
+	BasicSourceMapConsumer.prototype.generatedPositionFor =
+	  function SourceMapConsumer_generatedPositionFor(aArgs) {
+	    var source = util.getArg(aArgs, 'source');
+	    source = this._findSourceIndex(source);
+	    if (source < 0) {
+	      return {
+	        line: null,
+	        column: null,
+	        lastColumn: null
+	      };
+	    }
+
+	    var needle = {
+	      source: source,
+	      originalLine: util.getArg(aArgs, 'line'),
+	      originalColumn: util.getArg(aArgs, 'column')
+	    };
+
+	    var index = this._findMapping(
+	      needle,
+	      this._originalMappings,
+	      "originalLine",
+	      "originalColumn",
+	      util.compareByOriginalPositions,
+	      util.getArg(aArgs, 'bias', SourceMapConsumer.GREATEST_LOWER_BOUND)
+	    );
+
+	    if (index >= 0) {
+	      var mapping = this._originalMappings[index];
+
+	      if (mapping.source === needle.source) {
+	        return {
+	          line: util.getArg(mapping, 'generatedLine', null),
+	          column: util.getArg(mapping, 'generatedColumn', null),
+	          lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
+	        };
+	      }
+	    }
+
+	    return {
+	      line: null,
+	      column: null,
+	      lastColumn: null
+	    };
+	  };
+
+	sourceMapConsumer.BasicSourceMapConsumer = BasicSourceMapConsumer;
+
+	/**
+	 * An IndexedSourceMapConsumer instance represents a parsed source map which
+	 * we can query for information. It differs from BasicSourceMapConsumer in
+	 * that it takes "indexed" source maps (i.e. ones with a "sections" field) as
+	 * input.
+	 *
+	 * The first parameter is a raw source map (either as a JSON string, or already
+	 * parsed to an object). According to the spec for indexed source maps, they
+	 * have the following attributes:
+	 *
+	 *   - version: Which version of the source map spec this map is following.
+	 *   - file: Optional. The generated file this source map is associated with.
+	 *   - sections: A list of section definitions.
+	 *
+	 * Each value under the "sections" field has two fields:
+	 *   - offset: The offset into the original specified at which this section
+	 *       begins to apply, defined as an object with a "line" and "column"
+	 *       field.
+	 *   - map: A source map definition. This source map could also be indexed,
+	 *       but doesn't have to be.
+	 *
+	 * Instead of the "map" field, it's also possible to have a "url" field
+	 * specifying a URL to retrieve a source map from, but that's currently
+	 * unsupported.
+	 *
+	 * Here's an example source map, taken from the source map spec[0], but
+	 * modified to omit a section which uses the "url" field.
+	 *
+	 *  {
+	 *    version : 3,
+	 *    file: "app.js",
+	 *    sections: [{
+	 *      offset: {line:100, column:10},
+	 *      map: {
+	 *        version : 3,
+	 *        file: "section.js",
+	 *        sources: ["foo.js", "bar.js"],
+	 *        names: ["src", "maps", "are", "fun"],
+	 *        mappings: "AAAA,E;;ABCDE;"
+	 *      }
+	 *    }],
+	 *  }
+	 *
+	 * The second parameter, if given, is a string whose value is the URL
+	 * at which the source map was found.  This URL is used to compute the
+	 * sources array.
+	 *
+	 * [0]: https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit#heading=h.535es3xeprgt
+	 */
+	function IndexedSourceMapConsumer(aSourceMap, aSourceMapURL) {
+	  var sourceMap = aSourceMap;
+	  if (typeof aSourceMap === 'string') {
+	    sourceMap = util.parseSourceMapInput(aSourceMap);
+	  }
+
+	  var version = util.getArg(sourceMap, 'version');
+	  var sections = util.getArg(sourceMap, 'sections');
+
+	  if (version != this._version) {
+	    throw new Error('Unsupported version: ' + version);
+	  }
+
+	  this._sources = new ArraySet();
+	  this._names = new ArraySet();
+
+	  var lastOffset = {
+	    line: -1,
+	    column: 0
+	  };
+	  this._sections = sections.map(function (s) {
+	    if (s.url) {
+	      // The url field will require support for asynchronicity.
+	      // See https://github.com/mozilla/source-map/issues/16
+	      throw new Error('Support for url field in sections not implemented.');
+	    }
+	    var offset = util.getArg(s, 'offset');
+	    var offsetLine = util.getArg(offset, 'line');
+	    var offsetColumn = util.getArg(offset, 'column');
+
+	    if (offsetLine < lastOffset.line ||
+	        (offsetLine === lastOffset.line && offsetColumn < lastOffset.column)) {
+	      throw new Error('Section offsets must be ordered and non-overlapping.');
+	    }
+	    lastOffset = offset;
+
+	    return {
+	      generatedOffset: {
+	        // The offset fields are 0-based, but we use 1-based indices when
+	        // encoding/decoding from VLQ.
+	        generatedLine: offsetLine + 1,
+	        generatedColumn: offsetColumn + 1
+	      },
+	      consumer: new SourceMapConsumer(util.getArg(s, 'map'), aSourceMapURL)
+	    }
+	  });
+	}
+
+	IndexedSourceMapConsumer.prototype = Object.create(SourceMapConsumer.prototype);
+	IndexedSourceMapConsumer.prototype.constructor = SourceMapConsumer;
+
+	/**
+	 * The version of the source mapping spec that we are consuming.
+	 */
+	IndexedSourceMapConsumer.prototype._version = 3;
+
+	/**
+	 * The list of original sources.
+	 */
+	Object.defineProperty(IndexedSourceMapConsumer.prototype, 'sources', {
+	  get: function () {
+	    var sources = [];
+	    for (var i = 0; i < this._sections.length; i++) {
+	      for (var j = 0; j < this._sections[i].consumer.sources.length; j++) {
+	        sources.push(this._sections[i].consumer.sources[j]);
+	      }
+	    }
+	    return sources;
+	  }
+	});
+
+	/**
+	 * Returns the original source, line, and column information for the generated
+	 * source's line and column positions provided. The only argument is an object
+	 * with the following properties:
+	 *
+	 *   - line: The line number in the generated source.  The line number
+	 *     is 1-based.
+	 *   - column: The column number in the generated source.  The column
+	 *     number is 0-based.
+	 *
+	 * and an object is returned with the following properties:
+	 *
+	 *   - source: The original source file, or null.
+	 *   - line: The line number in the original source, or null.  The
+	 *     line number is 1-based.
+	 *   - column: The column number in the original source, or null.  The
+	 *     column number is 0-based.
+	 *   - name: The original identifier, or null.
+	 */
+	IndexedSourceMapConsumer.prototype.originalPositionFor =
+	  function IndexedSourceMapConsumer_originalPositionFor(aArgs) {
+	    var needle = {
+	      generatedLine: util.getArg(aArgs, 'line'),
+	      generatedColumn: util.getArg(aArgs, 'column')
+	    };
+
+	    // Find the section containing the generated position we're trying to map
+	    // to an original position.
+	    var sectionIndex = binarySearch.search(needle, this._sections,
+	      function(needle, section) {
+	        var cmp = needle.generatedLine - section.generatedOffset.generatedLine;
+	        if (cmp) {
+	          return cmp;
+	        }
+
+	        return (needle.generatedColumn -
+	                section.generatedOffset.generatedColumn);
+	      });
+	    var section = this._sections[sectionIndex];
+
+	    if (!section) {
+	      return {
+	        source: null,
+	        line: null,
+	        column: null,
+	        name: null
+	      };
+	    }
+
+	    return section.consumer.originalPositionFor({
+	      line: needle.generatedLine -
+	        (section.generatedOffset.generatedLine - 1),
+	      column: needle.generatedColumn -
+	        (section.generatedOffset.generatedLine === needle.generatedLine
+	         ? section.generatedOffset.generatedColumn - 1
+	         : 0),
+	      bias: aArgs.bias
+	    });
+	  };
+
+	/**
+	 * Return true if we have the source content for every source in the source
+	 * map, false otherwise.
+	 */
+	IndexedSourceMapConsumer.prototype.hasContentsOfAllSources =
+	  function IndexedSourceMapConsumer_hasContentsOfAllSources() {
+	    return this._sections.every(function (s) {
+	      return s.consumer.hasContentsOfAllSources();
+	    });
+	  };
+
+	/**
+	 * Returns the original source content. The only argument is the url of the
+	 * original source file. Returns null if no original source content is
+	 * available.
+	 */
+	IndexedSourceMapConsumer.prototype.sourceContentFor =
+	  function IndexedSourceMapConsumer_sourceContentFor(aSource, nullOnMissing) {
+	    for (var i = 0; i < this._sections.length; i++) {
+	      var section = this._sections[i];
+
+	      var content = section.consumer.sourceContentFor(aSource, true);
+	      if (content) {
+	        return content;
+	      }
+	    }
+	    if (nullOnMissing) {
+	      return null;
+	    }
+	    else {
+	      throw new Error('"' + aSource + '" is not in the SourceMap.');
+	    }
+	  };
+
+	/**
+	 * Returns the generated line and column information for the original source,
+	 * line, and column positions provided. The only argument is an object with
+	 * the following properties:
+	 *
+	 *   - source: The filename of the original source.
+	 *   - line: The line number in the original source.  The line number
+	 *     is 1-based.
+	 *   - column: The column number in the original source.  The column
+	 *     number is 0-based.
+	 *
+	 * and an object is returned with the following properties:
+	 *
+	 *   - line: The line number in the generated source, or null.  The
+	 *     line number is 1-based.
+	 *   - column: The column number in the generated source, or null.
+	 *     The column number is 0-based.
+	 */
+	IndexedSourceMapConsumer.prototype.generatedPositionFor =
+	  function IndexedSourceMapConsumer_generatedPositionFor(aArgs) {
+	    for (var i = 0; i < this._sections.length; i++) {
+	      var section = this._sections[i];
+
+	      // Only consider this section if the requested source is in the list of
+	      // sources of the consumer.
+	      if (section.consumer._findSourceIndex(util.getArg(aArgs, 'source')) === -1) {
+	        continue;
+	      }
+	      var generatedPosition = section.consumer.generatedPositionFor(aArgs);
+	      if (generatedPosition) {
+	        var ret = {
+	          line: generatedPosition.line +
+	            (section.generatedOffset.generatedLine - 1),
+	          column: generatedPosition.column +
+	            (section.generatedOffset.generatedLine === generatedPosition.line
+	             ? section.generatedOffset.generatedColumn - 1
+	             : 0)
+	        };
+	        return ret;
+	      }
+	    }
+
+	    return {
+	      line: null,
+	      column: null
+	    };
+	  };
+
+	/**
+	 * Parse the mappings in a string in to a data structure which we can easily
+	 * query (the ordered arrays in the `this.__generatedMappings` and
+	 * `this.__originalMappings` properties).
+	 */
+	IndexedSourceMapConsumer.prototype._parseMappings =
+	  function IndexedSourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+	    this.__generatedMappings = [];
+	    this.__originalMappings = [];
+	    for (var i = 0; i < this._sections.length; i++) {
+	      var section = this._sections[i];
+	      var sectionMappings = section.consumer._generatedMappings;
+	      for (var j = 0; j < sectionMappings.length; j++) {
+	        var mapping = sectionMappings[j];
+
+	        var source = section.consumer._sources.at(mapping.source);
+	        source = util.computeSourceURL(section.consumer.sourceRoot, source, this._sourceMapURL);
+	        this._sources.add(source);
+	        source = this._sources.indexOf(source);
+
+	        var name = null;
+	        if (mapping.name) {
+	          name = section.consumer._names.at(mapping.name);
+	          this._names.add(name);
+	          name = this._names.indexOf(name);
+	        }
+
+	        // The mappings coming from the consumer for the section have
+	        // generated positions relative to the start of the section, so we
+	        // need to offset them to be relative to the start of the concatenated
+	        // generated file.
+	        var adjustedMapping = {
+	          source: source,
+	          generatedLine: mapping.generatedLine +
+	            (section.generatedOffset.generatedLine - 1),
+	          generatedColumn: mapping.generatedColumn +
+	            (section.generatedOffset.generatedLine === mapping.generatedLine
+	            ? section.generatedOffset.generatedColumn - 1
+	            : 0),
+	          originalLine: mapping.originalLine,
+	          originalColumn: mapping.originalColumn,
+	          name: name
+	        };
+
+	        this.__generatedMappings.push(adjustedMapping);
+	        if (typeof adjustedMapping.originalLine === 'number') {
+	          this.__originalMappings.push(adjustedMapping);
+	        }
+	      }
+	    }
+
+	    quickSort(this.__generatedMappings, util.compareByGeneratedPositionsDeflated);
+	    quickSort(this.__originalMappings, util.compareByOriginalPositions);
+	  };
+
+	sourceMapConsumer.IndexedSourceMapConsumer = IndexedSourceMapConsumer;
+	return sourceMapConsumer;
+}
+
+var sourceNode = {};
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+
+var hasRequiredSourceNode;
+
+function requireSourceNode () {
+	if (hasRequiredSourceNode) return sourceNode;
+	hasRequiredSourceNode = 1;
+	/*
+	 * Copyright 2011 Mozilla Foundation and contributors
+	 * Licensed under the New BSD license. See LICENSE or:
+	 * http://opensource.org/licenses/BSD-3-Clause
+	 */
+
+	var SourceMapGenerator = requireSourceMapGenerator().SourceMapGenerator;
+	var util = requireUtil();
+
+	// Matches a Windows-style `\r\n` newline or a `\n` newline used by all other
+	// operating systems these days (capturing the result).
+	var REGEX_NEWLINE = /(\r?\n)/;
+
+	// Newline character code for charCodeAt() comparisons
+	var NEWLINE_CODE = 10;
+
+	// Private symbol for identifying `SourceNode`s when multiple versions of
+	// the source-map library are loaded. This MUST NOT CHANGE across
+	// versions!
+	var isSourceNode = "$$$isSourceNode$$$";
+
+	/**
+	 * SourceNodes provide a way to abstract over interpolating/concatenating
+	 * snippets of generated JavaScript source code while maintaining the line and
+	 * column information associated with the original source code.
+	 *
+	 * @param aLine The original line number.
+	 * @param aColumn The original column number.
+	 * @param aSource The original source's filename.
+	 * @param aChunks Optional. An array of strings which are snippets of
+	 *        generated JS, or other SourceNodes.
+	 * @param aName The original identifier.
+	 */
+	function SourceNode(aLine, aColumn, aSource, aChunks, aName) {
+	  this.children = [];
+	  this.sourceContents = {};
+	  this.line = aLine == null ? null : aLine;
+	  this.column = aColumn == null ? null : aColumn;
+	  this.source = aSource == null ? null : aSource;
+	  this.name = aName == null ? null : aName;
+	  this[isSourceNode] = true;
+	  if (aChunks != null) this.add(aChunks);
+	}
+
+	/**
+	 * Creates a SourceNode from generated code and a SourceMapConsumer.
+	 *
+	 * @param aGeneratedCode The generated code
+	 * @param aSourceMapConsumer The SourceMap for the generated code
+	 * @param aRelativePath Optional. The path that relative sources in the
+	 *        SourceMapConsumer should be relative to.
+	 */
+	SourceNode.fromStringWithSourceMap =
+	  function SourceNode_fromStringWithSourceMap(aGeneratedCode, aSourceMapConsumer, aRelativePath) {
+	    // The SourceNode we want to fill with the generated code
+	    // and the SourceMap
+	    var node = new SourceNode();
+
+	    // All even indices of this array are one line of the generated code,
+	    // while all odd indices are the newlines between two adjacent lines
+	    // (since `REGEX_NEWLINE` captures its match).
+	    // Processed fragments are accessed by calling `shiftNextLine`.
+	    var remainingLines = aGeneratedCode.split(REGEX_NEWLINE);
+	    var remainingLinesIndex = 0;
+	    var shiftNextLine = function() {
+	      var lineContents = getNextLine();
+	      // The last line of a file might not have a newline.
+	      var newLine = getNextLine() || "";
+	      return lineContents + newLine;
+
+	      function getNextLine() {
+	        return remainingLinesIndex < remainingLines.length ?
+	            remainingLines[remainingLinesIndex++] : undefined;
+	      }
+	    };
+
+	    // We need to remember the position of "remainingLines"
+	    var lastGeneratedLine = 1, lastGeneratedColumn = 0;
+
+	    // The generate SourceNodes we need a code range.
+	    // To extract it current and last mapping is used.
+	    // Here we store the last mapping.
+	    var lastMapping = null;
+
+	    aSourceMapConsumer.eachMapping(function (mapping) {
+	      if (lastMapping !== null) {
+	        // We add the code from "lastMapping" to "mapping":
+	        // First check if there is a new line in between.
+	        if (lastGeneratedLine < mapping.generatedLine) {
+	          // Associate first line with "lastMapping"
+	          addMappingWithCode(lastMapping, shiftNextLine());
+	          lastGeneratedLine++;
+	          lastGeneratedColumn = 0;
+	          // The remaining code is added without mapping
+	        } else {
+	          // There is no new line in between.
+	          // Associate the code between "lastGeneratedColumn" and
+	          // "mapping.generatedColumn" with "lastMapping"
+	          var nextLine = remainingLines[remainingLinesIndex] || '';
+	          var code = nextLine.substr(0, mapping.generatedColumn -
+	                                        lastGeneratedColumn);
+	          remainingLines[remainingLinesIndex] = nextLine.substr(mapping.generatedColumn -
+	                                              lastGeneratedColumn);
+	          lastGeneratedColumn = mapping.generatedColumn;
+	          addMappingWithCode(lastMapping, code);
+	          // No more remaining code, continue
+	          lastMapping = mapping;
+	          return;
+	        }
+	      }
+	      // We add the generated code until the first mapping
+	      // to the SourceNode without any mapping.
+	      // Each line is added as separate string.
+	      while (lastGeneratedLine < mapping.generatedLine) {
+	        node.add(shiftNextLine());
+	        lastGeneratedLine++;
+	      }
+	      if (lastGeneratedColumn < mapping.generatedColumn) {
+	        var nextLine = remainingLines[remainingLinesIndex] || '';
+	        node.add(nextLine.substr(0, mapping.generatedColumn));
+	        remainingLines[remainingLinesIndex] = nextLine.substr(mapping.generatedColumn);
+	        lastGeneratedColumn = mapping.generatedColumn;
+	      }
+	      lastMapping = mapping;
+	    }, this);
+	    // We have processed all mappings.
+	    if (remainingLinesIndex < remainingLines.length) {
+	      if (lastMapping) {
+	        // Associate the remaining code in the current line with "lastMapping"
+	        addMappingWithCode(lastMapping, shiftNextLine());
+	      }
+	      // and add the remaining lines without any mapping
+	      node.add(remainingLines.splice(remainingLinesIndex).join(""));
+	    }
+
+	    // Copy sourcesContent into SourceNode
+	    aSourceMapConsumer.sources.forEach(function (sourceFile) {
+	      var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+	      if (content != null) {
+	        if (aRelativePath != null) {
+	          sourceFile = util.join(aRelativePath, sourceFile);
+	        }
+	        node.setSourceContent(sourceFile, content);
+	      }
+	    });
+
+	    return node;
+
+	    function addMappingWithCode(mapping, code) {
+	      if (mapping === null || mapping.source === undefined) {
+	        node.add(code);
+	      } else {
+	        var source = aRelativePath
+	          ? util.join(aRelativePath, mapping.source)
+	          : mapping.source;
+	        node.add(new SourceNode(mapping.originalLine,
+	                                mapping.originalColumn,
+	                                source,
+	                                code,
+	                                mapping.name));
+	      }
+	    }
+	  };
+
+	/**
+	 * Add a chunk of generated JS to this source node.
+	 *
+	 * @param aChunk A string snippet of generated JS code, another instance of
+	 *        SourceNode, or an array where each member is one of those things.
+	 */
+	SourceNode.prototype.add = function SourceNode_add(aChunk) {
+	  if (Array.isArray(aChunk)) {
+	    aChunk.forEach(function (chunk) {
+	      this.add(chunk);
+	    }, this);
+	  }
+	  else if (aChunk[isSourceNode] || typeof aChunk === "string") {
+	    if (aChunk) {
+	      this.children.push(aChunk);
+	    }
+	  }
+	  else {
+	    throw new TypeError(
+	      "Expected a SourceNode, string, or an array of SourceNodes and strings. Got " + aChunk
+	    );
+	  }
+	  return this;
+	};
+
+	/**
+	 * Add a chunk of generated JS to the beginning of this source node.
+	 *
+	 * @param aChunk A string snippet of generated JS code, another instance of
+	 *        SourceNode, or an array where each member is one of those things.
+	 */
+	SourceNode.prototype.prepend = function SourceNode_prepend(aChunk) {
+	  if (Array.isArray(aChunk)) {
+	    for (var i = aChunk.length-1; i >= 0; i--) {
+	      this.prepend(aChunk[i]);
+	    }
+	  }
+	  else if (aChunk[isSourceNode] || typeof aChunk === "string") {
+	    this.children.unshift(aChunk);
+	  }
+	  else {
+	    throw new TypeError(
+	      "Expected a SourceNode, string, or an array of SourceNodes and strings. Got " + aChunk
+	    );
+	  }
+	  return this;
+	};
+
+	/**
+	 * Walk over the tree of JS snippets in this node and its children. The
+	 * walking function is called once for each snippet of JS and is passed that
+	 * snippet and the its original associated source's line/column location.
+	 *
+	 * @param aFn The traversal function.
+	 */
+	SourceNode.prototype.walk = function SourceNode_walk(aFn) {
+	  var chunk;
+	  for (var i = 0, len = this.children.length; i < len; i++) {
+	    chunk = this.children[i];
+	    if (chunk[isSourceNode]) {
+	      chunk.walk(aFn);
+	    }
+	    else {
+	      if (chunk !== '') {
+	        aFn(chunk, { source: this.source,
+	                     line: this.line,
+	                     column: this.column,
+	                     name: this.name });
+	      }
+	    }
+	  }
+	};
+
+	/**
+	 * Like `String.prototype.join` except for SourceNodes. Inserts `aStr` between
+	 * each of `this.children`.
+	 *
+	 * @param aSep The separator.
+	 */
+	SourceNode.prototype.join = function SourceNode_join(aSep) {
+	  var newChildren;
+	  var i;
+	  var len = this.children.length;
+	  if (len > 0) {
+	    newChildren = [];
+	    for (i = 0; i < len-1; i++) {
+	      newChildren.push(this.children[i]);
+	      newChildren.push(aSep);
+	    }
+	    newChildren.push(this.children[i]);
+	    this.children = newChildren;
+	  }
+	  return this;
+	};
+
+	/**
+	 * Call String.prototype.replace on the very right-most source snippet. Useful
+	 * for trimming whitespace from the end of a source node, etc.
+	 *
+	 * @param aPattern The pattern to replace.
+	 * @param aReplacement The thing to replace the pattern with.
+	 */
+	SourceNode.prototype.replaceRight = function SourceNode_replaceRight(aPattern, aReplacement) {
+	  var lastChild = this.children[this.children.length - 1];
+	  if (lastChild[isSourceNode]) {
+	    lastChild.replaceRight(aPattern, aReplacement);
+	  }
+	  else if (typeof lastChild === 'string') {
+	    this.children[this.children.length - 1] = lastChild.replace(aPattern, aReplacement);
+	  }
+	  else {
+	    this.children.push(''.replace(aPattern, aReplacement));
+	  }
+	  return this;
+	};
+
+	/**
+	 * Set the source content for a source file. This will be added to the SourceMapGenerator
+	 * in the sourcesContent field.
+	 *
+	 * @param aSourceFile The filename of the source file
+	 * @param aSourceContent The content of the source file
+	 */
+	SourceNode.prototype.setSourceContent =
+	  function SourceNode_setSourceContent(aSourceFile, aSourceContent) {
+	    this.sourceContents[util.toSetString(aSourceFile)] = aSourceContent;
+	  };
+
+	/**
+	 * Walk over the tree of SourceNodes. The walking function is called for each
+	 * source file content and is passed the filename and source content.
+	 *
+	 * @param aFn The traversal function.
+	 */
+	SourceNode.prototype.walkSourceContents =
+	  function SourceNode_walkSourceContents(aFn) {
+	    for (var i = 0, len = this.children.length; i < len; i++) {
+	      if (this.children[i][isSourceNode]) {
+	        this.children[i].walkSourceContents(aFn);
+	      }
+	    }
+
+	    var sources = Object.keys(this.sourceContents);
+	    for (var i = 0, len = sources.length; i < len; i++) {
+	      aFn(util.fromSetString(sources[i]), this.sourceContents[sources[i]]);
+	    }
+	  };
+
+	/**
+	 * Return the string representation of this source node. Walks over the tree
+	 * and concatenates all the various snippets together to one string.
+	 */
+	SourceNode.prototype.toString = function SourceNode_toString() {
+	  var str = "";
+	  this.walk(function (chunk) {
+	    str += chunk;
+	  });
+	  return str;
+	};
+
+	/**
+	 * Returns the string representation of this source node along with a source
+	 * map.
+	 */
+	SourceNode.prototype.toStringWithSourceMap = function SourceNode_toStringWithSourceMap(aArgs) {
+	  var generated = {
+	    code: "",
+	    line: 1,
+	    column: 0
+	  };
+	  var map = new SourceMapGenerator(aArgs);
+	  var sourceMappingActive = false;
+	  var lastOriginalSource = null;
+	  var lastOriginalLine = null;
+	  var lastOriginalColumn = null;
+	  var lastOriginalName = null;
+	  this.walk(function (chunk, original) {
+	    generated.code += chunk;
+	    if (original.source !== null
+	        && original.line !== null
+	        && original.column !== null) {
+	      if(lastOriginalSource !== original.source
+	         || lastOriginalLine !== original.line
+	         || lastOriginalColumn !== original.column
+	         || lastOriginalName !== original.name) {
+	        map.addMapping({
+	          source: original.source,
+	          original: {
+	            line: original.line,
+	            column: original.column
+	          },
+	          generated: {
+	            line: generated.line,
+	            column: generated.column
+	          },
+	          name: original.name
+	        });
+	      }
+	      lastOriginalSource = original.source;
+	      lastOriginalLine = original.line;
+	      lastOriginalColumn = original.column;
+	      lastOriginalName = original.name;
+	      sourceMappingActive = true;
+	    } else if (sourceMappingActive) {
+	      map.addMapping({
+	        generated: {
+	          line: generated.line,
+	          column: generated.column
+	        }
+	      });
+	      lastOriginalSource = null;
+	      sourceMappingActive = false;
+	    }
+	    for (var idx = 0, length = chunk.length; idx < length; idx++) {
+	      if (chunk.charCodeAt(idx) === NEWLINE_CODE) {
+	        generated.line++;
+	        generated.column = 0;
+	        // Mappings end at eol
+	        if (idx + 1 === length) {
+	          lastOriginalSource = null;
+	          sourceMappingActive = false;
+	        } else if (sourceMappingActive) {
+	          map.addMapping({
+	            source: original.source,
+	            original: {
+	              line: original.line,
+	              column: original.column
+	            },
+	            generated: {
+	              line: generated.line,
+	              column: generated.column
+	            },
+	            name: original.name
+	          });
+	        }
+	      } else {
+	        generated.column++;
+	      }
+	    }
+	  });
+	  this.walkSourceContents(function (sourceFile, sourceContent) {
+	    map.setSourceContent(sourceFile, sourceContent);
+	  });
+
+	  return { code: generated.code, map: map };
+	};
+
+	sourceNode.SourceNode = SourceNode;
+	return sourceNode;
+}
+
+/*
+ * Copyright 2009-2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE.txt or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+var hasRequiredSourceMap;
+
+function requireSourceMap () {
+	if (hasRequiredSourceMap) return sourceMap;
+	hasRequiredSourceMap = 1;
+	sourceMap.SourceMapGenerator = requireSourceMapGenerator().SourceMapGenerator;
+	sourceMap.SourceMapConsumer = requireSourceMapConsumer().SourceMapConsumer;
+	sourceMap.SourceNode = requireSourceNode().SourceNode;
+	return sourceMap;
+}
+
+/* global define, require */
+
+var hasRequiredCodeGen;
+
+function requireCodeGen () {
+	if (hasRequiredCodeGen) return codeGen.exports;
+	hasRequiredCodeGen = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+
+		var _utils = requireUtils();
+
+		var SourceNode = undefined;
+
+		try {
+		  /* istanbul ignore next */
+		  if (typeof undefined !== 'function' || !undefined.amd) {
+		    // We don't support this in AMD environments. For these environments, we assume that
+		    // they are running on the browser and thus have no need for the source-map library.
+		    var SourceMap = requireSourceMap();
+		    SourceNode = SourceMap.SourceNode;
+		  }
+		} catch (err) {}
+		/* NOP */
+
+		/* istanbul ignore if: tested but not covered in istanbul due to dist build  */
+		if (!SourceNode) {
+		  SourceNode = function (line, column, srcFile, chunks) {
+		    this.src = '';
+		    if (chunks) {
+		      this.add(chunks);
+		    }
+		  };
+		  /* istanbul ignore next */
+		  SourceNode.prototype = {
+		    add: function add(chunks) {
+		      if (_utils.isArray(chunks)) {
+		        chunks = chunks.join('');
+		      }
+		      this.src += chunks;
+		    },
+		    prepend: function prepend(chunks) {
+		      if (_utils.isArray(chunks)) {
+		        chunks = chunks.join('');
+		      }
+		      this.src = chunks + this.src;
+		    },
+		    toStringWithSourceMap: function toStringWithSourceMap() {
+		      return { code: this.toString() };
+		    },
+		    toString: function toString() {
+		      return this.src;
+		    }
+		  };
+		}
+
+		function castChunk(chunk, codeGen, loc) {
+		  if (_utils.isArray(chunk)) {
+		    var ret = [];
+
+		    for (var i = 0, len = chunk.length; i < len; i++) {
+		      ret.push(codeGen.wrap(chunk[i], loc));
+		    }
+		    return ret;
+		  } else if (typeof chunk === 'boolean' || typeof chunk === 'number') {
+		    // Handle primitives that the SourceNode will throw up on
+		    return chunk + '';
+		  }
+		  return chunk;
+		}
+
+		function CodeGen(srcFile) {
+		  this.srcFile = srcFile;
+		  this.source = [];
+		}
+
+		CodeGen.prototype = {
+		  isEmpty: function isEmpty() {
+		    return !this.source.length;
+		  },
+		  prepend: function prepend(source, loc) {
+		    this.source.unshift(this.wrap(source, loc));
+		  },
+		  push: function push(source, loc) {
+		    this.source.push(this.wrap(source, loc));
+		  },
+
+		  merge: function merge() {
+		    var source = this.empty();
+		    this.each(function (line) {
+		      source.add(['  ', line, '\n']);
+		    });
+		    return source;
+		  },
+
+		  each: function each(iter) {
+		    for (var i = 0, len = this.source.length; i < len; i++) {
+		      iter(this.source[i]);
+		    }
+		  },
+
+		  empty: function empty() {
+		    var loc = this.currentLocation || { start: {} };
+		    return new SourceNode(loc.start.line, loc.start.column, this.srcFile);
+		  },
+		  wrap: function wrap(chunk) {
+		    var loc = arguments.length <= 1 || arguments[1] === undefined ? this.currentLocation || { start: {} } : arguments[1];
+
+		    if (chunk instanceof SourceNode) {
+		      return chunk;
+		    }
+
+		    chunk = castChunk(chunk, this, loc);
+
+		    return new SourceNode(loc.start.line, loc.start.column, this.srcFile, chunk);
+		  },
+
+		  functionCall: function functionCall(fn, type, params) {
+		    params = this.generateList(params);
+		    return this.wrap([fn, type ? '.' + type + '(' : '(', params, ')']);
+		  },
+
+		  quotedString: function quotedString(str) {
+		    return '"' + (str + '').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\u2028/g, '\\u2028') // Per Ecma-262 7.3 + 7.8.4
+		    .replace(/\u2029/g, '\\u2029') + '"';
+		  },
+
+		  objectLiteral: function objectLiteral(obj) {
+		    // istanbul ignore next
+
+		    var _this = this;
+
+		    var pairs = [];
+
+		    Object.keys(obj).forEach(function (key) {
+		      var value = castChunk(obj[key], _this);
+		      if (value !== 'undefined') {
+		        pairs.push([_this.quotedString(key), ':', value]);
+		      }
+		    });
+
+		    var ret = this.generateList(pairs);
+		    ret.prepend('{');
+		    ret.add('}');
+		    return ret;
+		  },
+
+		  generateList: function generateList(entries) {
+		    var ret = this.empty();
+
+		    for (var i = 0, len = entries.length; i < len; i++) {
+		      if (i) {
+		        ret.add(',');
+		      }
+
+		      ret.add(castChunk(entries[i], this));
+		    }
+
+		    return ret;
+		  },
+
+		  generateArray: function generateArray(entries) {
+		    var ret = this.generateList(entries);
+		    ret.prepend('[');
+		    ret.add(']');
+
+		    return ret;
+		  }
+		};
+
+		exports['default'] = CodeGen;
+		module.exports = exports['default'];
+
+	} (codeGen, codeGen.exports));
+	return codeGen.exports;
+}
+
+var hasRequiredJavascriptCompiler;
+
+function requireJavascriptCompiler () {
+	if (hasRequiredJavascriptCompiler) return javascriptCompiler.exports;
+	hasRequiredJavascriptCompiler = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		// istanbul ignore next
+
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+		var _base = requireBase$1();
+
+		var _exception = requireException();
+
+		var _exception2 = _interopRequireDefault(_exception);
+
+		var _utils = requireUtils();
+
+		var _codeGen = requireCodeGen();
+
+		var _codeGen2 = _interopRequireDefault(_codeGen);
+
+		function Literal(value) {
+		  this.value = value;
+		}
+
+		function JavaScriptCompiler() {}
+
+		JavaScriptCompiler.prototype = {
+		  // PUBLIC API: You can override these methods in a subclass to provide
+		  // alternative compiled forms for name lookup and buffering semantics
+		  nameLookup: function nameLookup(parent, name /*,  type */) {
+		    return this.internalNameLookup(parent, name);
+		  },
+		  depthedLookup: function depthedLookup(name) {
+		    return [this.aliasable('container.lookup'), '(depths, ', JSON.stringify(name), ')'];
+		  },
+
+		  compilerInfo: function compilerInfo() {
+		    var revision = _base.COMPILER_REVISION,
+		        versions = _base.REVISION_CHANGES[revision];
+		    return [revision, versions];
+		  },
+
+		  appendToBuffer: function appendToBuffer(source, location, explicit) {
+		    // Force a source as this simplifies the merge logic.
+		    if (!_utils.isArray(source)) {
+		      source = [source];
+		    }
+		    source = this.source.wrap(source, location);
+
+		    if (this.environment.isSimple) {
+		      return ['return ', source, ';'];
+		    } else if (explicit) {
+		      // This is a case where the buffer operation occurs as a child of another
+		      // construct, generally braces. We have to explicitly output these buffer
+		      // operations to ensure that the emitted code goes in the correct location.
+		      return ['buffer += ', source, ';'];
+		    } else {
+		      source.appendToBuffer = true;
+		      return source;
+		    }
+		  },
+
+		  initializeBuffer: function initializeBuffer() {
+		    return this.quotedString('');
+		  },
+		  // END PUBLIC API
+		  internalNameLookup: function internalNameLookup(parent, name) {
+		    this.lookupPropertyFunctionIsUsed = true;
+		    return ['lookupProperty(', parent, ',', JSON.stringify(name), ')'];
+		  },
+
+		  lookupPropertyFunctionIsUsed: false,
+
+		  compile: function compile(environment, options, context, asObject) {
+		    this.environment = environment;
+		    this.options = options;
+		    this.stringParams = this.options.stringParams;
+		    this.trackIds = this.options.trackIds;
+		    this.precompile = !asObject;
+
+		    this.name = this.environment.name;
+		    this.isChild = !!context;
+		    this.context = context || {
+		      decorators: [],
+		      programs: [],
+		      environments: []
+		    };
+
+		    this.preamble();
+
+		    this.stackSlot = 0;
+		    this.stackVars = [];
+		    this.aliases = {};
+		    this.registers = { list: [] };
+		    this.hashes = [];
+		    this.compileStack = [];
+		    this.inlineStack = [];
+		    this.blockParams = [];
+
+		    this.compileChildren(environment, options);
+
+		    this.useDepths = this.useDepths || environment.useDepths || environment.useDecorators || this.options.compat;
+		    this.useBlockParams = this.useBlockParams || environment.useBlockParams;
+
+		    var opcodes = environment.opcodes,
+		        opcode = undefined,
+		        firstLoc = undefined,
+		        i = undefined,
+		        l = undefined;
+
+		    for (i = 0, l = opcodes.length; i < l; i++) {
+		      opcode = opcodes[i];
+
+		      this.source.currentLocation = opcode.loc;
+		      firstLoc = firstLoc || opcode.loc;
+		      this[opcode.opcode].apply(this, opcode.args);
+		    }
+
+		    // Flush any trailing content that might be pending.
+		    this.source.currentLocation = firstLoc;
+		    this.pushSource('');
+
+		    /* istanbul ignore next */
+		    if (this.stackSlot || this.inlineStack.length || this.compileStack.length) {
+		      throw new _exception2['default']('Compile completed with content left on stack');
+		    }
+
+		    if (!this.decorators.isEmpty()) {
+		      this.useDecorators = true;
+
+		      this.decorators.prepend(['var decorators = container.decorators, ', this.lookupPropertyFunctionVarDeclaration(), ';\n']);
+		      this.decorators.push('return fn;');
+
+		      if (asObject) {
+		        this.decorators = Function.apply(this, ['fn', 'props', 'container', 'depth0', 'data', 'blockParams', 'depths', this.decorators.merge()]);
+		      } else {
+		        this.decorators.prepend('function(fn, props, container, depth0, data, blockParams, depths) {\n');
+		        this.decorators.push('}\n');
+		        this.decorators = this.decorators.merge();
+		      }
+		    } else {
+		      this.decorators = undefined;
+		    }
+
+		    var fn = this.createFunctionContext(asObject);
+		    if (!this.isChild) {
+		      var ret = {
+		        compiler: this.compilerInfo(),
+		        main: fn
+		      };
+
+		      if (this.decorators) {
+		        ret.main_d = this.decorators; // eslint-disable-line camelcase
+		        ret.useDecorators = true;
+		      }
+
+		      var _context = this.context;
+		      var programs = _context.programs;
+		      var decorators = _context.decorators;
+
+		      for (i = 0, l = programs.length; i < l; i++) {
+		        if (programs[i]) {
+		          ret[i] = programs[i];
+		          if (decorators[i]) {
+		            ret[i + '_d'] = decorators[i];
+		            ret.useDecorators = true;
+		          }
+		        }
+		      }
+
+		      if (this.environment.usePartial) {
+		        ret.usePartial = true;
+		      }
+		      if (this.options.data) {
+		        ret.useData = true;
+		      }
+		      if (this.useDepths) {
+		        ret.useDepths = true;
+		      }
+		      if (this.useBlockParams) {
+		        ret.useBlockParams = true;
+		      }
+		      if (this.options.compat) {
+		        ret.compat = true;
+		      }
+
+		      if (!asObject) {
+		        ret.compiler = JSON.stringify(ret.compiler);
+
+		        this.source.currentLocation = { start: { line: 1, column: 0 } };
+		        ret = this.objectLiteral(ret);
+
+		        if (options.srcName) {
+		          ret = ret.toStringWithSourceMap({ file: options.destName });
+		          ret.map = ret.map && ret.map.toString();
+		        } else {
+		          ret = ret.toString();
+		        }
+		      } else {
+		        ret.compilerOptions = this.options;
+		      }
+
+		      return ret;
+		    } else {
+		      return fn;
+		    }
+		  },
+
+		  preamble: function preamble() {
+		    // track the last context pushed into place to allow skipping the
+		    // getContext opcode when it would be a noop
+		    this.lastContext = 0;
+		    this.source = new _codeGen2['default'](this.options.srcName);
+		    this.decorators = new _codeGen2['default'](this.options.srcName);
+		  },
+
+		  createFunctionContext: function createFunctionContext(asObject) {
+		    // istanbul ignore next
+
+		    var _this = this;
+
+		    var varDeclarations = '';
+
+		    var locals = this.stackVars.concat(this.registers.list);
+		    if (locals.length > 0) {
+		      varDeclarations += ', ' + locals.join(', ');
+		    }
+
+		    // Generate minimizer alias mappings
+		    //
+		    // When using true SourceNodes, this will update all references to the given alias
+		    // as the source nodes are reused in situ. For the non-source node compilation mode,
+		    // aliases will not be used, but this case is already being run on the client and
+		    // we aren't concern about minimizing the template size.
+		    var aliasCount = 0;
+		    Object.keys(this.aliases).forEach(function (alias) {
+		      var node = _this.aliases[alias];
+		      if (node.children && node.referenceCount > 1) {
+		        varDeclarations += ', alias' + ++aliasCount + '=' + alias;
+		        node.children[0] = 'alias' + aliasCount;
+		      }
+		    });
+
+		    if (this.lookupPropertyFunctionIsUsed) {
+		      varDeclarations += ', ' + this.lookupPropertyFunctionVarDeclaration();
+		    }
+
+		    var params = ['container', 'depth0', 'helpers', 'partials', 'data'];
+
+		    if (this.useBlockParams || this.useDepths) {
+		      params.push('blockParams');
+		    }
+		    if (this.useDepths) {
+		      params.push('depths');
+		    }
+
+		    // Perform a second pass over the output to merge content when possible
+		    var source = this.mergeSource(varDeclarations);
+
+		    if (asObject) {
+		      params.push(source);
+
+		      return Function.apply(this, params);
+		    } else {
+		      return this.source.wrap(['function(', params.join(','), ') {\n  ', source, '}']);
+		    }
+		  },
+		  mergeSource: function mergeSource(varDeclarations) {
+		    var isSimple = this.environment.isSimple,
+		        appendOnly = !this.forceBuffer,
+		        appendFirst = undefined,
+		        sourceSeen = undefined,
+		        bufferStart = undefined,
+		        bufferEnd = undefined;
+		    this.source.each(function (line) {
+		      if (line.appendToBuffer) {
+		        if (bufferStart) {
+		          line.prepend('  + ');
+		        } else {
+		          bufferStart = line;
+		        }
+		        bufferEnd = line;
+		      } else {
+		        if (bufferStart) {
+		          if (!sourceSeen) {
+		            appendFirst = true;
+		          } else {
+		            bufferStart.prepend('buffer += ');
+		          }
+		          bufferEnd.add(';');
+		          bufferStart = bufferEnd = undefined;
+		        }
+
+		        sourceSeen = true;
+		        if (!isSimple) {
+		          appendOnly = false;
+		        }
+		      }
+		    });
+
+		    if (appendOnly) {
+		      if (bufferStart) {
+		        bufferStart.prepend('return ');
+		        bufferEnd.add(';');
+		      } else if (!sourceSeen) {
+		        this.source.push('return "";');
+		      }
+		    } else {
+		      varDeclarations += ', buffer = ' + (appendFirst ? '' : this.initializeBuffer());
+
+		      if (bufferStart) {
+		        bufferStart.prepend('return buffer + ');
+		        bufferEnd.add(';');
+		      } else {
+		        this.source.push('return buffer;');
+		      }
+		    }
+
+		    if (varDeclarations) {
+		      this.source.prepend('var ' + varDeclarations.substring(2) + (appendFirst ? '' : ';\n'));
+		    }
+
+		    return this.source.merge();
+		  },
+
+		  lookupPropertyFunctionVarDeclaration: function lookupPropertyFunctionVarDeclaration() {
+		    return '\n      lookupProperty = container.lookupProperty || function(parent, propertyName) {\n        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {\n          return parent[propertyName];\n        }\n        return undefined\n    }\n    '.trim();
+		  },
+
+		  // [blockValue]
+		  //
+		  // On stack, before: hash, inverse, program, value
+		  // On stack, after: return value of blockHelperMissing
+		  //
+		  // The purpose of this opcode is to take a block of the form
+		  // `{{#this.foo}}...{{/this.foo}}`, resolve the value of `foo`, and
+		  // replace it on the stack with the result of properly
+		  // invoking blockHelperMissing.
+		  blockValue: function blockValue(name) {
+		    var blockHelperMissing = this.aliasable('container.hooks.blockHelperMissing'),
+		        params = [this.contextName(0)];
+		    this.setupHelperArgs(name, 0, params);
+
+		    var blockName = this.popStack();
+		    params.splice(1, 0, blockName);
+
+		    this.push(this.source.functionCall(blockHelperMissing, 'call', params));
+		  },
+
+		  // [ambiguousBlockValue]
+		  //
+		  // On stack, before: hash, inverse, program, value
+		  // Compiler value, before: lastHelper=value of last found helper, if any
+		  // On stack, after, if no lastHelper: same as [blockValue]
+		  // On stack, after, if lastHelper: value
+		  ambiguousBlockValue: function ambiguousBlockValue() {
+		    // We're being a bit cheeky and reusing the options value from the prior exec
+		    var blockHelperMissing = this.aliasable('container.hooks.blockHelperMissing'),
+		        params = [this.contextName(0)];
+		    this.setupHelperArgs('', 0, params, true);
+
+		    this.flushInline();
+
+		    var current = this.topStack();
+		    params.splice(1, 0, current);
+
+		    this.pushSource(['if (!', this.lastHelper, ') { ', current, ' = ', this.source.functionCall(blockHelperMissing, 'call', params), '}']);
+		  },
+
+		  // [appendContent]
+		  //
+		  // On stack, before: ...
+		  // On stack, after: ...
+		  //
+		  // Appends the string value of `content` to the current buffer
+		  appendContent: function appendContent(content) {
+		    if (this.pendingContent) {
+		      content = this.pendingContent + content;
+		    } else {
+		      this.pendingLocation = this.source.currentLocation;
+		    }
+
+		    this.pendingContent = content;
+		  },
+
+		  // [append]
+		  //
+		  // On stack, before: value, ...
+		  // On stack, after: ...
+		  //
+		  // Coerces `value` to a String and appends it to the current buffer.
+		  //
+		  // If `value` is truthy, or 0, it is coerced into a string and appended
+		  // Otherwise, the empty string is appended
+		  append: function append() {
+		    if (this.isInline()) {
+		      this.replaceStack(function (current) {
+		        return [' != null ? ', current, ' : ""'];
+		      });
+
+		      this.pushSource(this.appendToBuffer(this.popStack()));
+		    } else {
+		      var local = this.popStack();
+		      this.pushSource(['if (', local, ' != null) { ', this.appendToBuffer(local, undefined, true), ' }']);
+		      if (this.environment.isSimple) {
+		        this.pushSource(['else { ', this.appendToBuffer("''", undefined, true), ' }']);
+		      }
+		    }
+		  },
+
+		  // [appendEscaped]
+		  //
+		  // On stack, before: value, ...
+		  // On stack, after: ...
+		  //
+		  // Escape `value` and append it to the buffer
+		  appendEscaped: function appendEscaped() {
+		    this.pushSource(this.appendToBuffer([this.aliasable('container.escapeExpression'), '(', this.popStack(), ')']));
+		  },
+
+		  // [getContext]
+		  //
+		  // On stack, before: ...
+		  // On stack, after: ...
+		  // Compiler value, after: lastContext=depth
+		  //
+		  // Set the value of the `lastContext` compiler value to the depth
+		  getContext: function getContext(depth) {
+		    this.lastContext = depth;
+		  },
+
+		  // [pushContext]
+		  //
+		  // On stack, before: ...
+		  // On stack, after: currentContext, ...
+		  //
+		  // Pushes the value of the current context onto the stack.
+		  pushContext: function pushContext() {
+		    this.pushStackLiteral(this.contextName(this.lastContext));
+		  },
+
+		  // [lookupOnContext]
+		  //
+		  // On stack, before: ...
+		  // On stack, after: currentContext[name], ...
+		  //
+		  // Looks up the value of `name` on the current context and pushes
+		  // it onto the stack.
+		  lookupOnContext: function lookupOnContext(parts, falsy, strict, scoped) {
+		    var i = 0;
+
+		    if (!scoped && this.options.compat && !this.lastContext) {
+		      // The depthed query is expected to handle the undefined logic for the root level that
+		      // is implemented below, so we evaluate that directly in compat mode
+		      this.push(this.depthedLookup(parts[i++]));
+		    } else {
+		      this.pushContext();
+		    }
+
+		    this.resolvePath('context', parts, i, falsy, strict);
+		  },
+
+		  // [lookupBlockParam]
+		  //
+		  // On stack, before: ...
+		  // On stack, after: blockParam[name], ...
+		  //
+		  // Looks up the value of `parts` on the given block param and pushes
+		  // it onto the stack.
+		  lookupBlockParam: function lookupBlockParam(blockParamId, parts) {
+		    this.useBlockParams = true;
+
+		    this.push(['blockParams[', blockParamId[0], '][', blockParamId[1], ']']);
+		    this.resolvePath('context', parts, 1);
+		  },
+
+		  // [lookupData]
+		  //
+		  // On stack, before: ...
+		  // On stack, after: data, ...
+		  //
+		  // Push the data lookup operator
+		  lookupData: function lookupData(depth, parts, strict) {
+		    if (!depth) {
+		      this.pushStackLiteral('data');
+		    } else {
+		      this.pushStackLiteral('container.data(data, ' + depth + ')');
+		    }
+
+		    this.resolvePath('data', parts, 0, true, strict);
+		  },
+
+		  resolvePath: function resolvePath(type, parts, i, falsy, strict) {
+		    // istanbul ignore next
+
+		    var _this2 = this;
+
+		    if (this.options.strict || this.options.assumeObjects) {
+		      this.push(strictLookup(this.options.strict && strict, this, parts, i, type));
+		      return;
+		    }
+
+		    var len = parts.length;
+		    for (; i < len; i++) {
+		      /* eslint-disable no-loop-func */
+		      this.replaceStack(function (current) {
+		        var lookup = _this2.nameLookup(current, parts[i], type);
+		        // We want to ensure that zero and false are handled properly if the context (falsy flag)
+		        // needs to have the special handling for these values.
+		        if (!falsy) {
+		          return [' != null ? ', lookup, ' : ', current];
+		        } else {
+		          // Otherwise we can use generic falsy handling
+		          return [' && ', lookup];
+		        }
+		      });
+		      /* eslint-enable no-loop-func */
+		    }
+		  },
+
+		  // [resolvePossibleLambda]
+		  //
+		  // On stack, before: value, ...
+		  // On stack, after: resolved value, ...
+		  //
+		  // If the `value` is a lambda, replace it on the stack by
+		  // the return value of the lambda
+		  resolvePossibleLambda: function resolvePossibleLambda() {
+		    this.push([this.aliasable('container.lambda'), '(', this.popStack(), ', ', this.contextName(0), ')']);
+		  },
+
+		  // [pushStringParam]
+		  //
+		  // On stack, before: ...
+		  // On stack, after: string, currentContext, ...
+		  //
+		  // This opcode is designed for use in string mode, which
+		  // provides the string value of a parameter along with its
+		  // depth rather than resolving it immediately.
+		  pushStringParam: function pushStringParam(string, type) {
+		    this.pushContext();
+		    this.pushString(type);
+
+		    // If it's a subexpression, the string result
+		    // will be pushed after this opcode.
+		    if (type !== 'SubExpression') {
+		      if (typeof string === 'string') {
+		        this.pushString(string);
+		      } else {
+		        this.pushStackLiteral(string);
+		      }
+		    }
+		  },
+
+		  emptyHash: function emptyHash(omitEmpty) {
+		    if (this.trackIds) {
+		      this.push('{}'); // hashIds
+		    }
+		    if (this.stringParams) {
+		      this.push('{}'); // hashContexts
+		      this.push('{}'); // hashTypes
+		    }
+		    this.pushStackLiteral(omitEmpty ? 'undefined' : '{}');
+		  },
+		  pushHash: function pushHash() {
+		    if (this.hash) {
+		      this.hashes.push(this.hash);
+		    }
+		    this.hash = { values: {}, types: [], contexts: [], ids: [] };
+		  },
+		  popHash: function popHash() {
+		    var hash = this.hash;
+		    this.hash = this.hashes.pop();
+
+		    if (this.trackIds) {
+		      this.push(this.objectLiteral(hash.ids));
+		    }
+		    if (this.stringParams) {
+		      this.push(this.objectLiteral(hash.contexts));
+		      this.push(this.objectLiteral(hash.types));
+		    }
+
+		    this.push(this.objectLiteral(hash.values));
+		  },
+
+		  // [pushString]
+		  //
+		  // On stack, before: ...
+		  // On stack, after: quotedString(string), ...
+		  //
+		  // Push a quoted version of `string` onto the stack
+		  pushString: function pushString(string) {
+		    this.pushStackLiteral(this.quotedString(string));
+		  },
+
+		  // [pushLiteral]
+		  //
+		  // On stack, before: ...
+		  // On stack, after: value, ...
+		  //
+		  // Pushes a value onto the stack. This operation prevents
+		  // the compiler from creating a temporary variable to hold
+		  // it.
+		  pushLiteral: function pushLiteral(value) {
+		    this.pushStackLiteral(value);
+		  },
+
+		  // [pushProgram]
+		  //
+		  // On stack, before: ...
+		  // On stack, after: program(guid), ...
+		  //
+		  // Push a program expression onto the stack. This takes
+		  // a compile-time guid and converts it into a runtime-accessible
+		  // expression.
+		  pushProgram: function pushProgram(guid) {
+		    if (guid != null) {
+		      this.pushStackLiteral(this.programExpression(guid));
+		    } else {
+		      this.pushStackLiteral(null);
+		    }
+		  },
+
+		  // [registerDecorator]
+		  //
+		  // On stack, before: hash, program, params..., ...
+		  // On stack, after: ...
+		  //
+		  // Pops off the decorator's parameters, invokes the decorator,
+		  // and inserts the decorator into the decorators list.
+		  registerDecorator: function registerDecorator(paramSize, name) {
+		    var foundDecorator = this.nameLookup('decorators', name, 'decorator'),
+		        options = this.setupHelperArgs(name, paramSize);
+
+		    this.decorators.push(['fn = ', this.decorators.functionCall(foundDecorator, '', ['fn', 'props', 'container', options]), ' || fn;']);
+		  },
+
+		  // [invokeHelper]
+		  //
+		  // On stack, before: hash, inverse, program, params..., ...
+		  // On stack, after: result of helper invocation
+		  //
+		  // Pops off the helper's parameters, invokes the helper,
+		  // and pushes the helper's return value onto the stack.
+		  //
+		  // If the helper is not found, `helperMissing` is called.
+		  invokeHelper: function invokeHelper(paramSize, name, isSimple) {
+		    var nonHelper = this.popStack(),
+		        helper = this.setupHelper(paramSize, name);
+
+		    var possibleFunctionCalls = [];
+
+		    if (isSimple) {
+		      // direct call to helper
+		      possibleFunctionCalls.push(helper.name);
+		    }
+		    // call a function from the input object
+		    possibleFunctionCalls.push(nonHelper);
+		    if (!this.options.strict) {
+		      possibleFunctionCalls.push(this.aliasable('container.hooks.helperMissing'));
+		    }
+
+		    var functionLookupCode = ['(', this.itemsSeparatedBy(possibleFunctionCalls, '||'), ')'];
+		    var functionCall = this.source.functionCall(functionLookupCode, 'call', helper.callParams);
+		    this.push(functionCall);
+		  },
+
+		  itemsSeparatedBy: function itemsSeparatedBy(items, separator) {
+		    var result = [];
+		    result.push(items[0]);
+		    for (var i = 1; i < items.length; i++) {
+		      result.push(separator, items[i]);
+		    }
+		    return result;
+		  },
+		  // [invokeKnownHelper]
+		  //
+		  // On stack, before: hash, inverse, program, params..., ...
+		  // On stack, after: result of helper invocation
+		  //
+		  // This operation is used when the helper is known to exist,
+		  // so a `helperMissing` fallback is not required.
+		  invokeKnownHelper: function invokeKnownHelper(paramSize, name) {
+		    var helper = this.setupHelper(paramSize, name);
+		    this.push(this.source.functionCall(helper.name, 'call', helper.callParams));
+		  },
+
+		  // [invokeAmbiguous]
+		  //
+		  // On stack, before: hash, inverse, program, params..., ...
+		  // On stack, after: result of disambiguation
+		  //
+		  // This operation is used when an expression like `{{foo}}`
+		  // is provided, but we don't know at compile-time whether it
+		  // is a helper or a path.
+		  //
+		  // This operation emits more code than the other options,
+		  // and can be avoided by passing the `knownHelpers` and
+		  // `knownHelpersOnly` flags at compile-time.
+		  invokeAmbiguous: function invokeAmbiguous(name, helperCall) {
+		    this.useRegister('helper');
+
+		    var nonHelper = this.popStack();
+
+		    this.emptyHash();
+		    var helper = this.setupHelper(0, name, helperCall);
+
+		    var helperName = this.lastHelper = this.nameLookup('helpers', name, 'helper');
+
+		    var lookup = ['(', '(helper = ', helperName, ' || ', nonHelper, ')'];
+		    if (!this.options.strict) {
+		      lookup[0] = '(helper = ';
+		      lookup.push(' != null ? helper : ', this.aliasable('container.hooks.helperMissing'));
+		    }
+
+		    this.push(['(', lookup, helper.paramsInit ? ['),(', helper.paramsInit] : [], '),', '(typeof helper === ', this.aliasable('"function"'), ' ? ', this.source.functionCall('helper', 'call', helper.callParams), ' : helper))']);
+		  },
+
+		  // [invokePartial]
+		  //
+		  // On stack, before: context, ...
+		  // On stack after: result of partial invocation
+		  //
+		  // This operation pops off a context, invokes a partial with that context,
+		  // and pushes the result of the invocation back.
+		  invokePartial: function invokePartial(isDynamic, name, indent) {
+		    var params = [],
+		        options = this.setupParams(name, 1, params);
+
+		    if (isDynamic) {
+		      name = this.popStack();
+		      delete options.name;
+		    }
+
+		    if (indent) {
+		      options.indent = JSON.stringify(indent);
+		    }
+		    options.helpers = 'helpers';
+		    options.partials = 'partials';
+		    options.decorators = 'container.decorators';
+
+		    if (!isDynamic) {
+		      params.unshift(this.nameLookup('partials', name, 'partial'));
+		    } else {
+		      params.unshift(name);
+		    }
+
+		    if (this.options.compat) {
+		      options.depths = 'depths';
+		    }
+		    options = this.objectLiteral(options);
+		    params.push(options);
+
+		    this.push(this.source.functionCall('container.invokePartial', '', params));
+		  },
+
+		  // [assignToHash]
+		  //
+		  // On stack, before: value, ..., hash, ...
+		  // On stack, after: ..., hash, ...
+		  //
+		  // Pops a value off the stack and assigns it to the current hash
+		  assignToHash: function assignToHash(key) {
+		    var value = this.popStack(),
+		        context = undefined,
+		        type = undefined,
+		        id = undefined;
+
+		    if (this.trackIds) {
+		      id = this.popStack();
+		    }
+		    if (this.stringParams) {
+		      type = this.popStack();
+		      context = this.popStack();
+		    }
+
+		    var hash = this.hash;
+		    if (context) {
+		      hash.contexts[key] = context;
+		    }
+		    if (type) {
+		      hash.types[key] = type;
+		    }
+		    if (id) {
+		      hash.ids[key] = id;
+		    }
+		    hash.values[key] = value;
+		  },
+
+		  pushId: function pushId(type, name, child) {
+		    if (type === 'BlockParam') {
+		      this.pushStackLiteral('blockParams[' + name[0] + '].path[' + name[1] + ']' + (child ? ' + ' + JSON.stringify('.' + child) : ''));
+		    } else if (type === 'PathExpression') {
+		      this.pushString(name);
+		    } else if (type === 'SubExpression') {
+		      this.pushStackLiteral('true');
+		    } else {
+		      this.pushStackLiteral('null');
+		    }
+		  },
+
+		  // HELPERS
+
+		  compiler: JavaScriptCompiler,
+
+		  compileChildren: function compileChildren(environment, options) {
+		    var children = environment.children,
+		        child = undefined,
+		        compiler = undefined;
+
+		    for (var i = 0, l = children.length; i < l; i++) {
+		      child = children[i];
+		      compiler = new this.compiler(); // eslint-disable-line new-cap
+
+		      var existing = this.matchExistingProgram(child);
+
+		      if (existing == null) {
+		        this.context.programs.push(''); // Placeholder to prevent name conflicts for nested children
+		        var index = this.context.programs.length;
+		        child.index = index;
+		        child.name = 'program' + index;
+		        this.context.programs[index] = compiler.compile(child, options, this.context, !this.precompile);
+		        this.context.decorators[index] = compiler.decorators;
+		        this.context.environments[index] = child;
+
+		        this.useDepths = this.useDepths || compiler.useDepths;
+		        this.useBlockParams = this.useBlockParams || compiler.useBlockParams;
+		        child.useDepths = this.useDepths;
+		        child.useBlockParams = this.useBlockParams;
+		      } else {
+		        child.index = existing.index;
+		        child.name = 'program' + existing.index;
+
+		        this.useDepths = this.useDepths || existing.useDepths;
+		        this.useBlockParams = this.useBlockParams || existing.useBlockParams;
+		      }
+		    }
+		  },
+		  matchExistingProgram: function matchExistingProgram(child) {
+		    for (var i = 0, len = this.context.environments.length; i < len; i++) {
+		      var environment = this.context.environments[i];
+		      if (environment && environment.equals(child)) {
+		        return environment;
+		      }
+		    }
+		  },
+
+		  programExpression: function programExpression(guid) {
+		    var child = this.environment.children[guid],
+		        programParams = [child.index, 'data', child.blockParams];
+
+		    if (this.useBlockParams || this.useDepths) {
+		      programParams.push('blockParams');
+		    }
+		    if (this.useDepths) {
+		      programParams.push('depths');
+		    }
+
+		    return 'container.program(' + programParams.join(', ') + ')';
+		  },
+
+		  useRegister: function useRegister(name) {
+		    if (!this.registers[name]) {
+		      this.registers[name] = true;
+		      this.registers.list.push(name);
+		    }
+		  },
+
+		  push: function push(expr) {
+		    if (!(expr instanceof Literal)) {
+		      expr = this.source.wrap(expr);
+		    }
+
+		    this.inlineStack.push(expr);
+		    return expr;
+		  },
+
+		  pushStackLiteral: function pushStackLiteral(item) {
+		    this.push(new Literal(item));
+		  },
+
+		  pushSource: function pushSource(source) {
+		    if (this.pendingContent) {
+		      this.source.push(this.appendToBuffer(this.source.quotedString(this.pendingContent), this.pendingLocation));
+		      this.pendingContent = undefined;
+		    }
+
+		    if (source) {
+		      this.source.push(source);
+		    }
+		  },
+
+		  replaceStack: function replaceStack(callback) {
+		    var prefix = ['('],
+		        stack = undefined,
+		        createdStack = undefined,
+		        usedLiteral = undefined;
+
+		    /* istanbul ignore next */
+		    if (!this.isInline()) {
+		      throw new _exception2['default']('replaceStack on non-inline');
+		    }
+
+		    // We want to merge the inline statement into the replacement statement via ','
+		    var top = this.popStack(true);
+
+		    if (top instanceof Literal) {
+		      // Literals do not need to be inlined
+		      stack = [top.value];
+		      prefix = ['(', stack];
+		      usedLiteral = true;
+		    } else {
+		      // Get or create the current stack name for use by the inline
+		      createdStack = true;
+		      var _name = this.incrStack();
+
+		      prefix = ['((', this.push(_name), ' = ', top, ')'];
+		      stack = this.topStack();
+		    }
+
+		    var item = callback.call(this, stack);
+
+		    if (!usedLiteral) {
+		      this.popStack();
+		    }
+		    if (createdStack) {
+		      this.stackSlot--;
+		    }
+		    this.push(prefix.concat(item, ')'));
+		  },
+
+		  incrStack: function incrStack() {
+		    this.stackSlot++;
+		    if (this.stackSlot > this.stackVars.length) {
+		      this.stackVars.push('stack' + this.stackSlot);
+		    }
+		    return this.topStackName();
+		  },
+		  topStackName: function topStackName() {
+		    return 'stack' + this.stackSlot;
+		  },
+		  flushInline: function flushInline() {
+		    var inlineStack = this.inlineStack;
+		    this.inlineStack = [];
+		    for (var i = 0, len = inlineStack.length; i < len; i++) {
+		      var entry = inlineStack[i];
+		      /* istanbul ignore if */
+		      if (entry instanceof Literal) {
+		        this.compileStack.push(entry);
+		      } else {
+		        var stack = this.incrStack();
+		        this.pushSource([stack, ' = ', entry, ';']);
+		        this.compileStack.push(stack);
+		      }
+		    }
+		  },
+		  isInline: function isInline() {
+		    return this.inlineStack.length;
+		  },
+
+		  popStack: function popStack(wrapped) {
+		    var inline = this.isInline(),
+		        item = (inline ? this.inlineStack : this.compileStack).pop();
+
+		    if (!wrapped && item instanceof Literal) {
+		      return item.value;
+		    } else {
+		      if (!inline) {
+		        /* istanbul ignore next */
+		        if (!this.stackSlot) {
+		          throw new _exception2['default']('Invalid stack pop');
+		        }
+		        this.stackSlot--;
+		      }
+		      return item;
+		    }
+		  },
+
+		  topStack: function topStack() {
+		    var stack = this.isInline() ? this.inlineStack : this.compileStack,
+		        item = stack[stack.length - 1];
+
+		    /* istanbul ignore if */
+		    if (item instanceof Literal) {
+		      return item.value;
+		    } else {
+		      return item;
+		    }
+		  },
+
+		  contextName: function contextName(context) {
+		    if (this.useDepths && context) {
+		      return 'depths[' + context + ']';
+		    } else {
+		      return 'depth' + context;
+		    }
+		  },
+
+		  quotedString: function quotedString(str) {
+		    return this.source.quotedString(str);
+		  },
+
+		  objectLiteral: function objectLiteral(obj) {
+		    return this.source.objectLiteral(obj);
+		  },
+
+		  aliasable: function aliasable(name) {
+		    var ret = this.aliases[name];
+		    if (ret) {
+		      ret.referenceCount++;
+		      return ret;
+		    }
+
+		    ret = this.aliases[name] = this.source.wrap(name);
+		    ret.aliasable = true;
+		    ret.referenceCount = 1;
+
+		    return ret;
+		  },
+
+		  setupHelper: function setupHelper(paramSize, name, blockHelper) {
+		    var params = [],
+		        paramsInit = this.setupHelperArgs(name, paramSize, params, blockHelper);
+		    var foundHelper = this.nameLookup('helpers', name, 'helper'),
+		        callContext = this.aliasable(this.contextName(0) + ' != null ? ' + this.contextName(0) + ' : (container.nullContext || {})');
+
+		    return {
+		      params: params,
+		      paramsInit: paramsInit,
+		      name: foundHelper,
+		      callParams: [callContext].concat(params)
+		    };
+		  },
+
+		  setupParams: function setupParams(helper, paramSize, params) {
+		    var options = {},
+		        contexts = [],
+		        types = [],
+		        ids = [],
+		        objectArgs = !params,
+		        param = undefined;
+
+		    if (objectArgs) {
+		      params = [];
+		    }
+
+		    options.name = this.quotedString(helper);
+		    options.hash = this.popStack();
+
+		    if (this.trackIds) {
+		      options.hashIds = this.popStack();
+		    }
+		    if (this.stringParams) {
+		      options.hashTypes = this.popStack();
+		      options.hashContexts = this.popStack();
+		    }
+
+		    var inverse = this.popStack(),
+		        program = this.popStack();
+
+		    // Avoid setting fn and inverse if neither are set. This allows
+		    // helpers to do a check for `if (options.fn)`
+		    if (program || inverse) {
+		      options.fn = program || 'container.noop';
+		      options.inverse = inverse || 'container.noop';
+		    }
+
+		    // The parameters go on to the stack in order (making sure that they are evaluated in order)
+		    // so we need to pop them off the stack in reverse order
+		    var i = paramSize;
+		    while (i--) {
+		      param = this.popStack();
+		      params[i] = param;
+
+		      if (this.trackIds) {
+		        ids[i] = this.popStack();
+		      }
+		      if (this.stringParams) {
+		        types[i] = this.popStack();
+		        contexts[i] = this.popStack();
+		      }
+		    }
+
+		    if (objectArgs) {
+		      options.args = this.source.generateArray(params);
+		    }
+
+		    if (this.trackIds) {
+		      options.ids = this.source.generateArray(ids);
+		    }
+		    if (this.stringParams) {
+		      options.types = this.source.generateArray(types);
+		      options.contexts = this.source.generateArray(contexts);
+		    }
+
+		    if (this.options.data) {
+		      options.data = 'data';
+		    }
+		    if (this.useBlockParams) {
+		      options.blockParams = 'blockParams';
+		    }
+		    return options;
+		  },
+
+		  setupHelperArgs: function setupHelperArgs(helper, paramSize, params, useRegister) {
+		    var options = this.setupParams(helper, paramSize, params);
+		    options.loc = JSON.stringify(this.source.currentLocation);
+		    options = this.objectLiteral(options);
+		    if (useRegister) {
+		      this.useRegister('options');
+		      params.push('options');
+		      return ['options=', options];
+		    } else if (params) {
+		      params.push(options);
+		      return '';
+		    } else {
+		      return options;
+		    }
+		  }
+		};
+
+		(function () {
+		  var reservedWords = ('break else new var' + ' case finally return void' + ' catch for switch while' + ' continue function this with' + ' default if throw' + ' delete in try' + ' do instanceof typeof' + ' abstract enum int short' + ' boolean export interface static' + ' byte extends long super' + ' char final native synchronized' + ' class float package throws' + ' const goto private transient' + ' debugger implements protected volatile' + ' double import public let yield await' + ' null true false').split(' ');
+
+		  var compilerWords = JavaScriptCompiler.RESERVED_WORDS = {};
+
+		  for (var i = 0, l = reservedWords.length; i < l; i++) {
+		    compilerWords[reservedWords[i]] = true;
+		  }
+		})();
+
+		/**
+		 * @deprecated May be removed in the next major version
+		 */
+		JavaScriptCompiler.isValidJavaScriptVariableName = function (name) {
+		  return !JavaScriptCompiler.RESERVED_WORDS[name] && /^[a-zA-Z_$][0-9a-zA-Z_$]*$/.test(name);
+		};
+
+		function strictLookup(requireTerminal, compiler, parts, i, type) {
+		  var stack = compiler.popStack(),
+		      len = parts.length;
+		  if (requireTerminal) {
+		    len--;
+		  }
+
+		  for (; i < len; i++) {
+		    stack = compiler.nameLookup(stack, parts[i], type);
+		  }
+
+		  if (requireTerminal) {
+		    return [compiler.aliasable('container.strict'), '(', stack, ', ', compiler.quotedString(parts[i]), ', ', JSON.stringify(compiler.source.currentLocation), ' )'];
+		  } else {
+		    return stack;
+		  }
+		}
+
+		exports['default'] = JavaScriptCompiler;
+		module.exports = exports['default'];
+
+	} (javascriptCompiler, javascriptCompiler.exports));
+	return javascriptCompiler.exports;
+}
+
+var hasRequiredHandlebars;
+
+function requireHandlebars () {
+	if (hasRequiredHandlebars) return handlebars.exports;
+	hasRequiredHandlebars = 1;
+	(function (module, exports) {
+
+		exports.__esModule = true;
+		// istanbul ignore next
+
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+		var _handlebarsRuntime = requireHandlebars_runtime();
+
+		var _handlebarsRuntime2 = _interopRequireDefault(_handlebarsRuntime);
+
+		// Compiler imports
+
+		var _handlebarsCompilerAst = requireAst();
+
+		var _handlebarsCompilerAst2 = _interopRequireDefault(_handlebarsCompilerAst);
+
+		var _handlebarsCompilerBase = requireBase();
+
+		var _handlebarsCompilerCompiler = requireCompiler();
+
+		var _handlebarsCompilerJavascriptCompiler = requireJavascriptCompiler();
+
+		var _handlebarsCompilerJavascriptCompiler2 = _interopRequireDefault(_handlebarsCompilerJavascriptCompiler);
+
+		var _handlebarsCompilerVisitor = requireVisitor();
+
+		var _handlebarsCompilerVisitor2 = _interopRequireDefault(_handlebarsCompilerVisitor);
+
+		var _handlebarsNoConflict = requireNoConflict();
+
+		var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
+
+		var _create = _handlebarsRuntime2['default'].create;
+		function create() {
+		  var hb = _create();
+
+		  hb.compile = function (input, options) {
+		    return _handlebarsCompilerCompiler.compile(input, options, hb);
+		  };
+		  hb.precompile = function (input, options) {
+		    return _handlebarsCompilerCompiler.precompile(input, options, hb);
+		  };
+
+		  hb.AST = _handlebarsCompilerAst2['default'];
+		  hb.Compiler = _handlebarsCompilerCompiler.Compiler;
+		  hb.JavaScriptCompiler = _handlebarsCompilerJavascriptCompiler2['default'];
+		  hb.Parser = _handlebarsCompilerBase.parser;
+		  hb.parse = _handlebarsCompilerBase.parse;
+		  hb.parseWithoutProcessing = _handlebarsCompilerBase.parseWithoutProcessing;
+
+		  return hb;
+		}
+
+		var inst = create();
+		inst.create = create;
+
+		_handlebarsNoConflict2['default'](inst);
+
+		inst.Visitor = _handlebarsCompilerVisitor2['default'];
+
+		inst['default'] = inst;
+
+		exports['default'] = inst;
+		module.exports = exports['default'];
+
+	} (handlebars, handlebars.exports));
+	return handlebars.exports;
+}
+
+var printer = {};
+
+/* eslint-disable new-cap */
+
+var hasRequiredPrinter;
+
+function requirePrinter () {
+	if (hasRequiredPrinter) return printer;
+	hasRequiredPrinter = 1;
+
+	printer.__esModule = true;
+	printer.print = print;
+	printer.PrintVisitor = PrintVisitor;
+	// istanbul ignore next
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _visitor = requireVisitor();
+
+	var _visitor2 = _interopRequireDefault(_visitor);
+
+	function print(ast) {
+	  return new PrintVisitor().accept(ast);
+	}
+
+	function PrintVisitor() {
+	  this.padding = 0;
+	}
+
+	PrintVisitor.prototype = new _visitor2['default']();
+
+	PrintVisitor.prototype.pad = function (string) {
+	  var out = '';
+
+	  for (var i = 0, l = this.padding; i < l; i++) {
+	    out += '  ';
+	  }
+
+	  out += string + '\n';
+	  return out;
+	};
+
+	PrintVisitor.prototype.Program = function (program) {
+	  var out = '',
+	      body = program.body,
+	      i = undefined,
+	      l = undefined;
+
+	  if (program.blockParams) {
+	    var blockParams = 'BLOCK PARAMS: [';
+	    for (i = 0, l = program.blockParams.length; i < l; i++) {
+	      blockParams += ' ' + program.blockParams[i];
+	    }
+	    blockParams += ' ]';
+	    out += this.pad(blockParams);
+	  }
+
+	  for (i = 0, l = body.length; i < l; i++) {
+	    out += this.accept(body[i]);
+	  }
+
+	  this.padding--;
+
+	  return out;
+	};
+
+	PrintVisitor.prototype.MustacheStatement = function (mustache) {
+	  return this.pad('{{ ' + this.SubExpression(mustache) + ' }}');
+	};
+	PrintVisitor.prototype.Decorator = function (mustache) {
+	  return this.pad('{{ DIRECTIVE ' + this.SubExpression(mustache) + ' }}');
+	};
+
+	PrintVisitor.prototype.BlockStatement = PrintVisitor.prototype.DecoratorBlock = function (block) {
+	  var out = '';
+
+	  out += this.pad((block.type === 'DecoratorBlock' ? 'DIRECTIVE ' : '') + 'BLOCK:');
+	  this.padding++;
+	  out += this.pad(this.SubExpression(block));
+	  if (block.program) {
+	    out += this.pad('PROGRAM:');
+	    this.padding++;
+	    out += this.accept(block.program);
+	    this.padding--;
+	  }
+	  if (block.inverse) {
+	    if (block.program) {
+	      this.padding++;
+	    }
+	    out += this.pad('{{^}}');
+	    this.padding++;
+	    out += this.accept(block.inverse);
+	    this.padding--;
+	    if (block.program) {
+	      this.padding--;
+	    }
+	  }
+	  this.padding--;
+
+	  return out;
+	};
+
+	PrintVisitor.prototype.PartialStatement = function (partial) {
+	  var content = 'PARTIAL:' + partial.name.original;
+	  if (partial.params[0]) {
+	    content += ' ' + this.accept(partial.params[0]);
+	  }
+	  if (partial.hash) {
+	    content += ' ' + this.accept(partial.hash);
+	  }
+	  return this.pad('{{> ' + content + ' }}');
+	};
+	PrintVisitor.prototype.PartialBlockStatement = function (partial) {
+	  var content = 'PARTIAL BLOCK:' + partial.name.original;
+	  if (partial.params[0]) {
+	    content += ' ' + this.accept(partial.params[0]);
+	  }
+	  if (partial.hash) {
+	    content += ' ' + this.accept(partial.hash);
+	  }
+
+	  content += ' ' + this.pad('PROGRAM:');
+	  this.padding++;
+	  content += this.accept(partial.program);
+	  this.padding--;
+
+	  return this.pad('{{> ' + content + ' }}');
+	};
+
+	PrintVisitor.prototype.ContentStatement = function (content) {
+	  return this.pad("CONTENT[ '" + content.value + "' ]");
+	};
+
+	PrintVisitor.prototype.CommentStatement = function (comment) {
+	  return this.pad("{{! '" + comment.value + "' }}");
+	};
+
+	PrintVisitor.prototype.SubExpression = function (sexpr) {
+	  var params = sexpr.params,
+	      paramStrings = [],
+	      hash = undefined;
+
+	  for (var i = 0, l = params.length; i < l; i++) {
+	    paramStrings.push(this.accept(params[i]));
+	  }
+
+	  params = '[' + paramStrings.join(', ') + ']';
+
+	  hash = sexpr.hash ? ' ' + this.accept(sexpr.hash) : '';
+
+	  return this.accept(sexpr.path) + ' ' + params + hash;
+	};
+
+	PrintVisitor.prototype.PathExpression = function (id) {
+	  var path = id.parts.join('/');
+	  return (id.data ? '@' : '') + 'PATH:' + path;
+	};
+
+	PrintVisitor.prototype.StringLiteral = function (string) {
+	  return '"' + string.value + '"';
+	};
+
+	PrintVisitor.prototype.NumberLiteral = function (number) {
+	  return 'NUMBER{' + number.value + '}';
+	};
+
+	PrintVisitor.prototype.BooleanLiteral = function (bool) {
+	  return 'BOOLEAN{' + bool.value + '}';
+	};
+
+	PrintVisitor.prototype.UndefinedLiteral = function () {
+	  return 'UNDEFINED';
+	};
+
+	PrintVisitor.prototype.NullLiteral = function () {
+	  return 'NULL';
+	};
+
+	PrintVisitor.prototype.Hash = function (hash) {
+	  var pairs = hash.pairs,
+	      joinedPairs = [];
+
+	  for (var i = 0, l = pairs.length; i < l; i++) {
+	    joinedPairs.push(this.accept(pairs[i]));
+	  }
+
+	  return 'HASH{' + joinedPairs.join(', ') + '}';
+	};
+	PrintVisitor.prototype.HashPair = function (pair) {
+	  return pair.key + '=' + this.accept(pair.value);
+	};
+	/* eslint-enable new-cap */
+
+	return printer;
+}
+
+var lib;
+var hasRequiredLib;
+
+function requireLib () {
+	if (hasRequiredLib) return lib;
+	hasRequiredLib = 1;
+	// USAGE:
+	// var handlebars = require('handlebars');
+	/* eslint-env node */
+	/* eslint-disable no-var */
+
+	// var local = handlebars.create();
+
+	var handlebars = requireHandlebars()['default'];
+
+	var printer = requirePrinter();
+	handlebars.PrintVisitor = printer.PrintVisitor;
+	handlebars.print = printer.print;
+
+	lib = handlebars;
+
+	// Publish a Node.js require() handler for .handlebars and .hbs files
+	function extension(module, filename) {
+	  var fs = fs__default;
+	  var templateString = fs.readFileSync(filename, 'utf8');
+	  module.exports = handlebars.compile(templateString);
+	}
+	/* istanbul ignore else */
+	if (typeof commonjsRequire !== 'undefined' && commonjsRequire.extensions) {
+	  commonjsRequire.extensions['.handlebars'] = extension;
+	  commonjsRequire.extensions['.hbs'] = extension;
+	}
+	return lib;
+}
+
+var libExports = requireLib();
+var Handlebars = /*@__PURE__*/getDefaultExportFromCjs(libExports);
+
+const commentTemplateString = `
+### TensorZero CI Bot Automated Comment
+
+{{#if generatedCommentBody}}
+{{generatedCommentBody}}
+{{/if}}
+
+{{#if commands}}
+Try running the following commands to address the issues:
+
+\`\`\`
+{{#each commands}}
+{{this}}
+{{/each}}
+\`\`\`
+{{/if}}
+
+{{#if followupPrNumber}}
+I've opened an automated follow-up PR {{#if followupPrUrl}}[#{{followupPrNumber}}]({{followupPrUrl}}){{else}}#{{followupPrNumber}}{{/if}} with proposed fixes.
+{{/if}}
+{{#if followupPrCreationError}}
+> [!WARNING]
+> I encountered an error while trying to create a follow-up PR: {{followupPrCreationError}}.
+
+{{#if generatedPatch}}
+The patch I tried to generate is as follows:
+\`\`\`diff
+{{{generatedPatch}}}
+\`\`\`
+{{else}}
+No patch was generated.
+{{/if}}
+{{/if}}
+`;
+const commentTemplate = Handlebars.compile(commentTemplateString.trim());
+function renderComment(commentContext) {
+    if (!commentContext.generatedCommentBody &&
+        !commentContext.followupPrCreationError &&
+        !commentContext.followupPrNumber &&
+        !commentContext.commands) {
         return undefined;
     }
-    if (!pullRequest.base.repo?.id) {
-        coreExports.warning('Cannot identify base PR repository; skipping follow-up PR creation.');
-        return undefined;
-    }
-    if (pullRequest.head.repo?.id !== pullRequest.base.repo?.id) {
-        coreExports.warning('Original PR branch lives in a fork; skipping follow-up PR creation.');
-        return undefined;
-    }
-    const { repoDir, cleanup, maskedRemoteUrl } = await clonePullRequestRepository({
-        token,
-        owner,
-        repo,
-        pullRequest
-    });
-    try {
-        const fixBranchName = `tensorzero/pr-${pullRequest.number}-${Date.now()}`;
-        await execGit(['checkout', '-b', fixBranchName], { cwd: repoDir, token });
-        const patchPath = path$1.join(repoDir, 'tensorzero.patch');
-        await fsPromises.writeFile(patchPath, `${trimmedDiff}
-`, { encoding: 'utf-8' });
-        try {
-            await execGit(['apply', '--whitespace=nowarn', patchPath], {
-                cwd: repoDir,
-                token
-            });
-        }
-        finally {
-            await fsPromises.rm(patchPath, { force: true });
-        }
-        const status = await execGit(['status', '--porcelain'], {
-            cwd: repoDir,
-            token
-        });
-        if (!status.stdout.trim()) {
-            coreExports.warning('Diff did not produce any changes; skipping follow-up PR creation.');
-            return undefined;
-        }
-        await execGit(['config', 'user.email', 'hello@tensorzero.com'], {
-            cwd: repoDir,
-            token
-        });
-        await execGit(['config', 'user.name', 'TensorZero-Experimental-CI-Bot[bot]'], {
-            cwd: repoDir,
-            token
-        });
-        await execGit(['add', '--all'], { cwd: repoDir, token });
-        await execGit(['commit', '-m', `chore: automated fix for PR #${pullRequest.number}`], {
-            cwd: repoDir,
-            token
-        });
-        await execGit(['push', '--set-upstream', 'origin', fixBranchName], {
-            cwd: repoDir,
-            token
-        });
-        const prTitle = `Automated follow-up for #${pullRequest.number}`;
-        const prBodyLines = [
-            `This pull request was generated automatically in response to failing CI on #${pullRequest.number}.`,
-            '',
-            'The proposed changes were produced from an LLM-provided diff.'
-        ];
-        const prBody = prBodyLines.join('\n');
-        const createdPr = await octokit.rest.pulls.create({
-            owner,
-            repo,
-            base: pullRequest.head.ref,
-            head: fixBranchName,
-            title: prTitle,
-            body: prBody
-        });
-        if (outputDir) {
-            await fsPromises.writeFile(path$1.join(outputDir, 'followup-pr-payload.json'), JSON.stringify(createdPr, null, 2));
-        }
-        return {
-            number: createdPr.data.number,
-            id: createdPr.data.id,
-            htmlUrl: createdPr.data.html_url
-        };
-    }
-    catch (error) {
-        const maskedMessage = maskSecret(error.message, token);
-        throw new Error(`Failed to create follow-up PR using remote ${maskedRemoteUrl}: ${maskedMessage}`);
-    }
-    finally {
-        await cleanup();
-    }
-}
-async function getPullRequestDiff(options) {
-    const { token, owner, repo, pullRequest } = options;
-    const { repoDir, cleanup, maskedRemoteUrl } = await clonePullRequestRepository({
-        token,
-        owner,
-        repo,
-        pullRequest
-    });
-    try {
-        coreExports.info(`Fetching base branch ${pullRequest.base.ref} for diff computation.`);
-        await execGit(['fetch', 'origin', pullRequest.base.ref], {
-            cwd: repoDir,
-            token
-        });
-        coreExports.info(`Ensuring head branch ${pullRequest.head.ref} is up to date for diff computation.`);
-        await execGit(['fetch', 'origin', pullRequest.head.ref], {
-            cwd: repoDir,
-            token
-        });
-        const diffRange = `origin/${pullRequest.base.ref}...${pullRequest.head.sha}`;
-        coreExports.info(`Computing diff summary with range ${diffRange}.`);
-        const diffSummary = await execGit(['diff', '--stat', diffRange], {
-            cwd: repoDir,
-            token
-        });
-        coreExports.info(`Computing full diff with range ${diffRange}.`);
-        const fullDiff = await execGit(['diff', diffRange], {
-            cwd: repoDir,
-            token
-        });
-        return {
-            diffSummary: diffSummary.stdout,
-            fullDiff: fullDiff.stdout
-        };
-    }
-    catch (error) {
-        const maskedMessage = maskSecret(error.message, token);
-        throw new Error(`Failed to compute diff using remote ${maskedRemoteUrl}: ${maskedMessage}`);
-    }
-    finally {
-        await cleanup();
-    }
-}
-async function getFailedWorkflowRunLogs(workflowRunId) {
-    const { stdout, stderr } = await execFileAsync('gh', ['run', 'view', `${workflowRunId}`, '--log-failed'], {
-        maxBuffer: 20 * 1024 * 1024,
-        encoding: 'utf-8'
-    });
-    if (stderr) {
-        coreExports.warning(`Encountered stderr when getting failed workflow logs: ${stderr}`);
-    }
-    if (stdout) {
-        return stdout;
-    }
-    throw new Error(`Did not receive any logs for workflow ${workflowRunId}`);
+    return commentTemplate(commentContext).trim();
 }
 
 function __classPrivateFieldSet(receiver, state, value, kind, f) {
@@ -35832,7 +50822,7 @@ function inner_stringify(object, prefix, generateArrayPrefix, commaRoundTrip, al
     }
     for (let j = 0; j < obj_keys.length; ++j) {
         const key = obj_keys[j];
-        const value = 
+        const value =
         // @ts-ignore
         typeof key === 'object' && typeof key.value !== 'undefined' ? key.value : obj[key];
         if (skipNulls && value === null) {
@@ -35848,7 +50838,7 @@ function inner_stringify(object, prefix, generateArrayPrefix, commaRoundTrip, al
         sideChannel.set(object, step);
         const valueSideChannel = new WeakMap();
         valueSideChannel.set(sentinel, sideChannel);
-        push_to_array(values, inner_stringify(value, key_prefix, generateArrayPrefix, commaRoundTrip, allowEmptyArrays, strictNullHandling, skipNulls, encodeDotInKeys, 
+        push_to_array(values, inner_stringify(value, key_prefix, generateArrayPrefix, commaRoundTrip, allowEmptyArrays, strictNullHandling, skipNulls, encodeDotInKeys,
         // @ts-ignore
         generateArrayPrefix === 'comma' && encodeValuesOnly && isArray(obj) ? null : encoder, filter, sort, allowDots, serializeDate, format, formatter, encodeValuesOnly, charset, valueSideChannel));
     }
@@ -35953,7 +50943,7 @@ function stringify(object, opts = {}) {
         if (options.skipNulls && obj[key] === null) {
             continue;
         }
-        push_to_array(keys, inner_stringify(obj[key], key, 
+        push_to_array(keys, inner_stringify(obj[key], key,
         // @ts-expect-error
         generateArrayPrefix, commaRoundTrip, options.allowEmptyArrays, options.strictNullHandling, options.skipNulls, options.encodeDotInKeys, options.encode ? options.encoder : null, options.filter, options.sort, options.allowDots, options.serializeDate, options.format, options.formatter, options.encodeValuesOnly, options.charset, sideChannel));
     }
@@ -41611,7 +56601,7 @@ class OpenAI {
         catch (err) {
             if (err instanceof OpenAIError)
                 throw err;
-            throw new OpenAIError(`Failed to get token from 'apiKey' function: ${err.message}`, 
+            throw new OpenAIError(`Failed to get token from 'apiKey' function: ${err.message}`,
             // @ts-ignore
             { cause: err });
         }
@@ -41995,46 +56985,15 @@ OpenAI.Conversations = Conversations;
 OpenAI.Evals = Evals;
 OpenAI.Containers = Containers;
 
-function getOpenAiCompatibleUrl(baseUrl) {
-    if (baseUrl[baseUrl.length - 1] === '/') {
-        baseUrl = baseUrl.slice(0, -1);
-    }
-    return `${baseUrl}/openai/v1`;
-}
-async function callTensorZeroOpenAi(tensorZeroBaseUrl, generationArguments) {
-    const tensorZeroOpenAiEndpointUrl = getOpenAiCompatibleUrl(tensorZeroBaseUrl);
-    const client = new OpenAI({
-        baseURL: tensorZeroOpenAiEndpointUrl,
-        // API key is supplied from the Gateway; we just need an API key for OpenAI client to be happy.
-        apiKey: 'dummy'
-    });
-    // @ts-expect-error(TensorZero-patched interface doesn't agree with OpenAI)
-    return await client.chat.completions.create({
-        model: 'tensorzero::function_name::tensorzero_github_ci_bot',
-        messages: [
-            {
-                content: [
-                    {
-                        // @ts-expect-error(TensorZero-patched interface adds a function type)
-                        type: 'tensorzero::template',
-                        name: 'generate_pr_and_comment',
-                        arguments: generationArguments
-                    }
-                ],
-                role: 'user'
-            }
-        ]
-    });
-}
-async function provideInferenceFeedback(tensorZeroBaseUrl, metricName, inferenceId, value, tags) {
+async function provideEpisodeFeedback(tensorZeroBaseUrl, metricName, episodeId, value, tags) {
     const feedbackUrl = `${tensorZeroBaseUrl}/feedback`;
     const feedbackRequest = {
         metric_name: metricName,
-        inference_id: inferenceId,
+        episode_id: episodeId,
         value,
         tags
     };
-    coreExports.info(`Feedback Request: ${JSON.stringify(feedbackRequest, null, 2)}`);
+    coreExports.info(`Episode Feedback Request: ${JSON.stringify(feedbackRequest, null, 2)}`);
     const response = await fetch(feedbackUrl, {
         method: 'POST',
         headers: {
@@ -42043,8807 +57002,376 @@ async function provideInferenceFeedback(tensorZeroBaseUrl, metricName, inference
         body: JSON.stringify(feedbackRequest)
     });
     if (!response.ok) {
-        throw new Error(`Failed to provide feedback: ${response.statusText}`);
+        throw new Error(`Failed to provide episode feedback: ${response.statusText}`);
     }
 }
 
-function commonjsRequire(path) {
-	throw new Error('Could not dynamically require "' + path + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
-}
-
-var handlebars = {exports: {}};
-
-var handlebars_runtime = {exports: {}};
-
-var base$1 = {};
-
-var utils = {};
-
-var hasRequiredUtils;
-
-function requireUtils () {
-	if (hasRequiredUtils) return utils;
-	hasRequiredUtils = 1;
-
-	utils.__esModule = true;
-	utils.extend = extend;
-	utils.indexOf = indexOf;
-	utils.escapeExpression = escapeExpression;
-	utils.isEmpty = isEmpty;
-	utils.createFrame = createFrame;
-	utils.blockParams = blockParams;
-	utils.appendContextPath = appendContextPath;
-	var escape = {
-	  '&': '&amp;',
-	  '<': '&lt;',
-	  '>': '&gt;',
-	  '"': '&quot;',
-	  "'": '&#x27;',
-	  '`': '&#x60;',
-	  '=': '&#x3D;'
-	};
-
-	var badChars = /[&<>"'`=]/g,
-	    possible = /[&<>"'`=]/;
-
-	function escapeChar(chr) {
-	  return escape[chr];
-	}
-
-	function extend(obj /* , ...source */) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    for (var key in arguments[i]) {
-	      if (Object.prototype.hasOwnProperty.call(arguments[i], key)) {
-	        obj[key] = arguments[i][key];
-	      }
-	    }
-	  }
-
-	  return obj;
-	}
-
-	var toString = Object.prototype.toString;
-
-	utils.toString = toString;
-	// Sourced from lodash
-	// https://github.com/bestiejs/lodash/blob/master/LICENSE.txt
-	/* eslint-disable func-style */
-	var isFunction = function isFunction(value) {
-	  return typeof value === 'function';
-	};
-	// fallback for older versions of Chrome and Safari
-	/* istanbul ignore next */
-	if (isFunction(/x/)) {
-	  utils.isFunction = isFunction = function (value) {
-	    return typeof value === 'function' && toString.call(value) === '[object Function]';
-	  };
-	}
-	utils.isFunction = isFunction;
-
-	/* eslint-enable func-style */
-
-	/* istanbul ignore next */
-	var isArray = Array.isArray || function (value) {
-	  return value && typeof value === 'object' ? toString.call(value) === '[object Array]' : false;
-	};
-
-	utils.isArray = isArray;
-	// Older IE versions do not directly support indexOf so we must implement our own, sadly.
-
-	function indexOf(array, value) {
-	  for (var i = 0, len = array.length; i < len; i++) {
-	    if (array[i] === value) {
-	      return i;
-	    }
-	  }
-	  return -1;
-	}
-
-	function escapeExpression(string) {
-	  if (typeof string !== 'string') {
-	    // don't escape SafeStrings, since they're already safe
-	    if (string && string.toHTML) {
-	      return string.toHTML();
-	    } else if (string == null) {
-	      return '';
-	    } else if (!string) {
-	      return string + '';
-	    }
-
-	    // Force a string conversion as this will be done by the append regardless and
-	    // the regex test will do this transparently behind the scenes, causing issues if
-	    // an object's to string has escaped characters in it.
-	    string = '' + string;
-	  }
-
-	  if (!possible.test(string)) {
-	    return string;
-	  }
-	  return string.replace(badChars, escapeChar);
-	}
-
-	function isEmpty(value) {
-	  if (!value && value !== 0) {
-	    return true;
-	  } else if (isArray(value) && value.length === 0) {
-	    return true;
-	  } else {
-	    return false;
-	  }
-	}
-
-	function createFrame(object) {
-	  var frame = extend({}, object);
-	  frame._parent = object;
-	  return frame;
-	}
-
-	function blockParams(params, ids) {
-	  params.path = ids;
-	  return params;
-	}
-
-	function appendContextPath(contextPath, id) {
-	  return (contextPath ? contextPath + '.' : '') + id;
-	}
-	
-	return utils;
-}
-
-var exception = {exports: {}};
-
-var hasRequiredException;
-
-function requireException () {
-	if (hasRequiredException) return exception.exports;
-	hasRequiredException = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		var errorProps = ['description', 'fileName', 'lineNumber', 'endLineNumber', 'message', 'name', 'number', 'stack'];
-
-		function Exception(message, node) {
-		  var loc = node && node.loc,
-		      line = undefined,
-		      endLineNumber = undefined,
-		      column = undefined,
-		      endColumn = undefined;
-
-		  if (loc) {
-		    line = loc.start.line;
-		    endLineNumber = loc.end.line;
-		    column = loc.start.column;
-		    endColumn = loc.end.column;
-
-		    message += ' - ' + line + ':' + column;
-		  }
-
-		  var tmp = Error.prototype.constructor.call(this, message);
-
-		  // Unfortunately errors are not enumerable in Chrome (at least), so `for prop in tmp` doesn't work.
-		  for (var idx = 0; idx < errorProps.length; idx++) {
-		    this[errorProps[idx]] = tmp[errorProps[idx]];
-		  }
-
-		  /* istanbul ignore else */
-		  if (Error.captureStackTrace) {
-		    Error.captureStackTrace(this, Exception);
-		  }
-
-		  try {
-		    if (loc) {
-		      this.lineNumber = line;
-		      this.endLineNumber = endLineNumber;
-
-		      // Work around issue under safari where we can't directly set the column value
-		      /* istanbul ignore next */
-		      if (Object.defineProperty) {
-		        Object.defineProperty(this, 'column', {
-		          value: column,
-		          enumerable: true
-		        });
-		        Object.defineProperty(this, 'endColumn', {
-		          value: endColumn,
-		          enumerable: true
-		        });
-		      } else {
-		        this.column = column;
-		        this.endColumn = endColumn;
-		      }
-		    }
-		  } catch (nop) {
-		    /* Ignore if the browser is very particular */
-		  }
-		}
-
-		Exception.prototype = new Error();
-
-		exports['default'] = Exception;
-		module.exports = exports['default'];
-		
-	} (exception, exception.exports));
-	return exception.exports;
-}
-
-var helpers$1 = {};
-
-var blockHelperMissing = {exports: {}};
-
-var hasRequiredBlockHelperMissing;
-
-function requireBlockHelperMissing () {
-	if (hasRequiredBlockHelperMissing) return blockHelperMissing.exports;
-	hasRequiredBlockHelperMissing = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-
-		var _utils = requireUtils();
-
-		exports['default'] = function (instance) {
-		  instance.registerHelper('blockHelperMissing', function (context, options) {
-		    var inverse = options.inverse,
-		        fn = options.fn;
-
-		    if (context === true) {
-		      return fn(this);
-		    } else if (context === false || context == null) {
-		      return inverse(this);
-		    } else if (_utils.isArray(context)) {
-		      if (context.length > 0) {
-		        if (options.ids) {
-		          options.ids = [options.name];
-		        }
-
-		        return instance.helpers.each(context, options);
-		      } else {
-		        return inverse(this);
-		      }
-		    } else {
-		      if (options.data && options.ids) {
-		        var data = _utils.createFrame(options.data);
-		        data.contextPath = _utils.appendContextPath(options.data.contextPath, options.name);
-		        options = { data: data };
-		      }
-
-		      return fn(context, options);
-		    }
-		  });
-		};
-
-		module.exports = exports['default'];
-		
-	} (blockHelperMissing, blockHelperMissing.exports));
-	return blockHelperMissing.exports;
-}
-
-var each = {exports: {}};
-
-var hasRequiredEach;
-
-function requireEach () {
-	if (hasRequiredEach) return each.exports;
-	hasRequiredEach = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		// istanbul ignore next
-
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-		var _utils = requireUtils();
-
-		var _exception = requireException();
-
-		var _exception2 = _interopRequireDefault(_exception);
-
-		exports['default'] = function (instance) {
-		  instance.registerHelper('each', function (context, options) {
-		    if (!options) {
-		      throw new _exception2['default']('Must pass iterator to #each');
-		    }
-
-		    var fn = options.fn,
-		        inverse = options.inverse,
-		        i = 0,
-		        ret = '',
-		        data = undefined,
-		        contextPath = undefined;
-
-		    if (options.data && options.ids) {
-		      contextPath = _utils.appendContextPath(options.data.contextPath, options.ids[0]) + '.';
-		    }
-
-		    if (_utils.isFunction(context)) {
-		      context = context.call(this);
-		    }
-
-		    if (options.data) {
-		      data = _utils.createFrame(options.data);
-		    }
-
-		    function execIteration(field, index, last) {
-		      if (data) {
-		        data.key = field;
-		        data.index = index;
-		        data.first = index === 0;
-		        data.last = !!last;
-
-		        if (contextPath) {
-		          data.contextPath = contextPath + field;
-		        }
-		      }
-
-		      ret = ret + fn(context[field], {
-		        data: data,
-		        blockParams: _utils.blockParams([context[field], field], [contextPath + field, null])
-		      });
-		    }
-
-		    if (context && typeof context === 'object') {
-		      if (_utils.isArray(context)) {
-		        for (var j = context.length; i < j; i++) {
-		          if (i in context) {
-		            execIteration(i, i, i === context.length - 1);
-		          }
-		        }
-		      } else if (typeof Symbol === 'function' && context[Symbol.iterator]) {
-		        var newContext = [];
-		        var iterator = context[Symbol.iterator]();
-		        for (var it = iterator.next(); !it.done; it = iterator.next()) {
-		          newContext.push(it.value);
-		        }
-		        context = newContext;
-		        for (var j = context.length; i < j; i++) {
-		          execIteration(i, i, i === context.length - 1);
-		        }
-		      } else {
-		        (function () {
-		          var priorKey = undefined;
-
-		          Object.keys(context).forEach(function (key) {
-		            // We're running the iterations one step out of sync so we can detect
-		            // the last iteration without have to scan the object twice and create
-		            // an itermediate keys array.
-		            if (priorKey !== undefined) {
-		              execIteration(priorKey, i - 1);
-		            }
-		            priorKey = key;
-		            i++;
-		          });
-		          if (priorKey !== undefined) {
-		            execIteration(priorKey, i - 1, true);
-		          }
-		        })();
-		      }
-		    }
-
-		    if (i === 0) {
-		      ret = inverse(this);
-		    }
-
-		    return ret;
-		  });
-		};
-
-		module.exports = exports['default'];
-		
-	} (each, each.exports));
-	return each.exports;
-}
-
-var helperMissing = {exports: {}};
-
-var hasRequiredHelperMissing;
-
-function requireHelperMissing () {
-	if (hasRequiredHelperMissing) return helperMissing.exports;
-	hasRequiredHelperMissing = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		// istanbul ignore next
-
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-		var _exception = requireException();
-
-		var _exception2 = _interopRequireDefault(_exception);
-
-		exports['default'] = function (instance) {
-		  instance.registerHelper('helperMissing', function () /* [args, ]options */{
-		    if (arguments.length === 1) {
-		      // A missing field in a {{foo}} construct.
-		      return undefined;
-		    } else {
-		      // Someone is actually trying to call something, blow up.
-		      throw new _exception2['default']('Missing helper: "' + arguments[arguments.length - 1].name + '"');
-		    }
-		  });
-		};
-
-		module.exports = exports['default'];
-		
-	} (helperMissing, helperMissing.exports));
-	return helperMissing.exports;
-}
-
-var _if = {exports: {}};
-
-var hasRequired_if;
-
-function require_if () {
-	if (hasRequired_if) return _if.exports;
-	hasRequired_if = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		// istanbul ignore next
-
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-		var _utils = requireUtils();
-
-		var _exception = requireException();
-
-		var _exception2 = _interopRequireDefault(_exception);
-
-		exports['default'] = function (instance) {
-		  instance.registerHelper('if', function (conditional, options) {
-		    if (arguments.length != 2) {
-		      throw new _exception2['default']('#if requires exactly one argument');
-		    }
-		    if (_utils.isFunction(conditional)) {
-		      conditional = conditional.call(this);
-		    }
-
-		    // Default behavior is to render the positive path if the value is truthy and not empty.
-		    // The `includeZero` option may be set to treat the condtional as purely not empty based on the
-		    // behavior of isEmpty. Effectively this determines if 0 is handled by the positive path or negative.
-		    if (!options.hash.includeZero && !conditional || _utils.isEmpty(conditional)) {
-		      return options.inverse(this);
-		    } else {
-		      return options.fn(this);
-		    }
-		  });
-
-		  instance.registerHelper('unless', function (conditional, options) {
-		    if (arguments.length != 2) {
-		      throw new _exception2['default']('#unless requires exactly one argument');
-		    }
-		    return instance.helpers['if'].call(this, conditional, {
-		      fn: options.inverse,
-		      inverse: options.fn,
-		      hash: options.hash
-		    });
-		  });
-		};
-
-		module.exports = exports['default'];
-		
-	} (_if, _if.exports));
-	return _if.exports;
-}
-
-var log = {exports: {}};
-
-var hasRequiredLog;
-
-function requireLog () {
-	if (hasRequiredLog) return log.exports;
-	hasRequiredLog = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-
-		exports['default'] = function (instance) {
-		  instance.registerHelper('log', function () /* message, options */{
-		    var args = [undefined],
-		        options = arguments[arguments.length - 1];
-		    for (var i = 0; i < arguments.length - 1; i++) {
-		      args.push(arguments[i]);
-		    }
-
-		    var level = 1;
-		    if (options.hash.level != null) {
-		      level = options.hash.level;
-		    } else if (options.data && options.data.level != null) {
-		      level = options.data.level;
-		    }
-		    args[0] = level;
-
-		    instance.log.apply(instance, args);
-		  });
-		};
-
-		module.exports = exports['default'];
-		
-	} (log, log.exports));
-	return log.exports;
-}
-
-var lookup = {exports: {}};
-
-var hasRequiredLookup;
-
-function requireLookup () {
-	if (hasRequiredLookup) return lookup.exports;
-	hasRequiredLookup = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-
-		exports['default'] = function (instance) {
-		  instance.registerHelper('lookup', function (obj, field, options) {
-		    if (!obj) {
-		      // Note for 5.0: Change to "obj == null" in 5.0
-		      return obj;
-		    }
-		    return options.lookupProperty(obj, field);
-		  });
-		};
-
-		module.exports = exports['default'];
-		
-	} (lookup, lookup.exports));
-	return lookup.exports;
-}
-
-var _with = {exports: {}};
-
-var hasRequired_with;
-
-function require_with () {
-	if (hasRequired_with) return _with.exports;
-	hasRequired_with = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		// istanbul ignore next
-
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-		var _utils = requireUtils();
-
-		var _exception = requireException();
-
-		var _exception2 = _interopRequireDefault(_exception);
-
-		exports['default'] = function (instance) {
-		  instance.registerHelper('with', function (context, options) {
-		    if (arguments.length != 2) {
-		      throw new _exception2['default']('#with requires exactly one argument');
-		    }
-		    if (_utils.isFunction(context)) {
-		      context = context.call(this);
-		    }
-
-		    var fn = options.fn;
-
-		    if (!_utils.isEmpty(context)) {
-		      var data = options.data;
-		      if (options.data && options.ids) {
-		        data = _utils.createFrame(options.data);
-		        data.contextPath = _utils.appendContextPath(options.data.contextPath, options.ids[0]);
-		      }
-
-		      return fn(context, {
-		        data: data,
-		        blockParams: _utils.blockParams([context], [data && data.contextPath])
-		      });
-		    } else {
-		      return options.inverse(this);
-		    }
-		  });
-		};
-
-		module.exports = exports['default'];
-		
-	} (_with, _with.exports));
-	return _with.exports;
-}
-
-var hasRequiredHelpers$1;
-
-function requireHelpers$1 () {
-	if (hasRequiredHelpers$1) return helpers$1;
-	hasRequiredHelpers$1 = 1;
-
-	helpers$1.__esModule = true;
-	helpers$1.registerDefaultHelpers = registerDefaultHelpers;
-	helpers$1.moveHelperToHooks = moveHelperToHooks;
-	// istanbul ignore next
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _helpersBlockHelperMissing = requireBlockHelperMissing();
-
-	var _helpersBlockHelperMissing2 = _interopRequireDefault(_helpersBlockHelperMissing);
-
-	var _helpersEach = requireEach();
-
-	var _helpersEach2 = _interopRequireDefault(_helpersEach);
-
-	var _helpersHelperMissing = requireHelperMissing();
-
-	var _helpersHelperMissing2 = _interopRequireDefault(_helpersHelperMissing);
-
-	var _helpersIf = require_if();
-
-	var _helpersIf2 = _interopRequireDefault(_helpersIf);
-
-	var _helpersLog = requireLog();
-
-	var _helpersLog2 = _interopRequireDefault(_helpersLog);
-
-	var _helpersLookup = requireLookup();
-
-	var _helpersLookup2 = _interopRequireDefault(_helpersLookup);
-
-	var _helpersWith = require_with();
-
-	var _helpersWith2 = _interopRequireDefault(_helpersWith);
-
-	function registerDefaultHelpers(instance) {
-	  _helpersBlockHelperMissing2['default'](instance);
-	  _helpersEach2['default'](instance);
-	  _helpersHelperMissing2['default'](instance);
-	  _helpersIf2['default'](instance);
-	  _helpersLog2['default'](instance);
-	  _helpersLookup2['default'](instance);
-	  _helpersWith2['default'](instance);
-	}
-
-	function moveHelperToHooks(instance, helperName, keepHelper) {
-	  if (instance.helpers[helperName]) {
-	    instance.hooks[helperName] = instance.helpers[helperName];
-	    if (!keepHelper) {
-	      delete instance.helpers[helperName];
-	    }
-	  }
-	}
-	
-	return helpers$1;
-}
-
-var decorators = {};
-
-var inline = {exports: {}};
-
-var hasRequiredInline;
-
-function requireInline () {
-	if (hasRequiredInline) return inline.exports;
-	hasRequiredInline = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-
-		var _utils = requireUtils();
-
-		exports['default'] = function (instance) {
-		  instance.registerDecorator('inline', function (fn, props, container, options) {
-		    var ret = fn;
-		    if (!props.partials) {
-		      props.partials = {};
-		      ret = function (context, options) {
-		        // Create a new partials stack frame prior to exec.
-		        var original = container.partials;
-		        container.partials = _utils.extend({}, original, props.partials);
-		        var ret = fn(context, options);
-		        container.partials = original;
-		        return ret;
-		      };
-		    }
-
-		    props.partials[options.args[0]] = options.fn;
-
-		    return ret;
-		  });
-		};
-
-		module.exports = exports['default'];
-		
-	} (inline, inline.exports));
-	return inline.exports;
-}
-
-var hasRequiredDecorators;
-
-function requireDecorators () {
-	if (hasRequiredDecorators) return decorators;
-	hasRequiredDecorators = 1;
-
-	decorators.__esModule = true;
-	decorators.registerDefaultDecorators = registerDefaultDecorators;
-	// istanbul ignore next
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _decoratorsInline = requireInline();
-
-	var _decoratorsInline2 = _interopRequireDefault(_decoratorsInline);
-
-	function registerDefaultDecorators(instance) {
-	  _decoratorsInline2['default'](instance);
-	}
-	
-	return decorators;
-}
-
-var logger = {exports: {}};
-
-var hasRequiredLogger;
-
-function requireLogger () {
-	if (hasRequiredLogger) return logger.exports;
-	hasRequiredLogger = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-
-		var _utils = requireUtils();
-
-		var logger = {
-		  methodMap: ['debug', 'info', 'warn', 'error'],
-		  level: 'info',
-
-		  // Maps a given level value to the `methodMap` indexes above.
-		  lookupLevel: function lookupLevel(level) {
-		    if (typeof level === 'string') {
-		      var levelMap = _utils.indexOf(logger.methodMap, level.toLowerCase());
-		      if (levelMap >= 0) {
-		        level = levelMap;
-		      } else {
-		        level = parseInt(level, 10);
-		      }
-		    }
-
-		    return level;
-		  },
-
-		  // Can be overridden in the host environment
-		  log: function log(level) {
-		    level = logger.lookupLevel(level);
-
-		    if (typeof console !== 'undefined' && logger.lookupLevel(logger.level) <= level) {
-		      var method = logger.methodMap[level];
-		      // eslint-disable-next-line no-console
-		      if (!console[method]) {
-		        method = 'log';
-		      }
-
-		      for (var _len = arguments.length, message = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-		        message[_key - 1] = arguments[_key];
-		      }
-
-		      console[method].apply(console, message); // eslint-disable-line no-console
-		    }
-		  }
-		};
-
-		exports['default'] = logger;
-		module.exports = exports['default'];
-		
-	} (logger, logger.exports));
-	return logger.exports;
-}
-
-var protoAccess = {};
-
-var createNewLookupObject = {};
-
-var hasRequiredCreateNewLookupObject;
-
-function requireCreateNewLookupObject () {
-	if (hasRequiredCreateNewLookupObject) return createNewLookupObject;
-	hasRequiredCreateNewLookupObject = 1;
-
-	createNewLookupObject.__esModule = true;
-	createNewLookupObject.createNewLookupObject = createNewLookupObject$1;
-
-	var _utils = requireUtils();
-
-	/**
-	 * Create a new object with "null"-prototype to avoid truthy results on prototype properties.
-	 * The resulting object can be used with "object[property]" to check if a property exists
-	 * @param {...object} sources a varargs parameter of source objects that will be merged
-	 * @returns {object}
-	 */
-
-	function createNewLookupObject$1() {
-	  for (var _len = arguments.length, sources = Array(_len), _key = 0; _key < _len; _key++) {
-	    sources[_key] = arguments[_key];
-	  }
-
-	  return _utils.extend.apply(undefined, [Object.create(null)].concat(sources));
-	}
-	
-	return createNewLookupObject;
-}
-
-var hasRequiredProtoAccess;
-
-function requireProtoAccess () {
-	if (hasRequiredProtoAccess) return protoAccess;
-	hasRequiredProtoAccess = 1;
-
-	protoAccess.__esModule = true;
-	protoAccess.createProtoAccessControl = createProtoAccessControl;
-	protoAccess.resultIsAllowed = resultIsAllowed;
-	protoAccess.resetLoggedProperties = resetLoggedProperties;
-	// istanbul ignore next
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _createNewLookupObject = requireCreateNewLookupObject();
-
-	var _logger = requireLogger();
-
-	var _logger2 = _interopRequireDefault(_logger);
-
-	var loggedProperties = Object.create(null);
-
-	function createProtoAccessControl(runtimeOptions) {
-	  var defaultMethodWhiteList = Object.create(null);
-	  defaultMethodWhiteList['constructor'] = false;
-	  defaultMethodWhiteList['__defineGetter__'] = false;
-	  defaultMethodWhiteList['__defineSetter__'] = false;
-	  defaultMethodWhiteList['__lookupGetter__'] = false;
-
-	  var defaultPropertyWhiteList = Object.create(null);
-	  // eslint-disable-next-line no-proto
-	  defaultPropertyWhiteList['__proto__'] = false;
-
-	  return {
-	    properties: {
-	      whitelist: _createNewLookupObject.createNewLookupObject(defaultPropertyWhiteList, runtimeOptions.allowedProtoProperties),
-	      defaultValue: runtimeOptions.allowProtoPropertiesByDefault
-	    },
-	    methods: {
-	      whitelist: _createNewLookupObject.createNewLookupObject(defaultMethodWhiteList, runtimeOptions.allowedProtoMethods),
-	      defaultValue: runtimeOptions.allowProtoMethodsByDefault
-	    }
-	  };
-	}
-
-	function resultIsAllowed(result, protoAccessControl, propertyName) {
-	  if (typeof result === 'function') {
-	    return checkWhiteList(protoAccessControl.methods, propertyName);
-	  } else {
-	    return checkWhiteList(protoAccessControl.properties, propertyName);
-	  }
-	}
-
-	function checkWhiteList(protoAccessControlForType, propertyName) {
-	  if (protoAccessControlForType.whitelist[propertyName] !== undefined) {
-	    return protoAccessControlForType.whitelist[propertyName] === true;
-	  }
-	  if (protoAccessControlForType.defaultValue !== undefined) {
-	    return protoAccessControlForType.defaultValue;
-	  }
-	  logUnexpecedPropertyAccessOnce(propertyName);
-	  return false;
-	}
-
-	function logUnexpecedPropertyAccessOnce(propertyName) {
-	  if (loggedProperties[propertyName] !== true) {
-	    loggedProperties[propertyName] = true;
-	    _logger2['default'].log('error', 'Handlebars: Access has been denied to resolve the property "' + propertyName + '" because it is not an "own property" of its parent.\n' + 'You can add a runtime option to disable the check or this warning:\n' + 'See https://handlebarsjs.com/api-reference/runtime-options.html#options-to-control-prototype-access for details');
-	  }
-	}
-
-	function resetLoggedProperties() {
-	  Object.keys(loggedProperties).forEach(function (propertyName) {
-	    delete loggedProperties[propertyName];
-	  });
-	}
-	
-	return protoAccess;
-}
-
-var hasRequiredBase$1;
-
-function requireBase$1 () {
-	if (hasRequiredBase$1) return base$1;
-	hasRequiredBase$1 = 1;
-
-	base$1.__esModule = true;
-	base$1.HandlebarsEnvironment = HandlebarsEnvironment;
-	// istanbul ignore next
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _utils = requireUtils();
-
-	var _exception = requireException();
-
-	var _exception2 = _interopRequireDefault(_exception);
-
-	var _helpers = requireHelpers$1();
-
-	var _decorators = requireDecorators();
-
-	var _logger = requireLogger();
-
-	var _logger2 = _interopRequireDefault(_logger);
-
-	var _internalProtoAccess = requireProtoAccess();
-
-	var VERSION = '4.7.8';
-	base$1.VERSION = VERSION;
-	var COMPILER_REVISION = 8;
-	base$1.COMPILER_REVISION = COMPILER_REVISION;
-	var LAST_COMPATIBLE_COMPILER_REVISION = 7;
-
-	base$1.LAST_COMPATIBLE_COMPILER_REVISION = LAST_COMPATIBLE_COMPILER_REVISION;
-	var REVISION_CHANGES = {
-	  1: '<= 1.0.rc.2', // 1.0.rc.2 is actually rev2 but doesn't report it
-	  2: '== 1.0.0-rc.3',
-	  3: '== 1.0.0-rc.4',
-	  4: '== 1.x.x',
-	  5: '== 2.0.0-alpha.x',
-	  6: '>= 2.0.0-beta.1',
-	  7: '>= 4.0.0 <4.3.0',
-	  8: '>= 4.3.0'
-	};
-
-	base$1.REVISION_CHANGES = REVISION_CHANGES;
-	var objectType = '[object Object]';
-
-	function HandlebarsEnvironment(helpers, partials, decorators) {
-	  this.helpers = helpers || {};
-	  this.partials = partials || {};
-	  this.decorators = decorators || {};
-
-	  _helpers.registerDefaultHelpers(this);
-	  _decorators.registerDefaultDecorators(this);
-	}
-
-	HandlebarsEnvironment.prototype = {
-	  constructor: HandlebarsEnvironment,
-
-	  logger: _logger2['default'],
-	  log: _logger2['default'].log,
-
-	  registerHelper: function registerHelper(name, fn) {
-	    if (_utils.toString.call(name) === objectType) {
-	      if (fn) {
-	        throw new _exception2['default']('Arg not supported with multiple helpers');
-	      }
-	      _utils.extend(this.helpers, name);
-	    } else {
-	      this.helpers[name] = fn;
-	    }
-	  },
-	  unregisterHelper: function unregisterHelper(name) {
-	    delete this.helpers[name];
-	  },
-
-	  registerPartial: function registerPartial(name, partial) {
-	    if (_utils.toString.call(name) === objectType) {
-	      _utils.extend(this.partials, name);
-	    } else {
-	      if (typeof partial === 'undefined') {
-	        throw new _exception2['default']('Attempting to register a partial called "' + name + '" as undefined');
-	      }
-	      this.partials[name] = partial;
-	    }
-	  },
-	  unregisterPartial: function unregisterPartial(name) {
-	    delete this.partials[name];
-	  },
-
-	  registerDecorator: function registerDecorator(name, fn) {
-	    if (_utils.toString.call(name) === objectType) {
-	      if (fn) {
-	        throw new _exception2['default']('Arg not supported with multiple decorators');
-	      }
-	      _utils.extend(this.decorators, name);
-	    } else {
-	      this.decorators[name] = fn;
-	    }
-	  },
-	  unregisterDecorator: function unregisterDecorator(name) {
-	    delete this.decorators[name];
-	  },
-	  /**
-	   * Reset the memory of illegal property accesses that have already been logged.
-	   * @deprecated should only be used in handlebars test-cases
-	   */
-	  resetLoggedPropertyAccesses: function resetLoggedPropertyAccesses() {
-	    _internalProtoAccess.resetLoggedProperties();
-	  }
-	};
-
-	var log = _logger2['default'].log;
-
-	base$1.log = log;
-	base$1.createFrame = _utils.createFrame;
-	base$1.logger = _logger2['default'];
-	
-	return base$1;
-}
-
-var safeString = {exports: {}};
-
-var hasRequiredSafeString;
-
-function requireSafeString () {
-	if (hasRequiredSafeString) return safeString.exports;
-	hasRequiredSafeString = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		function SafeString(string) {
-		  this.string = string;
-		}
-
-		SafeString.prototype.toString = SafeString.prototype.toHTML = function () {
-		  return '' + this.string;
-		};
-
-		exports['default'] = SafeString;
-		module.exports = exports['default'];
-		
-	} (safeString, safeString.exports));
-	return safeString.exports;
-}
-
-var runtime = {};
-
-var wrapHelper = {};
-
-var hasRequiredWrapHelper;
-
-function requireWrapHelper () {
-	if (hasRequiredWrapHelper) return wrapHelper;
-	hasRequiredWrapHelper = 1;
-
-	wrapHelper.__esModule = true;
-	wrapHelper.wrapHelper = wrapHelper$1;
-
-	function wrapHelper$1(helper, transformOptionsFn) {
-	  if (typeof helper !== 'function') {
-	    // This should not happen, but apparently it does in https://github.com/wycats/handlebars.js/issues/1639
-	    // We try to make the wrapper least-invasive by not wrapping it, if the helper is not a function.
-	    return helper;
-	  }
-	  var wrapper = function wrapper() /* dynamic arguments */{
-	    var options = arguments[arguments.length - 1];
-	    arguments[arguments.length - 1] = transformOptionsFn(options);
-	    return helper.apply(this, arguments);
-	  };
-	  return wrapper;
-	}
-	
-	return wrapHelper;
-}
-
-var hasRequiredRuntime;
-
-function requireRuntime () {
-	if (hasRequiredRuntime) return runtime;
-	hasRequiredRuntime = 1;
-
-	runtime.__esModule = true;
-	runtime.checkRevision = checkRevision;
-	runtime.template = template;
-	runtime.wrapProgram = wrapProgram;
-	runtime.resolvePartial = resolvePartial;
-	runtime.invokePartial = invokePartial;
-	runtime.noop = noop;
-	// istanbul ignore next
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	// istanbul ignore next
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-
-	var _utils = requireUtils();
-
-	var Utils = _interopRequireWildcard(_utils);
-
-	var _exception = requireException();
-
-	var _exception2 = _interopRequireDefault(_exception);
-
-	var _base = requireBase$1();
-
-	var _helpers = requireHelpers$1();
-
-	var _internalWrapHelper = requireWrapHelper();
-
-	var _internalProtoAccess = requireProtoAccess();
-
-	function checkRevision(compilerInfo) {
-	  var compilerRevision = compilerInfo && compilerInfo[0] || 1,
-	      currentRevision = _base.COMPILER_REVISION;
-
-	  if (compilerRevision >= _base.LAST_COMPATIBLE_COMPILER_REVISION && compilerRevision <= _base.COMPILER_REVISION) {
-	    return;
-	  }
-
-	  if (compilerRevision < _base.LAST_COMPATIBLE_COMPILER_REVISION) {
-	    var runtimeVersions = _base.REVISION_CHANGES[currentRevision],
-	        compilerVersions = _base.REVISION_CHANGES[compilerRevision];
-	    throw new _exception2['default']('Template was precompiled with an older version of Handlebars than the current runtime. ' + 'Please update your precompiler to a newer version (' + runtimeVersions + ') or downgrade your runtime to an older version (' + compilerVersions + ').');
-	  } else {
-	    // Use the embedded version info since the runtime doesn't know about this revision yet
-	    throw new _exception2['default']('Template was precompiled with a newer version of Handlebars than the current runtime. ' + 'Please update your runtime to a newer version (' + compilerInfo[1] + ').');
-	  }
-	}
-
-	function template(templateSpec, env) {
-	  /* istanbul ignore next */
-	  if (!env) {
-	    throw new _exception2['default']('No environment passed to template');
-	  }
-	  if (!templateSpec || !templateSpec.main) {
-	    throw new _exception2['default']('Unknown template object: ' + typeof templateSpec);
-	  }
-
-	  templateSpec.main.decorator = templateSpec.main_d;
-
-	  // Note: Using env.VM references rather than local var references throughout this section to allow
-	  // for external users to override these as pseudo-supported APIs.
-	  env.VM.checkRevision(templateSpec.compiler);
-
-	  // backwards compatibility for precompiled templates with compiler-version 7 (<4.3.0)
-	  var templateWasPrecompiledWithCompilerV7 = templateSpec.compiler && templateSpec.compiler[0] === 7;
-
-	  function invokePartialWrapper(partial, context, options) {
-	    if (options.hash) {
-	      context = Utils.extend({}, context, options.hash);
-	      if (options.ids) {
-	        options.ids[0] = true;
-	      }
-	    }
-	    partial = env.VM.resolvePartial.call(this, partial, context, options);
-
-	    var extendedOptions = Utils.extend({}, options, {
-	      hooks: this.hooks,
-	      protoAccessControl: this.protoAccessControl
-	    });
-
-	    var result = env.VM.invokePartial.call(this, partial, context, extendedOptions);
-
-	    if (result == null && env.compile) {
-	      options.partials[options.name] = env.compile(partial, templateSpec.compilerOptions, env);
-	      result = options.partials[options.name](context, extendedOptions);
-	    }
-	    if (result != null) {
-	      if (options.indent) {
-	        var lines = result.split('\n');
-	        for (var i = 0, l = lines.length; i < l; i++) {
-	          if (!lines[i] && i + 1 === l) {
-	            break;
-	          }
-
-	          lines[i] = options.indent + lines[i];
-	        }
-	        result = lines.join('\n');
-	      }
-	      return result;
-	    } else {
-	      throw new _exception2['default']('The partial ' + options.name + ' could not be compiled when running in runtime-only mode');
-	    }
-	  }
-
-	  // Just add water
-	  var container = {
-	    strict: function strict(obj, name, loc) {
-	      if (!obj || !(name in obj)) {
-	        throw new _exception2['default']('"' + name + '" not defined in ' + obj, {
-	          loc: loc
-	        });
-	      }
-	      return container.lookupProperty(obj, name);
-	    },
-	    lookupProperty: function lookupProperty(parent, propertyName) {
-	      var result = parent[propertyName];
-	      if (result == null) {
-	        return result;
-	      }
-	      if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
-	        return result;
-	      }
-
-	      if (_internalProtoAccess.resultIsAllowed(result, container.protoAccessControl, propertyName)) {
-	        return result;
-	      }
-	      return undefined;
-	    },
-	    lookup: function lookup(depths, name) {
-	      var len = depths.length;
-	      for (var i = 0; i < len; i++) {
-	        var result = depths[i] && container.lookupProperty(depths[i], name);
-	        if (result != null) {
-	          return depths[i][name];
-	        }
-	      }
-	    },
-	    lambda: function lambda(current, context) {
-	      return typeof current === 'function' ? current.call(context) : current;
-	    },
-
-	    escapeExpression: Utils.escapeExpression,
-	    invokePartial: invokePartialWrapper,
-
-	    fn: function fn(i) {
-	      var ret = templateSpec[i];
-	      ret.decorator = templateSpec[i + '_d'];
-	      return ret;
-	    },
-
-	    programs: [],
-	    program: function program(i, data, declaredBlockParams, blockParams, depths) {
-	      var programWrapper = this.programs[i],
-	          fn = this.fn(i);
-	      if (data || depths || blockParams || declaredBlockParams) {
-	        programWrapper = wrapProgram(this, i, fn, data, declaredBlockParams, blockParams, depths);
-	      } else if (!programWrapper) {
-	        programWrapper = this.programs[i] = wrapProgram(this, i, fn);
-	      }
-	      return programWrapper;
-	    },
-
-	    data: function data(value, depth) {
-	      while (value && depth--) {
-	        value = value._parent;
-	      }
-	      return value;
-	    },
-	    mergeIfNeeded: function mergeIfNeeded(param, common) {
-	      var obj = param || common;
-
-	      if (param && common && param !== common) {
-	        obj = Utils.extend({}, common, param);
-	      }
-
-	      return obj;
-	    },
-	    // An empty object to use as replacement for null-contexts
-	    nullContext: Object.seal({}),
-
-	    noop: env.VM.noop,
-	    compilerInfo: templateSpec.compiler
-	  };
-
-	  function ret(context) {
-	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-	    var data = options.data;
-
-	    ret._setup(options);
-	    if (!options.partial && templateSpec.useData) {
-	      data = initData(context, data);
-	    }
-	    var depths = undefined,
-	        blockParams = templateSpec.useBlockParams ? [] : undefined;
-	    if (templateSpec.useDepths) {
-	      if (options.depths) {
-	        depths = context != options.depths[0] ? [context].concat(options.depths) : options.depths;
-	      } else {
-	        depths = [context];
-	      }
-	    }
-
-	    function main(context /*, options*/) {
-	      return '' + templateSpec.main(container, context, container.helpers, container.partials, data, blockParams, depths);
-	    }
-
-	    main = executeDecorators(templateSpec.main, main, container, options.depths || [], data, blockParams);
-	    return main(context, options);
-	  }
-
-	  ret.isTop = true;
-
-	  ret._setup = function (options) {
-	    if (!options.partial) {
-	      var mergedHelpers = Utils.extend({}, env.helpers, options.helpers);
-	      wrapHelpersToPassLookupProperty(mergedHelpers, container);
-	      container.helpers = mergedHelpers;
-
-	      if (templateSpec.usePartial) {
-	        // Use mergeIfNeeded here to prevent compiling global partials multiple times
-	        container.partials = container.mergeIfNeeded(options.partials, env.partials);
-	      }
-	      if (templateSpec.usePartial || templateSpec.useDecorators) {
-	        container.decorators = Utils.extend({}, env.decorators, options.decorators);
-	      }
-
-	      container.hooks = {};
-	      container.protoAccessControl = _internalProtoAccess.createProtoAccessControl(options);
-
-	      var keepHelperInHelpers = options.allowCallsToHelperMissing || templateWasPrecompiledWithCompilerV7;
-	      _helpers.moveHelperToHooks(container, 'helperMissing', keepHelperInHelpers);
-	      _helpers.moveHelperToHooks(container, 'blockHelperMissing', keepHelperInHelpers);
-	    } else {
-	      container.protoAccessControl = options.protoAccessControl; // internal option
-	      container.helpers = options.helpers;
-	      container.partials = options.partials;
-	      container.decorators = options.decorators;
-	      container.hooks = options.hooks;
-	    }
-	  };
-
-	  ret._child = function (i, data, blockParams, depths) {
-	    if (templateSpec.useBlockParams && !blockParams) {
-	      throw new _exception2['default']('must pass block params');
-	    }
-	    if (templateSpec.useDepths && !depths) {
-	      throw new _exception2['default']('must pass parent depths');
-	    }
-
-	    return wrapProgram(container, i, templateSpec[i], data, 0, blockParams, depths);
-	  };
-	  return ret;
-	}
-
-	function wrapProgram(container, i, fn, data, declaredBlockParams, blockParams, depths) {
-	  function prog(context) {
-	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-	    var currentDepths = depths;
-	    if (depths && context != depths[0] && !(context === container.nullContext && depths[0] === null)) {
-	      currentDepths = [context].concat(depths);
-	    }
-
-	    return fn(container, context, container.helpers, container.partials, options.data || data, blockParams && [options.blockParams].concat(blockParams), currentDepths);
-	  }
-
-	  prog = executeDecorators(fn, prog, container, depths, data, blockParams);
-
-	  prog.program = i;
-	  prog.depth = depths ? depths.length : 0;
-	  prog.blockParams = declaredBlockParams || 0;
-	  return prog;
-	}
-
-	/**
-	 * This is currently part of the official API, therefore implementation details should not be changed.
-	 */
-
-	function resolvePartial(partial, context, options) {
-	  if (!partial) {
-	    if (options.name === '@partial-block') {
-	      partial = options.data['partial-block'];
-	    } else {
-	      partial = options.partials[options.name];
-	    }
-	  } else if (!partial.call && !options.name) {
-	    // This is a dynamic partial that returned a string
-	    options.name = partial;
-	    partial = options.partials[partial];
-	  }
-	  return partial;
-	}
-
-	function invokePartial(partial, context, options) {
-	  // Use the current closure context to save the partial-block if this partial
-	  var currentPartialBlock = options.data && options.data['partial-block'];
-	  options.partial = true;
-	  if (options.ids) {
-	    options.data.contextPath = options.ids[0] || options.data.contextPath;
-	  }
-
-	  var partialBlock = undefined;
-	  if (options.fn && options.fn !== noop) {
-	    (function () {
-	      options.data = _base.createFrame(options.data);
-	      // Wrapper function to get access to currentPartialBlock from the closure
-	      var fn = options.fn;
-	      partialBlock = options.data['partial-block'] = function partialBlockWrapper(context) {
-	        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-	        // Restore the partial-block from the closure for the execution of the block
-	        // i.e. the part inside the block of the partial call.
-	        options.data = _base.createFrame(options.data);
-	        options.data['partial-block'] = currentPartialBlock;
-	        return fn(context, options);
-	      };
-	      if (fn.partials) {
-	        options.partials = Utils.extend({}, options.partials, fn.partials);
-	      }
-	    })();
-	  }
-
-	  if (partial === undefined && partialBlock) {
-	    partial = partialBlock;
-	  }
-
-	  if (partial === undefined) {
-	    throw new _exception2['default']('The partial ' + options.name + ' could not be found');
-	  } else if (partial instanceof Function) {
-	    return partial(context, options);
-	  }
-	}
-
-	function noop() {
-	  return '';
-	}
-
-	function initData(context, data) {
-	  if (!data || !('root' in data)) {
-	    data = data ? _base.createFrame(data) : {};
-	    data.root = context;
-	  }
-	  return data;
-	}
-
-	function executeDecorators(fn, prog, container, depths, data, blockParams) {
-	  if (fn.decorator) {
-	    var props = {};
-	    prog = fn.decorator(prog, props, container, depths && depths[0], data, blockParams, depths);
-	    Utils.extend(prog, props);
-	  }
-	  return prog;
-	}
-
-	function wrapHelpersToPassLookupProperty(mergedHelpers, container) {
-	  Object.keys(mergedHelpers).forEach(function (helperName) {
-	    var helper = mergedHelpers[helperName];
-	    mergedHelpers[helperName] = passLookupPropertyOption(helper, container);
-	  });
-	}
-
-	function passLookupPropertyOption(helper, container) {
-	  var lookupProperty = container.lookupProperty;
-	  return _internalWrapHelper.wrapHelper(helper, function (options) {
-	    return Utils.extend({ lookupProperty: lookupProperty }, options);
-	  });
-	}
-	
-	return runtime;
-}
-
-var noConflict = {exports: {}};
-
-/* global globalThis */
-
-var hasRequiredNoConflict;
-
-function requireNoConflict () {
-	if (hasRequiredNoConflict) return noConflict.exports;
-	hasRequiredNoConflict = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-
-		exports['default'] = function (Handlebars) {
-		  /* istanbul ignore next */
-		  // https://mathiasbynens.be/notes/globalthis
-		  (function () {
-		    if (typeof globalThis === 'object') return;
-		    Object.prototype.__defineGetter__('__magic__', function () {
-		      return this;
-		    });
-		    __magic__.globalThis = __magic__; // eslint-disable-line no-undef
-		    delete Object.prototype.__magic__;
-		  })();
-
-		  var $Handlebars = globalThis.Handlebars;
-
-		  /* istanbul ignore next */
-		  Handlebars.noConflict = function () {
-		    if (globalThis.Handlebars === Handlebars) {
-		      globalThis.Handlebars = $Handlebars;
-		    }
-		    return Handlebars;
-		  };
-		};
-
-		module.exports = exports['default'];
-		
-	} (noConflict, noConflict.exports));
-	return noConflict.exports;
-}
-
-var hasRequiredHandlebars_runtime;
-
-function requireHandlebars_runtime () {
-	if (hasRequiredHandlebars_runtime) return handlebars_runtime.exports;
-	hasRequiredHandlebars_runtime = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		// istanbul ignore next
-
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-		// istanbul ignore next
-
-		function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-
-		var _handlebarsBase = requireBase$1();
-
-		var base = _interopRequireWildcard(_handlebarsBase);
-
-		// Each of these augment the Handlebars object. No need to setup here.
-		// (This is done to easily share code between commonjs and browse envs)
-
-		var _handlebarsSafeString = requireSafeString();
-
-		var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
-
-		var _handlebarsException = requireException();
-
-		var _handlebarsException2 = _interopRequireDefault(_handlebarsException);
-
-		var _handlebarsUtils = requireUtils();
-
-		var Utils = _interopRequireWildcard(_handlebarsUtils);
-
-		var _handlebarsRuntime = requireRuntime();
-
-		var runtime = _interopRequireWildcard(_handlebarsRuntime);
-
-		var _handlebarsNoConflict = requireNoConflict();
-
-		var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
-
-		// For compatibility and usage outside of module systems, make the Handlebars object a namespace
-		function create() {
-		  var hb = new base.HandlebarsEnvironment();
-
-		  Utils.extend(hb, base);
-		  hb.SafeString = _handlebarsSafeString2['default'];
-		  hb.Exception = _handlebarsException2['default'];
-		  hb.Utils = Utils;
-		  hb.escapeExpression = Utils.escapeExpression;
-
-		  hb.VM = runtime;
-		  hb.template = function (spec) {
-		    return runtime.template(spec, hb);
-		  };
-
-		  return hb;
-		}
-
-		var inst = create();
-		inst.create = create;
-
-		_handlebarsNoConflict2['default'](inst);
-
-		inst['default'] = inst;
-
-		exports['default'] = inst;
-		module.exports = exports['default'];
-		
-	} (handlebars_runtime, handlebars_runtime.exports));
-	return handlebars_runtime.exports;
-}
-
-var ast = {exports: {}};
-
-var hasRequiredAst;
-
-function requireAst () {
-	if (hasRequiredAst) return ast.exports;
-	hasRequiredAst = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		var AST = {
-		  // Public API used to evaluate derived attributes regarding AST nodes
-		  helpers: {
-		    // a mustache is definitely a helper if:
-		    // * it is an eligible helper, and
-		    // * it has at least one parameter or hash segment
-		    helperExpression: function helperExpression(node) {
-		      return node.type === 'SubExpression' || (node.type === 'MustacheStatement' || node.type === 'BlockStatement') && !!(node.params && node.params.length || node.hash);
-		    },
-
-		    scopedId: function scopedId(path) {
-		      return (/^\.|this\b/.test(path.original)
-		      );
-		    },
-
-		    // an ID is simple if it only has one part, and that part is not
-		    // `..` or `this`.
-		    simpleId: function simpleId(path) {
-		      return path.parts.length === 1 && !AST.helpers.scopedId(path) && !path.depth;
-		    }
-		  }
-		};
-
-		// Must be exported as an object rather than the root of the module as the jison lexer
-		// must modify the object to operate properly.
-		exports['default'] = AST;
-		module.exports = exports['default'];
-		
-	} (ast, ast.exports));
-	return ast.exports;
-}
-
-var base = {};
-
-var parser = {exports: {}};
-
-var hasRequiredParser;
-
-function requireParser () {
-	if (hasRequiredParser) return parser.exports;
-	hasRequiredParser = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		var handlebars = (function () {
-		    var parser = { trace: function trace() {},
-		        yy: {},
-		        symbols_: { "error": 2, "root": 3, "program": 4, "EOF": 5, "program_repetition0": 6, "statement": 7, "mustache": 8, "block": 9, "rawBlock": 10, "partial": 11, "partialBlock": 12, "content": 13, "COMMENT": 14, "CONTENT": 15, "openRawBlock": 16, "rawBlock_repetition0": 17, "END_RAW_BLOCK": 18, "OPEN_RAW_BLOCK": 19, "helperName": 20, "openRawBlock_repetition0": 21, "openRawBlock_option0": 22, "CLOSE_RAW_BLOCK": 23, "openBlock": 24, "block_option0": 25, "closeBlock": 26, "openInverse": 27, "block_option1": 28, "OPEN_BLOCK": 29, "openBlock_repetition0": 30, "openBlock_option0": 31, "openBlock_option1": 32, "CLOSE": 33, "OPEN_INVERSE": 34, "openInverse_repetition0": 35, "openInverse_option0": 36, "openInverse_option1": 37, "openInverseChain": 38, "OPEN_INVERSE_CHAIN": 39, "openInverseChain_repetition0": 40, "openInverseChain_option0": 41, "openInverseChain_option1": 42, "inverseAndProgram": 43, "INVERSE": 44, "inverseChain": 45, "inverseChain_option0": 46, "OPEN_ENDBLOCK": 47, "OPEN": 48, "mustache_repetition0": 49, "mustache_option0": 50, "OPEN_UNESCAPED": 51, "mustache_repetition1": 52, "mustache_option1": 53, "CLOSE_UNESCAPED": 54, "OPEN_PARTIAL": 55, "partialName": 56, "partial_repetition0": 57, "partial_option0": 58, "openPartialBlock": 59, "OPEN_PARTIAL_BLOCK": 60, "openPartialBlock_repetition0": 61, "openPartialBlock_option0": 62, "param": 63, "sexpr": 64, "OPEN_SEXPR": 65, "sexpr_repetition0": 66, "sexpr_option0": 67, "CLOSE_SEXPR": 68, "hash": 69, "hash_repetition_plus0": 70, "hashSegment": 71, "ID": 72, "EQUALS": 73, "blockParams": 74, "OPEN_BLOCK_PARAMS": 75, "blockParams_repetition_plus0": 76, "CLOSE_BLOCK_PARAMS": 77, "path": 78, "dataName": 79, "STRING": 80, "NUMBER": 81, "BOOLEAN": 82, "UNDEFINED": 83, "NULL": 84, "DATA": 85, "pathSegments": 86, "SEP": 87, "$accept": 0, "$end": 1 },
-		        terminals_: { 2: "error", 5: "EOF", 14: "COMMENT", 15: "CONTENT", 18: "END_RAW_BLOCK", 19: "OPEN_RAW_BLOCK", 23: "CLOSE_RAW_BLOCK", 29: "OPEN_BLOCK", 33: "CLOSE", 34: "OPEN_INVERSE", 39: "OPEN_INVERSE_CHAIN", 44: "INVERSE", 47: "OPEN_ENDBLOCK", 48: "OPEN", 51: "OPEN_UNESCAPED", 54: "CLOSE_UNESCAPED", 55: "OPEN_PARTIAL", 60: "OPEN_PARTIAL_BLOCK", 65: "OPEN_SEXPR", 68: "CLOSE_SEXPR", 72: "ID", 73: "EQUALS", 75: "OPEN_BLOCK_PARAMS", 77: "CLOSE_BLOCK_PARAMS", 80: "STRING", 81: "NUMBER", 82: "BOOLEAN", 83: "UNDEFINED", 84: "NULL", 85: "DATA", 87: "SEP" },
-		        productions_: [0, [3, 2], [4, 1], [7, 1], [7, 1], [7, 1], [7, 1], [7, 1], [7, 1], [7, 1], [13, 1], [10, 3], [16, 5], [9, 4], [9, 4], [24, 6], [27, 6], [38, 6], [43, 2], [45, 3], [45, 1], [26, 3], [8, 5], [8, 5], [11, 5], [12, 3], [59, 5], [63, 1], [63, 1], [64, 5], [69, 1], [71, 3], [74, 3], [20, 1], [20, 1], [20, 1], [20, 1], [20, 1], [20, 1], [20, 1], [56, 1], [56, 1], [79, 2], [78, 1], [86, 3], [86, 1], [6, 0], [6, 2], [17, 0], [17, 2], [21, 0], [21, 2], [22, 0], [22, 1], [25, 0], [25, 1], [28, 0], [28, 1], [30, 0], [30, 2], [31, 0], [31, 1], [32, 0], [32, 1], [35, 0], [35, 2], [36, 0], [36, 1], [37, 0], [37, 1], [40, 0], [40, 2], [41, 0], [41, 1], [42, 0], [42, 1], [46, 0], [46, 1], [49, 0], [49, 2], [50, 0], [50, 1], [52, 0], [52, 2], [53, 0], [53, 1], [57, 0], [57, 2], [58, 0], [58, 1], [61, 0], [61, 2], [62, 0], [62, 1], [66, 0], [66, 2], [67, 0], [67, 1], [70, 1], [70, 2], [76, 1], [76, 2]],
-		        performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate, $$, _$) {
-
-		            var $0 = $$.length - 1;
-		            switch (yystate) {
-		                case 1:
-		                    return $$[$0 - 1];
-		                case 2:
-		                    this.$ = yy.prepareProgram($$[$0]);
-		                    break;
-		                case 3:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 4:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 5:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 6:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 7:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 8:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 9:
-		                    this.$ = {
-		                        type: 'CommentStatement',
-		                        value: yy.stripComment($$[$0]),
-		                        strip: yy.stripFlags($$[$0], $$[$0]),
-		                        loc: yy.locInfo(this._$)
-		                    };
-
-		                    break;
-		                case 10:
-		                    this.$ = {
-		                        type: 'ContentStatement',
-		                        original: $$[$0],
-		                        value: $$[$0],
-		                        loc: yy.locInfo(this._$)
-		                    };
-
-		                    break;
-		                case 11:
-		                    this.$ = yy.prepareRawBlock($$[$0 - 2], $$[$0 - 1], $$[$0], this._$);
-		                    break;
-		                case 12:
-		                    this.$ = { path: $$[$0 - 3], params: $$[$0 - 2], hash: $$[$0 - 1] };
-		                    break;
-		                case 13:
-		                    this.$ = yy.prepareBlock($$[$0 - 3], $$[$0 - 2], $$[$0 - 1], $$[$0], false, this._$);
-		                    break;
-		                case 14:
-		                    this.$ = yy.prepareBlock($$[$0 - 3], $$[$0 - 2], $$[$0 - 1], $$[$0], true, this._$);
-		                    break;
-		                case 15:
-		                    this.$ = { open: $$[$0 - 5], path: $$[$0 - 4], params: $$[$0 - 3], hash: $$[$0 - 2], blockParams: $$[$0 - 1], strip: yy.stripFlags($$[$0 - 5], $$[$0]) };
-		                    break;
-		                case 16:
-		                    this.$ = { path: $$[$0 - 4], params: $$[$0 - 3], hash: $$[$0 - 2], blockParams: $$[$0 - 1], strip: yy.stripFlags($$[$0 - 5], $$[$0]) };
-		                    break;
-		                case 17:
-		                    this.$ = { path: $$[$0 - 4], params: $$[$0 - 3], hash: $$[$0 - 2], blockParams: $$[$0 - 1], strip: yy.stripFlags($$[$0 - 5], $$[$0]) };
-		                    break;
-		                case 18:
-		                    this.$ = { strip: yy.stripFlags($$[$0 - 1], $$[$0 - 1]), program: $$[$0] };
-		                    break;
-		                case 19:
-		                    var inverse = yy.prepareBlock($$[$0 - 2], $$[$0 - 1], $$[$0], $$[$0], false, this._$),
-		                        program = yy.prepareProgram([inverse], $$[$0 - 1].loc);
-		                    program.chained = true;
-
-		                    this.$ = { strip: $$[$0 - 2].strip, program: program, chain: true };
-
-		                    break;
-		                case 20:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 21:
-		                    this.$ = { path: $$[$0 - 1], strip: yy.stripFlags($$[$0 - 2], $$[$0]) };
-		                    break;
-		                case 22:
-		                    this.$ = yy.prepareMustache($$[$0 - 3], $$[$0 - 2], $$[$0 - 1], $$[$0 - 4], yy.stripFlags($$[$0 - 4], $$[$0]), this._$);
-		                    break;
-		                case 23:
-		                    this.$ = yy.prepareMustache($$[$0 - 3], $$[$0 - 2], $$[$0 - 1], $$[$0 - 4], yy.stripFlags($$[$0 - 4], $$[$0]), this._$);
-		                    break;
-		                case 24:
-		                    this.$ = {
-		                        type: 'PartialStatement',
-		                        name: $$[$0 - 3],
-		                        params: $$[$0 - 2],
-		                        hash: $$[$0 - 1],
-		                        indent: '',
-		                        strip: yy.stripFlags($$[$0 - 4], $$[$0]),
-		                        loc: yy.locInfo(this._$)
-		                    };
-
-		                    break;
-		                case 25:
-		                    this.$ = yy.preparePartialBlock($$[$0 - 2], $$[$0 - 1], $$[$0], this._$);
-		                    break;
-		                case 26:
-		                    this.$ = { path: $$[$0 - 3], params: $$[$0 - 2], hash: $$[$0 - 1], strip: yy.stripFlags($$[$0 - 4], $$[$0]) };
-		                    break;
-		                case 27:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 28:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 29:
-		                    this.$ = {
-		                        type: 'SubExpression',
-		                        path: $$[$0 - 3],
-		                        params: $$[$0 - 2],
-		                        hash: $$[$0 - 1],
-		                        loc: yy.locInfo(this._$)
-		                    };
-
-		                    break;
-		                case 30:
-		                    this.$ = { type: 'Hash', pairs: $$[$0], loc: yy.locInfo(this._$) };
-		                    break;
-		                case 31:
-		                    this.$ = { type: 'HashPair', key: yy.id($$[$0 - 2]), value: $$[$0], loc: yy.locInfo(this._$) };
-		                    break;
-		                case 32:
-		                    this.$ = yy.id($$[$0 - 1]);
-		                    break;
-		                case 33:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 34:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 35:
-		                    this.$ = { type: 'StringLiteral', value: $$[$0], original: $$[$0], loc: yy.locInfo(this._$) };
-		                    break;
-		                case 36:
-		                    this.$ = { type: 'NumberLiteral', value: Number($$[$0]), original: Number($$[$0]), loc: yy.locInfo(this._$) };
-		                    break;
-		                case 37:
-		                    this.$ = { type: 'BooleanLiteral', value: $$[$0] === 'true', original: $$[$0] === 'true', loc: yy.locInfo(this._$) };
-		                    break;
-		                case 38:
-		                    this.$ = { type: 'UndefinedLiteral', original: undefined, value: undefined, loc: yy.locInfo(this._$) };
-		                    break;
-		                case 39:
-		                    this.$ = { type: 'NullLiteral', original: null, value: null, loc: yy.locInfo(this._$) };
-		                    break;
-		                case 40:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 41:
-		                    this.$ = $$[$0];
-		                    break;
-		                case 42:
-		                    this.$ = yy.preparePath(true, $$[$0], this._$);
-		                    break;
-		                case 43:
-		                    this.$ = yy.preparePath(false, $$[$0], this._$);
-		                    break;
-		                case 44:
-		                    $$[$0 - 2].push({ part: yy.id($$[$0]), original: $$[$0], separator: $$[$0 - 1] });this.$ = $$[$0 - 2];
-		                    break;
-		                case 45:
-		                    this.$ = [{ part: yy.id($$[$0]), original: $$[$0] }];
-		                    break;
-		                case 46:
-		                    this.$ = [];
-		                    break;
-		                case 47:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		                case 48:
-		                    this.$ = [];
-		                    break;
-		                case 49:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		                case 50:
-		                    this.$ = [];
-		                    break;
-		                case 51:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		                case 58:
-		                    this.$ = [];
-		                    break;
-		                case 59:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		                case 64:
-		                    this.$ = [];
-		                    break;
-		                case 65:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		                case 70:
-		                    this.$ = [];
-		                    break;
-		                case 71:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		                case 78:
-		                    this.$ = [];
-		                    break;
-		                case 79:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		                case 82:
-		                    this.$ = [];
-		                    break;
-		                case 83:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		                case 86:
-		                    this.$ = [];
-		                    break;
-		                case 87:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		                case 90:
-		                    this.$ = [];
-		                    break;
-		                case 91:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		                case 94:
-		                    this.$ = [];
-		                    break;
-		                case 95:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		                case 98:
-		                    this.$ = [$$[$0]];
-		                    break;
-		                case 99:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		                case 100:
-		                    this.$ = [$$[$0]];
-		                    break;
-		                case 101:
-		                    $$[$0 - 1].push($$[$0]);
-		                    break;
-		            }
-		        },
-		        table: [{ 3: 1, 4: 2, 5: [2, 46], 6: 3, 14: [2, 46], 15: [2, 46], 19: [2, 46], 29: [2, 46], 34: [2, 46], 48: [2, 46], 51: [2, 46], 55: [2, 46], 60: [2, 46] }, { 1: [3] }, { 5: [1, 4] }, { 5: [2, 2], 7: 5, 8: 6, 9: 7, 10: 8, 11: 9, 12: 10, 13: 11, 14: [1, 12], 15: [1, 20], 16: 17, 19: [1, 23], 24: 15, 27: 16, 29: [1, 21], 34: [1, 22], 39: [2, 2], 44: [2, 2], 47: [2, 2], 48: [1, 13], 51: [1, 14], 55: [1, 18], 59: 19, 60: [1, 24] }, { 1: [2, 1] }, { 5: [2, 47], 14: [2, 47], 15: [2, 47], 19: [2, 47], 29: [2, 47], 34: [2, 47], 39: [2, 47], 44: [2, 47], 47: [2, 47], 48: [2, 47], 51: [2, 47], 55: [2, 47], 60: [2, 47] }, { 5: [2, 3], 14: [2, 3], 15: [2, 3], 19: [2, 3], 29: [2, 3], 34: [2, 3], 39: [2, 3], 44: [2, 3], 47: [2, 3], 48: [2, 3], 51: [2, 3], 55: [2, 3], 60: [2, 3] }, { 5: [2, 4], 14: [2, 4], 15: [2, 4], 19: [2, 4], 29: [2, 4], 34: [2, 4], 39: [2, 4], 44: [2, 4], 47: [2, 4], 48: [2, 4], 51: [2, 4], 55: [2, 4], 60: [2, 4] }, { 5: [2, 5], 14: [2, 5], 15: [2, 5], 19: [2, 5], 29: [2, 5], 34: [2, 5], 39: [2, 5], 44: [2, 5], 47: [2, 5], 48: [2, 5], 51: [2, 5], 55: [2, 5], 60: [2, 5] }, { 5: [2, 6], 14: [2, 6], 15: [2, 6], 19: [2, 6], 29: [2, 6], 34: [2, 6], 39: [2, 6], 44: [2, 6], 47: [2, 6], 48: [2, 6], 51: [2, 6], 55: [2, 6], 60: [2, 6] }, { 5: [2, 7], 14: [2, 7], 15: [2, 7], 19: [2, 7], 29: [2, 7], 34: [2, 7], 39: [2, 7], 44: [2, 7], 47: [2, 7], 48: [2, 7], 51: [2, 7], 55: [2, 7], 60: [2, 7] }, { 5: [2, 8], 14: [2, 8], 15: [2, 8], 19: [2, 8], 29: [2, 8], 34: [2, 8], 39: [2, 8], 44: [2, 8], 47: [2, 8], 48: [2, 8], 51: [2, 8], 55: [2, 8], 60: [2, 8] }, { 5: [2, 9], 14: [2, 9], 15: [2, 9], 19: [2, 9], 29: [2, 9], 34: [2, 9], 39: [2, 9], 44: [2, 9], 47: [2, 9], 48: [2, 9], 51: [2, 9], 55: [2, 9], 60: [2, 9] }, { 20: 25, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 36, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 4: 37, 6: 3, 14: [2, 46], 15: [2, 46], 19: [2, 46], 29: [2, 46], 34: [2, 46], 39: [2, 46], 44: [2, 46], 47: [2, 46], 48: [2, 46], 51: [2, 46], 55: [2, 46], 60: [2, 46] }, { 4: 38, 6: 3, 14: [2, 46], 15: [2, 46], 19: [2, 46], 29: [2, 46], 34: [2, 46], 44: [2, 46], 47: [2, 46], 48: [2, 46], 51: [2, 46], 55: [2, 46], 60: [2, 46] }, { 15: [2, 48], 17: 39, 18: [2, 48] }, { 20: 41, 56: 40, 64: 42, 65: [1, 43], 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 4: 44, 6: 3, 14: [2, 46], 15: [2, 46], 19: [2, 46], 29: [2, 46], 34: [2, 46], 47: [2, 46], 48: [2, 46], 51: [2, 46], 55: [2, 46], 60: [2, 46] }, { 5: [2, 10], 14: [2, 10], 15: [2, 10], 18: [2, 10], 19: [2, 10], 29: [2, 10], 34: [2, 10], 39: [2, 10], 44: [2, 10], 47: [2, 10], 48: [2, 10], 51: [2, 10], 55: [2, 10], 60: [2, 10] }, { 20: 45, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 46, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 47, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 41, 56: 48, 64: 42, 65: [1, 43], 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 33: [2, 78], 49: 49, 65: [2, 78], 72: [2, 78], 80: [2, 78], 81: [2, 78], 82: [2, 78], 83: [2, 78], 84: [2, 78], 85: [2, 78] }, { 23: [2, 33], 33: [2, 33], 54: [2, 33], 65: [2, 33], 68: [2, 33], 72: [2, 33], 75: [2, 33], 80: [2, 33], 81: [2, 33], 82: [2, 33], 83: [2, 33], 84: [2, 33], 85: [2, 33] }, { 23: [2, 34], 33: [2, 34], 54: [2, 34], 65: [2, 34], 68: [2, 34], 72: [2, 34], 75: [2, 34], 80: [2, 34], 81: [2, 34], 82: [2, 34], 83: [2, 34], 84: [2, 34], 85: [2, 34] }, { 23: [2, 35], 33: [2, 35], 54: [2, 35], 65: [2, 35], 68: [2, 35], 72: [2, 35], 75: [2, 35], 80: [2, 35], 81: [2, 35], 82: [2, 35], 83: [2, 35], 84: [2, 35], 85: [2, 35] }, { 23: [2, 36], 33: [2, 36], 54: [2, 36], 65: [2, 36], 68: [2, 36], 72: [2, 36], 75: [2, 36], 80: [2, 36], 81: [2, 36], 82: [2, 36], 83: [2, 36], 84: [2, 36], 85: [2, 36] }, { 23: [2, 37], 33: [2, 37], 54: [2, 37], 65: [2, 37], 68: [2, 37], 72: [2, 37], 75: [2, 37], 80: [2, 37], 81: [2, 37], 82: [2, 37], 83: [2, 37], 84: [2, 37], 85: [2, 37] }, { 23: [2, 38], 33: [2, 38], 54: [2, 38], 65: [2, 38], 68: [2, 38], 72: [2, 38], 75: [2, 38], 80: [2, 38], 81: [2, 38], 82: [2, 38], 83: [2, 38], 84: [2, 38], 85: [2, 38] }, { 23: [2, 39], 33: [2, 39], 54: [2, 39], 65: [2, 39], 68: [2, 39], 72: [2, 39], 75: [2, 39], 80: [2, 39], 81: [2, 39], 82: [2, 39], 83: [2, 39], 84: [2, 39], 85: [2, 39] }, { 23: [2, 43], 33: [2, 43], 54: [2, 43], 65: [2, 43], 68: [2, 43], 72: [2, 43], 75: [2, 43], 80: [2, 43], 81: [2, 43], 82: [2, 43], 83: [2, 43], 84: [2, 43], 85: [2, 43], 87: [1, 50] }, { 72: [1, 35], 86: 51 }, { 23: [2, 45], 33: [2, 45], 54: [2, 45], 65: [2, 45], 68: [2, 45], 72: [2, 45], 75: [2, 45], 80: [2, 45], 81: [2, 45], 82: [2, 45], 83: [2, 45], 84: [2, 45], 85: [2, 45], 87: [2, 45] }, { 52: 52, 54: [2, 82], 65: [2, 82], 72: [2, 82], 80: [2, 82], 81: [2, 82], 82: [2, 82], 83: [2, 82], 84: [2, 82], 85: [2, 82] }, { 25: 53, 38: 55, 39: [1, 57], 43: 56, 44: [1, 58], 45: 54, 47: [2, 54] }, { 28: 59, 43: 60, 44: [1, 58], 47: [2, 56] }, { 13: 62, 15: [1, 20], 18: [1, 61] }, { 33: [2, 86], 57: 63, 65: [2, 86], 72: [2, 86], 80: [2, 86], 81: [2, 86], 82: [2, 86], 83: [2, 86], 84: [2, 86], 85: [2, 86] }, { 33: [2, 40], 65: [2, 40], 72: [2, 40], 80: [2, 40], 81: [2, 40], 82: [2, 40], 83: [2, 40], 84: [2, 40], 85: [2, 40] }, { 33: [2, 41], 65: [2, 41], 72: [2, 41], 80: [2, 41], 81: [2, 41], 82: [2, 41], 83: [2, 41], 84: [2, 41], 85: [2, 41] }, { 20: 64, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 26: 65, 47: [1, 66] }, { 30: 67, 33: [2, 58], 65: [2, 58], 72: [2, 58], 75: [2, 58], 80: [2, 58], 81: [2, 58], 82: [2, 58], 83: [2, 58], 84: [2, 58], 85: [2, 58] }, { 33: [2, 64], 35: 68, 65: [2, 64], 72: [2, 64], 75: [2, 64], 80: [2, 64], 81: [2, 64], 82: [2, 64], 83: [2, 64], 84: [2, 64], 85: [2, 64] }, { 21: 69, 23: [2, 50], 65: [2, 50], 72: [2, 50], 80: [2, 50], 81: [2, 50], 82: [2, 50], 83: [2, 50], 84: [2, 50], 85: [2, 50] }, { 33: [2, 90], 61: 70, 65: [2, 90], 72: [2, 90], 80: [2, 90], 81: [2, 90], 82: [2, 90], 83: [2, 90], 84: [2, 90], 85: [2, 90] }, { 20: 74, 33: [2, 80], 50: 71, 63: 72, 64: 75, 65: [1, 43], 69: 73, 70: 76, 71: 77, 72: [1, 78], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 72: [1, 79] }, { 23: [2, 42], 33: [2, 42], 54: [2, 42], 65: [2, 42], 68: [2, 42], 72: [2, 42], 75: [2, 42], 80: [2, 42], 81: [2, 42], 82: [2, 42], 83: [2, 42], 84: [2, 42], 85: [2, 42], 87: [1, 50] }, { 20: 74, 53: 80, 54: [2, 84], 63: 81, 64: 75, 65: [1, 43], 69: 82, 70: 76, 71: 77, 72: [1, 78], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 26: 83, 47: [1, 66] }, { 47: [2, 55] }, { 4: 84, 6: 3, 14: [2, 46], 15: [2, 46], 19: [2, 46], 29: [2, 46], 34: [2, 46], 39: [2, 46], 44: [2, 46], 47: [2, 46], 48: [2, 46], 51: [2, 46], 55: [2, 46], 60: [2, 46] }, { 47: [2, 20] }, { 20: 85, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 4: 86, 6: 3, 14: [2, 46], 15: [2, 46], 19: [2, 46], 29: [2, 46], 34: [2, 46], 47: [2, 46], 48: [2, 46], 51: [2, 46], 55: [2, 46], 60: [2, 46] }, { 26: 87, 47: [1, 66] }, { 47: [2, 57] }, { 5: [2, 11], 14: [2, 11], 15: [2, 11], 19: [2, 11], 29: [2, 11], 34: [2, 11], 39: [2, 11], 44: [2, 11], 47: [2, 11], 48: [2, 11], 51: [2, 11], 55: [2, 11], 60: [2, 11] }, { 15: [2, 49], 18: [2, 49] }, { 20: 74, 33: [2, 88], 58: 88, 63: 89, 64: 75, 65: [1, 43], 69: 90, 70: 76, 71: 77, 72: [1, 78], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 65: [2, 94], 66: 91, 68: [2, 94], 72: [2, 94], 80: [2, 94], 81: [2, 94], 82: [2, 94], 83: [2, 94], 84: [2, 94], 85: [2, 94] }, { 5: [2, 25], 14: [2, 25], 15: [2, 25], 19: [2, 25], 29: [2, 25], 34: [2, 25], 39: [2, 25], 44: [2, 25], 47: [2, 25], 48: [2, 25], 51: [2, 25], 55: [2, 25], 60: [2, 25] }, { 20: 92, 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 74, 31: 93, 33: [2, 60], 63: 94, 64: 75, 65: [1, 43], 69: 95, 70: 76, 71: 77, 72: [1, 78], 75: [2, 60], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 74, 33: [2, 66], 36: 96, 63: 97, 64: 75, 65: [1, 43], 69: 98, 70: 76, 71: 77, 72: [1, 78], 75: [2, 66], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 74, 22: 99, 23: [2, 52], 63: 100, 64: 75, 65: [1, 43], 69: 101, 70: 76, 71: 77, 72: [1, 78], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 20: 74, 33: [2, 92], 62: 102, 63: 103, 64: 75, 65: [1, 43], 69: 104, 70: 76, 71: 77, 72: [1, 78], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 33: [1, 105] }, { 33: [2, 79], 65: [2, 79], 72: [2, 79], 80: [2, 79], 81: [2, 79], 82: [2, 79], 83: [2, 79], 84: [2, 79], 85: [2, 79] }, { 33: [2, 81] }, { 23: [2, 27], 33: [2, 27], 54: [2, 27], 65: [2, 27], 68: [2, 27], 72: [2, 27], 75: [2, 27], 80: [2, 27], 81: [2, 27], 82: [2, 27], 83: [2, 27], 84: [2, 27], 85: [2, 27] }, { 23: [2, 28], 33: [2, 28], 54: [2, 28], 65: [2, 28], 68: [2, 28], 72: [2, 28], 75: [2, 28], 80: [2, 28], 81: [2, 28], 82: [2, 28], 83: [2, 28], 84: [2, 28], 85: [2, 28] }, { 23: [2, 30], 33: [2, 30], 54: [2, 30], 68: [2, 30], 71: 106, 72: [1, 107], 75: [2, 30] }, { 23: [2, 98], 33: [2, 98], 54: [2, 98], 68: [2, 98], 72: [2, 98], 75: [2, 98] }, { 23: [2, 45], 33: [2, 45], 54: [2, 45], 65: [2, 45], 68: [2, 45], 72: [2, 45], 73: [1, 108], 75: [2, 45], 80: [2, 45], 81: [2, 45], 82: [2, 45], 83: [2, 45], 84: [2, 45], 85: [2, 45], 87: [2, 45] }, { 23: [2, 44], 33: [2, 44], 54: [2, 44], 65: [2, 44], 68: [2, 44], 72: [2, 44], 75: [2, 44], 80: [2, 44], 81: [2, 44], 82: [2, 44], 83: [2, 44], 84: [2, 44], 85: [2, 44], 87: [2, 44] }, { 54: [1, 109] }, { 54: [2, 83], 65: [2, 83], 72: [2, 83], 80: [2, 83], 81: [2, 83], 82: [2, 83], 83: [2, 83], 84: [2, 83], 85: [2, 83] }, { 54: [2, 85] }, { 5: [2, 13], 14: [2, 13], 15: [2, 13], 19: [2, 13], 29: [2, 13], 34: [2, 13], 39: [2, 13], 44: [2, 13], 47: [2, 13], 48: [2, 13], 51: [2, 13], 55: [2, 13], 60: [2, 13] }, { 38: 55, 39: [1, 57], 43: 56, 44: [1, 58], 45: 111, 46: 110, 47: [2, 76] }, { 33: [2, 70], 40: 112, 65: [2, 70], 72: [2, 70], 75: [2, 70], 80: [2, 70], 81: [2, 70], 82: [2, 70], 83: [2, 70], 84: [2, 70], 85: [2, 70] }, { 47: [2, 18] }, { 5: [2, 14], 14: [2, 14], 15: [2, 14], 19: [2, 14], 29: [2, 14], 34: [2, 14], 39: [2, 14], 44: [2, 14], 47: [2, 14], 48: [2, 14], 51: [2, 14], 55: [2, 14], 60: [2, 14] }, { 33: [1, 113] }, { 33: [2, 87], 65: [2, 87], 72: [2, 87], 80: [2, 87], 81: [2, 87], 82: [2, 87], 83: [2, 87], 84: [2, 87], 85: [2, 87] }, { 33: [2, 89] }, { 20: 74, 63: 115, 64: 75, 65: [1, 43], 67: 114, 68: [2, 96], 69: 116, 70: 76, 71: 77, 72: [1, 78], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 33: [1, 117] }, { 32: 118, 33: [2, 62], 74: 119, 75: [1, 120] }, { 33: [2, 59], 65: [2, 59], 72: [2, 59], 75: [2, 59], 80: [2, 59], 81: [2, 59], 82: [2, 59], 83: [2, 59], 84: [2, 59], 85: [2, 59] }, { 33: [2, 61], 75: [2, 61] }, { 33: [2, 68], 37: 121, 74: 122, 75: [1, 120] }, { 33: [2, 65], 65: [2, 65], 72: [2, 65], 75: [2, 65], 80: [2, 65], 81: [2, 65], 82: [2, 65], 83: [2, 65], 84: [2, 65], 85: [2, 65] }, { 33: [2, 67], 75: [2, 67] }, { 23: [1, 123] }, { 23: [2, 51], 65: [2, 51], 72: [2, 51], 80: [2, 51], 81: [2, 51], 82: [2, 51], 83: [2, 51], 84: [2, 51], 85: [2, 51] }, { 23: [2, 53] }, { 33: [1, 124] }, { 33: [2, 91], 65: [2, 91], 72: [2, 91], 80: [2, 91], 81: [2, 91], 82: [2, 91], 83: [2, 91], 84: [2, 91], 85: [2, 91] }, { 33: [2, 93] }, { 5: [2, 22], 14: [2, 22], 15: [2, 22], 19: [2, 22], 29: [2, 22], 34: [2, 22], 39: [2, 22], 44: [2, 22], 47: [2, 22], 48: [2, 22], 51: [2, 22], 55: [2, 22], 60: [2, 22] }, { 23: [2, 99], 33: [2, 99], 54: [2, 99], 68: [2, 99], 72: [2, 99], 75: [2, 99] }, { 73: [1, 108] }, { 20: 74, 63: 125, 64: 75, 65: [1, 43], 72: [1, 35], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 5: [2, 23], 14: [2, 23], 15: [2, 23], 19: [2, 23], 29: [2, 23], 34: [2, 23], 39: [2, 23], 44: [2, 23], 47: [2, 23], 48: [2, 23], 51: [2, 23], 55: [2, 23], 60: [2, 23] }, { 47: [2, 19] }, { 47: [2, 77] }, { 20: 74, 33: [2, 72], 41: 126, 63: 127, 64: 75, 65: [1, 43], 69: 128, 70: 76, 71: 77, 72: [1, 78], 75: [2, 72], 78: 26, 79: 27, 80: [1, 28], 81: [1, 29], 82: [1, 30], 83: [1, 31], 84: [1, 32], 85: [1, 34], 86: 33 }, { 5: [2, 24], 14: [2, 24], 15: [2, 24], 19: [2, 24], 29: [2, 24], 34: [2, 24], 39: [2, 24], 44: [2, 24], 47: [2, 24], 48: [2, 24], 51: [2, 24], 55: [2, 24], 60: [2, 24] }, { 68: [1, 129] }, { 65: [2, 95], 68: [2, 95], 72: [2, 95], 80: [2, 95], 81: [2, 95], 82: [2, 95], 83: [2, 95], 84: [2, 95], 85: [2, 95] }, { 68: [2, 97] }, { 5: [2, 21], 14: [2, 21], 15: [2, 21], 19: [2, 21], 29: [2, 21], 34: [2, 21], 39: [2, 21], 44: [2, 21], 47: [2, 21], 48: [2, 21], 51: [2, 21], 55: [2, 21], 60: [2, 21] }, { 33: [1, 130] }, { 33: [2, 63] }, { 72: [1, 132], 76: 131 }, { 33: [1, 133] }, { 33: [2, 69] }, { 15: [2, 12], 18: [2, 12] }, { 14: [2, 26], 15: [2, 26], 19: [2, 26], 29: [2, 26], 34: [2, 26], 47: [2, 26], 48: [2, 26], 51: [2, 26], 55: [2, 26], 60: [2, 26] }, { 23: [2, 31], 33: [2, 31], 54: [2, 31], 68: [2, 31], 72: [2, 31], 75: [2, 31] }, { 33: [2, 74], 42: 134, 74: 135, 75: [1, 120] }, { 33: [2, 71], 65: [2, 71], 72: [2, 71], 75: [2, 71], 80: [2, 71], 81: [2, 71], 82: [2, 71], 83: [2, 71], 84: [2, 71], 85: [2, 71] }, { 33: [2, 73], 75: [2, 73] }, { 23: [2, 29], 33: [2, 29], 54: [2, 29], 65: [2, 29], 68: [2, 29], 72: [2, 29], 75: [2, 29], 80: [2, 29], 81: [2, 29], 82: [2, 29], 83: [2, 29], 84: [2, 29], 85: [2, 29] }, { 14: [2, 15], 15: [2, 15], 19: [2, 15], 29: [2, 15], 34: [2, 15], 39: [2, 15], 44: [2, 15], 47: [2, 15], 48: [2, 15], 51: [2, 15], 55: [2, 15], 60: [2, 15] }, { 72: [1, 137], 77: [1, 136] }, { 72: [2, 100], 77: [2, 100] }, { 14: [2, 16], 15: [2, 16], 19: [2, 16], 29: [2, 16], 34: [2, 16], 44: [2, 16], 47: [2, 16], 48: [2, 16], 51: [2, 16], 55: [2, 16], 60: [2, 16] }, { 33: [1, 138] }, { 33: [2, 75] }, { 33: [2, 32] }, { 72: [2, 101], 77: [2, 101] }, { 14: [2, 17], 15: [2, 17], 19: [2, 17], 29: [2, 17], 34: [2, 17], 39: [2, 17], 44: [2, 17], 47: [2, 17], 48: [2, 17], 51: [2, 17], 55: [2, 17], 60: [2, 17] }],
-		        defaultActions: { 4: [2, 1], 54: [2, 55], 56: [2, 20], 60: [2, 57], 73: [2, 81], 82: [2, 85], 86: [2, 18], 90: [2, 89], 101: [2, 53], 104: [2, 93], 110: [2, 19], 111: [2, 77], 116: [2, 97], 119: [2, 63], 122: [2, 69], 135: [2, 75], 136: [2, 32] },
-		        parseError: function parseError(str, hash) {
-		            throw new Error(str);
-		        },
-		        parse: function parse(input) {
-		            var self = this,
-		                stack = [0],
-		                vstack = [null],
-		                lstack = [],
-		                table = this.table,
-		                yytext = "",
-		                yylineno = 0,
-		                yyleng = 0;
-		            this.lexer.setInput(input);
-		            this.lexer.yy = this.yy;
-		            this.yy.lexer = this.lexer;
-		            this.yy.parser = this;
-		            if (typeof this.lexer.yylloc == "undefined") this.lexer.yylloc = {};
-		            var yyloc = this.lexer.yylloc;
-		            lstack.push(yyloc);
-		            var ranges = this.lexer.options && this.lexer.options.ranges;
-		            if (typeof this.yy.parseError === "function") this.parseError = this.yy.parseError;
-		            function lex() {
-		                var token;
-		                token = self.lexer.lex() || 1;
-		                if (typeof token !== "number") {
-		                    token = self.symbols_[token] || token;
-		                }
-		                return token;
-		            }
-		            var symbol,
-		                state,
-		                action,
-		                r,
-		                yyval = {},
-		                p,
-		                len,
-		                newState,
-		                expected;
-		            while (true) {
-		                state = stack[stack.length - 1];
-		                if (this.defaultActions[state]) {
-		                    action = this.defaultActions[state];
-		                } else {
-		                    if (symbol === null || typeof symbol == "undefined") {
-		                        symbol = lex();
-		                    }
-		                    action = table[state] && table[state][symbol];
-		                }
-		                if (typeof action === "undefined" || !action.length || !action[0]) {
-		                    var errStr = "";
-		                    {
-		                        expected = [];
-		                        for (p in table[state]) if (this.terminals_[p] && p > 2) {
-		                            expected.push("'" + this.terminals_[p] + "'");
-		                        }
-		                        if (this.lexer.showPosition) {
-		                            errStr = "Parse error on line " + (yylineno + 1) + ":\n" + this.lexer.showPosition() + "\nExpecting " + expected.join(", ") + ", got '" + (this.terminals_[symbol] || symbol) + "'";
-		                        } else {
-		                            errStr = "Parse error on line " + (yylineno + 1) + ": Unexpected " + (symbol == 1 ? "end of input" : "'" + (this.terminals_[symbol] || symbol) + "'");
-		                        }
-		                        this.parseError(errStr, { text: this.lexer.match, token: this.terminals_[symbol] || symbol, line: this.lexer.yylineno, loc: yyloc, expected: expected });
-		                    }
-		                }
-		                if (action[0] instanceof Array && action.length > 1) {
-		                    throw new Error("Parse Error: multiple actions possible at state: " + state + ", token: " + symbol);
-		                }
-		                switch (action[0]) {
-		                    case 1:
-		                        stack.push(symbol);
-		                        vstack.push(this.lexer.yytext);
-		                        lstack.push(this.lexer.yylloc);
-		                        stack.push(action[1]);
-		                        symbol = null;
-		                        {
-		                            yyleng = this.lexer.yyleng;
-		                            yytext = this.lexer.yytext;
-		                            yylineno = this.lexer.yylineno;
-		                            yyloc = this.lexer.yylloc;
-		                        }
-		                        break;
-		                    case 2:
-		                        len = this.productions_[action[1]][1];
-		                        yyval.$ = vstack[vstack.length - len];
-		                        yyval._$ = { first_line: lstack[lstack.length - (len || 1)].first_line, last_line: lstack[lstack.length - 1].last_line, first_column: lstack[lstack.length - (len || 1)].first_column, last_column: lstack[lstack.length - 1].last_column };
-		                        if (ranges) {
-		                            yyval._$.range = [lstack[lstack.length - (len || 1)].range[0], lstack[lstack.length - 1].range[1]];
-		                        }
-		                        r = this.performAction.call(yyval, yytext, yyleng, yylineno, this.yy, action[1], vstack, lstack);
-		                        if (typeof r !== "undefined") {
-		                            return r;
-		                        }
-		                        if (len) {
-		                            stack = stack.slice(0, -1 * len * 2);
-		                            vstack = vstack.slice(0, -1 * len);
-		                            lstack = lstack.slice(0, -1 * len);
-		                        }
-		                        stack.push(this.productions_[action[1]][0]);
-		                        vstack.push(yyval.$);
-		                        lstack.push(yyval._$);
-		                        newState = table[stack[stack.length - 2]][stack[stack.length - 1]];
-		                        stack.push(newState);
-		                        break;
-		                    case 3:
-		                        return true;
-		                }
-		            }
-		            return true;
-		        }
-		    };
-		    /* Jison generated lexer */
-		    var lexer = (function () {
-		        var lexer = { EOF: 1,
-		            parseError: function parseError(str, hash) {
-		                if (this.yy.parser) {
-		                    this.yy.parser.parseError(str, hash);
-		                } else {
-		                    throw new Error(str);
-		                }
-		            },
-		            setInput: function setInput(input) {
-		                this._input = input;
-		                this._more = this._less = this.done = false;
-		                this.yylineno = this.yyleng = 0;
-		                this.yytext = this.matched = this.match = '';
-		                this.conditionStack = ['INITIAL'];
-		                this.yylloc = { first_line: 1, first_column: 0, last_line: 1, last_column: 0 };
-		                if (this.options.ranges) this.yylloc.range = [0, 0];
-		                this.offset = 0;
-		                return this;
-		            },
-		            input: function input() {
-		                var ch = this._input[0];
-		                this.yytext += ch;
-		                this.yyleng++;
-		                this.offset++;
-		                this.match += ch;
-		                this.matched += ch;
-		                var lines = ch.match(/(?:\r\n?|\n).*/g);
-		                if (lines) {
-		                    this.yylineno++;
-		                    this.yylloc.last_line++;
-		                } else {
-		                    this.yylloc.last_column++;
-		                }
-		                if (this.options.ranges) this.yylloc.range[1]++;
-
-		                this._input = this._input.slice(1);
-		                return ch;
-		            },
-		            unput: function unput(ch) {
-		                var len = ch.length;
-		                var lines = ch.split(/(?:\r\n?|\n)/g);
-
-		                this._input = ch + this._input;
-		                this.yytext = this.yytext.substr(0, this.yytext.length - len - 1);
-		                //this.yyleng -= len;
-		                this.offset -= len;
-		                var oldLines = this.match.split(/(?:\r\n?|\n)/g);
-		                this.match = this.match.substr(0, this.match.length - 1);
-		                this.matched = this.matched.substr(0, this.matched.length - 1);
-
-		                if (lines.length - 1) this.yylineno -= lines.length - 1;
-		                var r = this.yylloc.range;
-
-		                this.yylloc = { first_line: this.yylloc.first_line,
-		                    last_line: this.yylineno + 1,
-		                    first_column: this.yylloc.first_column,
-		                    last_column: lines ? (lines.length === oldLines.length ? this.yylloc.first_column : 0) + oldLines[oldLines.length - lines.length].length - lines[0].length : this.yylloc.first_column - len
-		                };
-
-		                if (this.options.ranges) {
-		                    this.yylloc.range = [r[0], r[0] + this.yyleng - len];
-		                }
-		                return this;
-		            },
-		            more: function more() {
-		                this._more = true;
-		                return this;
-		            },
-		            less: function less(n) {
-		                this.unput(this.match.slice(n));
-		            },
-		            pastInput: function pastInput() {
-		                var past = this.matched.substr(0, this.matched.length - this.match.length);
-		                return (past.length > 20 ? '...' : '') + past.substr(-20).replace(/\n/g, "");
-		            },
-		            upcomingInput: function upcomingInput() {
-		                var next = this.match;
-		                if (next.length < 20) {
-		                    next += this._input.substr(0, 20 - next.length);
-		                }
-		                return (next.substr(0, 20) + (next.length > 20 ? '...' : '')).replace(/\n/g, "");
-		            },
-		            showPosition: function showPosition() {
-		                var pre = this.pastInput();
-		                var c = new Array(pre.length + 1).join("-");
-		                return pre + this.upcomingInput() + "\n" + c + "^";
-		            },
-		            next: function next() {
-		                if (this.done) {
-		                    return this.EOF;
-		                }
-		                if (!this._input) this.done = true;
-
-		                var token, match, tempMatch, index, lines;
-		                if (!this._more) {
-		                    this.yytext = '';
-		                    this.match = '';
-		                }
-		                var rules = this._currentRules();
-		                for (var i = 0; i < rules.length; i++) {
-		                    tempMatch = this._input.match(this.rules[rules[i]]);
-		                    if (tempMatch && (!match || tempMatch[0].length > match[0].length)) {
-		                        match = tempMatch;
-		                        index = i;
-		                        if (!this.options.flex) break;
-		                    }
-		                }
-		                if (match) {
-		                    lines = match[0].match(/(?:\r\n?|\n).*/g);
-		                    if (lines) this.yylineno += lines.length;
-		                    this.yylloc = { first_line: this.yylloc.last_line,
-		                        last_line: this.yylineno + 1,
-		                        first_column: this.yylloc.last_column,
-		                        last_column: lines ? lines[lines.length - 1].length - lines[lines.length - 1].match(/\r?\n?/)[0].length : this.yylloc.last_column + match[0].length };
-		                    this.yytext += match[0];
-		                    this.match += match[0];
-		                    this.matches = match;
-		                    this.yyleng = this.yytext.length;
-		                    if (this.options.ranges) {
-		                        this.yylloc.range = [this.offset, this.offset += this.yyleng];
-		                    }
-		                    this._more = false;
-		                    this._input = this._input.slice(match[0].length);
-		                    this.matched += match[0];
-		                    token = this.performAction.call(this, this.yy, this, rules[index], this.conditionStack[this.conditionStack.length - 1]);
-		                    if (this.done && this._input) this.done = false;
-		                    if (token) return token;else return;
-		                }
-		                if (this._input === "") {
-		                    return this.EOF;
-		                } else {
-		                    return this.parseError('Lexical error on line ' + (this.yylineno + 1) + '. Unrecognized text.\n' + this.showPosition(), { text: "", token: null, line: this.yylineno });
-		                }
-		            },
-		            lex: function lex() {
-		                var r = this.next();
-		                if (typeof r !== 'undefined') {
-		                    return r;
-		                } else {
-		                    return this.lex();
-		                }
-		            },
-		            begin: function begin(condition) {
-		                this.conditionStack.push(condition);
-		            },
-		            popState: function popState() {
-		                return this.conditionStack.pop();
-		            },
-		            _currentRules: function _currentRules() {
-		                return this.conditions[this.conditionStack[this.conditionStack.length - 1]].rules;
-		            },
-		            topState: function topState() {
-		                return this.conditionStack[this.conditionStack.length - 2];
-		            },
-		            pushState: function begin(condition) {
-		                this.begin(condition);
-		            } };
-		        lexer.options = {};
-		        lexer.performAction = function anonymous(yy, yy_, $avoiding_name_collisions, YY_START) {
-
-		            function strip(start, end) {
-		                return yy_.yytext = yy_.yytext.substring(start, yy_.yyleng - end + start);
-		            }
-		            switch ($avoiding_name_collisions) {
-		                case 0:
-		                    if (yy_.yytext.slice(-2) === "\\\\") {
-		                        strip(0, 1);
-		                        this.begin("mu");
-		                    } else if (yy_.yytext.slice(-1) === "\\") {
-		                        strip(0, 1);
-		                        this.begin("emu");
-		                    } else {
-		                        this.begin("mu");
-		                    }
-		                    if (yy_.yytext) return 15;
-
-		                    break;
-		                case 1:
-		                    return 15;
-		                case 2:
-		                    this.popState();
-		                    return 15;
-		                case 3:
-		                    this.begin('raw');return 15;
-		                case 4:
-		                    this.popState();
-		                    // Should be using `this.topState()` below, but it currently
-		                    // returns the second top instead of the first top. Opened an
-		                    // issue about it at https://github.com/zaach/jison/issues/291
-		                    if (this.conditionStack[this.conditionStack.length - 1] === 'raw') {
-		                        return 15;
-		                    } else {
-		                        strip(5, 9);
-		                        return 'END_RAW_BLOCK';
-		                    }
-		                case 5:
-		                    return 15;
-		                case 6:
-		                    this.popState();
-		                    return 14;
-		                case 7:
-		                    return 65;
-		                case 8:
-		                    return 68;
-		                case 9:
-		                    return 19;
-		                case 10:
-		                    this.popState();
-		                    this.begin('raw');
-		                    return 23;
-		                case 11:
-		                    return 55;
-		                case 12:
-		                    return 60;
-		                case 13:
-		                    return 29;
-		                case 14:
-		                    return 47;
-		                case 15:
-		                    this.popState();return 44;
-		                case 16:
-		                    this.popState();return 44;
-		                case 17:
-		                    return 34;
-		                case 18:
-		                    return 39;
-		                case 19:
-		                    return 51;
-		                case 20:
-		                    return 48;
-		                case 21:
-		                    this.unput(yy_.yytext);
-		                    this.popState();
-		                    this.begin('com');
-
-		                    break;
-		                case 22:
-		                    this.popState();
-		                    return 14;
-		                case 23:
-		                    return 48;
-		                case 24:
-		                    return 73;
-		                case 25:
-		                    return 72;
-		                case 26:
-		                    return 72;
-		                case 27:
-		                    return 87;
-		                case 28:
-		                    // ignore whitespace
-		                    break;
-		                case 29:
-		                    this.popState();return 54;
-		                case 30:
-		                    this.popState();return 33;
-		                case 31:
-		                    yy_.yytext = strip(1, 2).replace(/\\"/g, '"');return 80;
-		                case 32:
-		                    yy_.yytext = strip(1, 2).replace(/\\'/g, "'");return 80;
-		                case 33:
-		                    return 85;
-		                case 34:
-		                    return 82;
-		                case 35:
-		                    return 82;
-		                case 36:
-		                    return 83;
-		                case 37:
-		                    return 84;
-		                case 38:
-		                    return 81;
-		                case 39:
-		                    return 75;
-		                case 40:
-		                    return 77;
-		                case 41:
-		                    return 72;
-		                case 42:
-		                    yy_.yytext = yy_.yytext.replace(/\\([\\\]])/g, '$1');return 72;
-		                case 43:
-		                    return 'INVALID';
-		                case 44:
-		                    return 5;
-		            }
-		        };
-		        lexer.rules = [/^(?:[^\x00]*?(?=(\{\{)))/, /^(?:[^\x00]+)/, /^(?:[^\x00]{2,}?(?=(\{\{|\\\{\{|\\\\\{\{|$)))/, /^(?:\{\{\{\{(?=[^/]))/, /^(?:\{\{\{\{\/[^\s!"#%-,\.\/;->@\[-\^`\{-~]+(?=[=}\s\/.])\}\}\}\})/, /^(?:[^\x00]+?(?=(\{\{\{\{)))/, /^(?:[\s\S]*?--(~)?\}\})/, /^(?:\()/, /^(?:\))/, /^(?:\{\{\{\{)/, /^(?:\}\}\}\})/, /^(?:\{\{(~)?>)/, /^(?:\{\{(~)?#>)/, /^(?:\{\{(~)?#\*?)/, /^(?:\{\{(~)?\/)/, /^(?:\{\{(~)?\^\s*(~)?\}\})/, /^(?:\{\{(~)?\s*else\s*(~)?\}\})/, /^(?:\{\{(~)?\^)/, /^(?:\{\{(~)?\s*else\b)/, /^(?:\{\{(~)?\{)/, /^(?:\{\{(~)?&)/, /^(?:\{\{(~)?!--)/, /^(?:\{\{(~)?![\s\S]*?\}\})/, /^(?:\{\{(~)?\*?)/, /^(?:=)/, /^(?:\.\.)/, /^(?:\.(?=([=~}\s\/.)|])))/, /^(?:[\/.])/, /^(?:\s+)/, /^(?:\}(~)?\}\})/, /^(?:(~)?\}\})/, /^(?:"(\\["]|[^"])*")/, /^(?:'(\\[']|[^'])*')/, /^(?:@)/, /^(?:true(?=([~}\s)])))/, /^(?:false(?=([~}\s)])))/, /^(?:undefined(?=([~}\s)])))/, /^(?:null(?=([~}\s)])))/, /^(?:-?[0-9]+(?:\.[0-9]+)?(?=([~}\s)])))/, /^(?:as\s+\|)/, /^(?:\|)/, /^(?:([^\s!"#%-,\.\/;->@\[-\^`\{-~]+(?=([=~}\s\/.)|]))))/, /^(?:\[(\\\]|[^\]])*\])/, /^(?:.)/, /^(?:$)/];
-		        lexer.conditions = { "mu": { "rules": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44], "inclusive": false }, "emu": { "rules": [2], "inclusive": false }, "com": { "rules": [6], "inclusive": false }, "raw": { "rules": [3, 4, 5], "inclusive": false }, "INITIAL": { "rules": [0, 1, 44], "inclusive": true } };
-		        return lexer;
-		    })();
-		    parser.lexer = lexer;
-		    function Parser() {
-		        this.yy = {};
-		    }Parser.prototype = parser;parser.Parser = Parser;
-		    return new Parser();
-		})();exports["default"] = handlebars;
-		module.exports = exports["default"];
-		
-	} (parser, parser.exports));
-	return parser.exports;
-}
-
-var whitespaceControl = {exports: {}};
-
-var visitor = {exports: {}};
-
-var hasRequiredVisitor;
-
-function requireVisitor () {
-	if (hasRequiredVisitor) return visitor.exports;
-	hasRequiredVisitor = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		// istanbul ignore next
-
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-		var _exception = requireException();
-
-		var _exception2 = _interopRequireDefault(_exception);
-
-		function Visitor() {
-		  this.parents = [];
-		}
-
-		Visitor.prototype = {
-		  constructor: Visitor,
-		  mutating: false,
-
-		  // Visits a given value. If mutating, will replace the value if necessary.
-		  acceptKey: function acceptKey(node, name) {
-		    var value = this.accept(node[name]);
-		    if (this.mutating) {
-		      // Hacky sanity check: This may have a few false positives for type for the helper
-		      // methods but will generally do the right thing without a lot of overhead.
-		      if (value && !Visitor.prototype[value.type]) {
-		        throw new _exception2['default']('Unexpected node type "' + value.type + '" found when accepting ' + name + ' on ' + node.type);
-		      }
-		      node[name] = value;
-		    }
-		  },
-
-		  // Performs an accept operation with added sanity check to ensure
-		  // required keys are not removed.
-		  acceptRequired: function acceptRequired(node, name) {
-		    this.acceptKey(node, name);
-
-		    if (!node[name]) {
-		      throw new _exception2['default'](node.type + ' requires ' + name);
-		    }
-		  },
-
-		  // Traverses a given array. If mutating, empty respnses will be removed
-		  // for child elements.
-		  acceptArray: function acceptArray(array) {
-		    for (var i = 0, l = array.length; i < l; i++) {
-		      this.acceptKey(array, i);
-
-		      if (!array[i]) {
-		        array.splice(i, 1);
-		        i--;
-		        l--;
-		      }
-		    }
-		  },
-
-		  accept: function accept(object) {
-		    if (!object) {
-		      return;
-		    }
-
-		    /* istanbul ignore next: Sanity code */
-		    if (!this[object.type]) {
-		      throw new _exception2['default']('Unknown type: ' + object.type, object);
-		    }
-
-		    if (this.current) {
-		      this.parents.unshift(this.current);
-		    }
-		    this.current = object;
-
-		    var ret = this[object.type](object);
-
-		    this.current = this.parents.shift();
-
-		    if (!this.mutating || ret) {
-		      return ret;
-		    } else if (ret !== false) {
-		      return object;
-		    }
-		  },
-
-		  Program: function Program(program) {
-		    this.acceptArray(program.body);
-		  },
-
-		  MustacheStatement: visitSubExpression,
-		  Decorator: visitSubExpression,
-
-		  BlockStatement: visitBlock,
-		  DecoratorBlock: visitBlock,
-
-		  PartialStatement: visitPartial,
-		  PartialBlockStatement: function PartialBlockStatement(partial) {
-		    visitPartial.call(this, partial);
-
-		    this.acceptKey(partial, 'program');
-		  },
-
-		  ContentStatement: function ContentStatement() /* content */{},
-		  CommentStatement: function CommentStatement() /* comment */{},
-
-		  SubExpression: visitSubExpression,
-
-		  PathExpression: function PathExpression() /* path */{},
-
-		  StringLiteral: function StringLiteral() /* string */{},
-		  NumberLiteral: function NumberLiteral() /* number */{},
-		  BooleanLiteral: function BooleanLiteral() /* bool */{},
-		  UndefinedLiteral: function UndefinedLiteral() /* literal */{},
-		  NullLiteral: function NullLiteral() /* literal */{},
-
-		  Hash: function Hash(hash) {
-		    this.acceptArray(hash.pairs);
-		  },
-		  HashPair: function HashPair(pair) {
-		    this.acceptRequired(pair, 'value');
-		  }
-		};
-
-		function visitSubExpression(mustache) {
-		  this.acceptRequired(mustache, 'path');
-		  this.acceptArray(mustache.params);
-		  this.acceptKey(mustache, 'hash');
-		}
-		function visitBlock(block) {
-		  visitSubExpression.call(this, block);
-
-		  this.acceptKey(block, 'program');
-		  this.acceptKey(block, 'inverse');
-		}
-		function visitPartial(partial) {
-		  this.acceptRequired(partial, 'name');
-		  this.acceptArray(partial.params);
-		  this.acceptKey(partial, 'hash');
-		}
-
-		exports['default'] = Visitor;
-		module.exports = exports['default'];
-		
-	} (visitor, visitor.exports));
-	return visitor.exports;
-}
-
-var hasRequiredWhitespaceControl;
-
-function requireWhitespaceControl () {
-	if (hasRequiredWhitespaceControl) return whitespaceControl.exports;
-	hasRequiredWhitespaceControl = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		// istanbul ignore next
-
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-		var _visitor = requireVisitor();
-
-		var _visitor2 = _interopRequireDefault(_visitor);
-
-		function WhitespaceControl() {
-		  var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-		  this.options = options;
-		}
-		WhitespaceControl.prototype = new _visitor2['default']();
-
-		WhitespaceControl.prototype.Program = function (program) {
-		  var doStandalone = !this.options.ignoreStandalone;
-
-		  var isRoot = !this.isRootSeen;
-		  this.isRootSeen = true;
-
-		  var body = program.body;
-		  for (var i = 0, l = body.length; i < l; i++) {
-		    var current = body[i],
-		        strip = this.accept(current);
-
-		    if (!strip) {
-		      continue;
-		    }
-
-		    var _isPrevWhitespace = isPrevWhitespace(body, i, isRoot),
-		        _isNextWhitespace = isNextWhitespace(body, i, isRoot),
-		        openStandalone = strip.openStandalone && _isPrevWhitespace,
-		        closeStandalone = strip.closeStandalone && _isNextWhitespace,
-		        inlineStandalone = strip.inlineStandalone && _isPrevWhitespace && _isNextWhitespace;
-
-		    if (strip.close) {
-		      omitRight(body, i, true);
-		    }
-		    if (strip.open) {
-		      omitLeft(body, i, true);
-		    }
-
-		    if (doStandalone && inlineStandalone) {
-		      omitRight(body, i);
-
-		      if (omitLeft(body, i)) {
-		        // If we are on a standalone node, save the indent info for partials
-		        if (current.type === 'PartialStatement') {
-		          // Pull out the whitespace from the final line
-		          current.indent = /([ \t]+$)/.exec(body[i - 1].original)[1];
-		        }
-		      }
-		    }
-		    if (doStandalone && openStandalone) {
-		      omitRight((current.program || current.inverse).body);
-
-		      // Strip out the previous content node if it's whitespace only
-		      omitLeft(body, i);
-		    }
-		    if (doStandalone && closeStandalone) {
-		      // Always strip the next node
-		      omitRight(body, i);
-
-		      omitLeft((current.inverse || current.program).body);
-		    }
-		  }
-
-		  return program;
-		};
-
-		WhitespaceControl.prototype.BlockStatement = WhitespaceControl.prototype.DecoratorBlock = WhitespaceControl.prototype.PartialBlockStatement = function (block) {
-		  this.accept(block.program);
-		  this.accept(block.inverse);
-
-		  // Find the inverse program that is involed with whitespace stripping.
-		  var program = block.program || block.inverse,
-		      inverse = block.program && block.inverse,
-		      firstInverse = inverse,
-		      lastInverse = inverse;
-
-		  if (inverse && inverse.chained) {
-		    firstInverse = inverse.body[0].program;
-
-		    // Walk the inverse chain to find the last inverse that is actually in the chain.
-		    while (lastInverse.chained) {
-		      lastInverse = lastInverse.body[lastInverse.body.length - 1].program;
-		    }
-		  }
-
-		  var strip = {
-		    open: block.openStrip.open,
-		    close: block.closeStrip.close,
-
-		    // Determine the standalone candiacy. Basically flag our content as being possibly standalone
-		    // so our parent can determine if we actually are standalone
-		    openStandalone: isNextWhitespace(program.body),
-		    closeStandalone: isPrevWhitespace((firstInverse || program).body)
-		  };
-
-		  if (block.openStrip.close) {
-		    omitRight(program.body, null, true);
-		  }
-
-		  if (inverse) {
-		    var inverseStrip = block.inverseStrip;
-
-		    if (inverseStrip.open) {
-		      omitLeft(program.body, null, true);
-		    }
-
-		    if (inverseStrip.close) {
-		      omitRight(firstInverse.body, null, true);
-		    }
-		    if (block.closeStrip.open) {
-		      omitLeft(lastInverse.body, null, true);
-		    }
-
-		    // Find standalone else statments
-		    if (!this.options.ignoreStandalone && isPrevWhitespace(program.body) && isNextWhitespace(firstInverse.body)) {
-		      omitLeft(program.body);
-		      omitRight(firstInverse.body);
-		    }
-		  } else if (block.closeStrip.open) {
-		    omitLeft(program.body, null, true);
-		  }
-
-		  return strip;
-		};
-
-		WhitespaceControl.prototype.Decorator = WhitespaceControl.prototype.MustacheStatement = function (mustache) {
-		  return mustache.strip;
-		};
-
-		WhitespaceControl.prototype.PartialStatement = WhitespaceControl.prototype.CommentStatement = function (node) {
-		  /* istanbul ignore next */
-		  var strip = node.strip || {};
-		  return {
-		    inlineStandalone: true,
-		    open: strip.open,
-		    close: strip.close
-		  };
-		};
-
-		function isPrevWhitespace(body, i, isRoot) {
-		  if (i === undefined) {
-		    i = body.length;
-		  }
-
-		  // Nodes that end with newlines are considered whitespace (but are special
-		  // cased for strip operations)
-		  var prev = body[i - 1],
-		      sibling = body[i - 2];
-		  if (!prev) {
-		    return isRoot;
-		  }
-
-		  if (prev.type === 'ContentStatement') {
-		    return (sibling || !isRoot ? /\r?\n\s*?$/ : /(^|\r?\n)\s*?$/).test(prev.original);
-		  }
-		}
-		function isNextWhitespace(body, i, isRoot) {
-		  if (i === undefined) {
-		    i = -1;
-		  }
-
-		  var next = body[i + 1],
-		      sibling = body[i + 2];
-		  if (!next) {
-		    return isRoot;
-		  }
-
-		  if (next.type === 'ContentStatement') {
-		    return (sibling || !isRoot ? /^\s*?\r?\n/ : /^\s*?(\r?\n|$)/).test(next.original);
-		  }
-		}
-
-		// Marks the node to the right of the position as omitted.
-		// I.e. {{foo}}' ' will mark the ' ' node as omitted.
-		//
-		// If i is undefined, then the first child will be marked as such.
-		//
-		// If mulitple is truthy then all whitespace will be stripped out until non-whitespace
-		// content is met.
-		function omitRight(body, i, multiple) {
-		  var current = body[i == null ? 0 : i + 1];
-		  if (!current || current.type !== 'ContentStatement' || !multiple && current.rightStripped) {
-		    return;
-		  }
-
-		  var original = current.value;
-		  current.value = current.value.replace(multiple ? /^\s+/ : /^[ \t]*\r?\n?/, '');
-		  current.rightStripped = current.value !== original;
-		}
-
-		// Marks the node to the left of the position as omitted.
-		// I.e. ' '{{foo}} will mark the ' ' node as omitted.
-		//
-		// If i is undefined then the last child will be marked as such.
-		//
-		// If mulitple is truthy then all whitespace will be stripped out until non-whitespace
-		// content is met.
-		function omitLeft(body, i, multiple) {
-		  var current = body[i == null ? body.length - 1 : i - 1];
-		  if (!current || current.type !== 'ContentStatement' || !multiple && current.leftStripped) {
-		    return;
-		  }
-
-		  // We omit the last node if it's whitespace only and not preceded by a non-content node.
-		  var original = current.value;
-		  current.value = current.value.replace(multiple ? /\s+$/ : /[ \t]+$/, '');
-		  current.leftStripped = current.value !== original;
-		  return current.leftStripped;
-		}
-
-		exports['default'] = WhitespaceControl;
-		module.exports = exports['default'];
-		
-	} (whitespaceControl, whitespaceControl.exports));
-	return whitespaceControl.exports;
-}
-
-var helpers = {};
-
-var hasRequiredHelpers;
-
-function requireHelpers () {
-	if (hasRequiredHelpers) return helpers;
-	hasRequiredHelpers = 1;
-
-	helpers.__esModule = true;
-	helpers.SourceLocation = SourceLocation;
-	helpers.id = id;
-	helpers.stripFlags = stripFlags;
-	helpers.stripComment = stripComment;
-	helpers.preparePath = preparePath;
-	helpers.prepareMustache = prepareMustache;
-	helpers.prepareRawBlock = prepareRawBlock;
-	helpers.prepareBlock = prepareBlock;
-	helpers.prepareProgram = prepareProgram;
-	helpers.preparePartialBlock = preparePartialBlock;
-	// istanbul ignore next
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _exception = requireException();
-
-	var _exception2 = _interopRequireDefault(_exception);
-
-	function validateClose(open, close) {
-	  close = close.path ? close.path.original : close;
-
-	  if (open.path.original !== close) {
-	    var errorNode = { loc: open.path.loc };
-
-	    throw new _exception2['default'](open.path.original + " doesn't match " + close, errorNode);
-	  }
-	}
-
-	function SourceLocation(source, locInfo) {
-	  this.source = source;
-	  this.start = {
-	    line: locInfo.first_line,
-	    column: locInfo.first_column
-	  };
-	  this.end = {
-	    line: locInfo.last_line,
-	    column: locInfo.last_column
-	  };
-	}
-
-	function id(token) {
-	  if (/^\[.*\]$/.test(token)) {
-	    return token.substring(1, token.length - 1);
-	  } else {
-	    return token;
-	  }
-	}
-
-	function stripFlags(open, close) {
-	  return {
-	    open: open.charAt(2) === '~',
-	    close: close.charAt(close.length - 3) === '~'
-	  };
-	}
-
-	function stripComment(comment) {
-	  return comment.replace(/^\{\{~?!-?-?/, '').replace(/-?-?~?\}\}$/, '');
-	}
-
-	function preparePath(data, parts, loc) {
-	  loc = this.locInfo(loc);
-
-	  var original = data ? '@' : '',
-	      dig = [],
-	      depth = 0;
-
-	  for (var i = 0, l = parts.length; i < l; i++) {
-	    var part = parts[i].part,
-
-	    // If we have [] syntax then we do not treat path references as operators,
-	    // i.e. foo.[this] resolves to approximately context.foo['this']
-	    isLiteral = parts[i].original !== part;
-	    original += (parts[i].separator || '') + part;
-
-	    if (!isLiteral && (part === '..' || part === '.' || part === 'this')) {
-	      if (dig.length > 0) {
-	        throw new _exception2['default']('Invalid path: ' + original, { loc: loc });
-	      } else if (part === '..') {
-	        depth++;
-	      }
-	    } else {
-	      dig.push(part);
-	    }
-	  }
-
-	  return {
-	    type: 'PathExpression',
-	    data: data,
-	    depth: depth,
-	    parts: dig,
-	    original: original,
-	    loc: loc
-	  };
-	}
-
-	function prepareMustache(path, params, hash, open, strip, locInfo) {
-	  // Must use charAt to support IE pre-10
-	  var escapeFlag = open.charAt(3) || open.charAt(2),
-	      escaped = escapeFlag !== '{' && escapeFlag !== '&';
-
-	  var decorator = /\*/.test(open);
-	  return {
-	    type: decorator ? 'Decorator' : 'MustacheStatement',
-	    path: path,
-	    params: params,
-	    hash: hash,
-	    escaped: escaped,
-	    strip: strip,
-	    loc: this.locInfo(locInfo)
-	  };
-	}
-
-	function prepareRawBlock(openRawBlock, contents, close, locInfo) {
-	  validateClose(openRawBlock, close);
-
-	  locInfo = this.locInfo(locInfo);
-	  var program = {
-	    type: 'Program',
-	    body: contents,
-	    strip: {},
-	    loc: locInfo
-	  };
-
-	  return {
-	    type: 'BlockStatement',
-	    path: openRawBlock.path,
-	    params: openRawBlock.params,
-	    hash: openRawBlock.hash,
-	    program: program,
-	    openStrip: {},
-	    inverseStrip: {},
-	    closeStrip: {},
-	    loc: locInfo
-	  };
-	}
-
-	function prepareBlock(openBlock, program, inverseAndProgram, close, inverted, locInfo) {
-	  if (close && close.path) {
-	    validateClose(openBlock, close);
-	  }
-
-	  var decorator = /\*/.test(openBlock.open);
-
-	  program.blockParams = openBlock.blockParams;
-
-	  var inverse = undefined,
-	      inverseStrip = undefined;
-
-	  if (inverseAndProgram) {
-	    if (decorator) {
-	      throw new _exception2['default']('Unexpected inverse block on decorator', inverseAndProgram);
-	    }
-
-	    if (inverseAndProgram.chain) {
-	      inverseAndProgram.program.body[0].closeStrip = close.strip;
-	    }
-
-	    inverseStrip = inverseAndProgram.strip;
-	    inverse = inverseAndProgram.program;
-	  }
-
-	  if (inverted) {
-	    inverted = inverse;
-	    inverse = program;
-	    program = inverted;
-	  }
-
-	  return {
-	    type: decorator ? 'DecoratorBlock' : 'BlockStatement',
-	    path: openBlock.path,
-	    params: openBlock.params,
-	    hash: openBlock.hash,
-	    program: program,
-	    inverse: inverse,
-	    openStrip: openBlock.strip,
-	    inverseStrip: inverseStrip,
-	    closeStrip: close && close.strip,
-	    loc: this.locInfo(locInfo)
-	  };
-	}
-
-	function prepareProgram(statements, loc) {
-	  if (!loc && statements.length) {
-	    var firstLoc = statements[0].loc,
-	        lastLoc = statements[statements.length - 1].loc;
-
-	    /* istanbul ignore else */
-	    if (firstLoc && lastLoc) {
-	      loc = {
-	        source: firstLoc.source,
-	        start: {
-	          line: firstLoc.start.line,
-	          column: firstLoc.start.column
-	        },
-	        end: {
-	          line: lastLoc.end.line,
-	          column: lastLoc.end.column
-	        }
-	      };
-	    }
-	  }
-
-	  return {
-	    type: 'Program',
-	    body: statements,
-	    strip: {},
-	    loc: loc
-	  };
-	}
-
-	function preparePartialBlock(open, program, close, locInfo) {
-	  validateClose(open, close);
-
-	  return {
-	    type: 'PartialBlockStatement',
-	    name: open.path,
-	    params: open.params,
-	    hash: open.hash,
-	    program: program,
-	    openStrip: open.strip,
-	    closeStrip: close && close.strip,
-	    loc: this.locInfo(locInfo)
-	  };
-	}
-	
-	return helpers;
-}
-
-var hasRequiredBase;
-
-function requireBase () {
-	if (hasRequiredBase) return base;
-	hasRequiredBase = 1;
-
-	base.__esModule = true;
-	base.parseWithoutProcessing = parseWithoutProcessing;
-	base.parse = parse;
-	// istanbul ignore next
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-
-	// istanbul ignore next
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _parser = requireParser();
-
-	var _parser2 = _interopRequireDefault(_parser);
-
-	var _whitespaceControl = requireWhitespaceControl();
-
-	var _whitespaceControl2 = _interopRequireDefault(_whitespaceControl);
-
-	var _helpers = requireHelpers();
-
-	var Helpers = _interopRequireWildcard(_helpers);
-
-	var _utils = requireUtils();
-
-	base.parser = _parser2['default'];
-
-	var yy = {};
-	_utils.extend(yy, Helpers);
-
-	function parseWithoutProcessing(input, options) {
-	  // Just return if an already-compiled AST was passed in.
-	  if (input.type === 'Program') {
-	    return input;
-	  }
-
-	  _parser2['default'].yy = yy;
-
-	  // Altering the shared object here, but this is ok as parser is a sync operation
-	  yy.locInfo = function (locInfo) {
-	    return new yy.SourceLocation(options && options.srcName, locInfo);
-	  };
-
-	  var ast = _parser2['default'].parse(input);
-
-	  return ast;
-	}
-
-	function parse(input, options) {
-	  var ast = parseWithoutProcessing(input, options);
-	  var strip = new _whitespaceControl2['default'](options);
-
-	  return strip.accept(ast);
-	}
-	
-	return base;
-}
-
-var compiler = {};
-
-/* eslint-disable new-cap */
-
-var hasRequiredCompiler;
-
-function requireCompiler () {
-	if (hasRequiredCompiler) return compiler;
-	hasRequiredCompiler = 1;
-
-	compiler.__esModule = true;
-	compiler.Compiler = Compiler;
-	compiler.precompile = precompile;
-	compiler.compile = compile;
-	// istanbul ignore next
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _exception = requireException();
-
-	var _exception2 = _interopRequireDefault(_exception);
-
-	var _utils = requireUtils();
-
-	var _ast = requireAst();
-
-	var _ast2 = _interopRequireDefault(_ast);
-
-	var slice = [].slice;
-
-	function Compiler() {}
-
-	// the foundHelper register will disambiguate helper lookup from finding a
-	// function in a context. This is necessary for mustache compatibility, which
-	// requires that context functions in blocks are evaluated by blockHelperMissing,
-	// and then proceed as if the resulting value was provided to blockHelperMissing.
-
-	Compiler.prototype = {
-	  compiler: Compiler,
-
-	  equals: function equals(other) {
-	    var len = this.opcodes.length;
-	    if (other.opcodes.length !== len) {
-	      return false;
-	    }
-
-	    for (var i = 0; i < len; i++) {
-	      var opcode = this.opcodes[i],
-	          otherOpcode = other.opcodes[i];
-	      if (opcode.opcode !== otherOpcode.opcode || !argEquals(opcode.args, otherOpcode.args)) {
-	        return false;
-	      }
-	    }
-
-	    // We know that length is the same between the two arrays because they are directly tied
-	    // to the opcode behavior above.
-	    len = this.children.length;
-	    for (var i = 0; i < len; i++) {
-	      if (!this.children[i].equals(other.children[i])) {
-	        return false;
-	      }
-	    }
-
-	    return true;
-	  },
-
-	  guid: 0,
-
-	  compile: function compile(program, options) {
-	    this.sourceNode = [];
-	    this.opcodes = [];
-	    this.children = [];
-	    this.options = options;
-	    this.stringParams = options.stringParams;
-	    this.trackIds = options.trackIds;
-
-	    options.blockParams = options.blockParams || [];
-
-	    options.knownHelpers = _utils.extend(Object.create(null), {
-	      helperMissing: true,
-	      blockHelperMissing: true,
-	      each: true,
-	      'if': true,
-	      unless: true,
-	      'with': true,
-	      log: true,
-	      lookup: true
-	    }, options.knownHelpers);
-
-	    return this.accept(program);
-	  },
-
-	  compileProgram: function compileProgram(program) {
-	    var childCompiler = new this.compiler(),
-	        // eslint-disable-line new-cap
-	    result = childCompiler.compile(program, this.options),
-	        guid = this.guid++;
-
-	    this.usePartial = this.usePartial || result.usePartial;
-
-	    this.children[guid] = result;
-	    this.useDepths = this.useDepths || result.useDepths;
-
-	    return guid;
-	  },
-
-	  accept: function accept(node) {
-	    /* istanbul ignore next: Sanity code */
-	    if (!this[node.type]) {
-	      throw new _exception2['default']('Unknown type: ' + node.type, node);
-	    }
-
-	    this.sourceNode.unshift(node);
-	    var ret = this[node.type](node);
-	    this.sourceNode.shift();
-	    return ret;
-	  },
-
-	  Program: function Program(program) {
-	    this.options.blockParams.unshift(program.blockParams);
-
-	    var body = program.body,
-	        bodyLength = body.length;
-	    for (var i = 0; i < bodyLength; i++) {
-	      this.accept(body[i]);
-	    }
-
-	    this.options.blockParams.shift();
-
-	    this.isSimple = bodyLength === 1;
-	    this.blockParams = program.blockParams ? program.blockParams.length : 0;
-
-	    return this;
-	  },
-
-	  BlockStatement: function BlockStatement(block) {
-	    transformLiteralToPath(block);
-
-	    var program = block.program,
-	        inverse = block.inverse;
-
-	    program = program && this.compileProgram(program);
-	    inverse = inverse && this.compileProgram(inverse);
-
-	    var type = this.classifySexpr(block);
-
-	    if (type === 'helper') {
-	      this.helperSexpr(block, program, inverse);
-	    } else if (type === 'simple') {
-	      this.simpleSexpr(block);
-
-	      // now that the simple mustache is resolved, we need to
-	      // evaluate it by executing `blockHelperMissing`
-	      this.opcode('pushProgram', program);
-	      this.opcode('pushProgram', inverse);
-	      this.opcode('emptyHash');
-	      this.opcode('blockValue', block.path.original);
-	    } else {
-	      this.ambiguousSexpr(block, program, inverse);
-
-	      // now that the simple mustache is resolved, we need to
-	      // evaluate it by executing `blockHelperMissing`
-	      this.opcode('pushProgram', program);
-	      this.opcode('pushProgram', inverse);
-	      this.opcode('emptyHash');
-	      this.opcode('ambiguousBlockValue');
-	    }
-
-	    this.opcode('append');
-	  },
-
-	  DecoratorBlock: function DecoratorBlock(decorator) {
-	    var program = decorator.program && this.compileProgram(decorator.program);
-	    var params = this.setupFullMustacheParams(decorator, program, undefined),
-	        path = decorator.path;
-
-	    this.useDecorators = true;
-	    this.opcode('registerDecorator', params.length, path.original);
-	  },
-
-	  PartialStatement: function PartialStatement(partial) {
-	    this.usePartial = true;
-
-	    var program = partial.program;
-	    if (program) {
-	      program = this.compileProgram(partial.program);
-	    }
-
-	    var params = partial.params;
-	    if (params.length > 1) {
-	      throw new _exception2['default']('Unsupported number of partial arguments: ' + params.length, partial);
-	    } else if (!params.length) {
-	      if (this.options.explicitPartialContext) {
-	        this.opcode('pushLiteral', 'undefined');
-	      } else {
-	        params.push({ type: 'PathExpression', parts: [], depth: 0 });
-	      }
-	    }
-
-	    var partialName = partial.name.original,
-	        isDynamic = partial.name.type === 'SubExpression';
-	    if (isDynamic) {
-	      this.accept(partial.name);
-	    }
-
-	    this.setupFullMustacheParams(partial, program, undefined, true);
-
-	    var indent = partial.indent || '';
-	    if (this.options.preventIndent && indent) {
-	      this.opcode('appendContent', indent);
-	      indent = '';
-	    }
-
-	    this.opcode('invokePartial', isDynamic, partialName, indent);
-	    this.opcode('append');
-	  },
-	  PartialBlockStatement: function PartialBlockStatement(partialBlock) {
-	    this.PartialStatement(partialBlock);
-	  },
-
-	  MustacheStatement: function MustacheStatement(mustache) {
-	    this.SubExpression(mustache);
-
-	    if (mustache.escaped && !this.options.noEscape) {
-	      this.opcode('appendEscaped');
-	    } else {
-	      this.opcode('append');
-	    }
-	  },
-	  Decorator: function Decorator(decorator) {
-	    this.DecoratorBlock(decorator);
-	  },
-
-	  ContentStatement: function ContentStatement(content) {
-	    if (content.value) {
-	      this.opcode('appendContent', content.value);
-	    }
-	  },
-
-	  CommentStatement: function CommentStatement() {},
-
-	  SubExpression: function SubExpression(sexpr) {
-	    transformLiteralToPath(sexpr);
-	    var type = this.classifySexpr(sexpr);
-
-	    if (type === 'simple') {
-	      this.simpleSexpr(sexpr);
-	    } else if (type === 'helper') {
-	      this.helperSexpr(sexpr);
-	    } else {
-	      this.ambiguousSexpr(sexpr);
-	    }
-	  },
-	  ambiguousSexpr: function ambiguousSexpr(sexpr, program, inverse) {
-	    var path = sexpr.path,
-	        name = path.parts[0],
-	        isBlock = program != null || inverse != null;
-
-	    this.opcode('getContext', path.depth);
-
-	    this.opcode('pushProgram', program);
-	    this.opcode('pushProgram', inverse);
-
-	    path.strict = true;
-	    this.accept(path);
-
-	    this.opcode('invokeAmbiguous', name, isBlock);
-	  },
-
-	  simpleSexpr: function simpleSexpr(sexpr) {
-	    var path = sexpr.path;
-	    path.strict = true;
-	    this.accept(path);
-	    this.opcode('resolvePossibleLambda');
-	  },
-
-	  helperSexpr: function helperSexpr(sexpr, program, inverse) {
-	    var params = this.setupFullMustacheParams(sexpr, program, inverse),
-	        path = sexpr.path,
-	        name = path.parts[0];
-
-	    if (this.options.knownHelpers[name]) {
-	      this.opcode('invokeKnownHelper', params.length, name);
-	    } else if (this.options.knownHelpersOnly) {
-	      throw new _exception2['default']('You specified knownHelpersOnly, but used the unknown helper ' + name, sexpr);
-	    } else {
-	      path.strict = true;
-	      path.falsy = true;
-
-	      this.accept(path);
-	      this.opcode('invokeHelper', params.length, path.original, _ast2['default'].helpers.simpleId(path));
-	    }
-	  },
-
-	  PathExpression: function PathExpression(path) {
-	    this.addDepth(path.depth);
-	    this.opcode('getContext', path.depth);
-
-	    var name = path.parts[0],
-	        scoped = _ast2['default'].helpers.scopedId(path),
-	        blockParamId = !path.depth && !scoped && this.blockParamIndex(name);
-
-	    if (blockParamId) {
-	      this.opcode('lookupBlockParam', blockParamId, path.parts);
-	    } else if (!name) {
-	      // Context reference, i.e. `{{foo .}}` or `{{foo ..}}`
-	      this.opcode('pushContext');
-	    } else if (path.data) {
-	      this.options.data = true;
-	      this.opcode('lookupData', path.depth, path.parts, path.strict);
-	    } else {
-	      this.opcode('lookupOnContext', path.parts, path.falsy, path.strict, scoped);
-	    }
-	  },
-
-	  StringLiteral: function StringLiteral(string) {
-	    this.opcode('pushString', string.value);
-	  },
-
-	  NumberLiteral: function NumberLiteral(number) {
-	    this.opcode('pushLiteral', number.value);
-	  },
-
-	  BooleanLiteral: function BooleanLiteral(bool) {
-	    this.opcode('pushLiteral', bool.value);
-	  },
-
-	  UndefinedLiteral: function UndefinedLiteral() {
-	    this.opcode('pushLiteral', 'undefined');
-	  },
-
-	  NullLiteral: function NullLiteral() {
-	    this.opcode('pushLiteral', 'null');
-	  },
-
-	  Hash: function Hash(hash) {
-	    var pairs = hash.pairs,
-	        i = 0,
-	        l = pairs.length;
-
-	    this.opcode('pushHash');
-
-	    for (; i < l; i++) {
-	      this.pushParam(pairs[i].value);
-	    }
-	    while (i--) {
-	      this.opcode('assignToHash', pairs[i].key);
-	    }
-	    this.opcode('popHash');
-	  },
-
-	  // HELPERS
-	  opcode: function opcode(name) {
-	    this.opcodes.push({
-	      opcode: name,
-	      args: slice.call(arguments, 1),
-	      loc: this.sourceNode[0].loc
-	    });
-	  },
-
-	  addDepth: function addDepth(depth) {
-	    if (!depth) {
-	      return;
-	    }
-
-	    this.useDepths = true;
-	  },
-
-	  classifySexpr: function classifySexpr(sexpr) {
-	    var isSimple = _ast2['default'].helpers.simpleId(sexpr.path);
-
-	    var isBlockParam = isSimple && !!this.blockParamIndex(sexpr.path.parts[0]);
-
-	    // a mustache is an eligible helper if:
-	    // * its id is simple (a single part, not `this` or `..`)
-	    var isHelper = !isBlockParam && _ast2['default'].helpers.helperExpression(sexpr);
-
-	    // if a mustache is an eligible helper but not a definite
-	    // helper, it is ambiguous, and will be resolved in a later
-	    // pass or at runtime.
-	    var isEligible = !isBlockParam && (isHelper || isSimple);
-
-	    // if ambiguous, we can possibly resolve the ambiguity now
-	    // An eligible helper is one that does not have a complex path, i.e. `this.foo`, `../foo` etc.
-	    if (isEligible && !isHelper) {
-	      var _name = sexpr.path.parts[0],
-	          options = this.options;
-	      if (options.knownHelpers[_name]) {
-	        isHelper = true;
-	      } else if (options.knownHelpersOnly) {
-	        isEligible = false;
-	      }
-	    }
-
-	    if (isHelper) {
-	      return 'helper';
-	    } else if (isEligible) {
-	      return 'ambiguous';
-	    } else {
-	      return 'simple';
-	    }
-	  },
-
-	  pushParams: function pushParams(params) {
-	    for (var i = 0, l = params.length; i < l; i++) {
-	      this.pushParam(params[i]);
-	    }
-	  },
-
-	  pushParam: function pushParam(val) {
-	    var value = val.value != null ? val.value : val.original || '';
-
-	    if (this.stringParams) {
-	      if (value.replace) {
-	        value = value.replace(/^(\.?\.\/)*/g, '').replace(/\//g, '.');
-	      }
-
-	      if (val.depth) {
-	        this.addDepth(val.depth);
-	      }
-	      this.opcode('getContext', val.depth || 0);
-	      this.opcode('pushStringParam', value, val.type);
-
-	      if (val.type === 'SubExpression') {
-	        // SubExpressions get evaluated and passed in
-	        // in string params mode.
-	        this.accept(val);
-	      }
-	    } else {
-	      if (this.trackIds) {
-	        var blockParamIndex = undefined;
-	        if (val.parts && !_ast2['default'].helpers.scopedId(val) && !val.depth) {
-	          blockParamIndex = this.blockParamIndex(val.parts[0]);
-	        }
-	        if (blockParamIndex) {
-	          var blockParamChild = val.parts.slice(1).join('.');
-	          this.opcode('pushId', 'BlockParam', blockParamIndex, blockParamChild);
-	        } else {
-	          value = val.original || value;
-	          if (value.replace) {
-	            value = value.replace(/^this(?:\.|$)/, '').replace(/^\.\//, '').replace(/^\.$/, '');
-	          }
-
-	          this.opcode('pushId', val.type, value);
-	        }
-	      }
-	      this.accept(val);
-	    }
-	  },
-
-	  setupFullMustacheParams: function setupFullMustacheParams(sexpr, program, inverse, omitEmpty) {
-	    var params = sexpr.params;
-	    this.pushParams(params);
-
-	    this.opcode('pushProgram', program);
-	    this.opcode('pushProgram', inverse);
-
-	    if (sexpr.hash) {
-	      this.accept(sexpr.hash);
-	    } else {
-	      this.opcode('emptyHash', omitEmpty);
-	    }
-
-	    return params;
-	  },
-
-	  blockParamIndex: function blockParamIndex(name) {
-	    for (var depth = 0, len = this.options.blockParams.length; depth < len; depth++) {
-	      var blockParams = this.options.blockParams[depth],
-	          param = blockParams && _utils.indexOf(blockParams, name);
-	      if (blockParams && param >= 0) {
-	        return [depth, param];
-	      }
-	    }
-	  }
-	};
-
-	function precompile(input, options, env) {
-	  if (input == null || typeof input !== 'string' && input.type !== 'Program') {
-	    throw new _exception2['default']('You must pass a string or Handlebars AST to Handlebars.precompile. You passed ' + input);
-	  }
-
-	  options = options || {};
-	  if (!('data' in options)) {
-	    options.data = true;
-	  }
-	  if (options.compat) {
-	    options.useDepths = true;
-	  }
-
-	  var ast = env.parse(input, options),
-	      environment = new env.Compiler().compile(ast, options);
-	  return new env.JavaScriptCompiler().compile(environment, options);
-	}
-
-	function compile(input, options, env) {
-	  if (options === undefined) options = {};
-
-	  if (input == null || typeof input !== 'string' && input.type !== 'Program') {
-	    throw new _exception2['default']('You must pass a string or Handlebars AST to Handlebars.compile. You passed ' + input);
-	  }
-
-	  options = _utils.extend({}, options);
-	  if (!('data' in options)) {
-	    options.data = true;
-	  }
-	  if (options.compat) {
-	    options.useDepths = true;
-	  }
-
-	  var compiled = undefined;
-
-	  function compileInput() {
-	    var ast = env.parse(input, options),
-	        environment = new env.Compiler().compile(ast, options),
-	        templateSpec = new env.JavaScriptCompiler().compile(environment, options, undefined, true);
-	    return env.template(templateSpec);
-	  }
-
-	  // Template is only compiled on first use and cached after that point.
-	  function ret(context, execOptions) {
-	    if (!compiled) {
-	      compiled = compileInput();
-	    }
-	    return compiled.call(this, context, execOptions);
-	  }
-	  ret._setup = function (setupOptions) {
-	    if (!compiled) {
-	      compiled = compileInput();
-	    }
-	    return compiled._setup(setupOptions);
-	  };
-	  ret._child = function (i, data, blockParams, depths) {
-	    if (!compiled) {
-	      compiled = compileInput();
-	    }
-	    return compiled._child(i, data, blockParams, depths);
-	  };
-	  return ret;
-	}
-
-	function argEquals(a, b) {
-	  if (a === b) {
-	    return true;
-	  }
-
-	  if (_utils.isArray(a) && _utils.isArray(b) && a.length === b.length) {
-	    for (var i = 0; i < a.length; i++) {
-	      if (!argEquals(a[i], b[i])) {
-	        return false;
-	      }
-	    }
-	    return true;
-	  }
-	}
-
-	function transformLiteralToPath(sexpr) {
-	  if (!sexpr.path.parts) {
-	    var literal = sexpr.path;
-	    // Casting to string here to make false and 0 literal values play nicely with the rest
-	    // of the system.
-	    sexpr.path = {
-	      type: 'PathExpression',
-	      data: false,
-	      depth: 0,
-	      parts: [literal.original + ''],
-	      original: literal.original + '',
-	      loc: literal.loc
-	    };
-	  }
-	}
-	
-	return compiler;
-}
-
-var javascriptCompiler = {exports: {}};
-
-var codeGen = {exports: {}};
-
-var sourceMap = {};
-
-var sourceMapGenerator = {};
-
-var base64Vlq = {};
-
-var base64 = {};
-
-/* -*- Mode: js; js-indent-level: 2; -*- */
-
-var hasRequiredBase64;
-
-function requireBase64 () {
-	if (hasRequiredBase64) return base64;
-	hasRequiredBase64 = 1;
-	/*
-	 * Copyright 2011 Mozilla Foundation and contributors
-	 * Licensed under the New BSD license. See LICENSE or:
-	 * http://opensource.org/licenses/BSD-3-Clause
-	 */
-
-	var intToCharMap = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.split('');
-
-	/**
-	 * Encode an integer in the range of 0 to 63 to a single base 64 digit.
-	 */
-	base64.encode = function (number) {
-	  if (0 <= number && number < intToCharMap.length) {
-	    return intToCharMap[number];
-	  }
-	  throw new TypeError("Must be between 0 and 63: " + number);
-	};
-
-	/**
-	 * Decode a single base 64 character code digit to an integer. Returns -1 on
-	 * failure.
-	 */
-	base64.decode = function (charCode) {
-	  var bigA = 65;     // 'A'
-	  var bigZ = 90;     // 'Z'
-
-	  var littleA = 97;  // 'a'
-	  var littleZ = 122; // 'z'
-
-	  var zero = 48;     // '0'
-	  var nine = 57;     // '9'
-
-	  var plus = 43;     // '+'
-	  var slash = 47;    // '/'
-
-	  var littleOffset = 26;
-	  var numberOffset = 52;
-
-	  // 0 - 25: ABCDEFGHIJKLMNOPQRSTUVWXYZ
-	  if (bigA <= charCode && charCode <= bigZ) {
-	    return (charCode - bigA);
-	  }
-
-	  // 26 - 51: abcdefghijklmnopqrstuvwxyz
-	  if (littleA <= charCode && charCode <= littleZ) {
-	    return (charCode - littleA + littleOffset);
-	  }
-
-	  // 52 - 61: 0123456789
-	  if (zero <= charCode && charCode <= nine) {
-	    return (charCode - zero + numberOffset);
-	  }
-
-	  // 62: +
-	  if (charCode == plus) {
-	    return 62;
-	  }
-
-	  // 63: /
-	  if (charCode == slash) {
-	    return 63;
-	  }
-
-	  // Invalid base64 digit.
-	  return -1;
-	};
-	return base64;
-}
-
-/* -*- Mode: js; js-indent-level: 2; -*- */
-
-var hasRequiredBase64Vlq;
-
-function requireBase64Vlq () {
-	if (hasRequiredBase64Vlq) return base64Vlq;
-	hasRequiredBase64Vlq = 1;
-	/*
-	 * Copyright 2011 Mozilla Foundation and contributors
-	 * Licensed under the New BSD license. See LICENSE or:
-	 * http://opensource.org/licenses/BSD-3-Clause
-	 *
-	 * Based on the Base 64 VLQ implementation in Closure Compiler:
-	 * https://code.google.com/p/closure-compiler/source/browse/trunk/src/com/google/debugging/sourcemap/Base64VLQ.java
-	 *
-	 * Copyright 2011 The Closure Compiler Authors. All rights reserved.
-	 * Redistribution and use in source and binary forms, with or without
-	 * modification, are permitted provided that the following conditions are
-	 * met:
-	 *
-	 *  * Redistributions of source code must retain the above copyright
-	 *    notice, this list of conditions and the following disclaimer.
-	 *  * Redistributions in binary form must reproduce the above
-	 *    copyright notice, this list of conditions and the following
-	 *    disclaimer in the documentation and/or other materials provided
-	 *    with the distribution.
-	 *  * Neither the name of Google Inc. nor the names of its
-	 *    contributors may be used to endorse or promote products derived
-	 *    from this software without specific prior written permission.
-	 *
-	 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-	 * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-	 * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-	 * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-	 * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-	 * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-	 * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-	 * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-	 * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-	 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-	 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-	 */
-
-	var base64 = requireBase64();
-
-	// A single base 64 digit can contain 6 bits of data. For the base 64 variable
-	// length quantities we use in the source map spec, the first bit is the sign,
-	// the next four bits are the actual value, and the 6th bit is the
-	// continuation bit. The continuation bit tells us whether there are more
-	// digits in this value following this digit.
-	//
-	//   Continuation
-	//   |    Sign
-	//   |    |
-	//   V    V
-	//   101011
-
-	var VLQ_BASE_SHIFT = 5;
-
-	// binary: 100000
-	var VLQ_BASE = 1 << VLQ_BASE_SHIFT;
-
-	// binary: 011111
-	var VLQ_BASE_MASK = VLQ_BASE - 1;
-
-	// binary: 100000
-	var VLQ_CONTINUATION_BIT = VLQ_BASE;
-
-	/**
-	 * Converts from a two-complement value to a value where the sign bit is
-	 * placed in the least significant bit.  For example, as decimals:
-	 *   1 becomes 2 (10 binary), -1 becomes 3 (11 binary)
-	 *   2 becomes 4 (100 binary), -2 becomes 5 (101 binary)
-	 */
-	function toVLQSigned(aValue) {
-	  return aValue < 0
-	    ? ((-aValue) << 1) + 1
-	    : (aValue << 1) + 0;
-	}
-
-	/**
-	 * Converts to a two-complement value from a value where the sign bit is
-	 * placed in the least significant bit.  For example, as decimals:
-	 *   2 (10 binary) becomes 1, 3 (11 binary) becomes -1
-	 *   4 (100 binary) becomes 2, 5 (101 binary) becomes -2
-	 */
-	function fromVLQSigned(aValue) {
-	  var isNegative = (aValue & 1) === 1;
-	  var shifted = aValue >> 1;
-	  return isNegative
-	    ? -shifted
-	    : shifted;
-	}
-
-	/**
-	 * Returns the base 64 VLQ encoded value.
-	 */
-	base64Vlq.encode = function base64VLQ_encode(aValue) {
-	  var encoded = "";
-	  var digit;
-
-	  var vlq = toVLQSigned(aValue);
-
-	  do {
-	    digit = vlq & VLQ_BASE_MASK;
-	    vlq >>>= VLQ_BASE_SHIFT;
-	    if (vlq > 0) {
-	      // There are still more digits in this value, so we must make sure the
-	      // continuation bit is marked.
-	      digit |= VLQ_CONTINUATION_BIT;
-	    }
-	    encoded += base64.encode(digit);
-	  } while (vlq > 0);
-
-	  return encoded;
-	};
-
-	/**
-	 * Decodes the next base 64 VLQ value from the given string and returns the
-	 * value and the rest of the string via the out parameter.
-	 */
-	base64Vlq.decode = function base64VLQ_decode(aStr, aIndex, aOutParam) {
-	  var strLen = aStr.length;
-	  var result = 0;
-	  var shift = 0;
-	  var continuation, digit;
-
-	  do {
-	    if (aIndex >= strLen) {
-	      throw new Error("Expected more digits in base 64 VLQ value.");
-	    }
-
-	    digit = base64.decode(aStr.charCodeAt(aIndex++));
-	    if (digit === -1) {
-	      throw new Error("Invalid base64 digit: " + aStr.charAt(aIndex - 1));
-	    }
-
-	    continuation = !!(digit & VLQ_CONTINUATION_BIT);
-	    digit &= VLQ_BASE_MASK;
-	    result = result + (digit << shift);
-	    shift += VLQ_BASE_SHIFT;
-	  } while (continuation);
-
-	  aOutParam.value = fromVLQSigned(result);
-	  aOutParam.rest = aIndex;
-	};
-	return base64Vlq;
-}
-
-var util = {};
-
-/* -*- Mode: js; js-indent-level: 2; -*- */
-
-var hasRequiredUtil;
-
-function requireUtil () {
-	if (hasRequiredUtil) return util;
-	hasRequiredUtil = 1;
-	(function (exports) {
-		/*
-		 * Copyright 2011 Mozilla Foundation and contributors
-		 * Licensed under the New BSD license. See LICENSE or:
-		 * http://opensource.org/licenses/BSD-3-Clause
-		 */
-
-		/**
-		 * This is a helper function for getting values from parameter/options
-		 * objects.
-		 *
-		 * @param args The object we are extracting values from
-		 * @param name The name of the property we are getting.
-		 * @param defaultValue An optional value to return if the property is missing
-		 * from the object. If this is not specified and the property is missing, an
-		 * error will be thrown.
-		 */
-		function getArg(aArgs, aName, aDefaultValue) {
-		  if (aName in aArgs) {
-		    return aArgs[aName];
-		  } else if (arguments.length === 3) {
-		    return aDefaultValue;
-		  } else {
-		    throw new Error('"' + aName + '" is a required argument.');
-		  }
-		}
-		exports.getArg = getArg;
-
-		var urlRegexp = /^(?:([\w+\-.]+):)?\/\/(?:(\w+:\w+)@)?([\w.-]*)(?::(\d+))?(.*)$/;
-		var dataUrlRegexp = /^data:.+\,.+$/;
-
-		function urlParse(aUrl) {
-		  var match = aUrl.match(urlRegexp);
-		  if (!match) {
-		    return null;
-		  }
-		  return {
-		    scheme: match[1],
-		    auth: match[2],
-		    host: match[3],
-		    port: match[4],
-		    path: match[5]
-		  };
-		}
-		exports.urlParse = urlParse;
-
-		function urlGenerate(aParsedUrl) {
-		  var url = '';
-		  if (aParsedUrl.scheme) {
-		    url += aParsedUrl.scheme + ':';
-		  }
-		  url += '//';
-		  if (aParsedUrl.auth) {
-		    url += aParsedUrl.auth + '@';
-		  }
-		  if (aParsedUrl.host) {
-		    url += aParsedUrl.host;
-		  }
-		  if (aParsedUrl.port) {
-		    url += ":" + aParsedUrl.port;
-		  }
-		  if (aParsedUrl.path) {
-		    url += aParsedUrl.path;
-		  }
-		  return url;
-		}
-		exports.urlGenerate = urlGenerate;
-
-		/**
-		 * Normalizes a path, or the path portion of a URL:
-		 *
-		 * - Replaces consecutive slashes with one slash.
-		 * - Removes unnecessary '.' parts.
-		 * - Removes unnecessary '<dir>/..' parts.
-		 *
-		 * Based on code in the Node.js 'path' core module.
-		 *
-		 * @param aPath The path or url to normalize.
-		 */
-		function normalize(aPath) {
-		  var path = aPath;
-		  var url = urlParse(aPath);
-		  if (url) {
-		    if (!url.path) {
-		      return aPath;
-		    }
-		    path = url.path;
-		  }
-		  var isAbsolute = exports.isAbsolute(path);
-
-		  var parts = path.split(/\/+/);
-		  for (var part, up = 0, i = parts.length - 1; i >= 0; i--) {
-		    part = parts[i];
-		    if (part === '.') {
-		      parts.splice(i, 1);
-		    } else if (part === '..') {
-		      up++;
-		    } else if (up > 0) {
-		      if (part === '') {
-		        // The first part is blank if the path is absolute. Trying to go
-		        // above the root is a no-op. Therefore we can remove all '..' parts
-		        // directly after the root.
-		        parts.splice(i + 1, up);
-		        up = 0;
-		      } else {
-		        parts.splice(i, 2);
-		        up--;
-		      }
-		    }
-		  }
-		  path = parts.join('/');
-
-		  if (path === '') {
-		    path = isAbsolute ? '/' : '.';
-		  }
-
-		  if (url) {
-		    url.path = path;
-		    return urlGenerate(url);
-		  }
-		  return path;
-		}
-		exports.normalize = normalize;
-
-		/**
-		 * Joins two paths/URLs.
-		 *
-		 * @param aRoot The root path or URL.
-		 * @param aPath The path or URL to be joined with the root.
-		 *
-		 * - If aPath is a URL or a data URI, aPath is returned, unless aPath is a
-		 *   scheme-relative URL: Then the scheme of aRoot, if any, is prepended
-		 *   first.
-		 * - Otherwise aPath is a path. If aRoot is a URL, then its path portion
-		 *   is updated with the result and aRoot is returned. Otherwise the result
-		 *   is returned.
-		 *   - If aPath is absolute, the result is aPath.
-		 *   - Otherwise the two paths are joined with a slash.
-		 * - Joining for example 'http://' and 'www.example.com' is also supported.
-		 */
-		function join(aRoot, aPath) {
-		  if (aRoot === "") {
-		    aRoot = ".";
-		  }
-		  if (aPath === "") {
-		    aPath = ".";
-		  }
-		  var aPathUrl = urlParse(aPath);
-		  var aRootUrl = urlParse(aRoot);
-		  if (aRootUrl) {
-		    aRoot = aRootUrl.path || '/';
-		  }
-
-		  // `join(foo, '//www.example.org')`
-		  if (aPathUrl && !aPathUrl.scheme) {
-		    if (aRootUrl) {
-		      aPathUrl.scheme = aRootUrl.scheme;
-		    }
-		    return urlGenerate(aPathUrl);
-		  }
-
-		  if (aPathUrl || aPath.match(dataUrlRegexp)) {
-		    return aPath;
-		  }
-
-		  // `join('http://', 'www.example.com')`
-		  if (aRootUrl && !aRootUrl.host && !aRootUrl.path) {
-		    aRootUrl.host = aPath;
-		    return urlGenerate(aRootUrl);
-		  }
-
-		  var joined = aPath.charAt(0) === '/'
-		    ? aPath
-		    : normalize(aRoot.replace(/\/+$/, '') + '/' + aPath);
-
-		  if (aRootUrl) {
-		    aRootUrl.path = joined;
-		    return urlGenerate(aRootUrl);
-		  }
-		  return joined;
-		}
-		exports.join = join;
-
-		exports.isAbsolute = function (aPath) {
-		  return aPath.charAt(0) === '/' || urlRegexp.test(aPath);
-		};
-
-		/**
-		 * Make a path relative to a URL or another path.
-		 *
-		 * @param aRoot The root path or URL.
-		 * @param aPath The path or URL to be made relative to aRoot.
-		 */
-		function relative(aRoot, aPath) {
-		  if (aRoot === "") {
-		    aRoot = ".";
-		  }
-
-		  aRoot = aRoot.replace(/\/$/, '');
-
-		  // It is possible for the path to be above the root. In this case, simply
-		  // checking whether the root is a prefix of the path won't work. Instead, we
-		  // need to remove components from the root one by one, until either we find
-		  // a prefix that fits, or we run out of components to remove.
-		  var level = 0;
-		  while (aPath.indexOf(aRoot + '/') !== 0) {
-		    var index = aRoot.lastIndexOf("/");
-		    if (index < 0) {
-		      return aPath;
-		    }
-
-		    // If the only part of the root that is left is the scheme (i.e. http://,
-		    // file:///, etc.), one or more slashes (/), or simply nothing at all, we
-		    // have exhausted all components, so the path is not relative to the root.
-		    aRoot = aRoot.slice(0, index);
-		    if (aRoot.match(/^([^\/]+:\/)?\/*$/)) {
-		      return aPath;
-		    }
-
-		    ++level;
-		  }
-
-		  // Make sure we add a "../" for each component we removed from the root.
-		  return Array(level + 1).join("../") + aPath.substr(aRoot.length + 1);
-		}
-		exports.relative = relative;
-
-		var supportsNullProto = (function () {
-		  var obj = Object.create(null);
-		  return !('__proto__' in obj);
-		}());
-
-		function identity (s) {
-		  return s;
-		}
-
-		/**
-		 * Because behavior goes wacky when you set `__proto__` on objects, we
-		 * have to prefix all the strings in our set with an arbitrary character.
-		 *
-		 * See https://github.com/mozilla/source-map/pull/31 and
-		 * https://github.com/mozilla/source-map/issues/30
-		 *
-		 * @param String aStr
-		 */
-		function toSetString(aStr) {
-		  if (isProtoString(aStr)) {
-		    return '$' + aStr;
-		  }
-
-		  return aStr;
-		}
-		exports.toSetString = supportsNullProto ? identity : toSetString;
-
-		function fromSetString(aStr) {
-		  if (isProtoString(aStr)) {
-		    return aStr.slice(1);
-		  }
-
-		  return aStr;
-		}
-		exports.fromSetString = supportsNullProto ? identity : fromSetString;
-
-		function isProtoString(s) {
-		  if (!s) {
-		    return false;
-		  }
-
-		  var length = s.length;
-
-		  if (length < 9 /* "__proto__".length */) {
-		    return false;
-		  }
-
-		  if (s.charCodeAt(length - 1) !== 95  /* '_' */ ||
-		      s.charCodeAt(length - 2) !== 95  /* '_' */ ||
-		      s.charCodeAt(length - 3) !== 111 /* 'o' */ ||
-		      s.charCodeAt(length - 4) !== 116 /* 't' */ ||
-		      s.charCodeAt(length - 5) !== 111 /* 'o' */ ||
-		      s.charCodeAt(length - 6) !== 114 /* 'r' */ ||
-		      s.charCodeAt(length - 7) !== 112 /* 'p' */ ||
-		      s.charCodeAt(length - 8) !== 95  /* '_' */ ||
-		      s.charCodeAt(length - 9) !== 95  /* '_' */) {
-		    return false;
-		  }
-
-		  for (var i = length - 10; i >= 0; i--) {
-		    if (s.charCodeAt(i) !== 36 /* '$' */) {
-		      return false;
-		    }
-		  }
-
-		  return true;
-		}
-
-		/**
-		 * Comparator between two mappings where the original positions are compared.
-		 *
-		 * Optionally pass in `true` as `onlyCompareGenerated` to consider two
-		 * mappings with the same original source/line/column, but different generated
-		 * line and column the same. Useful when searching for a mapping with a
-		 * stubbed out mapping.
-		 */
-		function compareByOriginalPositions(mappingA, mappingB, onlyCompareOriginal) {
-		  var cmp = strcmp(mappingA.source, mappingB.source);
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  cmp = mappingA.originalLine - mappingB.originalLine;
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  cmp = mappingA.originalColumn - mappingB.originalColumn;
-		  if (cmp !== 0 || onlyCompareOriginal) {
-		    return cmp;
-		  }
-
-		  cmp = mappingA.generatedColumn - mappingB.generatedColumn;
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  cmp = mappingA.generatedLine - mappingB.generatedLine;
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  return strcmp(mappingA.name, mappingB.name);
-		}
-		exports.compareByOriginalPositions = compareByOriginalPositions;
-
-		/**
-		 * Comparator between two mappings with deflated source and name indices where
-		 * the generated positions are compared.
-		 *
-		 * Optionally pass in `true` as `onlyCompareGenerated` to consider two
-		 * mappings with the same generated line and column, but different
-		 * source/name/original line and column the same. Useful when searching for a
-		 * mapping with a stubbed out mapping.
-		 */
-		function compareByGeneratedPositionsDeflated(mappingA, mappingB, onlyCompareGenerated) {
-		  var cmp = mappingA.generatedLine - mappingB.generatedLine;
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  cmp = mappingA.generatedColumn - mappingB.generatedColumn;
-		  if (cmp !== 0 || onlyCompareGenerated) {
-		    return cmp;
-		  }
-
-		  cmp = strcmp(mappingA.source, mappingB.source);
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  cmp = mappingA.originalLine - mappingB.originalLine;
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  cmp = mappingA.originalColumn - mappingB.originalColumn;
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  return strcmp(mappingA.name, mappingB.name);
-		}
-		exports.compareByGeneratedPositionsDeflated = compareByGeneratedPositionsDeflated;
-
-		function strcmp(aStr1, aStr2) {
-		  if (aStr1 === aStr2) {
-		    return 0;
-		  }
-
-		  if (aStr1 === null) {
-		    return 1; // aStr2 !== null
-		  }
-
-		  if (aStr2 === null) {
-		    return -1; // aStr1 !== null
-		  }
-
-		  if (aStr1 > aStr2) {
-		    return 1;
-		  }
-
-		  return -1;
-		}
-
-		/**
-		 * Comparator between two mappings with inflated source and name strings where
-		 * the generated positions are compared.
-		 */
-		function compareByGeneratedPositionsInflated(mappingA, mappingB) {
-		  var cmp = mappingA.generatedLine - mappingB.generatedLine;
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  cmp = mappingA.generatedColumn - mappingB.generatedColumn;
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  cmp = strcmp(mappingA.source, mappingB.source);
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  cmp = mappingA.originalLine - mappingB.originalLine;
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  cmp = mappingA.originalColumn - mappingB.originalColumn;
-		  if (cmp !== 0) {
-		    return cmp;
-		  }
-
-		  return strcmp(mappingA.name, mappingB.name);
-		}
-		exports.compareByGeneratedPositionsInflated = compareByGeneratedPositionsInflated;
-
-		/**
-		 * Strip any JSON XSSI avoidance prefix from the string (as documented
-		 * in the source maps specification), and then parse the string as
-		 * JSON.
-		 */
-		function parseSourceMapInput(str) {
-		  return JSON.parse(str.replace(/^\)]}'[^\n]*\n/, ''));
-		}
-		exports.parseSourceMapInput = parseSourceMapInput;
-
-		/**
-		 * Compute the URL of a source given the the source root, the source's
-		 * URL, and the source map's URL.
-		 */
-		function computeSourceURL(sourceRoot, sourceURL, sourceMapURL) {
-		  sourceURL = sourceURL || '';
-
-		  if (sourceRoot) {
-		    // This follows what Chrome does.
-		    if (sourceRoot[sourceRoot.length - 1] !== '/' && sourceURL[0] !== '/') {
-		      sourceRoot += '/';
-		    }
-		    // The spec says:
-		    //   Line 4: An optional source root, useful for relocating source
-		    //   files on a server or removing repeated values in the
-		    //   “sources” entry.  This value is prepended to the individual
-		    //   entries in the “source” field.
-		    sourceURL = sourceRoot + sourceURL;
-		  }
-
-		  // Historically, SourceMapConsumer did not take the sourceMapURL as
-		  // a parameter.  This mode is still somewhat supported, which is why
-		  // this code block is conditional.  However, it's preferable to pass
-		  // the source map URL to SourceMapConsumer, so that this function
-		  // can implement the source URL resolution algorithm as outlined in
-		  // the spec.  This block is basically the equivalent of:
-		  //    new URL(sourceURL, sourceMapURL).toString()
-		  // ... except it avoids using URL, which wasn't available in the
-		  // older releases of node still supported by this library.
-		  //
-		  // The spec says:
-		  //   If the sources are not absolute URLs after prepending of the
-		  //   “sourceRoot”, the sources are resolved relative to the
-		  //   SourceMap (like resolving script src in a html document).
-		  if (sourceMapURL) {
-		    var parsed = urlParse(sourceMapURL);
-		    if (!parsed) {
-		      throw new Error("sourceMapURL could not be parsed");
-		    }
-		    if (parsed.path) {
-		      // Strip the last path component, but keep the "/".
-		      var index = parsed.path.lastIndexOf('/');
-		      if (index >= 0) {
-		        parsed.path = parsed.path.substring(0, index + 1);
-		      }
-		    }
-		    sourceURL = join(urlGenerate(parsed), sourceURL);
-		  }
-
-		  return normalize(sourceURL);
-		}
-		exports.computeSourceURL = computeSourceURL; 
-	} (util));
-	return util;
-}
-
-var arraySet = {};
-
-/* -*- Mode: js; js-indent-level: 2; -*- */
-
-var hasRequiredArraySet;
-
-function requireArraySet () {
-	if (hasRequiredArraySet) return arraySet;
-	hasRequiredArraySet = 1;
-	/*
-	 * Copyright 2011 Mozilla Foundation and contributors
-	 * Licensed under the New BSD license. See LICENSE or:
-	 * http://opensource.org/licenses/BSD-3-Clause
-	 */
-
-	var util = requireUtil();
-	var has = Object.prototype.hasOwnProperty;
-	var hasNativeMap = typeof Map !== "undefined";
-
-	/**
-	 * A data structure which is a combination of an array and a set. Adding a new
-	 * member is O(1), testing for membership is O(1), and finding the index of an
-	 * element is O(1). Removing elements from the set is not supported. Only
-	 * strings are supported for membership.
-	 */
-	function ArraySet() {
-	  this._array = [];
-	  this._set = hasNativeMap ? new Map() : Object.create(null);
-	}
-
-	/**
-	 * Static method for creating ArraySet instances from an existing array.
-	 */
-	ArraySet.fromArray = function ArraySet_fromArray(aArray, aAllowDuplicates) {
-	  var set = new ArraySet();
-	  for (var i = 0, len = aArray.length; i < len; i++) {
-	    set.add(aArray[i], aAllowDuplicates);
-	  }
-	  return set;
-	};
-
-	/**
-	 * Return how many unique items are in this ArraySet. If duplicates have been
-	 * added, than those do not count towards the size.
-	 *
-	 * @returns Number
-	 */
-	ArraySet.prototype.size = function ArraySet_size() {
-	  return hasNativeMap ? this._set.size : Object.getOwnPropertyNames(this._set).length;
-	};
-
-	/**
-	 * Add the given string to this set.
-	 *
-	 * @param String aStr
-	 */
-	ArraySet.prototype.add = function ArraySet_add(aStr, aAllowDuplicates) {
-	  var sStr = hasNativeMap ? aStr : util.toSetString(aStr);
-	  var isDuplicate = hasNativeMap ? this.has(aStr) : has.call(this._set, sStr);
-	  var idx = this._array.length;
-	  if (!isDuplicate || aAllowDuplicates) {
-	    this._array.push(aStr);
-	  }
-	  if (!isDuplicate) {
-	    if (hasNativeMap) {
-	      this._set.set(aStr, idx);
-	    } else {
-	      this._set[sStr] = idx;
-	    }
-	  }
-	};
-
-	/**
-	 * Is the given string a member of this set?
-	 *
-	 * @param String aStr
-	 */
-	ArraySet.prototype.has = function ArraySet_has(aStr) {
-	  if (hasNativeMap) {
-	    return this._set.has(aStr);
-	  } else {
-	    var sStr = util.toSetString(aStr);
-	    return has.call(this._set, sStr);
-	  }
-	};
-
-	/**
-	 * What is the index of the given string in the array?
-	 *
-	 * @param String aStr
-	 */
-	ArraySet.prototype.indexOf = function ArraySet_indexOf(aStr) {
-	  if (hasNativeMap) {
-	    var idx = this._set.get(aStr);
-	    if (idx >= 0) {
-	        return idx;
-	    }
-	  } else {
-	    var sStr = util.toSetString(aStr);
-	    if (has.call(this._set, sStr)) {
-	      return this._set[sStr];
-	    }
-	  }
-
-	  throw new Error('"' + aStr + '" is not in the set.');
-	};
-
-	/**
-	 * What is the element at the given index?
-	 *
-	 * @param Number aIdx
-	 */
-	ArraySet.prototype.at = function ArraySet_at(aIdx) {
-	  if (aIdx >= 0 && aIdx < this._array.length) {
-	    return this._array[aIdx];
-	  }
-	  throw new Error('No element indexed by ' + aIdx);
-	};
-
-	/**
-	 * Returns the array representation of this set (which has the proper indices
-	 * indicated by indexOf). Note that this is a copy of the internal array used
-	 * for storing the members so that no one can mess with internal state.
-	 */
-	ArraySet.prototype.toArray = function ArraySet_toArray() {
-	  return this._array.slice();
-	};
-
-	arraySet.ArraySet = ArraySet;
-	return arraySet;
-}
-
-var mappingList = {};
-
-/* -*- Mode: js; js-indent-level: 2; -*- */
-
-var hasRequiredMappingList;
-
-function requireMappingList () {
-	if (hasRequiredMappingList) return mappingList;
-	hasRequiredMappingList = 1;
-	/*
-	 * Copyright 2014 Mozilla Foundation and contributors
-	 * Licensed under the New BSD license. See LICENSE or:
-	 * http://opensource.org/licenses/BSD-3-Clause
-	 */
-
-	var util = requireUtil();
-
-	/**
-	 * Determine whether mappingB is after mappingA with respect to generated
-	 * position.
-	 */
-	function generatedPositionAfter(mappingA, mappingB) {
-	  // Optimized for most common case
-	  var lineA = mappingA.generatedLine;
-	  var lineB = mappingB.generatedLine;
-	  var columnA = mappingA.generatedColumn;
-	  var columnB = mappingB.generatedColumn;
-	  return lineB > lineA || lineB == lineA && columnB >= columnA ||
-	         util.compareByGeneratedPositionsInflated(mappingA, mappingB) <= 0;
-	}
-
-	/**
-	 * A data structure to provide a sorted view of accumulated mappings in a
-	 * performance conscious manner. It trades a neglibable overhead in general
-	 * case for a large speedup in case of mappings being added in order.
-	 */
-	function MappingList() {
-	  this._array = [];
-	  this._sorted = true;
-	  // Serves as infimum
-	  this._last = {generatedLine: -1, generatedColumn: 0};
-	}
-
-	/**
-	 * Iterate through internal items. This method takes the same arguments that
-	 * `Array.prototype.forEach` takes.
-	 *
-	 * NOTE: The order of the mappings is NOT guaranteed.
-	 */
-	MappingList.prototype.unsortedForEach =
-	  function MappingList_forEach(aCallback, aThisArg) {
-	    this._array.forEach(aCallback, aThisArg);
-	  };
-
-	/**
-	 * Add the given source mapping.
-	 *
-	 * @param Object aMapping
-	 */
-	MappingList.prototype.add = function MappingList_add(aMapping) {
-	  if (generatedPositionAfter(this._last, aMapping)) {
-	    this._last = aMapping;
-	    this._array.push(aMapping);
-	  } else {
-	    this._sorted = false;
-	    this._array.push(aMapping);
-	  }
-	};
-
-	/**
-	 * Returns the flat, sorted array of mappings. The mappings are sorted by
-	 * generated position.
-	 *
-	 * WARNING: This method returns internal data without copying, for
-	 * performance. The return value must NOT be mutated, and should be treated as
-	 * an immutable borrow. If you want to take ownership, you must make your own
-	 * copy.
-	 */
-	MappingList.prototype.toArray = function MappingList_toArray() {
-	  if (!this._sorted) {
-	    this._array.sort(util.compareByGeneratedPositionsInflated);
-	    this._sorted = true;
-	  }
-	  return this._array;
-	};
-
-	mappingList.MappingList = MappingList;
-	return mappingList;
-}
-
-/* -*- Mode: js; js-indent-level: 2; -*- */
-
-var hasRequiredSourceMapGenerator;
-
-function requireSourceMapGenerator () {
-	if (hasRequiredSourceMapGenerator) return sourceMapGenerator;
-	hasRequiredSourceMapGenerator = 1;
-	/*
-	 * Copyright 2011 Mozilla Foundation and contributors
-	 * Licensed under the New BSD license. See LICENSE or:
-	 * http://opensource.org/licenses/BSD-3-Clause
-	 */
-
-	var base64VLQ = requireBase64Vlq();
-	var util = requireUtil();
-	var ArraySet = requireArraySet().ArraySet;
-	var MappingList = requireMappingList().MappingList;
-
-	/**
-	 * An instance of the SourceMapGenerator represents a source map which is
-	 * being built incrementally. You may pass an object with the following
-	 * properties:
-	 *
-	 *   - file: The filename of the generated source.
-	 *   - sourceRoot: A root for all relative URLs in this source map.
-	 */
-	function SourceMapGenerator(aArgs) {
-	  if (!aArgs) {
-	    aArgs = {};
-	  }
-	  this._file = util.getArg(aArgs, 'file', null);
-	  this._sourceRoot = util.getArg(aArgs, 'sourceRoot', null);
-	  this._skipValidation = util.getArg(aArgs, 'skipValidation', false);
-	  this._sources = new ArraySet();
-	  this._names = new ArraySet();
-	  this._mappings = new MappingList();
-	  this._sourcesContents = null;
-	}
-
-	SourceMapGenerator.prototype._version = 3;
-
-	/**
-	 * Creates a new SourceMapGenerator based on a SourceMapConsumer
-	 *
-	 * @param aSourceMapConsumer The SourceMap.
-	 */
-	SourceMapGenerator.fromSourceMap =
-	  function SourceMapGenerator_fromSourceMap(aSourceMapConsumer) {
-	    var sourceRoot = aSourceMapConsumer.sourceRoot;
-	    var generator = new SourceMapGenerator({
-	      file: aSourceMapConsumer.file,
-	      sourceRoot: sourceRoot
-	    });
-	    aSourceMapConsumer.eachMapping(function (mapping) {
-	      var newMapping = {
-	        generated: {
-	          line: mapping.generatedLine,
-	          column: mapping.generatedColumn
-	        }
-	      };
-
-	      if (mapping.source != null) {
-	        newMapping.source = mapping.source;
-	        if (sourceRoot != null) {
-	          newMapping.source = util.relative(sourceRoot, newMapping.source);
-	        }
-
-	        newMapping.original = {
-	          line: mapping.originalLine,
-	          column: mapping.originalColumn
-	        };
-
-	        if (mapping.name != null) {
-	          newMapping.name = mapping.name;
-	        }
-	      }
-
-	      generator.addMapping(newMapping);
-	    });
-	    aSourceMapConsumer.sources.forEach(function (sourceFile) {
-	      var sourceRelative = sourceFile;
-	      if (sourceRoot !== null) {
-	        sourceRelative = util.relative(sourceRoot, sourceFile);
-	      }
-
-	      if (!generator._sources.has(sourceRelative)) {
-	        generator._sources.add(sourceRelative);
-	      }
-
-	      var content = aSourceMapConsumer.sourceContentFor(sourceFile);
-	      if (content != null) {
-	        generator.setSourceContent(sourceFile, content);
-	      }
-	    });
-	    return generator;
-	  };
-
-	/**
-	 * Add a single mapping from original source line and column to the generated
-	 * source's line and column for this source map being created. The mapping
-	 * object should have the following properties:
-	 *
-	 *   - generated: An object with the generated line and column positions.
-	 *   - original: An object with the original line and column positions.
-	 *   - source: The original source file (relative to the sourceRoot).
-	 *   - name: An optional original token name for this mapping.
-	 */
-	SourceMapGenerator.prototype.addMapping =
-	  function SourceMapGenerator_addMapping(aArgs) {
-	    var generated = util.getArg(aArgs, 'generated');
-	    var original = util.getArg(aArgs, 'original', null);
-	    var source = util.getArg(aArgs, 'source', null);
-	    var name = util.getArg(aArgs, 'name', null);
-
-	    if (!this._skipValidation) {
-	      this._validateMapping(generated, original, source, name);
-	    }
-
-	    if (source != null) {
-	      source = String(source);
-	      if (!this._sources.has(source)) {
-	        this._sources.add(source);
-	      }
-	    }
-
-	    if (name != null) {
-	      name = String(name);
-	      if (!this._names.has(name)) {
-	        this._names.add(name);
-	      }
-	    }
-
-	    this._mappings.add({
-	      generatedLine: generated.line,
-	      generatedColumn: generated.column,
-	      originalLine: original != null && original.line,
-	      originalColumn: original != null && original.column,
-	      source: source,
-	      name: name
-	    });
-	  };
-
-	/**
-	 * Set the source content for a source file.
-	 */
-	SourceMapGenerator.prototype.setSourceContent =
-	  function SourceMapGenerator_setSourceContent(aSourceFile, aSourceContent) {
-	    var source = aSourceFile;
-	    if (this._sourceRoot != null) {
-	      source = util.relative(this._sourceRoot, source);
-	    }
-
-	    if (aSourceContent != null) {
-	      // Add the source content to the _sourcesContents map.
-	      // Create a new _sourcesContents map if the property is null.
-	      if (!this._sourcesContents) {
-	        this._sourcesContents = Object.create(null);
-	      }
-	      this._sourcesContents[util.toSetString(source)] = aSourceContent;
-	    } else if (this._sourcesContents) {
-	      // Remove the source file from the _sourcesContents map.
-	      // If the _sourcesContents map is empty, set the property to null.
-	      delete this._sourcesContents[util.toSetString(source)];
-	      if (Object.keys(this._sourcesContents).length === 0) {
-	        this._sourcesContents = null;
-	      }
-	    }
-	  };
-
-	/**
-	 * Applies the mappings of a sub-source-map for a specific source file to the
-	 * source map being generated. Each mapping to the supplied source file is
-	 * rewritten using the supplied source map. Note: The resolution for the
-	 * resulting mappings is the minimium of this map and the supplied map.
-	 *
-	 * @param aSourceMapConsumer The source map to be applied.
-	 * @param aSourceFile Optional. The filename of the source file.
-	 *        If omitted, SourceMapConsumer's file property will be used.
-	 * @param aSourceMapPath Optional. The dirname of the path to the source map
-	 *        to be applied. If relative, it is relative to the SourceMapConsumer.
-	 *        This parameter is needed when the two source maps aren't in the same
-	 *        directory, and the source map to be applied contains relative source
-	 *        paths. If so, those relative source paths need to be rewritten
-	 *        relative to the SourceMapGenerator.
-	 */
-	SourceMapGenerator.prototype.applySourceMap =
-	  function SourceMapGenerator_applySourceMap(aSourceMapConsumer, aSourceFile, aSourceMapPath) {
-	    var sourceFile = aSourceFile;
-	    // If aSourceFile is omitted, we will use the file property of the SourceMap
-	    if (aSourceFile == null) {
-	      if (aSourceMapConsumer.file == null) {
-	        throw new Error(
-	          'SourceMapGenerator.prototype.applySourceMap requires either an explicit source file, ' +
-	          'or the source map\'s "file" property. Both were omitted.'
-	        );
-	      }
-	      sourceFile = aSourceMapConsumer.file;
-	    }
-	    var sourceRoot = this._sourceRoot;
-	    // Make "sourceFile" relative if an absolute Url is passed.
-	    if (sourceRoot != null) {
-	      sourceFile = util.relative(sourceRoot, sourceFile);
-	    }
-	    // Applying the SourceMap can add and remove items from the sources and
-	    // the names array.
-	    var newSources = new ArraySet();
-	    var newNames = new ArraySet();
-
-	    // Find mappings for the "sourceFile"
-	    this._mappings.unsortedForEach(function (mapping) {
-	      if (mapping.source === sourceFile && mapping.originalLine != null) {
-	        // Check if it can be mapped by the source map, then update the mapping.
-	        var original = aSourceMapConsumer.originalPositionFor({
-	          line: mapping.originalLine,
-	          column: mapping.originalColumn
-	        });
-	        if (original.source != null) {
-	          // Copy mapping
-	          mapping.source = original.source;
-	          if (aSourceMapPath != null) {
-	            mapping.source = util.join(aSourceMapPath, mapping.source);
-	          }
-	          if (sourceRoot != null) {
-	            mapping.source = util.relative(sourceRoot, mapping.source);
-	          }
-	          mapping.originalLine = original.line;
-	          mapping.originalColumn = original.column;
-	          if (original.name != null) {
-	            mapping.name = original.name;
-	          }
-	        }
-	      }
-
-	      var source = mapping.source;
-	      if (source != null && !newSources.has(source)) {
-	        newSources.add(source);
-	      }
-
-	      var name = mapping.name;
-	      if (name != null && !newNames.has(name)) {
-	        newNames.add(name);
-	      }
-
-	    }, this);
-	    this._sources = newSources;
-	    this._names = newNames;
-
-	    // Copy sourcesContents of applied map.
-	    aSourceMapConsumer.sources.forEach(function (sourceFile) {
-	      var content = aSourceMapConsumer.sourceContentFor(sourceFile);
-	      if (content != null) {
-	        if (aSourceMapPath != null) {
-	          sourceFile = util.join(aSourceMapPath, sourceFile);
-	        }
-	        if (sourceRoot != null) {
-	          sourceFile = util.relative(sourceRoot, sourceFile);
-	        }
-	        this.setSourceContent(sourceFile, content);
-	      }
-	    }, this);
-	  };
-
-	/**
-	 * A mapping can have one of the three levels of data:
-	 *
-	 *   1. Just the generated position.
-	 *   2. The Generated position, original position, and original source.
-	 *   3. Generated and original position, original source, as well as a name
-	 *      token.
-	 *
-	 * To maintain consistency, we validate that any new mapping being added falls
-	 * in to one of these categories.
-	 */
-	SourceMapGenerator.prototype._validateMapping =
-	  function SourceMapGenerator_validateMapping(aGenerated, aOriginal, aSource,
-	                                              aName) {
-	    // When aOriginal is truthy but has empty values for .line and .column,
-	    // it is most likely a programmer error. In this case we throw a very
-	    // specific error message to try to guide them the right way.
-	    // For example: https://github.com/Polymer/polymer-bundler/pull/519
-	    if (aOriginal && typeof aOriginal.line !== 'number' && typeof aOriginal.column !== 'number') {
-	        throw new Error(
-	            'original.line and original.column are not numbers -- you probably meant to omit ' +
-	            'the original mapping entirely and only map the generated position. If so, pass ' +
-	            'null for the original mapping instead of an object with empty or null values.'
-	        );
-	    }
-
-	    if (aGenerated && 'line' in aGenerated && 'column' in aGenerated
-	        && aGenerated.line > 0 && aGenerated.column >= 0
-	        && !aOriginal && !aSource && !aName) {
-	      // Case 1.
-	      return;
-	    }
-	    else if (aGenerated && 'line' in aGenerated && 'column' in aGenerated
-	             && aOriginal && 'line' in aOriginal && 'column' in aOriginal
-	             && aGenerated.line > 0 && aGenerated.column >= 0
-	             && aOriginal.line > 0 && aOriginal.column >= 0
-	             && aSource) {
-	      // Cases 2 and 3.
-	      return;
-	    }
-	    else {
-	      throw new Error('Invalid mapping: ' + JSON.stringify({
-	        generated: aGenerated,
-	        source: aSource,
-	        original: aOriginal,
-	        name: aName
-	      }));
-	    }
-	  };
-
-	/**
-	 * Serialize the accumulated mappings in to the stream of base 64 VLQs
-	 * specified by the source map format.
-	 */
-	SourceMapGenerator.prototype._serializeMappings =
-	  function SourceMapGenerator_serializeMappings() {
-	    var previousGeneratedColumn = 0;
-	    var previousGeneratedLine = 1;
-	    var previousOriginalColumn = 0;
-	    var previousOriginalLine = 0;
-	    var previousName = 0;
-	    var previousSource = 0;
-	    var result = '';
-	    var next;
-	    var mapping;
-	    var nameIdx;
-	    var sourceIdx;
-
-	    var mappings = this._mappings.toArray();
-	    for (var i = 0, len = mappings.length; i < len; i++) {
-	      mapping = mappings[i];
-	      next = '';
-
-	      if (mapping.generatedLine !== previousGeneratedLine) {
-	        previousGeneratedColumn = 0;
-	        while (mapping.generatedLine !== previousGeneratedLine) {
-	          next += ';';
-	          previousGeneratedLine++;
-	        }
-	      }
-	      else {
-	        if (i > 0) {
-	          if (!util.compareByGeneratedPositionsInflated(mapping, mappings[i - 1])) {
-	            continue;
-	          }
-	          next += ',';
-	        }
-	      }
-
-	      next += base64VLQ.encode(mapping.generatedColumn
-	                                 - previousGeneratedColumn);
-	      previousGeneratedColumn = mapping.generatedColumn;
-
-	      if (mapping.source != null) {
-	        sourceIdx = this._sources.indexOf(mapping.source);
-	        next += base64VLQ.encode(sourceIdx - previousSource);
-	        previousSource = sourceIdx;
-
-	        // lines are stored 0-based in SourceMap spec version 3
-	        next += base64VLQ.encode(mapping.originalLine - 1
-	                                   - previousOriginalLine);
-	        previousOriginalLine = mapping.originalLine - 1;
-
-	        next += base64VLQ.encode(mapping.originalColumn
-	                                   - previousOriginalColumn);
-	        previousOriginalColumn = mapping.originalColumn;
-
-	        if (mapping.name != null) {
-	          nameIdx = this._names.indexOf(mapping.name);
-	          next += base64VLQ.encode(nameIdx - previousName);
-	          previousName = nameIdx;
-	        }
-	      }
-
-	      result += next;
-	    }
-
-	    return result;
-	  };
-
-	SourceMapGenerator.prototype._generateSourcesContent =
-	  function SourceMapGenerator_generateSourcesContent(aSources, aSourceRoot) {
-	    return aSources.map(function (source) {
-	      if (!this._sourcesContents) {
-	        return null;
-	      }
-	      if (aSourceRoot != null) {
-	        source = util.relative(aSourceRoot, source);
-	      }
-	      var key = util.toSetString(source);
-	      return Object.prototype.hasOwnProperty.call(this._sourcesContents, key)
-	        ? this._sourcesContents[key]
-	        : null;
-	    }, this);
-	  };
-
-	/**
-	 * Externalize the source map.
-	 */
-	SourceMapGenerator.prototype.toJSON =
-	  function SourceMapGenerator_toJSON() {
-	    var map = {
-	      version: this._version,
-	      sources: this._sources.toArray(),
-	      names: this._names.toArray(),
-	      mappings: this._serializeMappings()
-	    };
-	    if (this._file != null) {
-	      map.file = this._file;
-	    }
-	    if (this._sourceRoot != null) {
-	      map.sourceRoot = this._sourceRoot;
-	    }
-	    if (this._sourcesContents) {
-	      map.sourcesContent = this._generateSourcesContent(map.sources, map.sourceRoot);
-	    }
-
-	    return map;
-	  };
-
-	/**
-	 * Render the source map being generated to a string.
-	 */
-	SourceMapGenerator.prototype.toString =
-	  function SourceMapGenerator_toString() {
-	    return JSON.stringify(this.toJSON());
-	  };
-
-	sourceMapGenerator.SourceMapGenerator = SourceMapGenerator;
-	return sourceMapGenerator;
-}
-
-var sourceMapConsumer = {};
-
-var binarySearch = {};
-
-/* -*- Mode: js; js-indent-level: 2; -*- */
-
-var hasRequiredBinarySearch;
-
-function requireBinarySearch () {
-	if (hasRequiredBinarySearch) return binarySearch;
-	hasRequiredBinarySearch = 1;
-	(function (exports) {
-		/*
-		 * Copyright 2011 Mozilla Foundation and contributors
-		 * Licensed under the New BSD license. See LICENSE or:
-		 * http://opensource.org/licenses/BSD-3-Clause
-		 */
-
-		exports.GREATEST_LOWER_BOUND = 1;
-		exports.LEAST_UPPER_BOUND = 2;
-
-		/**
-		 * Recursive implementation of binary search.
-		 *
-		 * @param aLow Indices here and lower do not contain the needle.
-		 * @param aHigh Indices here and higher do not contain the needle.
-		 * @param aNeedle The element being searched for.
-		 * @param aHaystack The non-empty array being searched.
-		 * @param aCompare Function which takes two elements and returns -1, 0, or 1.
-		 * @param aBias Either 'binarySearch.GREATEST_LOWER_BOUND' or
-		 *     'binarySearch.LEAST_UPPER_BOUND'. Specifies whether to return the
-		 *     closest element that is smaller than or greater than the one we are
-		 *     searching for, respectively, if the exact element cannot be found.
-		 */
-		function recursiveSearch(aLow, aHigh, aNeedle, aHaystack, aCompare, aBias) {
-		  // This function terminates when one of the following is true:
-		  //
-		  //   1. We find the exact element we are looking for.
-		  //
-		  //   2. We did not find the exact element, but we can return the index of
-		  //      the next-closest element.
-		  //
-		  //   3. We did not find the exact element, and there is no next-closest
-		  //      element than the one we are searching for, so we return -1.
-		  var mid = Math.floor((aHigh - aLow) / 2) + aLow;
-		  var cmp = aCompare(aNeedle, aHaystack[mid], true);
-		  if (cmp === 0) {
-		    // Found the element we are looking for.
-		    return mid;
-		  }
-		  else if (cmp > 0) {
-		    // Our needle is greater than aHaystack[mid].
-		    if (aHigh - mid > 1) {
-		      // The element is in the upper half.
-		      return recursiveSearch(mid, aHigh, aNeedle, aHaystack, aCompare, aBias);
-		    }
-
-		    // The exact needle element was not found in this haystack. Determine if
-		    // we are in termination case (3) or (2) and return the appropriate thing.
-		    if (aBias == exports.LEAST_UPPER_BOUND) {
-		      return aHigh < aHaystack.length ? aHigh : -1;
-		    } else {
-		      return mid;
-		    }
-		  }
-		  else {
-		    // Our needle is less than aHaystack[mid].
-		    if (mid - aLow > 1) {
-		      // The element is in the lower half.
-		      return recursiveSearch(aLow, mid, aNeedle, aHaystack, aCompare, aBias);
-		    }
-
-		    // we are in termination case (3) or (2) and return the appropriate thing.
-		    if (aBias == exports.LEAST_UPPER_BOUND) {
-		      return mid;
-		    } else {
-		      return aLow < 0 ? -1 : aLow;
-		    }
-		  }
-		}
-
-		/**
-		 * This is an implementation of binary search which will always try and return
-		 * the index of the closest element if there is no exact hit. This is because
-		 * mappings between original and generated line/col pairs are single points,
-		 * and there is an implicit region between each of them, so a miss just means
-		 * that you aren't on the very start of a region.
-		 *
-		 * @param aNeedle The element you are looking for.
-		 * @param aHaystack The array that is being searched.
-		 * @param aCompare A function which takes the needle and an element in the
-		 *     array and returns -1, 0, or 1 depending on whether the needle is less
-		 *     than, equal to, or greater than the element, respectively.
-		 * @param aBias Either 'binarySearch.GREATEST_LOWER_BOUND' or
-		 *     'binarySearch.LEAST_UPPER_BOUND'. Specifies whether to return the
-		 *     closest element that is smaller than or greater than the one we are
-		 *     searching for, respectively, if the exact element cannot be found.
-		 *     Defaults to 'binarySearch.GREATEST_LOWER_BOUND'.
-		 */
-		exports.search = function search(aNeedle, aHaystack, aCompare, aBias) {
-		  if (aHaystack.length === 0) {
-		    return -1;
-		  }
-
-		  var index = recursiveSearch(-1, aHaystack.length, aNeedle, aHaystack,
-		                              aCompare, aBias || exports.GREATEST_LOWER_BOUND);
-		  if (index < 0) {
-		    return -1;
-		  }
-
-		  // We have found either the exact element, or the next-closest element than
-		  // the one we are searching for. However, there may be more than one such
-		  // element. Make sure we always return the smallest of these.
-		  while (index - 1 >= 0) {
-		    if (aCompare(aHaystack[index], aHaystack[index - 1], true) !== 0) {
-		      break;
-		    }
-		    --index;
-		  }
-
-		  return index;
-		}; 
-	} (binarySearch));
-	return binarySearch;
-}
-
-var quickSort = {};
-
-/* -*- Mode: js; js-indent-level: 2; -*- */
-
-var hasRequiredQuickSort;
-
-function requireQuickSort () {
-	if (hasRequiredQuickSort) return quickSort;
-	hasRequiredQuickSort = 1;
-	/*
-	 * Copyright 2011 Mozilla Foundation and contributors
-	 * Licensed under the New BSD license. See LICENSE or:
-	 * http://opensource.org/licenses/BSD-3-Clause
-	 */
-
-	// It turns out that some (most?) JavaScript engines don't self-host
-	// `Array.prototype.sort`. This makes sense because C++ will likely remain
-	// faster than JS when doing raw CPU-intensive sorting. However, when using a
-	// custom comparator function, calling back and forth between the VM's C++ and
-	// JIT'd JS is rather slow *and* loses JIT type information, resulting in
-	// worse generated code for the comparator function than would be optimal. In
-	// fact, when sorting with a comparator, these costs outweigh the benefits of
-	// sorting in C++. By using our own JS-implemented Quick Sort (below), we get
-	// a ~3500ms mean speed-up in `bench/bench.html`.
-
-	/**
-	 * Swap the elements indexed by `x` and `y` in the array `ary`.
-	 *
-	 * @param {Array} ary
-	 *        The array.
-	 * @param {Number} x
-	 *        The index of the first item.
-	 * @param {Number} y
-	 *        The index of the second item.
-	 */
-	function swap(ary, x, y) {
-	  var temp = ary[x];
-	  ary[x] = ary[y];
-	  ary[y] = temp;
-	}
-
-	/**
-	 * Returns a random integer within the range `low .. high` inclusive.
-	 *
-	 * @param {Number} low
-	 *        The lower bound on the range.
-	 * @param {Number} high
-	 *        The upper bound on the range.
-	 */
-	function randomIntInRange(low, high) {
-	  return Math.round(low + (Math.random() * (high - low)));
-	}
-
-	/**
-	 * The Quick Sort algorithm.
-	 *
-	 * @param {Array} ary
-	 *        An array to sort.
-	 * @param {function} comparator
-	 *        Function to use to compare two items.
-	 * @param {Number} p
-	 *        Start index of the array
-	 * @param {Number} r
-	 *        End index of the array
-	 */
-	function doQuickSort(ary, comparator, p, r) {
-	  // If our lower bound is less than our upper bound, we (1) partition the
-	  // array into two pieces and (2) recurse on each half. If it is not, this is
-	  // the empty array and our base case.
-
-	  if (p < r) {
-	    // (1) Partitioning.
-	    //
-	    // The partitioning chooses a pivot between `p` and `r` and moves all
-	    // elements that are less than or equal to the pivot to the before it, and
-	    // all the elements that are greater than it after it. The effect is that
-	    // once partition is done, the pivot is in the exact place it will be when
-	    // the array is put in sorted order, and it will not need to be moved
-	    // again. This runs in O(n) time.
-
-	    // Always choose a random pivot so that an input array which is reverse
-	    // sorted does not cause O(n^2) running time.
-	    var pivotIndex = randomIntInRange(p, r);
-	    var i = p - 1;
-
-	    swap(ary, pivotIndex, r);
-	    var pivot = ary[r];
-
-	    // Immediately after `j` is incremented in this loop, the following hold
-	    // true:
-	    //
-	    //   * Every element in `ary[p .. i]` is less than or equal to the pivot.
-	    //
-	    //   * Every element in `ary[i+1 .. j-1]` is greater than the pivot.
-	    for (var j = p; j < r; j++) {
-	      if (comparator(ary[j], pivot) <= 0) {
-	        i += 1;
-	        swap(ary, i, j);
-	      }
-	    }
-
-	    swap(ary, i + 1, j);
-	    var q = i + 1;
-
-	    // (2) Recurse on each half.
-
-	    doQuickSort(ary, comparator, p, q - 1);
-	    doQuickSort(ary, comparator, q + 1, r);
-	  }
-	}
-
-	/**
-	 * Sort the given array in-place with the given comparator function.
-	 *
-	 * @param {Array} ary
-	 *        An array to sort.
-	 * @param {function} comparator
-	 *        Function to use to compare two items.
-	 */
-	quickSort.quickSort = function (ary, comparator) {
-	  doQuickSort(ary, comparator, 0, ary.length - 1);
-	};
-	return quickSort;
-}
-
-/* -*- Mode: js; js-indent-level: 2; -*- */
-
-var hasRequiredSourceMapConsumer;
-
-function requireSourceMapConsumer () {
-	if (hasRequiredSourceMapConsumer) return sourceMapConsumer;
-	hasRequiredSourceMapConsumer = 1;
-	/*
-	 * Copyright 2011 Mozilla Foundation and contributors
-	 * Licensed under the New BSD license. See LICENSE or:
-	 * http://opensource.org/licenses/BSD-3-Clause
-	 */
-
-	var util = requireUtil();
-	var binarySearch = requireBinarySearch();
-	var ArraySet = requireArraySet().ArraySet;
-	var base64VLQ = requireBase64Vlq();
-	var quickSort = requireQuickSort().quickSort;
-
-	function SourceMapConsumer(aSourceMap, aSourceMapURL) {
-	  var sourceMap = aSourceMap;
-	  if (typeof aSourceMap === 'string') {
-	    sourceMap = util.parseSourceMapInput(aSourceMap);
-	  }
-
-	  return sourceMap.sections != null
-	    ? new IndexedSourceMapConsumer(sourceMap, aSourceMapURL)
-	    : new BasicSourceMapConsumer(sourceMap, aSourceMapURL);
-	}
-
-	SourceMapConsumer.fromSourceMap = function(aSourceMap, aSourceMapURL) {
-	  return BasicSourceMapConsumer.fromSourceMap(aSourceMap, aSourceMapURL);
-	};
-
-	/**
-	 * The version of the source mapping spec that we are consuming.
-	 */
-	SourceMapConsumer.prototype._version = 3;
-
-	// `__generatedMappings` and `__originalMappings` are arrays that hold the
-	// parsed mapping coordinates from the source map's "mappings" attribute. They
-	// are lazily instantiated, accessed via the `_generatedMappings` and
-	// `_originalMappings` getters respectively, and we only parse the mappings
-	// and create these arrays once queried for a source location. We jump through
-	// these hoops because there can be many thousands of mappings, and parsing
-	// them is expensive, so we only want to do it if we must.
-	//
-	// Each object in the arrays is of the form:
-	//
-	//     {
-	//       generatedLine: The line number in the generated code,
-	//       generatedColumn: The column number in the generated code,
-	//       source: The path to the original source file that generated this
-	//               chunk of code,
-	//       originalLine: The line number in the original source that
-	//                     corresponds to this chunk of generated code,
-	//       originalColumn: The column number in the original source that
-	//                       corresponds to this chunk of generated code,
-	//       name: The name of the original symbol which generated this chunk of
-	//             code.
-	//     }
-	//
-	// All properties except for `generatedLine` and `generatedColumn` can be
-	// `null`.
-	//
-	// `_generatedMappings` is ordered by the generated positions.
-	//
-	// `_originalMappings` is ordered by the original positions.
-
-	SourceMapConsumer.prototype.__generatedMappings = null;
-	Object.defineProperty(SourceMapConsumer.prototype, '_generatedMappings', {
-	  configurable: true,
-	  enumerable: true,
-	  get: function () {
-	    if (!this.__generatedMappings) {
-	      this._parseMappings(this._mappings, this.sourceRoot);
-	    }
-
-	    return this.__generatedMappings;
-	  }
-	});
-
-	SourceMapConsumer.prototype.__originalMappings = null;
-	Object.defineProperty(SourceMapConsumer.prototype, '_originalMappings', {
-	  configurable: true,
-	  enumerable: true,
-	  get: function () {
-	    if (!this.__originalMappings) {
-	      this._parseMappings(this._mappings, this.sourceRoot);
-	    }
-
-	    return this.__originalMappings;
-	  }
-	});
-
-	SourceMapConsumer.prototype._charIsMappingSeparator =
-	  function SourceMapConsumer_charIsMappingSeparator(aStr, index) {
-	    var c = aStr.charAt(index);
-	    return c === ";" || c === ",";
-	  };
-
-	/**
-	 * Parse the mappings in a string in to a data structure which we can easily
-	 * query (the ordered arrays in the `this.__generatedMappings` and
-	 * `this.__originalMappings` properties).
-	 */
-	SourceMapConsumer.prototype._parseMappings =
-	  function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
-	    throw new Error("Subclasses must implement _parseMappings");
-	  };
-
-	SourceMapConsumer.GENERATED_ORDER = 1;
-	SourceMapConsumer.ORIGINAL_ORDER = 2;
-
-	SourceMapConsumer.GREATEST_LOWER_BOUND = 1;
-	SourceMapConsumer.LEAST_UPPER_BOUND = 2;
-
-	/**
-	 * Iterate over each mapping between an original source/line/column and a
-	 * generated line/column in this source map.
-	 *
-	 * @param Function aCallback
-	 *        The function that is called with each mapping.
-	 * @param Object aContext
-	 *        Optional. If specified, this object will be the value of `this` every
-	 *        time that `aCallback` is called.
-	 * @param aOrder
-	 *        Either `SourceMapConsumer.GENERATED_ORDER` or
-	 *        `SourceMapConsumer.ORIGINAL_ORDER`. Specifies whether you want to
-	 *        iterate over the mappings sorted by the generated file's line/column
-	 *        order or the original's source/line/column order, respectively. Defaults to
-	 *        `SourceMapConsumer.GENERATED_ORDER`.
-	 */
-	SourceMapConsumer.prototype.eachMapping =
-	  function SourceMapConsumer_eachMapping(aCallback, aContext, aOrder) {
-	    var context = aContext || null;
-	    var order = aOrder || SourceMapConsumer.GENERATED_ORDER;
-
-	    var mappings;
-	    switch (order) {
-	    case SourceMapConsumer.GENERATED_ORDER:
-	      mappings = this._generatedMappings;
-	      break;
-	    case SourceMapConsumer.ORIGINAL_ORDER:
-	      mappings = this._originalMappings;
-	      break;
-	    default:
-	      throw new Error("Unknown order of iteration.");
-	    }
-
-	    var sourceRoot = this.sourceRoot;
-	    mappings.map(function (mapping) {
-	      var source = mapping.source === null ? null : this._sources.at(mapping.source);
-	      source = util.computeSourceURL(sourceRoot, source, this._sourceMapURL);
-	      return {
-	        source: source,
-	        generatedLine: mapping.generatedLine,
-	        generatedColumn: mapping.generatedColumn,
-	        originalLine: mapping.originalLine,
-	        originalColumn: mapping.originalColumn,
-	        name: mapping.name === null ? null : this._names.at(mapping.name)
-	      };
-	    }, this).forEach(aCallback, context);
-	  };
-
-	/**
-	 * Returns all generated line and column information for the original source,
-	 * line, and column provided. If no column is provided, returns all mappings
-	 * corresponding to a either the line we are searching for or the next
-	 * closest line that has any mappings. Otherwise, returns all mappings
-	 * corresponding to the given line and either the column we are searching for
-	 * or the next closest column that has any offsets.
-	 *
-	 * The only argument is an object with the following properties:
-	 *
-	 *   - source: The filename of the original source.
-	 *   - line: The line number in the original source.  The line number is 1-based.
-	 *   - column: Optional. the column number in the original source.
-	 *    The column number is 0-based.
-	 *
-	 * and an array of objects is returned, each with the following properties:
-	 *
-	 *   - line: The line number in the generated source, or null.  The
-	 *    line number is 1-based.
-	 *   - column: The column number in the generated source, or null.
-	 *    The column number is 0-based.
-	 */
-	SourceMapConsumer.prototype.allGeneratedPositionsFor =
-	  function SourceMapConsumer_allGeneratedPositionsFor(aArgs) {
-	    var line = util.getArg(aArgs, 'line');
-
-	    // When there is no exact match, BasicSourceMapConsumer.prototype._findMapping
-	    // returns the index of the closest mapping less than the needle. By
-	    // setting needle.originalColumn to 0, we thus find the last mapping for
-	    // the given line, provided such a mapping exists.
-	    var needle = {
-	      source: util.getArg(aArgs, 'source'),
-	      originalLine: line,
-	      originalColumn: util.getArg(aArgs, 'column', 0)
-	    };
-
-	    needle.source = this._findSourceIndex(needle.source);
-	    if (needle.source < 0) {
-	      return [];
-	    }
-
-	    var mappings = [];
-
-	    var index = this._findMapping(needle,
-	                                  this._originalMappings,
-	                                  "originalLine",
-	                                  "originalColumn",
-	                                  util.compareByOriginalPositions,
-	                                  binarySearch.LEAST_UPPER_BOUND);
-	    if (index >= 0) {
-	      var mapping = this._originalMappings[index];
-
-	      if (aArgs.column === undefined) {
-	        var originalLine = mapping.originalLine;
-
-	        // Iterate until either we run out of mappings, or we run into
-	        // a mapping for a different line than the one we found. Since
-	        // mappings are sorted, this is guaranteed to find all mappings for
-	        // the line we found.
-	        while (mapping && mapping.originalLine === originalLine) {
-	          mappings.push({
-	            line: util.getArg(mapping, 'generatedLine', null),
-	            column: util.getArg(mapping, 'generatedColumn', null),
-	            lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
-	          });
-
-	          mapping = this._originalMappings[++index];
-	        }
-	      } else {
-	        var originalColumn = mapping.originalColumn;
-
-	        // Iterate until either we run out of mappings, or we run into
-	        // a mapping for a different line than the one we were searching for.
-	        // Since mappings are sorted, this is guaranteed to find all mappings for
-	        // the line we are searching for.
-	        while (mapping &&
-	               mapping.originalLine === line &&
-	               mapping.originalColumn == originalColumn) {
-	          mappings.push({
-	            line: util.getArg(mapping, 'generatedLine', null),
-	            column: util.getArg(mapping, 'generatedColumn', null),
-	            lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
-	          });
-
-	          mapping = this._originalMappings[++index];
-	        }
-	      }
-	    }
-
-	    return mappings;
-	  };
-
-	sourceMapConsumer.SourceMapConsumer = SourceMapConsumer;
-
-	/**
-	 * A BasicSourceMapConsumer instance represents a parsed source map which we can
-	 * query for information about the original file positions by giving it a file
-	 * position in the generated source.
-	 *
-	 * The first parameter is the raw source map (either as a JSON string, or
-	 * already parsed to an object). According to the spec, source maps have the
-	 * following attributes:
-	 *
-	 *   - version: Which version of the source map spec this map is following.
-	 *   - sources: An array of URLs to the original source files.
-	 *   - names: An array of identifiers which can be referrenced by individual mappings.
-	 *   - sourceRoot: Optional. The URL root from which all sources are relative.
-	 *   - sourcesContent: Optional. An array of contents of the original source files.
-	 *   - mappings: A string of base64 VLQs which contain the actual mappings.
-	 *   - file: Optional. The generated file this source map is associated with.
-	 *
-	 * Here is an example source map, taken from the source map spec[0]:
-	 *
-	 *     {
-	 *       version : 3,
-	 *       file: "out.js",
-	 *       sourceRoot : "",
-	 *       sources: ["foo.js", "bar.js"],
-	 *       names: ["src", "maps", "are", "fun"],
-	 *       mappings: "AA,AB;;ABCDE;"
-	 *     }
-	 *
-	 * The second parameter, if given, is a string whose value is the URL
-	 * at which the source map was found.  This URL is used to compute the
-	 * sources array.
-	 *
-	 * [0]: https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1#
-	 */
-	function BasicSourceMapConsumer(aSourceMap, aSourceMapURL) {
-	  var sourceMap = aSourceMap;
-	  if (typeof aSourceMap === 'string') {
-	    sourceMap = util.parseSourceMapInput(aSourceMap);
-	  }
-
-	  var version = util.getArg(sourceMap, 'version');
-	  var sources = util.getArg(sourceMap, 'sources');
-	  // Sass 3.3 leaves out the 'names' array, so we deviate from the spec (which
-	  // requires the array) to play nice here.
-	  var names = util.getArg(sourceMap, 'names', []);
-	  var sourceRoot = util.getArg(sourceMap, 'sourceRoot', null);
-	  var sourcesContent = util.getArg(sourceMap, 'sourcesContent', null);
-	  var mappings = util.getArg(sourceMap, 'mappings');
-	  var file = util.getArg(sourceMap, 'file', null);
-
-	  // Once again, Sass deviates from the spec and supplies the version as a
-	  // string rather than a number, so we use loose equality checking here.
-	  if (version != this._version) {
-	    throw new Error('Unsupported version: ' + version);
-	  }
-
-	  if (sourceRoot) {
-	    sourceRoot = util.normalize(sourceRoot);
-	  }
-
-	  sources = sources
-	    .map(String)
-	    // Some source maps produce relative source paths like "./foo.js" instead of
-	    // "foo.js".  Normalize these first so that future comparisons will succeed.
-	    // See bugzil.la/1090768.
-	    .map(util.normalize)
-	    // Always ensure that absolute sources are internally stored relative to
-	    // the source root, if the source root is absolute. Not doing this would
-	    // be particularly problematic when the source root is a prefix of the
-	    // source (valid, but why??). See github issue #199 and bugzil.la/1188982.
-	    .map(function (source) {
-	      return sourceRoot && util.isAbsolute(sourceRoot) && util.isAbsolute(source)
-	        ? util.relative(sourceRoot, source)
-	        : source;
-	    });
-
-	  // Pass `true` below to allow duplicate names and sources. While source maps
-	  // are intended to be compressed and deduplicated, the TypeScript compiler
-	  // sometimes generates source maps with duplicates in them. See Github issue
-	  // #72 and bugzil.la/889492.
-	  this._names = ArraySet.fromArray(names.map(String), true);
-	  this._sources = ArraySet.fromArray(sources, true);
-
-	  this._absoluteSources = this._sources.toArray().map(function (s) {
-	    return util.computeSourceURL(sourceRoot, s, aSourceMapURL);
-	  });
-
-	  this.sourceRoot = sourceRoot;
-	  this.sourcesContent = sourcesContent;
-	  this._mappings = mappings;
-	  this._sourceMapURL = aSourceMapURL;
-	  this.file = file;
-	}
-
-	BasicSourceMapConsumer.prototype = Object.create(SourceMapConsumer.prototype);
-	BasicSourceMapConsumer.prototype.consumer = SourceMapConsumer;
-
-	/**
-	 * Utility function to find the index of a source.  Returns -1 if not
-	 * found.
-	 */
-	BasicSourceMapConsumer.prototype._findSourceIndex = function(aSource) {
-	  var relativeSource = aSource;
-	  if (this.sourceRoot != null) {
-	    relativeSource = util.relative(this.sourceRoot, relativeSource);
-	  }
-
-	  if (this._sources.has(relativeSource)) {
-	    return this._sources.indexOf(relativeSource);
-	  }
-
-	  // Maybe aSource is an absolute URL as returned by |sources|.  In
-	  // this case we can't simply undo the transform.
-	  var i;
-	  for (i = 0; i < this._absoluteSources.length; ++i) {
-	    if (this._absoluteSources[i] == aSource) {
-	      return i;
-	    }
-	  }
-
-	  return -1;
-	};
-
-	/**
-	 * Create a BasicSourceMapConsumer from a SourceMapGenerator.
-	 *
-	 * @param SourceMapGenerator aSourceMap
-	 *        The source map that will be consumed.
-	 * @param String aSourceMapURL
-	 *        The URL at which the source map can be found (optional)
-	 * @returns BasicSourceMapConsumer
-	 */
-	BasicSourceMapConsumer.fromSourceMap =
-	  function SourceMapConsumer_fromSourceMap(aSourceMap, aSourceMapURL) {
-	    var smc = Object.create(BasicSourceMapConsumer.prototype);
-
-	    var names = smc._names = ArraySet.fromArray(aSourceMap._names.toArray(), true);
-	    var sources = smc._sources = ArraySet.fromArray(aSourceMap._sources.toArray(), true);
-	    smc.sourceRoot = aSourceMap._sourceRoot;
-	    smc.sourcesContent = aSourceMap._generateSourcesContent(smc._sources.toArray(),
-	                                                            smc.sourceRoot);
-	    smc.file = aSourceMap._file;
-	    smc._sourceMapURL = aSourceMapURL;
-	    smc._absoluteSources = smc._sources.toArray().map(function (s) {
-	      return util.computeSourceURL(smc.sourceRoot, s, aSourceMapURL);
-	    });
-
-	    // Because we are modifying the entries (by converting string sources and
-	    // names to indices into the sources and names ArraySets), we have to make
-	    // a copy of the entry or else bad things happen. Shared mutable state
-	    // strikes again! See github issue #191.
-
-	    var generatedMappings = aSourceMap._mappings.toArray().slice();
-	    var destGeneratedMappings = smc.__generatedMappings = [];
-	    var destOriginalMappings = smc.__originalMappings = [];
-
-	    for (var i = 0, length = generatedMappings.length; i < length; i++) {
-	      var srcMapping = generatedMappings[i];
-	      var destMapping = new Mapping;
-	      destMapping.generatedLine = srcMapping.generatedLine;
-	      destMapping.generatedColumn = srcMapping.generatedColumn;
-
-	      if (srcMapping.source) {
-	        destMapping.source = sources.indexOf(srcMapping.source);
-	        destMapping.originalLine = srcMapping.originalLine;
-	        destMapping.originalColumn = srcMapping.originalColumn;
-
-	        if (srcMapping.name) {
-	          destMapping.name = names.indexOf(srcMapping.name);
-	        }
-
-	        destOriginalMappings.push(destMapping);
-	      }
-
-	      destGeneratedMappings.push(destMapping);
-	    }
-
-	    quickSort(smc.__originalMappings, util.compareByOriginalPositions);
-
-	    return smc;
-	  };
-
-	/**
-	 * The version of the source mapping spec that we are consuming.
-	 */
-	BasicSourceMapConsumer.prototype._version = 3;
-
-	/**
-	 * The list of original sources.
-	 */
-	Object.defineProperty(BasicSourceMapConsumer.prototype, 'sources', {
-	  get: function () {
-	    return this._absoluteSources.slice();
-	  }
-	});
-
-	/**
-	 * Provide the JIT with a nice shape / hidden class.
-	 */
-	function Mapping() {
-	  this.generatedLine = 0;
-	  this.generatedColumn = 0;
-	  this.source = null;
-	  this.originalLine = null;
-	  this.originalColumn = null;
-	  this.name = null;
-	}
-
-	/**
-	 * Parse the mappings in a string in to a data structure which we can easily
-	 * query (the ordered arrays in the `this.__generatedMappings` and
-	 * `this.__originalMappings` properties).
-	 */
-	BasicSourceMapConsumer.prototype._parseMappings =
-	  function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
-	    var generatedLine = 1;
-	    var previousGeneratedColumn = 0;
-	    var previousOriginalLine = 0;
-	    var previousOriginalColumn = 0;
-	    var previousSource = 0;
-	    var previousName = 0;
-	    var length = aStr.length;
-	    var index = 0;
-	    var cachedSegments = {};
-	    var temp = {};
-	    var originalMappings = [];
-	    var generatedMappings = [];
-	    var mapping, str, segment, end, value;
-
-	    while (index < length) {
-	      if (aStr.charAt(index) === ';') {
-	        generatedLine++;
-	        index++;
-	        previousGeneratedColumn = 0;
-	      }
-	      else if (aStr.charAt(index) === ',') {
-	        index++;
-	      }
-	      else {
-	        mapping = new Mapping();
-	        mapping.generatedLine = generatedLine;
-
-	        // Because each offset is encoded relative to the previous one,
-	        // many segments often have the same encoding. We can exploit this
-	        // fact by caching the parsed variable length fields of each segment,
-	        // allowing us to avoid a second parse if we encounter the same
-	        // segment again.
-	        for (end = index; end < length; end++) {
-	          if (this._charIsMappingSeparator(aStr, end)) {
-	            break;
-	          }
-	        }
-	        str = aStr.slice(index, end);
-
-	        segment = cachedSegments[str];
-	        if (segment) {
-	          index += str.length;
-	        } else {
-	          segment = [];
-	          while (index < end) {
-	            base64VLQ.decode(aStr, index, temp);
-	            value = temp.value;
-	            index = temp.rest;
-	            segment.push(value);
-	          }
-
-	          if (segment.length === 2) {
-	            throw new Error('Found a source, but no line and column');
-	          }
-
-	          if (segment.length === 3) {
-	            throw new Error('Found a source and line, but no column');
-	          }
-
-	          cachedSegments[str] = segment;
-	        }
-
-	        // Generated column.
-	        mapping.generatedColumn = previousGeneratedColumn + segment[0];
-	        previousGeneratedColumn = mapping.generatedColumn;
-
-	        if (segment.length > 1) {
-	          // Original source.
-	          mapping.source = previousSource + segment[1];
-	          previousSource += segment[1];
-
-	          // Original line.
-	          mapping.originalLine = previousOriginalLine + segment[2];
-	          previousOriginalLine = mapping.originalLine;
-	          // Lines are stored 0-based
-	          mapping.originalLine += 1;
-
-	          // Original column.
-	          mapping.originalColumn = previousOriginalColumn + segment[3];
-	          previousOriginalColumn = mapping.originalColumn;
-
-	          if (segment.length > 4) {
-	            // Original name.
-	            mapping.name = previousName + segment[4];
-	            previousName += segment[4];
-	          }
-	        }
-
-	        generatedMappings.push(mapping);
-	        if (typeof mapping.originalLine === 'number') {
-	          originalMappings.push(mapping);
-	        }
-	      }
-	    }
-
-	    quickSort(generatedMappings, util.compareByGeneratedPositionsDeflated);
-	    this.__generatedMappings = generatedMappings;
-
-	    quickSort(originalMappings, util.compareByOriginalPositions);
-	    this.__originalMappings = originalMappings;
-	  };
-
-	/**
-	 * Find the mapping that best matches the hypothetical "needle" mapping that
-	 * we are searching for in the given "haystack" of mappings.
-	 */
-	BasicSourceMapConsumer.prototype._findMapping =
-	  function SourceMapConsumer_findMapping(aNeedle, aMappings, aLineName,
-	                                         aColumnName, aComparator, aBias) {
-	    // To return the position we are searching for, we must first find the
-	    // mapping for the given position and then return the opposite position it
-	    // points to. Because the mappings are sorted, we can use binary search to
-	    // find the best mapping.
-
-	    if (aNeedle[aLineName] <= 0) {
-	      throw new TypeError('Line must be greater than or equal to 1, got '
-	                          + aNeedle[aLineName]);
-	    }
-	    if (aNeedle[aColumnName] < 0) {
-	      throw new TypeError('Column must be greater than or equal to 0, got '
-	                          + aNeedle[aColumnName]);
-	    }
-
-	    return binarySearch.search(aNeedle, aMappings, aComparator, aBias);
-	  };
-
-	/**
-	 * Compute the last column for each generated mapping. The last column is
-	 * inclusive.
-	 */
-	BasicSourceMapConsumer.prototype.computeColumnSpans =
-	  function SourceMapConsumer_computeColumnSpans() {
-	    for (var index = 0; index < this._generatedMappings.length; ++index) {
-	      var mapping = this._generatedMappings[index];
-
-	      // Mappings do not contain a field for the last generated columnt. We
-	      // can come up with an optimistic estimate, however, by assuming that
-	      // mappings are contiguous (i.e. given two consecutive mappings, the
-	      // first mapping ends where the second one starts).
-	      if (index + 1 < this._generatedMappings.length) {
-	        var nextMapping = this._generatedMappings[index + 1];
-
-	        if (mapping.generatedLine === nextMapping.generatedLine) {
-	          mapping.lastGeneratedColumn = nextMapping.generatedColumn - 1;
-	          continue;
-	        }
-	      }
-
-	      // The last mapping for each line spans the entire line.
-	      mapping.lastGeneratedColumn = Infinity;
-	    }
-	  };
-
-	/**
-	 * Returns the original source, line, and column information for the generated
-	 * source's line and column positions provided. The only argument is an object
-	 * with the following properties:
-	 *
-	 *   - line: The line number in the generated source.  The line number
-	 *     is 1-based.
-	 *   - column: The column number in the generated source.  The column
-	 *     number is 0-based.
-	 *   - bias: Either 'SourceMapConsumer.GREATEST_LOWER_BOUND' or
-	 *     'SourceMapConsumer.LEAST_UPPER_BOUND'. Specifies whether to return the
-	 *     closest element that is smaller than or greater than the one we are
-	 *     searching for, respectively, if the exact element cannot be found.
-	 *     Defaults to 'SourceMapConsumer.GREATEST_LOWER_BOUND'.
-	 *
-	 * and an object is returned with the following properties:
-	 *
-	 *   - source: The original source file, or null.
-	 *   - line: The line number in the original source, or null.  The
-	 *     line number is 1-based.
-	 *   - column: The column number in the original source, or null.  The
-	 *     column number is 0-based.
-	 *   - name: The original identifier, or null.
-	 */
-	BasicSourceMapConsumer.prototype.originalPositionFor =
-	  function SourceMapConsumer_originalPositionFor(aArgs) {
-	    var needle = {
-	      generatedLine: util.getArg(aArgs, 'line'),
-	      generatedColumn: util.getArg(aArgs, 'column')
-	    };
-
-	    var index = this._findMapping(
-	      needle,
-	      this._generatedMappings,
-	      "generatedLine",
-	      "generatedColumn",
-	      util.compareByGeneratedPositionsDeflated,
-	      util.getArg(aArgs, 'bias', SourceMapConsumer.GREATEST_LOWER_BOUND)
-	    );
-
-	    if (index >= 0) {
-	      var mapping = this._generatedMappings[index];
-
-	      if (mapping.generatedLine === needle.generatedLine) {
-	        var source = util.getArg(mapping, 'source', null);
-	        if (source !== null) {
-	          source = this._sources.at(source);
-	          source = util.computeSourceURL(this.sourceRoot, source, this._sourceMapURL);
-	        }
-	        var name = util.getArg(mapping, 'name', null);
-	        if (name !== null) {
-	          name = this._names.at(name);
-	        }
-	        return {
-	          source: source,
-	          line: util.getArg(mapping, 'originalLine', null),
-	          column: util.getArg(mapping, 'originalColumn', null),
-	          name: name
-	        };
-	      }
-	    }
-
-	    return {
-	      source: null,
-	      line: null,
-	      column: null,
-	      name: null
-	    };
-	  };
-
-	/**
-	 * Return true if we have the source content for every source in the source
-	 * map, false otherwise.
-	 */
-	BasicSourceMapConsumer.prototype.hasContentsOfAllSources =
-	  function BasicSourceMapConsumer_hasContentsOfAllSources() {
-	    if (!this.sourcesContent) {
-	      return false;
-	    }
-	    return this.sourcesContent.length >= this._sources.size() &&
-	      !this.sourcesContent.some(function (sc) { return sc == null; });
-	  };
-
-	/**
-	 * Returns the original source content. The only argument is the url of the
-	 * original source file. Returns null if no original source content is
-	 * available.
-	 */
-	BasicSourceMapConsumer.prototype.sourceContentFor =
-	  function SourceMapConsumer_sourceContentFor(aSource, nullOnMissing) {
-	    if (!this.sourcesContent) {
-	      return null;
-	    }
-
-	    var index = this._findSourceIndex(aSource);
-	    if (index >= 0) {
-	      return this.sourcesContent[index];
-	    }
-
-	    var relativeSource = aSource;
-	    if (this.sourceRoot != null) {
-	      relativeSource = util.relative(this.sourceRoot, relativeSource);
-	    }
-
-	    var url;
-	    if (this.sourceRoot != null
-	        && (url = util.urlParse(this.sourceRoot))) {
-	      // XXX: file:// URIs and absolute paths lead to unexpected behavior for
-	      // many users. We can help them out when they expect file:// URIs to
-	      // behave like it would if they were running a local HTTP server. See
-	      // https://bugzilla.mozilla.org/show_bug.cgi?id=885597.
-	      var fileUriAbsPath = relativeSource.replace(/^file:\/\//, "");
-	      if (url.scheme == "file"
-	          && this._sources.has(fileUriAbsPath)) {
-	        return this.sourcesContent[this._sources.indexOf(fileUriAbsPath)]
-	      }
-
-	      if ((!url.path || url.path == "/")
-	          && this._sources.has("/" + relativeSource)) {
-	        return this.sourcesContent[this._sources.indexOf("/" + relativeSource)];
-	      }
-	    }
-
-	    // This function is used recursively from
-	    // IndexedSourceMapConsumer.prototype.sourceContentFor. In that case, we
-	    // don't want to throw if we can't find the source - we just want to
-	    // return null, so we provide a flag to exit gracefully.
-	    if (nullOnMissing) {
-	      return null;
-	    }
-	    else {
-	      throw new Error('"' + relativeSource + '" is not in the SourceMap.');
-	    }
-	  };
-
-	/**
-	 * Returns the generated line and column information for the original source,
-	 * line, and column positions provided. The only argument is an object with
-	 * the following properties:
-	 *
-	 *   - source: The filename of the original source.
-	 *   - line: The line number in the original source.  The line number
-	 *     is 1-based.
-	 *   - column: The column number in the original source.  The column
-	 *     number is 0-based.
-	 *   - bias: Either 'SourceMapConsumer.GREATEST_LOWER_BOUND' or
-	 *     'SourceMapConsumer.LEAST_UPPER_BOUND'. Specifies whether to return the
-	 *     closest element that is smaller than or greater than the one we are
-	 *     searching for, respectively, if the exact element cannot be found.
-	 *     Defaults to 'SourceMapConsumer.GREATEST_LOWER_BOUND'.
-	 *
-	 * and an object is returned with the following properties:
-	 *
-	 *   - line: The line number in the generated source, or null.  The
-	 *     line number is 1-based.
-	 *   - column: The column number in the generated source, or null.
-	 *     The column number is 0-based.
-	 */
-	BasicSourceMapConsumer.prototype.generatedPositionFor =
-	  function SourceMapConsumer_generatedPositionFor(aArgs) {
-	    var source = util.getArg(aArgs, 'source');
-	    source = this._findSourceIndex(source);
-	    if (source < 0) {
-	      return {
-	        line: null,
-	        column: null,
-	        lastColumn: null
-	      };
-	    }
-
-	    var needle = {
-	      source: source,
-	      originalLine: util.getArg(aArgs, 'line'),
-	      originalColumn: util.getArg(aArgs, 'column')
-	    };
-
-	    var index = this._findMapping(
-	      needle,
-	      this._originalMappings,
-	      "originalLine",
-	      "originalColumn",
-	      util.compareByOriginalPositions,
-	      util.getArg(aArgs, 'bias', SourceMapConsumer.GREATEST_LOWER_BOUND)
-	    );
-
-	    if (index >= 0) {
-	      var mapping = this._originalMappings[index];
-
-	      if (mapping.source === needle.source) {
-	        return {
-	          line: util.getArg(mapping, 'generatedLine', null),
-	          column: util.getArg(mapping, 'generatedColumn', null),
-	          lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
-	        };
-	      }
-	    }
-
-	    return {
-	      line: null,
-	      column: null,
-	      lastColumn: null
-	    };
-	  };
-
-	sourceMapConsumer.BasicSourceMapConsumer = BasicSourceMapConsumer;
-
-	/**
-	 * An IndexedSourceMapConsumer instance represents a parsed source map which
-	 * we can query for information. It differs from BasicSourceMapConsumer in
-	 * that it takes "indexed" source maps (i.e. ones with a "sections" field) as
-	 * input.
-	 *
-	 * The first parameter is a raw source map (either as a JSON string, or already
-	 * parsed to an object). According to the spec for indexed source maps, they
-	 * have the following attributes:
-	 *
-	 *   - version: Which version of the source map spec this map is following.
-	 *   - file: Optional. The generated file this source map is associated with.
-	 *   - sections: A list of section definitions.
-	 *
-	 * Each value under the "sections" field has two fields:
-	 *   - offset: The offset into the original specified at which this section
-	 *       begins to apply, defined as an object with a "line" and "column"
-	 *       field.
-	 *   - map: A source map definition. This source map could also be indexed,
-	 *       but doesn't have to be.
-	 *
-	 * Instead of the "map" field, it's also possible to have a "url" field
-	 * specifying a URL to retrieve a source map from, but that's currently
-	 * unsupported.
-	 *
-	 * Here's an example source map, taken from the source map spec[0], but
-	 * modified to omit a section which uses the "url" field.
-	 *
-	 *  {
-	 *    version : 3,
-	 *    file: "app.js",
-	 *    sections: [{
-	 *      offset: {line:100, column:10},
-	 *      map: {
-	 *        version : 3,
-	 *        file: "section.js",
-	 *        sources: ["foo.js", "bar.js"],
-	 *        names: ["src", "maps", "are", "fun"],
-	 *        mappings: "AAAA,E;;ABCDE;"
-	 *      }
-	 *    }],
-	 *  }
-	 *
-	 * The second parameter, if given, is a string whose value is the URL
-	 * at which the source map was found.  This URL is used to compute the
-	 * sources array.
-	 *
-	 * [0]: https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit#heading=h.535es3xeprgt
-	 */
-	function IndexedSourceMapConsumer(aSourceMap, aSourceMapURL) {
-	  var sourceMap = aSourceMap;
-	  if (typeof aSourceMap === 'string') {
-	    sourceMap = util.parseSourceMapInput(aSourceMap);
-	  }
-
-	  var version = util.getArg(sourceMap, 'version');
-	  var sections = util.getArg(sourceMap, 'sections');
-
-	  if (version != this._version) {
-	    throw new Error('Unsupported version: ' + version);
-	  }
-
-	  this._sources = new ArraySet();
-	  this._names = new ArraySet();
-
-	  var lastOffset = {
-	    line: -1,
-	    column: 0
-	  };
-	  this._sections = sections.map(function (s) {
-	    if (s.url) {
-	      // The url field will require support for asynchronicity.
-	      // See https://github.com/mozilla/source-map/issues/16
-	      throw new Error('Support for url field in sections not implemented.');
-	    }
-	    var offset = util.getArg(s, 'offset');
-	    var offsetLine = util.getArg(offset, 'line');
-	    var offsetColumn = util.getArg(offset, 'column');
-
-	    if (offsetLine < lastOffset.line ||
-	        (offsetLine === lastOffset.line && offsetColumn < lastOffset.column)) {
-	      throw new Error('Section offsets must be ordered and non-overlapping.');
-	    }
-	    lastOffset = offset;
-
-	    return {
-	      generatedOffset: {
-	        // The offset fields are 0-based, but we use 1-based indices when
-	        // encoding/decoding from VLQ.
-	        generatedLine: offsetLine + 1,
-	        generatedColumn: offsetColumn + 1
-	      },
-	      consumer: new SourceMapConsumer(util.getArg(s, 'map'), aSourceMapURL)
-	    }
-	  });
-	}
-
-	IndexedSourceMapConsumer.prototype = Object.create(SourceMapConsumer.prototype);
-	IndexedSourceMapConsumer.prototype.constructor = SourceMapConsumer;
-
-	/**
-	 * The version of the source mapping spec that we are consuming.
-	 */
-	IndexedSourceMapConsumer.prototype._version = 3;
-
-	/**
-	 * The list of original sources.
-	 */
-	Object.defineProperty(IndexedSourceMapConsumer.prototype, 'sources', {
-	  get: function () {
-	    var sources = [];
-	    for (var i = 0; i < this._sections.length; i++) {
-	      for (var j = 0; j < this._sections[i].consumer.sources.length; j++) {
-	        sources.push(this._sections[i].consumer.sources[j]);
-	      }
-	    }
-	    return sources;
-	  }
-	});
-
-	/**
-	 * Returns the original source, line, and column information for the generated
-	 * source's line and column positions provided. The only argument is an object
-	 * with the following properties:
-	 *
-	 *   - line: The line number in the generated source.  The line number
-	 *     is 1-based.
-	 *   - column: The column number in the generated source.  The column
-	 *     number is 0-based.
-	 *
-	 * and an object is returned with the following properties:
-	 *
-	 *   - source: The original source file, or null.
-	 *   - line: The line number in the original source, or null.  The
-	 *     line number is 1-based.
-	 *   - column: The column number in the original source, or null.  The
-	 *     column number is 0-based.
-	 *   - name: The original identifier, or null.
-	 */
-	IndexedSourceMapConsumer.prototype.originalPositionFor =
-	  function IndexedSourceMapConsumer_originalPositionFor(aArgs) {
-	    var needle = {
-	      generatedLine: util.getArg(aArgs, 'line'),
-	      generatedColumn: util.getArg(aArgs, 'column')
-	    };
-
-	    // Find the section containing the generated position we're trying to map
-	    // to an original position.
-	    var sectionIndex = binarySearch.search(needle, this._sections,
-	      function(needle, section) {
-	        var cmp = needle.generatedLine - section.generatedOffset.generatedLine;
-	        if (cmp) {
-	          return cmp;
-	        }
-
-	        return (needle.generatedColumn -
-	                section.generatedOffset.generatedColumn);
-	      });
-	    var section = this._sections[sectionIndex];
-
-	    if (!section) {
-	      return {
-	        source: null,
-	        line: null,
-	        column: null,
-	        name: null
-	      };
-	    }
-
-	    return section.consumer.originalPositionFor({
-	      line: needle.generatedLine -
-	        (section.generatedOffset.generatedLine - 1),
-	      column: needle.generatedColumn -
-	        (section.generatedOffset.generatedLine === needle.generatedLine
-	         ? section.generatedOffset.generatedColumn - 1
-	         : 0),
-	      bias: aArgs.bias
-	    });
-	  };
-
-	/**
-	 * Return true if we have the source content for every source in the source
-	 * map, false otherwise.
-	 */
-	IndexedSourceMapConsumer.prototype.hasContentsOfAllSources =
-	  function IndexedSourceMapConsumer_hasContentsOfAllSources() {
-	    return this._sections.every(function (s) {
-	      return s.consumer.hasContentsOfAllSources();
-	    });
-	  };
-
-	/**
-	 * Returns the original source content. The only argument is the url of the
-	 * original source file. Returns null if no original source content is
-	 * available.
-	 */
-	IndexedSourceMapConsumer.prototype.sourceContentFor =
-	  function IndexedSourceMapConsumer_sourceContentFor(aSource, nullOnMissing) {
-	    for (var i = 0; i < this._sections.length; i++) {
-	      var section = this._sections[i];
-
-	      var content = section.consumer.sourceContentFor(aSource, true);
-	      if (content) {
-	        return content;
-	      }
-	    }
-	    if (nullOnMissing) {
-	      return null;
-	    }
-	    else {
-	      throw new Error('"' + aSource + '" is not in the SourceMap.');
-	    }
-	  };
-
-	/**
-	 * Returns the generated line and column information for the original source,
-	 * line, and column positions provided. The only argument is an object with
-	 * the following properties:
-	 *
-	 *   - source: The filename of the original source.
-	 *   - line: The line number in the original source.  The line number
-	 *     is 1-based.
-	 *   - column: The column number in the original source.  The column
-	 *     number is 0-based.
-	 *
-	 * and an object is returned with the following properties:
-	 *
-	 *   - line: The line number in the generated source, or null.  The
-	 *     line number is 1-based. 
-	 *   - column: The column number in the generated source, or null.
-	 *     The column number is 0-based.
-	 */
-	IndexedSourceMapConsumer.prototype.generatedPositionFor =
-	  function IndexedSourceMapConsumer_generatedPositionFor(aArgs) {
-	    for (var i = 0; i < this._sections.length; i++) {
-	      var section = this._sections[i];
-
-	      // Only consider this section if the requested source is in the list of
-	      // sources of the consumer.
-	      if (section.consumer._findSourceIndex(util.getArg(aArgs, 'source')) === -1) {
-	        continue;
-	      }
-	      var generatedPosition = section.consumer.generatedPositionFor(aArgs);
-	      if (generatedPosition) {
-	        var ret = {
-	          line: generatedPosition.line +
-	            (section.generatedOffset.generatedLine - 1),
-	          column: generatedPosition.column +
-	            (section.generatedOffset.generatedLine === generatedPosition.line
-	             ? section.generatedOffset.generatedColumn - 1
-	             : 0)
-	        };
-	        return ret;
-	      }
-	    }
-
-	    return {
-	      line: null,
-	      column: null
-	    };
-	  };
-
-	/**
-	 * Parse the mappings in a string in to a data structure which we can easily
-	 * query (the ordered arrays in the `this.__generatedMappings` and
-	 * `this.__originalMappings` properties).
-	 */
-	IndexedSourceMapConsumer.prototype._parseMappings =
-	  function IndexedSourceMapConsumer_parseMappings(aStr, aSourceRoot) {
-	    this.__generatedMappings = [];
-	    this.__originalMappings = [];
-	    for (var i = 0; i < this._sections.length; i++) {
-	      var section = this._sections[i];
-	      var sectionMappings = section.consumer._generatedMappings;
-	      for (var j = 0; j < sectionMappings.length; j++) {
-	        var mapping = sectionMappings[j];
-
-	        var source = section.consumer._sources.at(mapping.source);
-	        source = util.computeSourceURL(section.consumer.sourceRoot, source, this._sourceMapURL);
-	        this._sources.add(source);
-	        source = this._sources.indexOf(source);
-
-	        var name = null;
-	        if (mapping.name) {
-	          name = section.consumer._names.at(mapping.name);
-	          this._names.add(name);
-	          name = this._names.indexOf(name);
-	        }
-
-	        // The mappings coming from the consumer for the section have
-	        // generated positions relative to the start of the section, so we
-	        // need to offset them to be relative to the start of the concatenated
-	        // generated file.
-	        var adjustedMapping = {
-	          source: source,
-	          generatedLine: mapping.generatedLine +
-	            (section.generatedOffset.generatedLine - 1),
-	          generatedColumn: mapping.generatedColumn +
-	            (section.generatedOffset.generatedLine === mapping.generatedLine
-	            ? section.generatedOffset.generatedColumn - 1
-	            : 0),
-	          originalLine: mapping.originalLine,
-	          originalColumn: mapping.originalColumn,
-	          name: name
-	        };
-
-	        this.__generatedMappings.push(adjustedMapping);
-	        if (typeof adjustedMapping.originalLine === 'number') {
-	          this.__originalMappings.push(adjustedMapping);
-	        }
-	      }
-	    }
-
-	    quickSort(this.__generatedMappings, util.compareByGeneratedPositionsDeflated);
-	    quickSort(this.__originalMappings, util.compareByOriginalPositions);
-	  };
-
-	sourceMapConsumer.IndexedSourceMapConsumer = IndexedSourceMapConsumer;
-	return sourceMapConsumer;
-}
-
-var sourceNode = {};
-
-/* -*- Mode: js; js-indent-level: 2; -*- */
-
-var hasRequiredSourceNode;
-
-function requireSourceNode () {
-	if (hasRequiredSourceNode) return sourceNode;
-	hasRequiredSourceNode = 1;
-	/*
-	 * Copyright 2011 Mozilla Foundation and contributors
-	 * Licensed under the New BSD license. See LICENSE or:
-	 * http://opensource.org/licenses/BSD-3-Clause
-	 */
-
-	var SourceMapGenerator = requireSourceMapGenerator().SourceMapGenerator;
-	var util = requireUtil();
-
-	// Matches a Windows-style `\r\n` newline or a `\n` newline used by all other
-	// operating systems these days (capturing the result).
-	var REGEX_NEWLINE = /(\r?\n)/;
-
-	// Newline character code for charCodeAt() comparisons
-	var NEWLINE_CODE = 10;
-
-	// Private symbol for identifying `SourceNode`s when multiple versions of
-	// the source-map library are loaded. This MUST NOT CHANGE across
-	// versions!
-	var isSourceNode = "$$$isSourceNode$$$";
-
-	/**
-	 * SourceNodes provide a way to abstract over interpolating/concatenating
-	 * snippets of generated JavaScript source code while maintaining the line and
-	 * column information associated with the original source code.
-	 *
-	 * @param aLine The original line number.
-	 * @param aColumn The original column number.
-	 * @param aSource The original source's filename.
-	 * @param aChunks Optional. An array of strings which are snippets of
-	 *        generated JS, or other SourceNodes.
-	 * @param aName The original identifier.
-	 */
-	function SourceNode(aLine, aColumn, aSource, aChunks, aName) {
-	  this.children = [];
-	  this.sourceContents = {};
-	  this.line = aLine == null ? null : aLine;
-	  this.column = aColumn == null ? null : aColumn;
-	  this.source = aSource == null ? null : aSource;
-	  this.name = aName == null ? null : aName;
-	  this[isSourceNode] = true;
-	  if (aChunks != null) this.add(aChunks);
-	}
-
-	/**
-	 * Creates a SourceNode from generated code and a SourceMapConsumer.
-	 *
-	 * @param aGeneratedCode The generated code
-	 * @param aSourceMapConsumer The SourceMap for the generated code
-	 * @param aRelativePath Optional. The path that relative sources in the
-	 *        SourceMapConsumer should be relative to.
-	 */
-	SourceNode.fromStringWithSourceMap =
-	  function SourceNode_fromStringWithSourceMap(aGeneratedCode, aSourceMapConsumer, aRelativePath) {
-	    // The SourceNode we want to fill with the generated code
-	    // and the SourceMap
-	    var node = new SourceNode();
-
-	    // All even indices of this array are one line of the generated code,
-	    // while all odd indices are the newlines between two adjacent lines
-	    // (since `REGEX_NEWLINE` captures its match).
-	    // Processed fragments are accessed by calling `shiftNextLine`.
-	    var remainingLines = aGeneratedCode.split(REGEX_NEWLINE);
-	    var remainingLinesIndex = 0;
-	    var shiftNextLine = function() {
-	      var lineContents = getNextLine();
-	      // The last line of a file might not have a newline.
-	      var newLine = getNextLine() || "";
-	      return lineContents + newLine;
-
-	      function getNextLine() {
-	        return remainingLinesIndex < remainingLines.length ?
-	            remainingLines[remainingLinesIndex++] : undefined;
-	      }
-	    };
-
-	    // We need to remember the position of "remainingLines"
-	    var lastGeneratedLine = 1, lastGeneratedColumn = 0;
-
-	    // The generate SourceNodes we need a code range.
-	    // To extract it current and last mapping is used.
-	    // Here we store the last mapping.
-	    var lastMapping = null;
-
-	    aSourceMapConsumer.eachMapping(function (mapping) {
-	      if (lastMapping !== null) {
-	        // We add the code from "lastMapping" to "mapping":
-	        // First check if there is a new line in between.
-	        if (lastGeneratedLine < mapping.generatedLine) {
-	          // Associate first line with "lastMapping"
-	          addMappingWithCode(lastMapping, shiftNextLine());
-	          lastGeneratedLine++;
-	          lastGeneratedColumn = 0;
-	          // The remaining code is added without mapping
-	        } else {
-	          // There is no new line in between.
-	          // Associate the code between "lastGeneratedColumn" and
-	          // "mapping.generatedColumn" with "lastMapping"
-	          var nextLine = remainingLines[remainingLinesIndex] || '';
-	          var code = nextLine.substr(0, mapping.generatedColumn -
-	                                        lastGeneratedColumn);
-	          remainingLines[remainingLinesIndex] = nextLine.substr(mapping.generatedColumn -
-	                                              lastGeneratedColumn);
-	          lastGeneratedColumn = mapping.generatedColumn;
-	          addMappingWithCode(lastMapping, code);
-	          // No more remaining code, continue
-	          lastMapping = mapping;
-	          return;
-	        }
-	      }
-	      // We add the generated code until the first mapping
-	      // to the SourceNode without any mapping.
-	      // Each line is added as separate string.
-	      while (lastGeneratedLine < mapping.generatedLine) {
-	        node.add(shiftNextLine());
-	        lastGeneratedLine++;
-	      }
-	      if (lastGeneratedColumn < mapping.generatedColumn) {
-	        var nextLine = remainingLines[remainingLinesIndex] || '';
-	        node.add(nextLine.substr(0, mapping.generatedColumn));
-	        remainingLines[remainingLinesIndex] = nextLine.substr(mapping.generatedColumn);
-	        lastGeneratedColumn = mapping.generatedColumn;
-	      }
-	      lastMapping = mapping;
-	    }, this);
-	    // We have processed all mappings.
-	    if (remainingLinesIndex < remainingLines.length) {
-	      if (lastMapping) {
-	        // Associate the remaining code in the current line with "lastMapping"
-	        addMappingWithCode(lastMapping, shiftNextLine());
-	      }
-	      // and add the remaining lines without any mapping
-	      node.add(remainingLines.splice(remainingLinesIndex).join(""));
-	    }
-
-	    // Copy sourcesContent into SourceNode
-	    aSourceMapConsumer.sources.forEach(function (sourceFile) {
-	      var content = aSourceMapConsumer.sourceContentFor(sourceFile);
-	      if (content != null) {
-	        if (aRelativePath != null) {
-	          sourceFile = util.join(aRelativePath, sourceFile);
-	        }
-	        node.setSourceContent(sourceFile, content);
-	      }
-	    });
-
-	    return node;
-
-	    function addMappingWithCode(mapping, code) {
-	      if (mapping === null || mapping.source === undefined) {
-	        node.add(code);
-	      } else {
-	        var source = aRelativePath
-	          ? util.join(aRelativePath, mapping.source)
-	          : mapping.source;
-	        node.add(new SourceNode(mapping.originalLine,
-	                                mapping.originalColumn,
-	                                source,
-	                                code,
-	                                mapping.name));
-	      }
-	    }
-	  };
-
-	/**
-	 * Add a chunk of generated JS to this source node.
-	 *
-	 * @param aChunk A string snippet of generated JS code, another instance of
-	 *        SourceNode, or an array where each member is one of those things.
-	 */
-	SourceNode.prototype.add = function SourceNode_add(aChunk) {
-	  if (Array.isArray(aChunk)) {
-	    aChunk.forEach(function (chunk) {
-	      this.add(chunk);
-	    }, this);
-	  }
-	  else if (aChunk[isSourceNode] || typeof aChunk === "string") {
-	    if (aChunk) {
-	      this.children.push(aChunk);
-	    }
-	  }
-	  else {
-	    throw new TypeError(
-	      "Expected a SourceNode, string, or an array of SourceNodes and strings. Got " + aChunk
-	    );
-	  }
-	  return this;
-	};
-
-	/**
-	 * Add a chunk of generated JS to the beginning of this source node.
-	 *
-	 * @param aChunk A string snippet of generated JS code, another instance of
-	 *        SourceNode, or an array where each member is one of those things.
-	 */
-	SourceNode.prototype.prepend = function SourceNode_prepend(aChunk) {
-	  if (Array.isArray(aChunk)) {
-	    for (var i = aChunk.length-1; i >= 0; i--) {
-	      this.prepend(aChunk[i]);
-	    }
-	  }
-	  else if (aChunk[isSourceNode] || typeof aChunk === "string") {
-	    this.children.unshift(aChunk);
-	  }
-	  else {
-	    throw new TypeError(
-	      "Expected a SourceNode, string, or an array of SourceNodes and strings. Got " + aChunk
-	    );
-	  }
-	  return this;
-	};
-
-	/**
-	 * Walk over the tree of JS snippets in this node and its children. The
-	 * walking function is called once for each snippet of JS and is passed that
-	 * snippet and the its original associated source's line/column location.
-	 *
-	 * @param aFn The traversal function.
-	 */
-	SourceNode.prototype.walk = function SourceNode_walk(aFn) {
-	  var chunk;
-	  for (var i = 0, len = this.children.length; i < len; i++) {
-	    chunk = this.children[i];
-	    if (chunk[isSourceNode]) {
-	      chunk.walk(aFn);
-	    }
-	    else {
-	      if (chunk !== '') {
-	        aFn(chunk, { source: this.source,
-	                     line: this.line,
-	                     column: this.column,
-	                     name: this.name });
-	      }
-	    }
-	  }
-	};
-
-	/**
-	 * Like `String.prototype.join` except for SourceNodes. Inserts `aStr` between
-	 * each of `this.children`.
-	 *
-	 * @param aSep The separator.
-	 */
-	SourceNode.prototype.join = function SourceNode_join(aSep) {
-	  var newChildren;
-	  var i;
-	  var len = this.children.length;
-	  if (len > 0) {
-	    newChildren = [];
-	    for (i = 0; i < len-1; i++) {
-	      newChildren.push(this.children[i]);
-	      newChildren.push(aSep);
-	    }
-	    newChildren.push(this.children[i]);
-	    this.children = newChildren;
-	  }
-	  return this;
-	};
-
-	/**
-	 * Call String.prototype.replace on the very right-most source snippet. Useful
-	 * for trimming whitespace from the end of a source node, etc.
-	 *
-	 * @param aPattern The pattern to replace.
-	 * @param aReplacement The thing to replace the pattern with.
-	 */
-	SourceNode.prototype.replaceRight = function SourceNode_replaceRight(aPattern, aReplacement) {
-	  var lastChild = this.children[this.children.length - 1];
-	  if (lastChild[isSourceNode]) {
-	    lastChild.replaceRight(aPattern, aReplacement);
-	  }
-	  else if (typeof lastChild === 'string') {
-	    this.children[this.children.length - 1] = lastChild.replace(aPattern, aReplacement);
-	  }
-	  else {
-	    this.children.push(''.replace(aPattern, aReplacement));
-	  }
-	  return this;
-	};
-
-	/**
-	 * Set the source content for a source file. This will be added to the SourceMapGenerator
-	 * in the sourcesContent field.
-	 *
-	 * @param aSourceFile The filename of the source file
-	 * @param aSourceContent The content of the source file
-	 */
-	SourceNode.prototype.setSourceContent =
-	  function SourceNode_setSourceContent(aSourceFile, aSourceContent) {
-	    this.sourceContents[util.toSetString(aSourceFile)] = aSourceContent;
-	  };
-
-	/**
-	 * Walk over the tree of SourceNodes. The walking function is called for each
-	 * source file content and is passed the filename and source content.
-	 *
-	 * @param aFn The traversal function.
-	 */
-	SourceNode.prototype.walkSourceContents =
-	  function SourceNode_walkSourceContents(aFn) {
-	    for (var i = 0, len = this.children.length; i < len; i++) {
-	      if (this.children[i][isSourceNode]) {
-	        this.children[i].walkSourceContents(aFn);
-	      }
-	    }
-
-	    var sources = Object.keys(this.sourceContents);
-	    for (var i = 0, len = sources.length; i < len; i++) {
-	      aFn(util.fromSetString(sources[i]), this.sourceContents[sources[i]]);
-	    }
-	  };
-
-	/**
-	 * Return the string representation of this source node. Walks over the tree
-	 * and concatenates all the various snippets together to one string.
-	 */
-	SourceNode.prototype.toString = function SourceNode_toString() {
-	  var str = "";
-	  this.walk(function (chunk) {
-	    str += chunk;
-	  });
-	  return str;
-	};
-
-	/**
-	 * Returns the string representation of this source node along with a source
-	 * map.
-	 */
-	SourceNode.prototype.toStringWithSourceMap = function SourceNode_toStringWithSourceMap(aArgs) {
-	  var generated = {
-	    code: "",
-	    line: 1,
-	    column: 0
-	  };
-	  var map = new SourceMapGenerator(aArgs);
-	  var sourceMappingActive = false;
-	  var lastOriginalSource = null;
-	  var lastOriginalLine = null;
-	  var lastOriginalColumn = null;
-	  var lastOriginalName = null;
-	  this.walk(function (chunk, original) {
-	    generated.code += chunk;
-	    if (original.source !== null
-	        && original.line !== null
-	        && original.column !== null) {
-	      if(lastOriginalSource !== original.source
-	         || lastOriginalLine !== original.line
-	         || lastOriginalColumn !== original.column
-	         || lastOriginalName !== original.name) {
-	        map.addMapping({
-	          source: original.source,
-	          original: {
-	            line: original.line,
-	            column: original.column
-	          },
-	          generated: {
-	            line: generated.line,
-	            column: generated.column
-	          },
-	          name: original.name
-	        });
-	      }
-	      lastOriginalSource = original.source;
-	      lastOriginalLine = original.line;
-	      lastOriginalColumn = original.column;
-	      lastOriginalName = original.name;
-	      sourceMappingActive = true;
-	    } else if (sourceMappingActive) {
-	      map.addMapping({
-	        generated: {
-	          line: generated.line,
-	          column: generated.column
-	        }
-	      });
-	      lastOriginalSource = null;
-	      sourceMappingActive = false;
-	    }
-	    for (var idx = 0, length = chunk.length; idx < length; idx++) {
-	      if (chunk.charCodeAt(idx) === NEWLINE_CODE) {
-	        generated.line++;
-	        generated.column = 0;
-	        // Mappings end at eol
-	        if (idx + 1 === length) {
-	          lastOriginalSource = null;
-	          sourceMappingActive = false;
-	        } else if (sourceMappingActive) {
-	          map.addMapping({
-	            source: original.source,
-	            original: {
-	              line: original.line,
-	              column: original.column
-	            },
-	            generated: {
-	              line: generated.line,
-	              column: generated.column
-	            },
-	            name: original.name
-	          });
-	        }
-	      } else {
-	        generated.column++;
-	      }
-	    }
-	  });
-	  this.walkSourceContents(function (sourceFile, sourceContent) {
-	    map.setSourceContent(sourceFile, sourceContent);
-	  });
-
-	  return { code: generated.code, map: map };
-	};
-
-	sourceNode.SourceNode = SourceNode;
-	return sourceNode;
-}
-
-/*
- * Copyright 2009-2011 Mozilla Foundation and contributors
- * Licensed under the New BSD license. See LICENSE.txt or:
- * http://opensource.org/licenses/BSD-3-Clause
- */
-
-var hasRequiredSourceMap;
-
-function requireSourceMap () {
-	if (hasRequiredSourceMap) return sourceMap;
-	hasRequiredSourceMap = 1;
-	sourceMap.SourceMapGenerator = requireSourceMapGenerator().SourceMapGenerator;
-	sourceMap.SourceMapConsumer = requireSourceMapConsumer().SourceMapConsumer;
-	sourceMap.SourceNode = requireSourceNode().SourceNode;
-	return sourceMap;
-}
-
-/* global define, require */
-
-var hasRequiredCodeGen;
-
-function requireCodeGen () {
-	if (hasRequiredCodeGen) return codeGen.exports;
-	hasRequiredCodeGen = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-
-		var _utils = requireUtils();
-
-		var SourceNode = undefined;
-
-		try {
-		  /* istanbul ignore next */
-		  if (typeof undefined !== 'function' || !undefined.amd) {
-		    // We don't support this in AMD environments. For these environments, we assume that
-		    // they are running on the browser and thus have no need for the source-map library.
-		    var SourceMap = requireSourceMap();
-		    SourceNode = SourceMap.SourceNode;
-		  }
-		} catch (err) {}
-		/* NOP */
-
-		/* istanbul ignore if: tested but not covered in istanbul due to dist build  */
-		if (!SourceNode) {
-		  SourceNode = function (line, column, srcFile, chunks) {
-		    this.src = '';
-		    if (chunks) {
-		      this.add(chunks);
-		    }
-		  };
-		  /* istanbul ignore next */
-		  SourceNode.prototype = {
-		    add: function add(chunks) {
-		      if (_utils.isArray(chunks)) {
-		        chunks = chunks.join('');
-		      }
-		      this.src += chunks;
-		    },
-		    prepend: function prepend(chunks) {
-		      if (_utils.isArray(chunks)) {
-		        chunks = chunks.join('');
-		      }
-		      this.src = chunks + this.src;
-		    },
-		    toStringWithSourceMap: function toStringWithSourceMap() {
-		      return { code: this.toString() };
-		    },
-		    toString: function toString() {
-		      return this.src;
-		    }
-		  };
-		}
-
-		function castChunk(chunk, codeGen, loc) {
-		  if (_utils.isArray(chunk)) {
-		    var ret = [];
-
-		    for (var i = 0, len = chunk.length; i < len; i++) {
-		      ret.push(codeGen.wrap(chunk[i], loc));
-		    }
-		    return ret;
-		  } else if (typeof chunk === 'boolean' || typeof chunk === 'number') {
-		    // Handle primitives that the SourceNode will throw up on
-		    return chunk + '';
-		  }
-		  return chunk;
-		}
-
-		function CodeGen(srcFile) {
-		  this.srcFile = srcFile;
-		  this.source = [];
-		}
-
-		CodeGen.prototype = {
-		  isEmpty: function isEmpty() {
-		    return !this.source.length;
-		  },
-		  prepend: function prepend(source, loc) {
-		    this.source.unshift(this.wrap(source, loc));
-		  },
-		  push: function push(source, loc) {
-		    this.source.push(this.wrap(source, loc));
-		  },
-
-		  merge: function merge() {
-		    var source = this.empty();
-		    this.each(function (line) {
-		      source.add(['  ', line, '\n']);
-		    });
-		    return source;
-		  },
-
-		  each: function each(iter) {
-		    for (var i = 0, len = this.source.length; i < len; i++) {
-		      iter(this.source[i]);
-		    }
-		  },
-
-		  empty: function empty() {
-		    var loc = this.currentLocation || { start: {} };
-		    return new SourceNode(loc.start.line, loc.start.column, this.srcFile);
-		  },
-		  wrap: function wrap(chunk) {
-		    var loc = arguments.length <= 1 || arguments[1] === undefined ? this.currentLocation || { start: {} } : arguments[1];
-
-		    if (chunk instanceof SourceNode) {
-		      return chunk;
-		    }
-
-		    chunk = castChunk(chunk, this, loc);
-
-		    return new SourceNode(loc.start.line, loc.start.column, this.srcFile, chunk);
-		  },
-
-		  functionCall: function functionCall(fn, type, params) {
-		    params = this.generateList(params);
-		    return this.wrap([fn, type ? '.' + type + '(' : '(', params, ')']);
-		  },
-
-		  quotedString: function quotedString(str) {
-		    return '"' + (str + '').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\u2028/g, '\\u2028') // Per Ecma-262 7.3 + 7.8.4
-		    .replace(/\u2029/g, '\\u2029') + '"';
-		  },
-
-		  objectLiteral: function objectLiteral(obj) {
-		    // istanbul ignore next
-
-		    var _this = this;
-
-		    var pairs = [];
-
-		    Object.keys(obj).forEach(function (key) {
-		      var value = castChunk(obj[key], _this);
-		      if (value !== 'undefined') {
-		        pairs.push([_this.quotedString(key), ':', value]);
-		      }
-		    });
-
-		    var ret = this.generateList(pairs);
-		    ret.prepend('{');
-		    ret.add('}');
-		    return ret;
-		  },
-
-		  generateList: function generateList(entries) {
-		    var ret = this.empty();
-
-		    for (var i = 0, len = entries.length; i < len; i++) {
-		      if (i) {
-		        ret.add(',');
-		      }
-
-		      ret.add(castChunk(entries[i], this));
-		    }
-
-		    return ret;
-		  },
-
-		  generateArray: function generateArray(entries) {
-		    var ret = this.generateList(entries);
-		    ret.prepend('[');
-		    ret.add(']');
-
-		    return ret;
-		  }
-		};
-
-		exports['default'] = CodeGen;
-		module.exports = exports['default'];
-		
-	} (codeGen, codeGen.exports));
-	return codeGen.exports;
-}
-
-var hasRequiredJavascriptCompiler;
-
-function requireJavascriptCompiler () {
-	if (hasRequiredJavascriptCompiler) return javascriptCompiler.exports;
-	hasRequiredJavascriptCompiler = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		// istanbul ignore next
-
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-		var _base = requireBase$1();
-
-		var _exception = requireException();
-
-		var _exception2 = _interopRequireDefault(_exception);
-
-		var _utils = requireUtils();
-
-		var _codeGen = requireCodeGen();
-
-		var _codeGen2 = _interopRequireDefault(_codeGen);
-
-		function Literal(value) {
-		  this.value = value;
-		}
-
-		function JavaScriptCompiler() {}
-
-		JavaScriptCompiler.prototype = {
-		  // PUBLIC API: You can override these methods in a subclass to provide
-		  // alternative compiled forms for name lookup and buffering semantics
-		  nameLookup: function nameLookup(parent, name /*,  type */) {
-		    return this.internalNameLookup(parent, name);
-		  },
-		  depthedLookup: function depthedLookup(name) {
-		    return [this.aliasable('container.lookup'), '(depths, ', JSON.stringify(name), ')'];
-		  },
-
-		  compilerInfo: function compilerInfo() {
-		    var revision = _base.COMPILER_REVISION,
-		        versions = _base.REVISION_CHANGES[revision];
-		    return [revision, versions];
-		  },
-
-		  appendToBuffer: function appendToBuffer(source, location, explicit) {
-		    // Force a source as this simplifies the merge logic.
-		    if (!_utils.isArray(source)) {
-		      source = [source];
-		    }
-		    source = this.source.wrap(source, location);
-
-		    if (this.environment.isSimple) {
-		      return ['return ', source, ';'];
-		    } else if (explicit) {
-		      // This is a case where the buffer operation occurs as a child of another
-		      // construct, generally braces. We have to explicitly output these buffer
-		      // operations to ensure that the emitted code goes in the correct location.
-		      return ['buffer += ', source, ';'];
-		    } else {
-		      source.appendToBuffer = true;
-		      return source;
-		    }
-		  },
-
-		  initializeBuffer: function initializeBuffer() {
-		    return this.quotedString('');
-		  },
-		  // END PUBLIC API
-		  internalNameLookup: function internalNameLookup(parent, name) {
-		    this.lookupPropertyFunctionIsUsed = true;
-		    return ['lookupProperty(', parent, ',', JSON.stringify(name), ')'];
-		  },
-
-		  lookupPropertyFunctionIsUsed: false,
-
-		  compile: function compile(environment, options, context, asObject) {
-		    this.environment = environment;
-		    this.options = options;
-		    this.stringParams = this.options.stringParams;
-		    this.trackIds = this.options.trackIds;
-		    this.precompile = !asObject;
-
-		    this.name = this.environment.name;
-		    this.isChild = !!context;
-		    this.context = context || {
-		      decorators: [],
-		      programs: [],
-		      environments: []
-		    };
-
-		    this.preamble();
-
-		    this.stackSlot = 0;
-		    this.stackVars = [];
-		    this.aliases = {};
-		    this.registers = { list: [] };
-		    this.hashes = [];
-		    this.compileStack = [];
-		    this.inlineStack = [];
-		    this.blockParams = [];
-
-		    this.compileChildren(environment, options);
-
-		    this.useDepths = this.useDepths || environment.useDepths || environment.useDecorators || this.options.compat;
-		    this.useBlockParams = this.useBlockParams || environment.useBlockParams;
-
-		    var opcodes = environment.opcodes,
-		        opcode = undefined,
-		        firstLoc = undefined,
-		        i = undefined,
-		        l = undefined;
-
-		    for (i = 0, l = opcodes.length; i < l; i++) {
-		      opcode = opcodes[i];
-
-		      this.source.currentLocation = opcode.loc;
-		      firstLoc = firstLoc || opcode.loc;
-		      this[opcode.opcode].apply(this, opcode.args);
-		    }
-
-		    // Flush any trailing content that might be pending.
-		    this.source.currentLocation = firstLoc;
-		    this.pushSource('');
-
-		    /* istanbul ignore next */
-		    if (this.stackSlot || this.inlineStack.length || this.compileStack.length) {
-		      throw new _exception2['default']('Compile completed with content left on stack');
-		    }
-
-		    if (!this.decorators.isEmpty()) {
-		      this.useDecorators = true;
-
-		      this.decorators.prepend(['var decorators = container.decorators, ', this.lookupPropertyFunctionVarDeclaration(), ';\n']);
-		      this.decorators.push('return fn;');
-
-		      if (asObject) {
-		        this.decorators = Function.apply(this, ['fn', 'props', 'container', 'depth0', 'data', 'blockParams', 'depths', this.decorators.merge()]);
-		      } else {
-		        this.decorators.prepend('function(fn, props, container, depth0, data, blockParams, depths) {\n');
-		        this.decorators.push('}\n');
-		        this.decorators = this.decorators.merge();
-		      }
-		    } else {
-		      this.decorators = undefined;
-		    }
-
-		    var fn = this.createFunctionContext(asObject);
-		    if (!this.isChild) {
-		      var ret = {
-		        compiler: this.compilerInfo(),
-		        main: fn
-		      };
-
-		      if (this.decorators) {
-		        ret.main_d = this.decorators; // eslint-disable-line camelcase
-		        ret.useDecorators = true;
-		      }
-
-		      var _context = this.context;
-		      var programs = _context.programs;
-		      var decorators = _context.decorators;
-
-		      for (i = 0, l = programs.length; i < l; i++) {
-		        if (programs[i]) {
-		          ret[i] = programs[i];
-		          if (decorators[i]) {
-		            ret[i + '_d'] = decorators[i];
-		            ret.useDecorators = true;
-		          }
-		        }
-		      }
-
-		      if (this.environment.usePartial) {
-		        ret.usePartial = true;
-		      }
-		      if (this.options.data) {
-		        ret.useData = true;
-		      }
-		      if (this.useDepths) {
-		        ret.useDepths = true;
-		      }
-		      if (this.useBlockParams) {
-		        ret.useBlockParams = true;
-		      }
-		      if (this.options.compat) {
-		        ret.compat = true;
-		      }
-
-		      if (!asObject) {
-		        ret.compiler = JSON.stringify(ret.compiler);
-
-		        this.source.currentLocation = { start: { line: 1, column: 0 } };
-		        ret = this.objectLiteral(ret);
-
-		        if (options.srcName) {
-		          ret = ret.toStringWithSourceMap({ file: options.destName });
-		          ret.map = ret.map && ret.map.toString();
-		        } else {
-		          ret = ret.toString();
-		        }
-		      } else {
-		        ret.compilerOptions = this.options;
-		      }
-
-		      return ret;
-		    } else {
-		      return fn;
-		    }
-		  },
-
-		  preamble: function preamble() {
-		    // track the last context pushed into place to allow skipping the
-		    // getContext opcode when it would be a noop
-		    this.lastContext = 0;
-		    this.source = new _codeGen2['default'](this.options.srcName);
-		    this.decorators = new _codeGen2['default'](this.options.srcName);
-		  },
-
-		  createFunctionContext: function createFunctionContext(asObject) {
-		    // istanbul ignore next
-
-		    var _this = this;
-
-		    var varDeclarations = '';
-
-		    var locals = this.stackVars.concat(this.registers.list);
-		    if (locals.length > 0) {
-		      varDeclarations += ', ' + locals.join(', ');
-		    }
-
-		    // Generate minimizer alias mappings
-		    //
-		    // When using true SourceNodes, this will update all references to the given alias
-		    // as the source nodes are reused in situ. For the non-source node compilation mode,
-		    // aliases will not be used, but this case is already being run on the client and
-		    // we aren't concern about minimizing the template size.
-		    var aliasCount = 0;
-		    Object.keys(this.aliases).forEach(function (alias) {
-		      var node = _this.aliases[alias];
-		      if (node.children && node.referenceCount > 1) {
-		        varDeclarations += ', alias' + ++aliasCount + '=' + alias;
-		        node.children[0] = 'alias' + aliasCount;
-		      }
-		    });
-
-		    if (this.lookupPropertyFunctionIsUsed) {
-		      varDeclarations += ', ' + this.lookupPropertyFunctionVarDeclaration();
-		    }
-
-		    var params = ['container', 'depth0', 'helpers', 'partials', 'data'];
-
-		    if (this.useBlockParams || this.useDepths) {
-		      params.push('blockParams');
-		    }
-		    if (this.useDepths) {
-		      params.push('depths');
-		    }
-
-		    // Perform a second pass over the output to merge content when possible
-		    var source = this.mergeSource(varDeclarations);
-
-		    if (asObject) {
-		      params.push(source);
-
-		      return Function.apply(this, params);
-		    } else {
-		      return this.source.wrap(['function(', params.join(','), ') {\n  ', source, '}']);
-		    }
-		  },
-		  mergeSource: function mergeSource(varDeclarations) {
-		    var isSimple = this.environment.isSimple,
-		        appendOnly = !this.forceBuffer,
-		        appendFirst = undefined,
-		        sourceSeen = undefined,
-		        bufferStart = undefined,
-		        bufferEnd = undefined;
-		    this.source.each(function (line) {
-		      if (line.appendToBuffer) {
-		        if (bufferStart) {
-		          line.prepend('  + ');
-		        } else {
-		          bufferStart = line;
-		        }
-		        bufferEnd = line;
-		      } else {
-		        if (bufferStart) {
-		          if (!sourceSeen) {
-		            appendFirst = true;
-		          } else {
-		            bufferStart.prepend('buffer += ');
-		          }
-		          bufferEnd.add(';');
-		          bufferStart = bufferEnd = undefined;
-		        }
-
-		        sourceSeen = true;
-		        if (!isSimple) {
-		          appendOnly = false;
-		        }
-		      }
-		    });
-
-		    if (appendOnly) {
-		      if (bufferStart) {
-		        bufferStart.prepend('return ');
-		        bufferEnd.add(';');
-		      } else if (!sourceSeen) {
-		        this.source.push('return "";');
-		      }
-		    } else {
-		      varDeclarations += ', buffer = ' + (appendFirst ? '' : this.initializeBuffer());
-
-		      if (bufferStart) {
-		        bufferStart.prepend('return buffer + ');
-		        bufferEnd.add(';');
-		      } else {
-		        this.source.push('return buffer;');
-		      }
-		    }
-
-		    if (varDeclarations) {
-		      this.source.prepend('var ' + varDeclarations.substring(2) + (appendFirst ? '' : ';\n'));
-		    }
-
-		    return this.source.merge();
-		  },
-
-		  lookupPropertyFunctionVarDeclaration: function lookupPropertyFunctionVarDeclaration() {
-		    return '\n      lookupProperty = container.lookupProperty || function(parent, propertyName) {\n        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {\n          return parent[propertyName];\n        }\n        return undefined\n    }\n    '.trim();
-		  },
-
-		  // [blockValue]
-		  //
-		  // On stack, before: hash, inverse, program, value
-		  // On stack, after: return value of blockHelperMissing
-		  //
-		  // The purpose of this opcode is to take a block of the form
-		  // `{{#this.foo}}...{{/this.foo}}`, resolve the value of `foo`, and
-		  // replace it on the stack with the result of properly
-		  // invoking blockHelperMissing.
-		  blockValue: function blockValue(name) {
-		    var blockHelperMissing = this.aliasable('container.hooks.blockHelperMissing'),
-		        params = [this.contextName(0)];
-		    this.setupHelperArgs(name, 0, params);
-
-		    var blockName = this.popStack();
-		    params.splice(1, 0, blockName);
-
-		    this.push(this.source.functionCall(blockHelperMissing, 'call', params));
-		  },
-
-		  // [ambiguousBlockValue]
-		  //
-		  // On stack, before: hash, inverse, program, value
-		  // Compiler value, before: lastHelper=value of last found helper, if any
-		  // On stack, after, if no lastHelper: same as [blockValue]
-		  // On stack, after, if lastHelper: value
-		  ambiguousBlockValue: function ambiguousBlockValue() {
-		    // We're being a bit cheeky and reusing the options value from the prior exec
-		    var blockHelperMissing = this.aliasable('container.hooks.blockHelperMissing'),
-		        params = [this.contextName(0)];
-		    this.setupHelperArgs('', 0, params, true);
-
-		    this.flushInline();
-
-		    var current = this.topStack();
-		    params.splice(1, 0, current);
-
-		    this.pushSource(['if (!', this.lastHelper, ') { ', current, ' = ', this.source.functionCall(blockHelperMissing, 'call', params), '}']);
-		  },
-
-		  // [appendContent]
-		  //
-		  // On stack, before: ...
-		  // On stack, after: ...
-		  //
-		  // Appends the string value of `content` to the current buffer
-		  appendContent: function appendContent(content) {
-		    if (this.pendingContent) {
-		      content = this.pendingContent + content;
-		    } else {
-		      this.pendingLocation = this.source.currentLocation;
-		    }
-
-		    this.pendingContent = content;
-		  },
-
-		  // [append]
-		  //
-		  // On stack, before: value, ...
-		  // On stack, after: ...
-		  //
-		  // Coerces `value` to a String and appends it to the current buffer.
-		  //
-		  // If `value` is truthy, or 0, it is coerced into a string and appended
-		  // Otherwise, the empty string is appended
-		  append: function append() {
-		    if (this.isInline()) {
-		      this.replaceStack(function (current) {
-		        return [' != null ? ', current, ' : ""'];
-		      });
-
-		      this.pushSource(this.appendToBuffer(this.popStack()));
-		    } else {
-		      var local = this.popStack();
-		      this.pushSource(['if (', local, ' != null) { ', this.appendToBuffer(local, undefined, true), ' }']);
-		      if (this.environment.isSimple) {
-		        this.pushSource(['else { ', this.appendToBuffer("''", undefined, true), ' }']);
-		      }
-		    }
-		  },
-
-		  // [appendEscaped]
-		  //
-		  // On stack, before: value, ...
-		  // On stack, after: ...
-		  //
-		  // Escape `value` and append it to the buffer
-		  appendEscaped: function appendEscaped() {
-		    this.pushSource(this.appendToBuffer([this.aliasable('container.escapeExpression'), '(', this.popStack(), ')']));
-		  },
-
-		  // [getContext]
-		  //
-		  // On stack, before: ...
-		  // On stack, after: ...
-		  // Compiler value, after: lastContext=depth
-		  //
-		  // Set the value of the `lastContext` compiler value to the depth
-		  getContext: function getContext(depth) {
-		    this.lastContext = depth;
-		  },
-
-		  // [pushContext]
-		  //
-		  // On stack, before: ...
-		  // On stack, after: currentContext, ...
-		  //
-		  // Pushes the value of the current context onto the stack.
-		  pushContext: function pushContext() {
-		    this.pushStackLiteral(this.contextName(this.lastContext));
-		  },
-
-		  // [lookupOnContext]
-		  //
-		  // On stack, before: ...
-		  // On stack, after: currentContext[name], ...
-		  //
-		  // Looks up the value of `name` on the current context and pushes
-		  // it onto the stack.
-		  lookupOnContext: function lookupOnContext(parts, falsy, strict, scoped) {
-		    var i = 0;
-
-		    if (!scoped && this.options.compat && !this.lastContext) {
-		      // The depthed query is expected to handle the undefined logic for the root level that
-		      // is implemented below, so we evaluate that directly in compat mode
-		      this.push(this.depthedLookup(parts[i++]));
-		    } else {
-		      this.pushContext();
-		    }
-
-		    this.resolvePath('context', parts, i, falsy, strict);
-		  },
-
-		  // [lookupBlockParam]
-		  //
-		  // On stack, before: ...
-		  // On stack, after: blockParam[name], ...
-		  //
-		  // Looks up the value of `parts` on the given block param and pushes
-		  // it onto the stack.
-		  lookupBlockParam: function lookupBlockParam(blockParamId, parts) {
-		    this.useBlockParams = true;
-
-		    this.push(['blockParams[', blockParamId[0], '][', blockParamId[1], ']']);
-		    this.resolvePath('context', parts, 1);
-		  },
-
-		  // [lookupData]
-		  //
-		  // On stack, before: ...
-		  // On stack, after: data, ...
-		  //
-		  // Push the data lookup operator
-		  lookupData: function lookupData(depth, parts, strict) {
-		    if (!depth) {
-		      this.pushStackLiteral('data');
-		    } else {
-		      this.pushStackLiteral('container.data(data, ' + depth + ')');
-		    }
-
-		    this.resolvePath('data', parts, 0, true, strict);
-		  },
-
-		  resolvePath: function resolvePath(type, parts, i, falsy, strict) {
-		    // istanbul ignore next
-
-		    var _this2 = this;
-
-		    if (this.options.strict || this.options.assumeObjects) {
-		      this.push(strictLookup(this.options.strict && strict, this, parts, i, type));
-		      return;
-		    }
-
-		    var len = parts.length;
-		    for (; i < len; i++) {
-		      /* eslint-disable no-loop-func */
-		      this.replaceStack(function (current) {
-		        var lookup = _this2.nameLookup(current, parts[i], type);
-		        // We want to ensure that zero and false are handled properly if the context (falsy flag)
-		        // needs to have the special handling for these values.
-		        if (!falsy) {
-		          return [' != null ? ', lookup, ' : ', current];
-		        } else {
-		          // Otherwise we can use generic falsy handling
-		          return [' && ', lookup];
-		        }
-		      });
-		      /* eslint-enable no-loop-func */
-		    }
-		  },
-
-		  // [resolvePossibleLambda]
-		  //
-		  // On stack, before: value, ...
-		  // On stack, after: resolved value, ...
-		  //
-		  // If the `value` is a lambda, replace it on the stack by
-		  // the return value of the lambda
-		  resolvePossibleLambda: function resolvePossibleLambda() {
-		    this.push([this.aliasable('container.lambda'), '(', this.popStack(), ', ', this.contextName(0), ')']);
-		  },
-
-		  // [pushStringParam]
-		  //
-		  // On stack, before: ...
-		  // On stack, after: string, currentContext, ...
-		  //
-		  // This opcode is designed for use in string mode, which
-		  // provides the string value of a parameter along with its
-		  // depth rather than resolving it immediately.
-		  pushStringParam: function pushStringParam(string, type) {
-		    this.pushContext();
-		    this.pushString(type);
-
-		    // If it's a subexpression, the string result
-		    // will be pushed after this opcode.
-		    if (type !== 'SubExpression') {
-		      if (typeof string === 'string') {
-		        this.pushString(string);
-		      } else {
-		        this.pushStackLiteral(string);
-		      }
-		    }
-		  },
-
-		  emptyHash: function emptyHash(omitEmpty) {
-		    if (this.trackIds) {
-		      this.push('{}'); // hashIds
-		    }
-		    if (this.stringParams) {
-		      this.push('{}'); // hashContexts
-		      this.push('{}'); // hashTypes
-		    }
-		    this.pushStackLiteral(omitEmpty ? 'undefined' : '{}');
-		  },
-		  pushHash: function pushHash() {
-		    if (this.hash) {
-		      this.hashes.push(this.hash);
-		    }
-		    this.hash = { values: {}, types: [], contexts: [], ids: [] };
-		  },
-		  popHash: function popHash() {
-		    var hash = this.hash;
-		    this.hash = this.hashes.pop();
-
-		    if (this.trackIds) {
-		      this.push(this.objectLiteral(hash.ids));
-		    }
-		    if (this.stringParams) {
-		      this.push(this.objectLiteral(hash.contexts));
-		      this.push(this.objectLiteral(hash.types));
-		    }
-
-		    this.push(this.objectLiteral(hash.values));
-		  },
-
-		  // [pushString]
-		  //
-		  // On stack, before: ...
-		  // On stack, after: quotedString(string), ...
-		  //
-		  // Push a quoted version of `string` onto the stack
-		  pushString: function pushString(string) {
-		    this.pushStackLiteral(this.quotedString(string));
-		  },
-
-		  // [pushLiteral]
-		  //
-		  // On stack, before: ...
-		  // On stack, after: value, ...
-		  //
-		  // Pushes a value onto the stack. This operation prevents
-		  // the compiler from creating a temporary variable to hold
-		  // it.
-		  pushLiteral: function pushLiteral(value) {
-		    this.pushStackLiteral(value);
-		  },
-
-		  // [pushProgram]
-		  //
-		  // On stack, before: ...
-		  // On stack, after: program(guid), ...
-		  //
-		  // Push a program expression onto the stack. This takes
-		  // a compile-time guid and converts it into a runtime-accessible
-		  // expression.
-		  pushProgram: function pushProgram(guid) {
-		    if (guid != null) {
-		      this.pushStackLiteral(this.programExpression(guid));
-		    } else {
-		      this.pushStackLiteral(null);
-		    }
-		  },
-
-		  // [registerDecorator]
-		  //
-		  // On stack, before: hash, program, params..., ...
-		  // On stack, after: ...
-		  //
-		  // Pops off the decorator's parameters, invokes the decorator,
-		  // and inserts the decorator into the decorators list.
-		  registerDecorator: function registerDecorator(paramSize, name) {
-		    var foundDecorator = this.nameLookup('decorators', name, 'decorator'),
-		        options = this.setupHelperArgs(name, paramSize);
-
-		    this.decorators.push(['fn = ', this.decorators.functionCall(foundDecorator, '', ['fn', 'props', 'container', options]), ' || fn;']);
-		  },
-
-		  // [invokeHelper]
-		  //
-		  // On stack, before: hash, inverse, program, params..., ...
-		  // On stack, after: result of helper invocation
-		  //
-		  // Pops off the helper's parameters, invokes the helper,
-		  // and pushes the helper's return value onto the stack.
-		  //
-		  // If the helper is not found, `helperMissing` is called.
-		  invokeHelper: function invokeHelper(paramSize, name, isSimple) {
-		    var nonHelper = this.popStack(),
-		        helper = this.setupHelper(paramSize, name);
-
-		    var possibleFunctionCalls = [];
-
-		    if (isSimple) {
-		      // direct call to helper
-		      possibleFunctionCalls.push(helper.name);
-		    }
-		    // call a function from the input object
-		    possibleFunctionCalls.push(nonHelper);
-		    if (!this.options.strict) {
-		      possibleFunctionCalls.push(this.aliasable('container.hooks.helperMissing'));
-		    }
-
-		    var functionLookupCode = ['(', this.itemsSeparatedBy(possibleFunctionCalls, '||'), ')'];
-		    var functionCall = this.source.functionCall(functionLookupCode, 'call', helper.callParams);
-		    this.push(functionCall);
-		  },
-
-		  itemsSeparatedBy: function itemsSeparatedBy(items, separator) {
-		    var result = [];
-		    result.push(items[0]);
-		    for (var i = 1; i < items.length; i++) {
-		      result.push(separator, items[i]);
-		    }
-		    return result;
-		  },
-		  // [invokeKnownHelper]
-		  //
-		  // On stack, before: hash, inverse, program, params..., ...
-		  // On stack, after: result of helper invocation
-		  //
-		  // This operation is used when the helper is known to exist,
-		  // so a `helperMissing` fallback is not required.
-		  invokeKnownHelper: function invokeKnownHelper(paramSize, name) {
-		    var helper = this.setupHelper(paramSize, name);
-		    this.push(this.source.functionCall(helper.name, 'call', helper.callParams));
-		  },
-
-		  // [invokeAmbiguous]
-		  //
-		  // On stack, before: hash, inverse, program, params..., ...
-		  // On stack, after: result of disambiguation
-		  //
-		  // This operation is used when an expression like `{{foo}}`
-		  // is provided, but we don't know at compile-time whether it
-		  // is a helper or a path.
-		  //
-		  // This operation emits more code than the other options,
-		  // and can be avoided by passing the `knownHelpers` and
-		  // `knownHelpersOnly` flags at compile-time.
-		  invokeAmbiguous: function invokeAmbiguous(name, helperCall) {
-		    this.useRegister('helper');
-
-		    var nonHelper = this.popStack();
-
-		    this.emptyHash();
-		    var helper = this.setupHelper(0, name, helperCall);
-
-		    var helperName = this.lastHelper = this.nameLookup('helpers', name, 'helper');
-
-		    var lookup = ['(', '(helper = ', helperName, ' || ', nonHelper, ')'];
-		    if (!this.options.strict) {
-		      lookup[0] = '(helper = ';
-		      lookup.push(' != null ? helper : ', this.aliasable('container.hooks.helperMissing'));
-		    }
-
-		    this.push(['(', lookup, helper.paramsInit ? ['),(', helper.paramsInit] : [], '),', '(typeof helper === ', this.aliasable('"function"'), ' ? ', this.source.functionCall('helper', 'call', helper.callParams), ' : helper))']);
-		  },
-
-		  // [invokePartial]
-		  //
-		  // On stack, before: context, ...
-		  // On stack after: result of partial invocation
-		  //
-		  // This operation pops off a context, invokes a partial with that context,
-		  // and pushes the result of the invocation back.
-		  invokePartial: function invokePartial(isDynamic, name, indent) {
-		    var params = [],
-		        options = this.setupParams(name, 1, params);
-
-		    if (isDynamic) {
-		      name = this.popStack();
-		      delete options.name;
-		    }
-
-		    if (indent) {
-		      options.indent = JSON.stringify(indent);
-		    }
-		    options.helpers = 'helpers';
-		    options.partials = 'partials';
-		    options.decorators = 'container.decorators';
-
-		    if (!isDynamic) {
-		      params.unshift(this.nameLookup('partials', name, 'partial'));
-		    } else {
-		      params.unshift(name);
-		    }
-
-		    if (this.options.compat) {
-		      options.depths = 'depths';
-		    }
-		    options = this.objectLiteral(options);
-		    params.push(options);
-
-		    this.push(this.source.functionCall('container.invokePartial', '', params));
-		  },
-
-		  // [assignToHash]
-		  //
-		  // On stack, before: value, ..., hash, ...
-		  // On stack, after: ..., hash, ...
-		  //
-		  // Pops a value off the stack and assigns it to the current hash
-		  assignToHash: function assignToHash(key) {
-		    var value = this.popStack(),
-		        context = undefined,
-		        type = undefined,
-		        id = undefined;
-
-		    if (this.trackIds) {
-		      id = this.popStack();
-		    }
-		    if (this.stringParams) {
-		      type = this.popStack();
-		      context = this.popStack();
-		    }
-
-		    var hash = this.hash;
-		    if (context) {
-		      hash.contexts[key] = context;
-		    }
-		    if (type) {
-		      hash.types[key] = type;
-		    }
-		    if (id) {
-		      hash.ids[key] = id;
-		    }
-		    hash.values[key] = value;
-		  },
-
-		  pushId: function pushId(type, name, child) {
-		    if (type === 'BlockParam') {
-		      this.pushStackLiteral('blockParams[' + name[0] + '].path[' + name[1] + ']' + (child ? ' + ' + JSON.stringify('.' + child) : ''));
-		    } else if (type === 'PathExpression') {
-		      this.pushString(name);
-		    } else if (type === 'SubExpression') {
-		      this.pushStackLiteral('true');
-		    } else {
-		      this.pushStackLiteral('null');
-		    }
-		  },
-
-		  // HELPERS
-
-		  compiler: JavaScriptCompiler,
-
-		  compileChildren: function compileChildren(environment, options) {
-		    var children = environment.children,
-		        child = undefined,
-		        compiler = undefined;
-
-		    for (var i = 0, l = children.length; i < l; i++) {
-		      child = children[i];
-		      compiler = new this.compiler(); // eslint-disable-line new-cap
-
-		      var existing = this.matchExistingProgram(child);
-
-		      if (existing == null) {
-		        this.context.programs.push(''); // Placeholder to prevent name conflicts for nested children
-		        var index = this.context.programs.length;
-		        child.index = index;
-		        child.name = 'program' + index;
-		        this.context.programs[index] = compiler.compile(child, options, this.context, !this.precompile);
-		        this.context.decorators[index] = compiler.decorators;
-		        this.context.environments[index] = child;
-
-		        this.useDepths = this.useDepths || compiler.useDepths;
-		        this.useBlockParams = this.useBlockParams || compiler.useBlockParams;
-		        child.useDepths = this.useDepths;
-		        child.useBlockParams = this.useBlockParams;
-		      } else {
-		        child.index = existing.index;
-		        child.name = 'program' + existing.index;
-
-		        this.useDepths = this.useDepths || existing.useDepths;
-		        this.useBlockParams = this.useBlockParams || existing.useBlockParams;
-		      }
-		    }
-		  },
-		  matchExistingProgram: function matchExistingProgram(child) {
-		    for (var i = 0, len = this.context.environments.length; i < len; i++) {
-		      var environment = this.context.environments[i];
-		      if (environment && environment.equals(child)) {
-		        return environment;
-		      }
-		    }
-		  },
-
-		  programExpression: function programExpression(guid) {
-		    var child = this.environment.children[guid],
-		        programParams = [child.index, 'data', child.blockParams];
-
-		    if (this.useBlockParams || this.useDepths) {
-		      programParams.push('blockParams');
-		    }
-		    if (this.useDepths) {
-		      programParams.push('depths');
-		    }
-
-		    return 'container.program(' + programParams.join(', ') + ')';
-		  },
-
-		  useRegister: function useRegister(name) {
-		    if (!this.registers[name]) {
-		      this.registers[name] = true;
-		      this.registers.list.push(name);
-		    }
-		  },
-
-		  push: function push(expr) {
-		    if (!(expr instanceof Literal)) {
-		      expr = this.source.wrap(expr);
-		    }
-
-		    this.inlineStack.push(expr);
-		    return expr;
-		  },
-
-		  pushStackLiteral: function pushStackLiteral(item) {
-		    this.push(new Literal(item));
-		  },
-
-		  pushSource: function pushSource(source) {
-		    if (this.pendingContent) {
-		      this.source.push(this.appendToBuffer(this.source.quotedString(this.pendingContent), this.pendingLocation));
-		      this.pendingContent = undefined;
-		    }
-
-		    if (source) {
-		      this.source.push(source);
-		    }
-		  },
-
-		  replaceStack: function replaceStack(callback) {
-		    var prefix = ['('],
-		        stack = undefined,
-		        createdStack = undefined,
-		        usedLiteral = undefined;
-
-		    /* istanbul ignore next */
-		    if (!this.isInline()) {
-		      throw new _exception2['default']('replaceStack on non-inline');
-		    }
-
-		    // We want to merge the inline statement into the replacement statement via ','
-		    var top = this.popStack(true);
-
-		    if (top instanceof Literal) {
-		      // Literals do not need to be inlined
-		      stack = [top.value];
-		      prefix = ['(', stack];
-		      usedLiteral = true;
-		    } else {
-		      // Get or create the current stack name for use by the inline
-		      createdStack = true;
-		      var _name = this.incrStack();
-
-		      prefix = ['((', this.push(_name), ' = ', top, ')'];
-		      stack = this.topStack();
-		    }
-
-		    var item = callback.call(this, stack);
-
-		    if (!usedLiteral) {
-		      this.popStack();
-		    }
-		    if (createdStack) {
-		      this.stackSlot--;
-		    }
-		    this.push(prefix.concat(item, ')'));
-		  },
-
-		  incrStack: function incrStack() {
-		    this.stackSlot++;
-		    if (this.stackSlot > this.stackVars.length) {
-		      this.stackVars.push('stack' + this.stackSlot);
-		    }
-		    return this.topStackName();
-		  },
-		  topStackName: function topStackName() {
-		    return 'stack' + this.stackSlot;
-		  },
-		  flushInline: function flushInline() {
-		    var inlineStack = this.inlineStack;
-		    this.inlineStack = [];
-		    for (var i = 0, len = inlineStack.length; i < len; i++) {
-		      var entry = inlineStack[i];
-		      /* istanbul ignore if */
-		      if (entry instanceof Literal) {
-		        this.compileStack.push(entry);
-		      } else {
-		        var stack = this.incrStack();
-		        this.pushSource([stack, ' = ', entry, ';']);
-		        this.compileStack.push(stack);
-		      }
-		    }
-		  },
-		  isInline: function isInline() {
-		    return this.inlineStack.length;
-		  },
-
-		  popStack: function popStack(wrapped) {
-		    var inline = this.isInline(),
-		        item = (inline ? this.inlineStack : this.compileStack).pop();
-
-		    if (!wrapped && item instanceof Literal) {
-		      return item.value;
-		    } else {
-		      if (!inline) {
-		        /* istanbul ignore next */
-		        if (!this.stackSlot) {
-		          throw new _exception2['default']('Invalid stack pop');
-		        }
-		        this.stackSlot--;
-		      }
-		      return item;
-		    }
-		  },
-
-		  topStack: function topStack() {
-		    var stack = this.isInline() ? this.inlineStack : this.compileStack,
-		        item = stack[stack.length - 1];
-
-		    /* istanbul ignore if */
-		    if (item instanceof Literal) {
-		      return item.value;
-		    } else {
-		      return item;
-		    }
-		  },
-
-		  contextName: function contextName(context) {
-		    if (this.useDepths && context) {
-		      return 'depths[' + context + ']';
-		    } else {
-		      return 'depth' + context;
-		    }
-		  },
-
-		  quotedString: function quotedString(str) {
-		    return this.source.quotedString(str);
-		  },
-
-		  objectLiteral: function objectLiteral(obj) {
-		    return this.source.objectLiteral(obj);
-		  },
-
-		  aliasable: function aliasable(name) {
-		    var ret = this.aliases[name];
-		    if (ret) {
-		      ret.referenceCount++;
-		      return ret;
-		    }
-
-		    ret = this.aliases[name] = this.source.wrap(name);
-		    ret.aliasable = true;
-		    ret.referenceCount = 1;
-
-		    return ret;
-		  },
-
-		  setupHelper: function setupHelper(paramSize, name, blockHelper) {
-		    var params = [],
-		        paramsInit = this.setupHelperArgs(name, paramSize, params, blockHelper);
-		    var foundHelper = this.nameLookup('helpers', name, 'helper'),
-		        callContext = this.aliasable(this.contextName(0) + ' != null ? ' + this.contextName(0) + ' : (container.nullContext || {})');
-
-		    return {
-		      params: params,
-		      paramsInit: paramsInit,
-		      name: foundHelper,
-		      callParams: [callContext].concat(params)
-		    };
-		  },
-
-		  setupParams: function setupParams(helper, paramSize, params) {
-		    var options = {},
-		        contexts = [],
-		        types = [],
-		        ids = [],
-		        objectArgs = !params,
-		        param = undefined;
-
-		    if (objectArgs) {
-		      params = [];
-		    }
-
-		    options.name = this.quotedString(helper);
-		    options.hash = this.popStack();
-
-		    if (this.trackIds) {
-		      options.hashIds = this.popStack();
-		    }
-		    if (this.stringParams) {
-		      options.hashTypes = this.popStack();
-		      options.hashContexts = this.popStack();
-		    }
-
-		    var inverse = this.popStack(),
-		        program = this.popStack();
-
-		    // Avoid setting fn and inverse if neither are set. This allows
-		    // helpers to do a check for `if (options.fn)`
-		    if (program || inverse) {
-		      options.fn = program || 'container.noop';
-		      options.inverse = inverse || 'container.noop';
-		    }
-
-		    // The parameters go on to the stack in order (making sure that they are evaluated in order)
-		    // so we need to pop them off the stack in reverse order
-		    var i = paramSize;
-		    while (i--) {
-		      param = this.popStack();
-		      params[i] = param;
-
-		      if (this.trackIds) {
-		        ids[i] = this.popStack();
-		      }
-		      if (this.stringParams) {
-		        types[i] = this.popStack();
-		        contexts[i] = this.popStack();
-		      }
-		    }
-
-		    if (objectArgs) {
-		      options.args = this.source.generateArray(params);
-		    }
-
-		    if (this.trackIds) {
-		      options.ids = this.source.generateArray(ids);
-		    }
-		    if (this.stringParams) {
-		      options.types = this.source.generateArray(types);
-		      options.contexts = this.source.generateArray(contexts);
-		    }
-
-		    if (this.options.data) {
-		      options.data = 'data';
-		    }
-		    if (this.useBlockParams) {
-		      options.blockParams = 'blockParams';
-		    }
-		    return options;
-		  },
-
-		  setupHelperArgs: function setupHelperArgs(helper, paramSize, params, useRegister) {
-		    var options = this.setupParams(helper, paramSize, params);
-		    options.loc = JSON.stringify(this.source.currentLocation);
-		    options = this.objectLiteral(options);
-		    if (useRegister) {
-		      this.useRegister('options');
-		      params.push('options');
-		      return ['options=', options];
-		    } else if (params) {
-		      params.push(options);
-		      return '';
-		    } else {
-		      return options;
-		    }
-		  }
-		};
-
-		(function () {
-		  var reservedWords = ('break else new var' + ' case finally return void' + ' catch for switch while' + ' continue function this with' + ' default if throw' + ' delete in try' + ' do instanceof typeof' + ' abstract enum int short' + ' boolean export interface static' + ' byte extends long super' + ' char final native synchronized' + ' class float package throws' + ' const goto private transient' + ' debugger implements protected volatile' + ' double import public let yield await' + ' null true false').split(' ');
-
-		  var compilerWords = JavaScriptCompiler.RESERVED_WORDS = {};
-
-		  for (var i = 0, l = reservedWords.length; i < l; i++) {
-		    compilerWords[reservedWords[i]] = true;
-		  }
-		})();
-
-		/**
-		 * @deprecated May be removed in the next major version
-		 */
-		JavaScriptCompiler.isValidJavaScriptVariableName = function (name) {
-		  return !JavaScriptCompiler.RESERVED_WORDS[name] && /^[a-zA-Z_$][0-9a-zA-Z_$]*$/.test(name);
-		};
-
-		function strictLookup(requireTerminal, compiler, parts, i, type) {
-		  var stack = compiler.popStack(),
-		      len = parts.length;
-		  if (requireTerminal) {
-		    len--;
-		  }
-
-		  for (; i < len; i++) {
-		    stack = compiler.nameLookup(stack, parts[i], type);
-		  }
-
-		  if (requireTerminal) {
-		    return [compiler.aliasable('container.strict'), '(', stack, ', ', compiler.quotedString(parts[i]), ', ', JSON.stringify(compiler.source.currentLocation), ' )'];
-		  } else {
-		    return stack;
-		  }
-		}
-
-		exports['default'] = JavaScriptCompiler;
-		module.exports = exports['default'];
-		
-	} (javascriptCompiler, javascriptCompiler.exports));
-	return javascriptCompiler.exports;
-}
-
-var hasRequiredHandlebars;
-
-function requireHandlebars () {
-	if (hasRequiredHandlebars) return handlebars.exports;
-	hasRequiredHandlebars = 1;
-	(function (module, exports) {
-
-		exports.__esModule = true;
-		// istanbul ignore next
-
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-		var _handlebarsRuntime = requireHandlebars_runtime();
-
-		var _handlebarsRuntime2 = _interopRequireDefault(_handlebarsRuntime);
-
-		// Compiler imports
-
-		var _handlebarsCompilerAst = requireAst();
-
-		var _handlebarsCompilerAst2 = _interopRequireDefault(_handlebarsCompilerAst);
-
-		var _handlebarsCompilerBase = requireBase();
-
-		var _handlebarsCompilerCompiler = requireCompiler();
-
-		var _handlebarsCompilerJavascriptCompiler = requireJavascriptCompiler();
-
-		var _handlebarsCompilerJavascriptCompiler2 = _interopRequireDefault(_handlebarsCompilerJavascriptCompiler);
-
-		var _handlebarsCompilerVisitor = requireVisitor();
-
-		var _handlebarsCompilerVisitor2 = _interopRequireDefault(_handlebarsCompilerVisitor);
-
-		var _handlebarsNoConflict = requireNoConflict();
-
-		var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
-
-		var _create = _handlebarsRuntime2['default'].create;
-		function create() {
-		  var hb = _create();
-
-		  hb.compile = function (input, options) {
-		    return _handlebarsCompilerCompiler.compile(input, options, hb);
-		  };
-		  hb.precompile = function (input, options) {
-		    return _handlebarsCompilerCompiler.precompile(input, options, hb);
-		  };
-
-		  hb.AST = _handlebarsCompilerAst2['default'];
-		  hb.Compiler = _handlebarsCompilerCompiler.Compiler;
-		  hb.JavaScriptCompiler = _handlebarsCompilerJavascriptCompiler2['default'];
-		  hb.Parser = _handlebarsCompilerBase.parser;
-		  hb.parse = _handlebarsCompilerBase.parse;
-		  hb.parseWithoutProcessing = _handlebarsCompilerBase.parseWithoutProcessing;
-
-		  return hb;
-		}
-
-		var inst = create();
-		inst.create = create;
-
-		_handlebarsNoConflict2['default'](inst);
-
-		inst.Visitor = _handlebarsCompilerVisitor2['default'];
-
-		inst['default'] = inst;
-
-		exports['default'] = inst;
-		module.exports = exports['default'];
-		
-	} (handlebars, handlebars.exports));
-	return handlebars.exports;
-}
-
-var printer = {};
-
-/* eslint-disable new-cap */
-
-var hasRequiredPrinter;
-
-function requirePrinter () {
-	if (hasRequiredPrinter) return printer;
-	hasRequiredPrinter = 1;
-
-	printer.__esModule = true;
-	printer.print = print;
-	printer.PrintVisitor = PrintVisitor;
-	// istanbul ignore next
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _visitor = requireVisitor();
-
-	var _visitor2 = _interopRequireDefault(_visitor);
-
-	function print(ast) {
-	  return new PrintVisitor().accept(ast);
-	}
-
-	function PrintVisitor() {
-	  this.padding = 0;
-	}
-
-	PrintVisitor.prototype = new _visitor2['default']();
-
-	PrintVisitor.prototype.pad = function (string) {
-	  var out = '';
-
-	  for (var i = 0, l = this.padding; i < l; i++) {
-	    out += '  ';
-	  }
-
-	  out += string + '\n';
-	  return out;
-	};
-
-	PrintVisitor.prototype.Program = function (program) {
-	  var out = '',
-	      body = program.body,
-	      i = undefined,
-	      l = undefined;
-
-	  if (program.blockParams) {
-	    var blockParams = 'BLOCK PARAMS: [';
-	    for (i = 0, l = program.blockParams.length; i < l; i++) {
-	      blockParams += ' ' + program.blockParams[i];
-	    }
-	    blockParams += ' ]';
-	    out += this.pad(blockParams);
-	  }
-
-	  for (i = 0, l = body.length; i < l; i++) {
-	    out += this.accept(body[i]);
-	  }
-
-	  this.padding--;
-
-	  return out;
-	};
-
-	PrintVisitor.prototype.MustacheStatement = function (mustache) {
-	  return this.pad('{{ ' + this.SubExpression(mustache) + ' }}');
-	};
-	PrintVisitor.prototype.Decorator = function (mustache) {
-	  return this.pad('{{ DIRECTIVE ' + this.SubExpression(mustache) + ' }}');
-	};
-
-	PrintVisitor.prototype.BlockStatement = PrintVisitor.prototype.DecoratorBlock = function (block) {
-	  var out = '';
-
-	  out += this.pad((block.type === 'DecoratorBlock' ? 'DIRECTIVE ' : '') + 'BLOCK:');
-	  this.padding++;
-	  out += this.pad(this.SubExpression(block));
-	  if (block.program) {
-	    out += this.pad('PROGRAM:');
-	    this.padding++;
-	    out += this.accept(block.program);
-	    this.padding--;
-	  }
-	  if (block.inverse) {
-	    if (block.program) {
-	      this.padding++;
-	    }
-	    out += this.pad('{{^}}');
-	    this.padding++;
-	    out += this.accept(block.inverse);
-	    this.padding--;
-	    if (block.program) {
-	      this.padding--;
-	    }
-	  }
-	  this.padding--;
-
-	  return out;
-	};
-
-	PrintVisitor.prototype.PartialStatement = function (partial) {
-	  var content = 'PARTIAL:' + partial.name.original;
-	  if (partial.params[0]) {
-	    content += ' ' + this.accept(partial.params[0]);
-	  }
-	  if (partial.hash) {
-	    content += ' ' + this.accept(partial.hash);
-	  }
-	  return this.pad('{{> ' + content + ' }}');
-	};
-	PrintVisitor.prototype.PartialBlockStatement = function (partial) {
-	  var content = 'PARTIAL BLOCK:' + partial.name.original;
-	  if (partial.params[0]) {
-	    content += ' ' + this.accept(partial.params[0]);
-	  }
-	  if (partial.hash) {
-	    content += ' ' + this.accept(partial.hash);
-	  }
-
-	  content += ' ' + this.pad('PROGRAM:');
-	  this.padding++;
-	  content += this.accept(partial.program);
-	  this.padding--;
-
-	  return this.pad('{{> ' + content + ' }}');
-	};
-
-	PrintVisitor.prototype.ContentStatement = function (content) {
-	  return this.pad("CONTENT[ '" + content.value + "' ]");
-	};
-
-	PrintVisitor.prototype.CommentStatement = function (comment) {
-	  return this.pad("{{! '" + comment.value + "' }}");
-	};
-
-	PrintVisitor.prototype.SubExpression = function (sexpr) {
-	  var params = sexpr.params,
-	      paramStrings = [],
-	      hash = undefined;
-
-	  for (var i = 0, l = params.length; i < l; i++) {
-	    paramStrings.push(this.accept(params[i]));
-	  }
-
-	  params = '[' + paramStrings.join(', ') + ']';
-
-	  hash = sexpr.hash ? ' ' + this.accept(sexpr.hash) : '';
-
-	  return this.accept(sexpr.path) + ' ' + params + hash;
-	};
-
-	PrintVisitor.prototype.PathExpression = function (id) {
-	  var path = id.parts.join('/');
-	  return (id.data ? '@' : '') + 'PATH:' + path;
-	};
-
-	PrintVisitor.prototype.StringLiteral = function (string) {
-	  return '"' + string.value + '"';
-	};
-
-	PrintVisitor.prototype.NumberLiteral = function (number) {
-	  return 'NUMBER{' + number.value + '}';
-	};
-
-	PrintVisitor.prototype.BooleanLiteral = function (bool) {
-	  return 'BOOLEAN{' + bool.value + '}';
-	};
-
-	PrintVisitor.prototype.UndefinedLiteral = function () {
-	  return 'UNDEFINED';
-	};
-
-	PrintVisitor.prototype.NullLiteral = function () {
-	  return 'NULL';
-	};
-
-	PrintVisitor.prototype.Hash = function (hash) {
-	  var pairs = hash.pairs,
-	      joinedPairs = [];
-
-	  for (var i = 0, l = pairs.length; i < l; i++) {
-	    joinedPairs.push(this.accept(pairs[i]));
-	  }
-
-	  return 'HASH{' + joinedPairs.join(', ') + '}';
-	};
-	PrintVisitor.prototype.HashPair = function (pair) {
-	  return pair.key + '=' + this.accept(pair.value);
-	};
-	/* eslint-enable new-cap */
-	
-	return printer;
-}
-
-var lib;
-var hasRequiredLib;
-
-function requireLib () {
-	if (hasRequiredLib) return lib;
-	hasRequiredLib = 1;
-	// USAGE:
-	// var handlebars = require('handlebars');
-	/* eslint-env node */
-	/* eslint-disable no-var */
-
-	// var local = handlebars.create();
-
-	var handlebars = requireHandlebars()['default'];
-
-	var printer = requirePrinter();
-	handlebars.PrintVisitor = printer.PrintVisitor;
-	handlebars.print = printer.print;
-
-	lib = handlebars;
-
-	// Publish a Node.js require() handler for .handlebars and .hbs files
-	function extension(module, filename) {
-	  var fs = fs__default;
-	  var templateString = fs.readFileSync(filename, 'utf8');
-	  module.exports = handlebars.compile(templateString);
-	}
-	/* istanbul ignore else */
-	if (typeof commonjsRequire !== 'undefined' && commonjsRequire.extensions) {
-	  commonjsRequire.extensions['.handlebars'] = extension;
-	  commonjsRequire.extensions['.hbs'] = extension;
-	}
-	return lib;
-}
-
-var libExports = requireLib();
-var Handlebars = /*@__PURE__*/getDefaultExportFromCjs(libExports);
-
-const commentTemplateString = `
-### TensorZero CI Bot Automated Comment
-
-{{#if generatedCommentBody}}
-{{generatedCommentBody}}
-{{/if}}
-
-{{#if commands}}
-Try running the following commands to address the issues:
-
-\`\`\`
-{{#each commands}}
-{{this}}
-{{/each}}
-\`\`\`
-{{/if}}
-
-{{#if followupPrNumber}}
-I've opened an automated follow-up PR #{{followupPrNumber}} with proposed fixes.
-{{/if}}
-{{#if followupPrCreationError}}
-> [!WARNING]
-> I encountered an error while trying to create a follow-up PR: {{followupPrCreationError}}.
-
-{{#if generatedPatch}}
-The patch I tried to generate is as follows:
-\`\`\`diff
-{{{generatedPatch}}}
-\`\`\`
-{{else}}
-No patch was generated.
-{{/if}}
-{{/if}}
-`;
-const commentTemplate = Handlebars.compile(commentTemplateString.trim());
-function renderComment(commentContext) {
-    if (!commentContext.generatedCommentBody &&
-        !commentContext.followupPrCreationError &&
-        !commentContext.followupPrNumber &&
-        !commentContext.commands) {
-        return undefined;
-    }
-    return commentTemplate(commentContext).trim();
-}
-
-async function getJobStatus(jobsUrl, token) {
-    // Fetch jobs from the workflow run
-    let jobsResponse;
-    try {
-        jobsResponse = await fetch(jobsUrl, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: 'application/vnd.github+json',
-                'X-GitHub-Api-Version': '2022-11-28'
-            }
-        });
-    }
-    catch (error) {
-        const errorMessage = error instanceof Error ? error.message : `${error}`;
-        throw new Error(`Failed to fetch workflow jobs from ${jobsUrl}: ${errorMessage}`);
-    }
-    if (jobsResponse.ok) {
-        try {
-            return (await jobsResponse.json());
-        }
-        catch (error) {
-            const errorMessage = error instanceof Error ? error.message : `${error}`;
-            throw new Error(`Failed to parse workflow jobs JSON response: ${errorMessage}`);
-        }
-    }
-    // Provide more context about the error
-    let errorBody = '';
-    try {
-        errorBody = await jobsResponse.text();
-    }
-    catch {
-        // Ignore error when trying to read error body
-    }
-    throw new Error(`Failed to load workflow jobs from ${jobsUrl}: ${jobsResponse.status} ${jobsResponse.statusText}${errorBody ? ` - ${errorBody}` : ''}`);
-}
-function getAllFailedJobs(workflowJobsStatus) {
-    return (workflowJobsStatus.jobs ?? [])
-        .filter((job) => job.conclusion !== 'success')
-        .map((job) => ({
-        name: job.name,
-        conclusion: job.conclusion,
-        html_url: job.html_url,
-        failed_steps: (job.steps ?? [])
-            .filter((step) => step.conclusion && step.conclusion !== 'success')
-            .map((step) => ({
-            name: step.name,
-            status: step.status,
-            conclusion: step.conclusion
-        }))
-    }));
-}
-function isPullRequestEligibleForFix() {
-    // If the workflow run is not associated with a single pull request, we don't want to fix it.
-    if (githubExports.context.payload.workflow_run?.pull_requests?.length !== 1) {
-        coreExports.warning(`Workflow run is not associated with a single pull request; skipping action.`);
-        return false;
-    }
-    const pullRequest = githubExports.context.payload.workflow_run.pull_requests[0];
-    if (!pullRequest) {
-        coreExports.warning(`Workflow run is not associated with a pull request; skipping action.`);
-        return false;
-    }
-    // If the pull request originates from a fork, we don't want to fix it.
-    if (pullRequest.head.repo?.id !== pullRequest.base.repo?.id) {
-        coreExports.warning(`PR originates from a fork: base repo is ${pullRequest.base.repo?.name}, but PR branch is from ${pullRequest.head.repo?.name}; skipping action.`);
-        return false;
-    }
-    // If the workflow run did not fail, we don't want to fix it.
-    if (githubExports.context.payload.workflow_run.conclusion !== 'failure') {
-        coreExports.warning(`Workflow run did not fail (conclusion ${githubExports.context.payload.workflow_run.conclusion}); skipping action.`);
-        return false;
-    }
-    // If the pull request is not targeting the main branch, we don't want to fix it.
-    if (pullRequest.base?.ref !== githubExports.context.payload.repository?.default_branch) {
-        coreExports.warning(`PR is not targeting the main branch: PR branch is ${pullRequest.base?.ref}, but main branch is ${githubExports.context.payload.repository?.default_branch}; skipping action.`);
-        return false;
-    }
-    coreExports.info(`PR is eligible for fix.`);
-    return true;
-}
-// Parse action inputs
-function parseAndValidateActionInputs() {
-    const token = coreExports.getInput('token')?.trim();
-    if (!token) {
-        throw new Error('A GitHub token is required. Provide one via the `token` input.');
-    }
-    const tensorZeroBaseUrl = coreExports.getInput('tensorzero-base-url')?.trim();
-    if (!tensorZeroBaseUrl) {
-        throw new Error('TensorZero base url is required; provide one via the `tensorzero-base-url` input.');
-    }
-    const tensorZeroDiffPatchedSuccessfullyMetricName = coreExports.getInput('tensorzero-diff-patched-successfully-metric-name')
-        ?.trim();
-    if (!tensorZeroDiffPatchedSuccessfullyMetricName) {
-        throw new Error('TensorZero metric name is required; provide one via the `tensorzero-diff-patched-successfully-metric-name` input.');
-    }
-    const outputArtifactsDirInput = coreExports.getInput('output-artifacts-dir');
-    const outputArtifactsDir = outputArtifactsDirInput
-        ? outputArtifactsDirInput.trim() || undefined
-        : undefined;
-    const clickhouseUrl = coreExports.getInput('clickhouse-url')?.trim();
-    if (!clickhouseUrl) {
-        throw new Error('ClickHouse URL is required when configuring ClickHouse logging; provide one via the `clickhouse-url` input.');
-    }
-    const clickhouseTable = coreExports.getInput('clickhouse-table')?.trim();
-    if (!clickhouseTable) {
-        throw new Error('ClickHouse table name is required when configuring ClickHouse logging; provide one via the `clickhouse-table` input.');
-    }
-    return {
-        token,
-        tensorZeroBaseUrl,
-        tensorZeroDiffPatchedSuccessfullyMetricName,
-        outputArtifactsDir,
-        clickhouse: {
-            url: clickhouseUrl,
-            table: clickhouseTable
-        }
-    };
-}
-async function fetchDiffSummaryAndFullDiff(octokit, owner, repo, prNumber, token) {
-    if (!prNumber) {
-        throw new Error('Unable to determine pull request number to compute diff contents.');
-    }
-    coreExports.info('Diff inputs not provided; computing PR diff via git.');
-    const prResponse = await octokit.rest.pulls.get({
-        owner,
-        repo,
-        pull_number: prNumber
-    });
-    const pullRequest = prResponse.data;
-    const diffResult = await getPullRequestDiff({
-        token,
-        owner,
-        repo,
-        pullRequest
-    });
-    return {
-        diffSummary: diffResult.diffSummary,
-        fullDiff: diffResult.fullDiff
-    };
-}
 function maybeWriteDebugArtifact(outputDir, filename, content) {
     if (!outputDir) {
         return;
     }
-    if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
+    if (!fs$1.existsSync(outputDir)) {
+        fs$1.mkdirSync(outputDir, { recursive: true });
     }
-    fs.writeFileSync(path$1.join(outputDir, filename), content, {
+    fs$1.writeFileSync(path$1.join(outputDir, filename), content, {
         encoding: 'utf-8'
     });
-    coreExports.info(`${filename} written to ${path$1.join(outputDir, filename)}`);
+    console.log(`[Debug] ${filename} written to ${path$1.join(outputDir, filename)}`);
 }
+async function fetchDiffSummaryAndFullDiff(octokit, pr, token) {
+    console.log('[Agent Runner] Fetching PR diff via git...');
+    const prResponse = await octokit.rest.pulls.get({
+        owner: pr.owner,
+        repo: pr.repo,
+        pull_number: pr.number
+    });
+    const diffResult = await getPullRequestDiff(token, pr.owner, pr.repo, prResponse.data);
+    return {
+        diffSummary: diffResult.diffSummary,
+        fullDiff: diffResult.fullDiff,
+        prData: prResponse.data
+    };
+}
+
 /**
- * Collects artifacts, builds a prompt to an LLM, then
+ * Core agent runner logic shared between GitHub Actions and CLI
+ */
+async function runAgent(input) {
+    const { octokit, token, pullRequest, ciFailure, mode, patchOnly, outputDir, clickhouse, agent } = input;
+    const isDryRun = mode === 'dry-run';
+    console.log('[Agent Runner] Starting agent execution...');
+    console.log(`[Agent Runner] Mode: ${mode}${patchOnly ? ' (patch-only)' : ''}`);
+    console.log(`[Agent Runner] PR: ${pullRequest.owner}/${pullRequest.repo}#${pullRequest.number}`);
+    // Prepare artifact directory
+    const artifactDir = outputDir ? path$1.resolve(outputDir) : undefined;
+    if (artifactDir) {
+        console.log(`[Agent Runner] Output artifact directory: ${artifactDir}`);
+    }
+    // Declare these at function scope so they're accessible in catch blocks
+    let repoDir;
+    let episodeId;
+    try {
+        // Load diff summary and full diff
+        const { diffSummary, fullDiff, prData } = await fetchDiffSummaryAndFullDiff(octokit, pullRequest, token);
+        maybeWriteDebugArtifact(artifactDir, 'fetched-diff-summary.txt', diffSummary);
+        maybeWriteDebugArtifact(artifactDir, 'fetched-full-diff.txt', fullDiff);
+        // Clone the PR repository
+        console.log('[Agent Runner] Cloning pull request repository...');
+        const cloneResult = await clonePullRequestRepository(token, pullRequest.owner, pullRequest.repo, {
+            head: { ref: pullRequest.headRef, sha: pullRequest.headSha },
+            base: { ref: pullRequest.baseRef }
+        });
+        repoDir = cloneResult.repoDir;
+        const cleanup = cloneResult.cleanup;
+        const git = cloneResult.git;
+        try {
+            // Write CI failure context file
+            const ciContext = {
+                repoFullName: `${pullRequest.owner}/${pullRequest.repo}`,
+                branch: pullRequest.headRef,
+                prNumber: pullRequest.number,
+                workflowRunId: ciFailure?.workflowRunId,
+                workflowRunUrl: ciFailure?.workflowRunUrl,
+                prUrl: pullRequest.htmlUrl,
+                prDescription: pullRequest.description ?? undefined,
+                failedJobs: ciFailure?.failedJobs ?? [],
+                diffSummary,
+                fullDiff,
+                failureLogs: ciFailure?.failureLogs ?? ''
+            };
+            const contextFilePath = writeCIFailureContextFile(repoDir, ciContext);
+            console.log(`[Agent Runner] CI failure context written to: ${contextFilePath}`);
+            // Determine task based on whether we have CI failure info
+            const task = ciFailure
+                ? 'Fix the CI failures as described in ci_failure_context.md'
+                : 'Review and improve the changes in this PR as described in ci_failure_context.md';
+            // Hardcoded TensorZero gateway URL
+            const tensorZeroGatewayUrl = 'http://ci-bot-gateway:3000';
+            console.log('[Agent Runner] Running mini-swe-agent...');
+            const agentResult = await runMiniSweAgent({
+                task,
+                cwd: repoDir,
+                tensorZeroGatewayUrl,
+                costLimit: 3,
+                timeout: agent.timeout * 60 * 1000, // Convert minutes to milliseconds
+                prNumber: pullRequest.number
+            });
+            const agentCompletion = agentResult.completion;
+            episodeId = agentResult.episodeId;
+            console.log(`[Agent Runner] Agent reasoning: ${agentResult.completion.reasoning}`);
+            console.log(`[Agent Runner] Completion reasoning: ${agentCompletion.reasoning}`);
+            // Clean up the CI failure context file before git operations
+            // This prevents it from being committed in the follow-up PR
+            try {
+                fs$1.rmSync(contextFilePath, { force: true });
+                console.log(`[Agent Runner] Cleaned up CI failure context file: ${contextFilePath}`);
+            }
+            catch (error) {
+                const errorMessage = error instanceof Error ? error.message : `${error}`;
+                console.warn(`[Agent Runner] Failed to clean up CI failure context file: ${errorMessage}`);
+            }
+            // Get the git diff
+            const diffOutput = await git.diff();
+            const trimmedDiff = diffOutput.trim();
+            if (!trimmedDiff) {
+                console.log('[Agent Runner] No changes detected by agent.');
+                return {
+                    success: true,
+                    episodeId,
+                    reasoning: agentCompletion.reasoning
+                };
+            }
+            // Debug logging: show diff statistics
+            const diffLines = trimmedDiff.split('\n');
+            const filesChanged = diffLines.filter((line) => line.startsWith('diff --git')).length;
+            const additions = diffLines.filter((line) => line.startsWith('+')).length;
+            const deletions = diffLines.filter((line) => line.startsWith('-')).length;
+            console.log(`[Agent Runner] Diff statistics: ${filesChanged} files, +${additions} -${deletions} lines`);
+            // Save diff as debug artifact
+            maybeWriteDebugArtifact(artifactDir, 'agent-changes.diff', trimmedDiff);
+            // Handle patch-only mode: write patch and metadata files, skip PR creation
+            if (patchOnly) {
+                console.log('[Agent Runner] Patch-only mode: writing patch and metadata files');
+                if (!artifactDir) {
+                    throw new Error('Patch-only mode requires output-artifacts-dir to be set');
+                }
+                // Write patch file (ensure it ends with newline for git apply)
+                const patchFilePath = path$1.join(artifactDir, 'patch.diff');
+                const patchContent = trimmedDiff.endsWith('\n')
+                    ? trimmedDiff
+                    : trimmedDiff + '\n';
+                fs$1.writeFileSync(patchFilePath, patchContent, 'utf-8');
+                console.log(`[Agent Runner] Wrote patch to: ${patchFilePath}`);
+                // Write metadata file
+                const metadata = {
+                    prNumber: pullRequest.number,
+                    headRef: pullRequest.headRef,
+                    owner: pullRequest.owner,
+                    repo: pullRequest.repo,
+                    reasoning: agentCompletion.reasoning,
+                    episodeId
+                };
+                const metadataFilePath = path$1.join(artifactDir, 'metadata.json');
+                fs$1.writeFileSync(metadataFilePath, JSON.stringify(metadata, null, 2), 'utf-8');
+                console.log(`[Agent Runner] Wrote metadata to: ${metadataFilePath}`);
+                return {
+                    success: true,
+                    episodeId,
+                    diff: trimmedDiff,
+                    reasoning: agentCompletion.reasoning,
+                    patchFile: patchFilePath,
+                    metadataFile: metadataFilePath
+                };
+            }
+            // Create a follow-up PR with the changes
+            console.log('[Agent Runner] Creating a follow-up PR with the changes');
+            if (isDryRun) {
+                console.log('\n[DRY RUN] Would create a follow-up PR with the following patch:');
+                console.log(trimmedDiff);
+                return {
+                    success: true,
+                    episodeId,
+                    diff: trimmedDiff,
+                    reasoning: agentCompletion.reasoning
+                };
+            }
+            // Create follow-up PR directly from the working directory
+            let followupPr;
+            let followupPrCreationError;
+            try {
+                followupPr = await createFollowupPrFromWorkingDir({
+                    octokit,
+                    owner: pullRequest.owner,
+                    repo: pullRequest.repo,
+                    pullRequest: prData,
+                    git,
+                    reasoning: agentCompletion.reasoning
+                }, artifactDir);
+                if (followupPr && clickhouse) {
+                    console.log(`[Agent Runner] Created follow-up PR #${followupPr.number}`);
+                    const request = {
+                        inferenceId: undefined,
+                        episodeId,
+                        pullRequestId: followupPr.id
+                    };
+                    try {
+                        await createPullRequestToInferenceRecord(request, clickhouse);
+                        console.info(`Recorded episode ${episodeId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse.`);
+                    }
+                    catch (error) {
+                        const errorMessage = error instanceof Error ? error.message : `${error}`;
+                        console.warn(`Failed to record episode ${episodeId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse: ${errorMessage}`);
+                    }
+                }
+                // Provide feedback for PR creation success
+                if (followupPr && episodeId && input.tensorZero?.baseUrl) {
+                    try {
+                        await provideEpisodeFeedback(input.tensorZero.baseUrl, 'ci_fix_pr_created_agent', episodeId, true);
+                        console.info(`[Agent Runner] Provided feedback: ci_fix_pr_created_agent=true for episode ${episodeId}`);
+                    }
+                    catch (error) {
+                        const errorMessage = error instanceof Error ? error.message : `${error}`;
+                        console.warn(`[Agent Runner] Failed to provide feedback for PR creation: ${errorMessage}`);
+                    }
+                }
+            }
+            catch (error) {
+                followupPrCreationError =
+                    error instanceof Error ? error.message : `${error}`;
+                console.error(`[Agent Runner] Failed to create follow-up PR: ${followupPrCreationError}`);
+                // Provide feedback for PR creation failure
+                if (episodeId && input.tensorZero?.baseUrl) {
+                    try {
+                        await provideEpisodeFeedback(input.tensorZero.baseUrl, 'ci_fix_pr_created_agent', episodeId, false);
+                        console.info(`[Agent Runner] Provided feedback: ci_fix_pr_created_agent=false for episode ${episodeId}`);
+                        await provideEpisodeFeedback(input.tensorZero.baseUrl, 'ci_fix_pr_merged_agent', episodeId, false);
+                        console.info(`[Agent Runner] Provided feedback: ci_fix_pr_merged_agent=false for episode ${episodeId}`);
+                    }
+                    catch (error) {
+                        const errorMessage = error instanceof Error ? error.message : `${error}`;
+                        console.warn(`[Agent Runner] Failed to provide feedback for PR creation failure: ${errorMessage}`);
+                    }
+                }
+            }
+            // Post a comment on the original PR
+            const comment = renderComment({
+                generatedCommentBody: agentCompletion.reasoning,
+                generatedPatch: trimmedDiff,
+                commands: [],
+                followupPrNumber: followupPr?.number,
+                followupPrUrl: followupPr?.htmlUrl,
+                followupPrCreationError
+            });
+            if (comment) {
+                try {
+                    await octokit.rest.issues.createComment({
+                        owner: pullRequest.owner,
+                        repo: pullRequest.repo,
+                        issue_number: pullRequest.number,
+                        body: comment
+                    });
+                    console.log(`[Agent Runner] Posted comment on PR #${pullRequest.number}`);
+                }
+                catch (error) {
+                    const errorMessage = error instanceof Error ? error.message : `${error}`;
+                    console.warn(`[Agent Runner] Failed to create comment on pull request: ${errorMessage}`);
+                }
+            }
+            return {
+                success: true,
+                episodeId,
+                diff: trimmedDiff,
+                reasoning: agentCompletion.reasoning,
+                followupPrNumber: followupPr?.number,
+                error: followupPrCreationError
+            };
+        }
+        catch (innerError) {
+            // Try to read episode_id from .episode_id file before cleanup
+            // This handles the case where mini-swe-agent wrote the episode_id but then crashed
+            if (repoDir && !episodeId) {
+                try {
+                    const episodeIdPath = path$1.join(repoDir, '.episode_id');
+                    if (fs$1.existsSync(episodeIdPath)) {
+                        episodeId = fs$1.readFileSync(episodeIdPath, 'utf-8').trim();
+                        console.log(`[Agent Runner] Recovered episode ID from .episode_id file: ${episodeId}`);
+                    }
+                }
+                catch (readError) {
+                    const readErrorMessage = readError instanceof Error ? readError.message : `${readError}`;
+                    console.warn(`[Agent Runner] Failed to read .episode_id file: ${readErrorMessage}`);
+                }
+            }
+            // Re-throw the error to be handled by outer catch block
+            throw innerError;
+        }
+        finally {
+            // Clean up cloned repository
+            await cleanup();
+            console.log('[Agent Runner] Cleaned up temporary repository');
+        }
+    }
+    catch (error) {
+        const errorMessage = error instanceof Error ? error.message : `${error}`;
+        console.error(`[Agent Runner] Failed to run agent: ${errorMessage}`);
+        if (error instanceof Error && error.stack) {
+            console.error(error.stack);
+        }
+        // Provide feedback for agent failure
+        // Note: episodeId may have been recovered from .episode_id file if the agent started but failed
+        if (episodeId && input.tensorZero?.baseUrl) {
+            try {
+                await provideEpisodeFeedback(input.tensorZero.baseUrl, 'ci_fix_pr_created_agent', episodeId, false);
+                console.info(`[Agent Runner] Provided feedback: ci_fix_pr_created_agent=false for episode ${episodeId}`);
+            }
+            catch (feedbackError) {
+                const feedbackErrorMessage = feedbackError instanceof Error
+                    ? feedbackError.message
+                    : `${feedbackError}`;
+                console.warn(`[Agent Runner] Failed to provide feedback for agent failure: ${feedbackErrorMessage}`);
+            }
+            try {
+                await provideEpisodeFeedback(input.tensorZero.baseUrl, 'ci_fix_pr_merged_agent', episodeId, false);
+                console.info(`[Agent Runner] Provided feedback: ci_fix_pr_merged_agent=false for episode ${episodeId}`);
+            }
+            catch (feedbackError) {
+                const feedbackErrorMessage = feedbackError instanceof Error
+                    ? feedbackError.message
+                    : `${feedbackError}`;
+                console.warn(`[Agent Runner] Failed to provide feedback for agent failure: ${feedbackErrorMessage}`);
+            }
+        }
+        return {
+            success: false,
+            episodeId,
+            error: errorMessage
+        };
+    }
+}
+
+/**
+ * Collects artifacts, runs mini-swe-agent to fix CI failures, then posts
+ * inline suggestions or creates a follow-up PR based on the agent's decision.
  *
  * @returns Resolves when the action is complete.
  */
 async function run() {
-    const inputs = parseAndValidateActionInputs();
-    const { token, tensorZeroBaseUrl, tensorZeroDiffPatchedSuccessfullyMetricName, outputArtifactsDir, clickhouse } = inputs;
-    // Prepare artifact directory
-    const outputDir = outputArtifactsDir
-        ? path$1.join(process.cwd(), outputArtifactsDir)
-        : undefined;
-    if (outputDir) {
-        coreExports.info(`Output artifact directory: ${outputDir}`);
-    }
-    else {
-        coreExports.warning(`Not creating output artifacts.`);
-    }
-    if (!isPullRequestEligibleForFix()) {
-        coreExports.warning(`Pull request is not eligible for fix. Skipping action.`);
-        return;
-    }
-    const workflow_run_payload = githubExports.context.payload['workflow_run'];
-    const runId = workflow_run_payload.id;
-    if (!runId) {
-        throw new Error('Unable to determine target workflow run.');
-    }
-    coreExports.info(`Target workflow run ID: ${runId}`);
-    if (workflow_run_payload.conclusion !== 'failure') {
-        coreExports.warning(`Workflow run did not fail. Skipping action.`);
-        return;
-    }
-    // Fetching jobs from the workflow run to get what steps failed
-    const jobsUrl = workflow_run_payload.jobs_url;
-    if (!jobsUrl) {
-        throw new Error('Missing jobs_url from workflow_run');
-    }
-    coreExports.info(`Fetching jobs from: ${jobsUrl}`);
-    const workflowJobsStatus = await getJobStatus(jobsUrl, token);
-    maybeWriteDebugArtifact(outputDir, 'workflow-jobs.json', JSON.stringify(workflowJobsStatus, null, 2));
-    const { owner, repo } = githubExports.context.repo;
-    const octokit = githubExports.getOctokit(token);
-    const pullRequest = workflow_run_payload.pull_requests?.[0];
-    const prNumber = workflow_run_payload.pull_requests?.[0]?.number;
-    // Load diff summary and full diff.
-    const { diffSummary, fullDiff } = await fetchDiffSummaryAndFullDiff(octokit, owner, repo, prNumber, token);
-    maybeWriteDebugArtifact(outputDir, 'fetched-diff-summary.txt', diffSummary);
-    maybeWriteDebugArtifact(outputDir, 'fetched-full-diff.txt', fullDiff);
-    const failedJobs = getAllFailedJobs(workflowJobsStatus);
-    // Gather failure logs
-    const failureLogs = await getFailedWorkflowRunLogs(runId);
-    // Call TensorZero to generate a PR and comment.
-    const generationArguments = {
-        failed_jobs: failedJobs,
-        diff_summary: diffSummary,
-        full_diff: fullDiff,
-        failure_logs: failureLogs,
-        repo_full_name: `${owner}/${repo}`,
-        branch: workflow_run_payload.head_branch,
-        pr_number: prNumber
-    };
-    const response = await callTensorZeroOpenAi(tensorZeroBaseUrl, generationArguments);
-    maybeWriteDebugArtifact(outputDir, 'llm-response.json', JSON.stringify(response, null, 2));
-    maybeWriteDebugArtifact(outputDir, 'failure-logs.txt', failureLogs);
-    // Get the LLM response from `response`
-    const llmResponse = response.choices[0].message.content;
-    if (!llmResponse) {
-        throw new Error('No LLM response found, failing the action.');
-    }
-    // We take the first non-empty diff and comments, but output all commands.
-    const comments = extractXmlTagsFromLlmResponse(llmResponse, 'comments');
-    const diff = extractXmlTagsFromLlmResponse(llmResponse, 'diff');
-    const commands = extractXmlTagsFromLlmResponse(llmResponse, 'command');
-    if (!comments && !diff && !commands) {
-        coreExports.info('LLM response contains no comments, diff, or command; finishing without changes.');
-        return;
-    }
-    if (!prNumber) {
-        coreExports.warning('Unable to identify the original pull request; skipping comment and follow-up PR creation.');
-        return;
-    }
-    if (!pullRequest) {
-        coreExports.warning('Unable to load pull request details; skipping follow-up PR creation.');
-        return;
-    }
-    const trimmedDiff = diff[0]?.trim() ?? '';
-    let followupPr;
-    let followupPrCreationError;
-    if (trimmedDiff) {
-        try {
-            followupPr = await createFollowupPr({
-                octokit,
-                token,
-                owner,
-                repo,
-                pullRequest,
-                diff: trimmedDiff
-            }, outputDir);
-            if (followupPr) {
-                await provideInferenceFeedback(tensorZeroBaseUrl, tensorZeroDiffPatchedSuccessfullyMetricName, response.id, true);
+    try {
+        // Create agent input from GitHub Actions context
+        const agentInput = await createAgentInputFromGitHubActions();
+        if (!agentInput) {
+            coreExports.warning('Unable to create agent input; skipping action.');
+            // Set has-changes to false so downstream jobs know there's nothing to do
+            setActionOutputs({ hasChanges: false });
+            return;
+        }
+        // Run the agent
+        coreExports.info('Starting agent execution...');
+        const result = await runAgent(agentInput);
+        // Set action outputs
+        const hasChanges = result.success && !!result.diff;
+        setActionOutputs({
+            hasChanges,
+            patchFile: result.patchFile,
+            metadataFile: result.metadataFile
+        });
+        // Check result
+        if (result.success) {
+            coreExports.info('Agent execution completed successfully');
+            if (result.followupPrNumber) {
+                coreExports.info(`Created follow-up PR #${result.followupPrNumber}`);
+            }
+            if (result.patchFile) {
+                coreExports.info(`Patch file written to: ${result.patchFile}`);
             }
         }
-        catch (error) {
-            await provideInferenceFeedback(tensorZeroBaseUrl, tensorZeroDiffPatchedSuccessfullyMetricName, response.id, false, { reason: 'Failed to Apply Patch' });
-            followupPrCreationError =
-                error instanceof Error ? error.message : `${error}`;
-            coreExports.error(followupPrCreationError);
+        else {
+            coreExports.setFailed(`Agent execution failed: ${result.error ?? 'Unknown error'}`);
         }
     }
-    // TODO: consider using episode_id instead of inference ID.
-    const inferenceId = response.id;
-    const episodeId = response.episode_id;
-    if (followupPr) {
-        // This version currently only contains one inference per episode; soon with miniswe-agent, we will have many inferences per episode.
-        // When that launches, we will switch to only create PR-episode associations.
-        const request = {
-            inferenceId,
-            episodeId,
-            pullRequestId: followupPr.id,
-            originalPullRequestUrl: pullRequest.html_url
-        };
-        try {
-            await createPullRequestToInferenceRecord(request, clickhouse);
-            coreExports.info(`Recorded inference ${inferenceId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse.`);
-        }
-        catch (error) {
-            const errorMessage = error instanceof Error ? error.message : `${error}`;
-            coreExports.warning(`Failed to record inference ${inferenceId} for follow-up PR #${followupPr.number} (id ${followupPr.id}) in ClickHouse: ${errorMessage}`);
-        }
-    }
-    const trimmedComments = comments[0].trim();
-    const comment = renderComment({
-        generatedCommentBody: trimmedComments,
-        generatedPatch: trimmedDiff,
-        commands,
-        followupPrNumber: followupPr?.number,
-        followupPrCreationError
-    });
-    if (comment) {
-        try {
-            await octokit.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: prNumber,
-                body: comment
-            });
-        }
-        catch (error) {
-            const errorMessage = error instanceof Error ? error.message : `${error}`;
-            coreExports.warning(`Failed to create comment on pull request #${prNumber}: ${errorMessage}`);
-            // Don't throw here - commenting is not critical to the main functionality
-        }
+    catch (error) {
+        const errorMessage = error instanceof Error ? error.message : `${error}`;
+        coreExports.setFailed(`Action failed: ${errorMessage}`);
     }
 }
 

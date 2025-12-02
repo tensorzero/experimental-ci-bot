@@ -1,6 +1,7 @@
 # Dependency directory
 node_modules
 
+
 # Rest pulled from https://github.com/github/gitignore/blob/master/Node.gitignore
 # Logs
 logs
@@ -100,3 +101,14 @@ __tests__/runner/*
 # IDE files
 .idea
 *.code-workspace
+
+# Python
+.venv
+venv
+env
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.envrc
