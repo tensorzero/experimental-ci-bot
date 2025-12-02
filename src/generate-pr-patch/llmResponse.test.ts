@@ -9,7 +9,7 @@ describe('LLM response helpers', () => {
 suffix`
 
     expect(extractXmlTagsFromLlmResponse(response, 'comments')).toContain(
-      'A detailed summary'
+      'this should fail'
     )
   })
 
