@@ -41773,15 +41773,15 @@ OpenAI.Conversations = Conversations;
 OpenAI.Evals = Evals;
 OpenAI.Containers = Containers;
 
-async function provideInferenceFeedback(tensorZeroBaseUrl, metricName, inferenceId, value, tags) {
+async function provideEpisodeFeedback(tensorZeroBaseUrl, metricName, episodeId, value, tags) {
     const feedbackUrl = `${tensorZeroBaseUrl}/feedback`;
     const feedbackRequest = {
         metric_name: metricName,
-        inference_id: inferenceId,
+        episode_id: episodeId,
         value,
         tags
     };
-    coreExports.info(`Feedback Request: ${JSON.stringify(feedbackRequest, null, 2)}`);
+    coreExports.info(`Episode Feedback Request: ${JSON.stringify(feedbackRequest, null, 2)}`);
     const response = await fetch(feedbackUrl, {
         method: 'POST',
         headers: {
@@ -41790,7 +41790,7 @@ async function provideInferenceFeedback(tensorZeroBaseUrl, metricName, inference
         body: JSON.stringify(feedbackRequest)
     });
     if (!response.ok) {
-        throw new Error(`Failed to provide feedback: ${response.statusText}`);
+        throw new Error(`Failed to provide episode feedback: ${response.statusText}`);
     }
 }
 
@@ -41863,8 +41863,8 @@ async function run() {
         ? 'Pull Request Merged'
         : 'Pull Request Rejected';
     await Promise.all(episodeRecords.map(async (record) => {
-        await provideInferenceFeedback(tensorZeroBaseUrl, tensorZeroPrMergedMetricName, record.episode_id, isPullRequestMerged, { reason: feedbackReason });
-        coreExports.info(`Feedback (${isPullRequestMerged}) provided for inference ${record.episode_id}`);
+        await provideEpisodeFeedback(tensorZeroBaseUrl, tensorZeroPrMergedMetricName, record.episode_id, isPullRequestMerged, { reason: feedbackReason });
+        coreExports.info(`Feedback (${isPullRequestMerged}) provided for episode ${record.episode_id}`);
     }));
     // TODO: Add feedback collection for inline suggestions
     // This requires:

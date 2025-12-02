@@ -5,7 +5,7 @@ import {
   type PullRequestToEpisodeRecord,
   getPullRequestToEpisodeRecords
 } from '../clickhouseClient.js'
-import { provideInferenceFeedback } from '../tensorZeroClient.js'
+import { provideEpisodeFeedback } from '../tensorZeroClient.js'
 
 function parseAndValidateActionInputs(): CreatePrFeedbackActionInput {
   const tensorZeroBaseUrl = core.getInput('tensorzero-base-url')?.trim()
@@ -103,7 +103,7 @@ export async function run(): Promise<void> {
     : 'Pull Request Rejected'
   await Promise.all(
     episodeRecords.map(async (record) => {
-      await provideInferenceFeedback(
+      await provideEpisodeFeedback(
         tensorZeroBaseUrl,
         tensorZeroPrMergedMetricName,
         record.episode_id,
@@ -111,7 +111,7 @@ export async function run(): Promise<void> {
         { reason: feedbackReason }
       )
       core.info(
-        `Feedback (${isPullRequestMerged}) provided for inference ${record.episode_id}`
+        `Feedback (${isPullRequestMerged}) provided for episode ${record.episode_id}`
       )
     })
   )
