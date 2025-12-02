@@ -37769,6 +37769,9 @@ async function runMiniSweAgent(config) {
         TENSORZERO_CONFIG_PATH: tensorZeroConfigPath,
         // Skip mini-swe-agent's interactive first-time setup
         MSWEA_CONFIGURED: 'true',
+        // Set a dummy model name to satisfy mini-swe-agent's model name check
+        // (TensorZero model class doesn't actually use this, but get_model_name() requires it)
+        MSWEA_MODEL_NAME: 'tensorzero',
         // Ensure Python output is unbuffered for better logging
         PYTHONUNBUFFERED: '1'
     };
