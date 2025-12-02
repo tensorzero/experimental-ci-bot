@@ -123,7 +123,7 @@ function requireUtils$6 () {
 	    };
 	}
 	utils$6.toCommandProperties = toCommandProperties;
-
+	
 	return utils$6;
 }
 
@@ -226,7 +226,7 @@ function requireCommand () {
 	        .replace(/:/g, '%3A')
 	        .replace(/,/g, '%2C');
 	}
-
+	
 	return command;
 }
 
@@ -297,7 +297,7 @@ function requireFileCommand () {
 	    return `${key}<<${delimiter}${os.EOL}${convertedValue}${os.EOL}${delimiter}`;
 	}
 	fileCommand.prepareKeyValueMessage = prepareKeyValueMessage;
-
+	
 	return fileCommand;
 }
 
@@ -405,7 +405,7 @@ function requireProxy () {
 	        return this._decodedPassword;
 	    }
 	}
-
+	
 	return proxy;
 }
 
@@ -8254,7 +8254,7 @@ function requireUtils$5 () {
 	    return res;
 	}
 	utils$5.enumToMap = enumToMap;
-
+	
 	return utils$5;
 }
 
@@ -8534,7 +8534,7 @@ function requireConstants$2 () {
 		    'transfer-encoding': HEADER_STATE.TRANSFER_ENCODING,
 		    'upgrade': HEADER_STATE.UPGRADE,
 		};
-
+		
 	} (constants$2));
 	return constants$2;
 }
@@ -25046,7 +25046,7 @@ function requireLib$1 () {
 	}
 	lib$1.HttpClient = HttpClient;
 	const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => ((c[k.toLowerCase()] = obj[k]), c), {});
-
+	
 	return lib$1;
 }
 
@@ -25136,7 +25136,7 @@ function requireAuth () {
 	    }
 	}
 	auth$1.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
-
+	
 	return auth$1;
 }
 
@@ -25188,8 +25188,8 @@ function requireOidcUtils () {
 	            const res = yield httpclient
 	                .getJson(id_token_url)
 	                .catch(error => {
-	                throw new Error(`Failed to get ID Token. \n
-        Error Code : ${error.statusCode}\n
+	                throw new Error(`Failed to get ID Token. \n 
+        Error Code : ${error.statusCode}\n 
         Error Message: ${error.message}`);
 	            });
 	            const id_token = (_a = res.result) === null || _a === void 0 ? void 0 : _a.value;
@@ -25220,7 +25220,7 @@ function requireOidcUtils () {
 	    }
 	}
 	oidcUtils.OidcClient = OidcClient;
-
+	
 	return oidcUtils;
 }
 
@@ -25513,7 +25513,7 @@ function requireSummary () {
 		 */
 		exports.markdownSummary = _summary;
 		exports.summary = _summary;
-
+		
 	} (summary));
 	return summary;
 }
@@ -25585,7 +25585,7 @@ function requirePathUtils () {
 	    return pth.replace(/[/\\]/g, path.sep);
 	}
 	pathUtils.toPlatformPath = toPlatformPath;
-
+	
 	return pathUtils;
 }
 
@@ -25786,7 +25786,7 @@ function requireIoUtil () {
 		    return (_a = process.env['COMSPEC']) !== null && _a !== void 0 ? _a : `cmd.exe`;
 		}
 		exports.getCmdPath = getCmdPath;
-
+		
 	} (ioUtil));
 	return ioUtil;
 }
@@ -26093,7 +26093,7 @@ function requireIo () {
 	        }
 	    });
 	}
-
+	
 	return io;
 }
 
@@ -26718,7 +26718,7 @@ function requireToolrunner () {
 	        state._setResult();
 	    }
 	}
-
+	
 	return toolrunner;
 }
 
@@ -26828,7 +26828,7 @@ function requireExec () {
 	    });
 	}
 	exec.getExecOutput = getExecOutput;
-
+	
 	return exec;
 }
 
@@ -26930,7 +26930,7 @@ function requirePlatform () {
 		    });
 		}
 		exports.getDetails = getDetails;
-
+		
 	} (platform));
 	return platform;
 }
@@ -27283,7 +27283,7 @@ function requireCore () {
 		 * Platform utilities exports
 		 */
 		exports.platform = __importStar(requirePlatform());
-
+		
 	} (core));
 	return core;
 }
@@ -27353,7 +27353,7 @@ function requireContext () {
 	    }
 	}
 	context.Context = Context;
-
+	
 	return context;
 }
 
@@ -27434,7 +27434,7 @@ function requireUtils$4 () {
 	    return process.env['GITHUB_API_URL'] || 'https://api.github.com';
 	}
 	utils$3.getApiBaseUrl = getApiBaseUrl;
-
+	
 	return utils$3;
 }
 
@@ -31197,7 +31197,7 @@ function requireUtils$3 () {
 		    return opts;
 		}
 		exports.getOctokitOptions = getOctokitOptions;
-
+		
 	} (utils$4));
 	return utils$4;
 }
@@ -31246,7 +31246,7 @@ function requireGithub () {
 	    return new GitHubWithPlugins((0, utils_1.getOctokitOptions)(token, options));
 	}
 	github.getOctokit = getOctokit;
-
+	
 	return github;
 }
 
@@ -32008,7 +32008,7 @@ function requireBrowser () {
 			} catch (error) {
 				return '[UnexpectedJSONParseError]: ' + error.message;
 			}
-		};
+		}; 
 	} (browser, browser.exports));
 	return browser.exports;
 }
@@ -32442,7 +32442,7 @@ function requireNode () {
 		formatters.O = function (v) {
 			this.inspectOpts.colors = this.useColors;
 			return util.inspect(v, this.inspectOpts);
-		};
+		}; 
 	} (node, node.exports));
 	return node.exports;
 }
@@ -32524,7 +32524,7 @@ function requireSrc () {
 		 * Constant representing either a file or a folder
 		 */
 		exports.READABLE = exports.FILE + exports.FOLDER;
-
+		
 	} (src$1));
 	return src$1;
 }
@@ -32540,7 +32540,7 @@ function requireDist$3 () {
 		}
 		Object.defineProperty(exports, "__esModule", { value: true });
 		__export(requireSrc());
-
+		
 	} (dist$3));
 	return dist$3;
 }
@@ -32614,7 +32614,7 @@ function requireDist$2 () {
 	 ```
 	 */
 	dist$2.default = deferred;
-
+	
 	return dist$2;
 }
 
@@ -37518,6 +37518,8 @@ function parseActionInputs() {
     }
     const mode = modeInput;
     const tensorZeroBaseUrl = coreExports.getInput('tensorzero-base-url')?.trim();
+    const tensorZeroDiffPatchedSuccessfullyMetricName = coreExports.getInput('tensorzero-diff-patched-successfully-metric-name')
+        ?.trim();
     const outputArtifactsDirInput = coreExports.getInput('output-artifacts-dir');
     const outputArtifactsDir = outputArtifactsDirInput
         ? outputArtifactsDirInput.trim() || undefined
@@ -37531,6 +37533,7 @@ function parseActionInputs() {
         token,
         mode,
         tensorZeroBaseUrl,
+        tensorZeroDiffPatchedSuccessfullyMetricName,
         outputArtifactsDir,
         clickhouse
     };
@@ -37675,7 +37678,7 @@ async function createAgentInputFromGitHubActions() {
     }
     // Parse action inputs
     const inputs = parseActionInputs();
-    const { token, mode, outputArtifactsDir, clickhouse, tensorZeroBaseUrl }  = inputs;
+    const { token, mode, outputArtifactsDir, clickhouse, tensorZeroBaseUrl, tensorZeroDiffPatchedSuccessfullyMetricName } = inputs;
     const patchOnly = mode === 'patch-only';
     if (patchOnly) {
         coreExports.info('Running in patch-only mode - will generate patch without creating PR');
@@ -37708,6 +37711,7 @@ async function createAgentInputFromGitHubActions() {
         clickhouse,
         tensorZero: {
             baseUrl: tensorZeroBaseUrl,
+            diffPatchedSuccessfullyMetricName: tensorZeroDiffPatchedSuccessfullyMetricName
         },
         agent: {
             costLimit: 3.0, // Default for GitHub Actions
@@ -37759,7 +37763,7 @@ function parseAgentCompletion(output) {
  * Run the mini-swe-agent with the given configuration
  */
 async function runMiniSweAgent(config) {
-    const { task, cwd, tensorZeroGatewayUrl,
+    const { task, cwd, tensorZeroGatewayUrl, 
     // trajectoryOutputPath is ignored - we always use temp file now
     costLimit = 3.0, modelName, timeout = 30 * 60 * 1000, // 30 minutes
     prNumber } = config;
@@ -38110,7 +38114,7 @@ function requireLogger$1 () {
 	    const ts = new Date().toISOString();
 	    return `[${ts}][${level}][@clickhouse/client][${module}] ${message}`;
 	}
-
+	
 	return logger$1;
 }
 
@@ -38421,7 +38425,7 @@ function requireConfig$1 () {
 	    }
 	    return enumObject[trimmed];
 	}
-
+	
 	return config$1;
 }
 
@@ -38660,7 +38664,7 @@ function requireClient$1 () {
 	    }
 	    return `INSERT INTO ${params.table.trim()}${columnsPart} FORMAT ${format}`;
 	}
-
+	
 	return client;
 }
 
@@ -38750,7 +38754,7 @@ function requireFormatter () {
 		    }
 		    throw new Error(`The client does not support JSON encoding in [${format}] format.`);
 		}
-
+		
 	} (formatter));
 	return formatter;
 }
@@ -38876,7 +38880,7 @@ function requireFormat_query_params () {
 	const CarriageReturnASCII = 13;
 	const SingleQuoteASCII = 39;
 	const BackslashASCII = 92;
-
+	
 	return format_query_params;
 }
 
@@ -38910,7 +38914,7 @@ function requireSettings () {
 	    }
 	}
 	settings.SettingsMap = SettingsMap;
-
+	
 	return settings;
 }
 
@@ -38937,7 +38941,7 @@ function requireFormat_query_settings () {
 	    }
 	    throw new Error(`Unsupported value in query settings: [${value}].`);
 	}
-
+	
 	return format_query_settings;
 }
 
@@ -38969,7 +38973,7 @@ function requireData_formatter () {
 		Object.defineProperty(exports, "formatQueryParams", { enumerable: true, get: function () { return format_query_params_1.formatQueryParams; } });
 		var format_query_settings_1 = requireFormat_query_settings();
 		Object.defineProperty(exports, "formatQuerySettings", { enumerable: true, get: function () { return format_query_settings_1.formatQuerySettings; } });
-
+		
 	} (data_formatter));
 	return data_formatter;
 }
@@ -39050,7 +39054,7 @@ function requireError$1 () {
 	    }
 	    return err;
 	}
-
+	
 	return error;
 }
 
@@ -39076,7 +39080,7 @@ function requireError () {
 		};
 		Object.defineProperty(exports, "__esModule", { value: true });
 		__exportStar(requireError$1(), exports);
-
+		
 	} (error$1));
 	return error$1;
 }
@@ -39116,7 +39120,7 @@ function requireClickhouse_types () {
 	        'exception' in row &&
 	        Object.keys(row).length === 1);
 	}
-
+	
 	return clickhouse_types;
 }
 
@@ -39673,7 +39677,7 @@ function requireColumn_types () {
 		const ZeroASCII = 48;
 		const NineASCII = 57;
 		const BackslashASCII = 92;
-
+		
 	} (column_types));
 	return column_types;
 }
@@ -39700,7 +39704,7 @@ function requireParse () {
 		};
 		Object.defineProperty(exports, "__esModule", { value: true });
 		__exportStar(requireColumn_types(), exports);
-
+		
 	} (parse));
 	return parse;
 }
@@ -39749,7 +39753,7 @@ function requireConnection$1 () {
 	        'username' in auth &&
 	        'password' in auth);
 	}
-
+	
 	return connection$1;
 }
 
@@ -39767,7 +39771,7 @@ function requireSleep () {
 	        resolve(void 0);
 	    }, ms));
 	}
-
+	
 	return sleep$1;
 }
 
@@ -39838,7 +39842,7 @@ function requireUrl () {
 	    }
 	    return new URLSearchParams(entries);
 	}
-
+	
 	return url;
 }
 
@@ -39866,7 +39870,7 @@ function requireUtils$2 () {
 		__exportStar(requireConnection$1(), exports);
 		__exportStar(requireSleep(), exports);
 		__exportStar(requireUrl(), exports);
-
+		
 	} (utils$2));
 	return utils$2;
 }
@@ -39927,7 +39931,7 @@ function requireDist$1 () {
 		var error_2 = requireError();
 		Object.defineProperty(exports, "getCurrentStackTrace", { enumerable: true, get: function () { return error_2.getCurrentStackTrace; } });
 		Object.defineProperty(exports, "enhanceStackTrace", { enumerable: true, get: function () { return error_2.enhanceStackTrace; } });
-
+		
 	} (dist));
 	return dist;
 }
@@ -39991,7 +39995,7 @@ function requireStream$1 () {
 	        },
 	    });
 	}
-
+	
 	return stream$1;
 }
 
@@ -40057,7 +40061,7 @@ function requireEncoder () {
 	        console.error(err);
 	    }
 	}
-
+	
 	return encoder;
 }
 
@@ -40074,7 +40078,7 @@ function requireProcess () {
 	function getProcessVersion() {
 	    return process.version;
 	}
-
+	
 	return process$1;
 }
 
@@ -40091,7 +40095,7 @@ function requireVersion () {
 	hasRequiredVersion = 1;
 	Object.defineProperty(version, "__esModule", { value: true });
 	version.default = '1.12.1';
-
+	
 	return version;
 }
 
@@ -40162,7 +40166,7 @@ function requireRuntime$1 () {
 	    writable: true,
 	    value: os.platform()
 	});
-
+	
 	return runtime$1;
 }
 
@@ -40190,7 +40194,7 @@ function requireUser_agent () {
 	        ? `${application_id} ${defaultUserAgent}`
 	        : defaultUserAgent;
 	}
-
+	
 	return user_agent;
 }
 
@@ -40219,7 +40223,7 @@ function requireUtils$1 () {
 		__exportStar(requireEncoder(), exports);
 		__exportStar(requireProcess(), exports);
 		__exportStar(requireUser_agent(), exports);
-
+		
 	} (utils$1));
 	return utils$1;
 }
@@ -40263,7 +40267,7 @@ function requireCompression () {
 	function isDecompressionError(result) {
 	    return result.error !== undefined;
 	}
-
+	
 	return compression;
 }
 
@@ -40307,7 +40311,7 @@ function requireStream () {
 	        stream.on('close', onClose);
 	    });
 	}
-
+	
 	return stream;
 }
 
@@ -40953,7 +40957,7 @@ function requireNode_base_connection () {
 	}
 	node_base_connection.NodeBaseConnection = NodeBaseConnection;
 	const PingQuery = `SELECT 'ping'`;
-
+	
 	return node_base_connection;
 }
 
@@ -40996,7 +41000,7 @@ function requireNode_http_connection () {
 	    }
 	}
 	node_http_connection.NodeHttpConnection = NodeHttpConnection;
-
+	
 	return node_http_connection;
 }
 
@@ -41077,7 +41081,7 @@ function requireNode_https_connection () {
 	    }
 	}
 	node_https_connection.NodeHttpsConnection = NodeHttpsConnection;
-
+	
 	return node_https_connection;
 }
 
@@ -41135,7 +41139,7 @@ function requireNode_custom_agent_connection () {
 	    }
 	}
 	node_custom_agent_connection.NodeCustomAgentConnection = NodeCustomAgentConnection;
-
+	
 	return node_custom_agent_connection;
 }
 
@@ -41183,7 +41187,7 @@ function requireCreate_connection () {
 	    }
 	}
 	create_connection.NodeConnectionFactory = NodeConnectionFactory;
-
+	
 	return create_connection;
 }
 
@@ -41212,7 +41216,7 @@ function requireConnection () {
 		__exportStar(requireNode_http_connection(), exports);
 		__exportStar(requireNode_https_connection(), exports);
 		__exportStar(requireCreate_connection(), exports);
-
+		
 	} (connection));
 	return connection;
 }
@@ -41415,7 +41419,7 @@ function requireResult_set () {
 	result_set.ResultSet = ResultSet;
 	const streamAlreadyConsumedMessage = 'Stream has been already consumed';
 	const resultSetClosedMessage = 'ResultSet has been closed';
-
+	
 	return result_set;
 }
 
@@ -41501,7 +41505,7 @@ function requireConfig () {
 	        response_headers,
 	    })),
 	};
-
+	
 	return config;
 }
 
@@ -41528,7 +41532,7 @@ function requireClient () {
 	        ...(config || {}),
 	    });
 	}
-
+	
 	return client$1;
 }
 
@@ -41560,7 +41564,7 @@ function requireDist () {
 		Object.defineProperty(exports, "isRow", { enumerable: true, get: function () { return client_common_1.isRow; } });
 		Object.defineProperty(exports, "isException", { enumerable: true, get: function () { return client_common_1.isException; } });
 		Object.defineProperty(exports, "TupleParam", { enumerable: true, get: function () { return client_common_1.TupleParam; } });
-
+		
 	} (dist$1));
 	return dist$1;
 }
@@ -41757,7 +41761,7 @@ function requireUtils () {
 	function appendContextPath(contextPath, id) {
 	  return (contextPath ? contextPath + '.' : '') + id;
 	}
-
+	
 	return utils;
 }
 
@@ -41831,7 +41835,7 @@ function requireException () {
 
 		exports['default'] = Exception;
 		module.exports = exports['default'];
-
+		
 	} (exception, exception.exports));
 	return exception.exports;
 }
@@ -41883,7 +41887,7 @@ function requireBlockHelperMissing () {
 		};
 
 		module.exports = exports['default'];
-
+		
 	} (blockHelperMissing, blockHelperMissing.exports));
 	return blockHelperMissing.exports;
 }
@@ -41998,7 +42002,7 @@ function requireEach () {
 		};
 
 		module.exports = exports['default'];
-
+		
 	} (each, each.exports));
 	return each.exports;
 }
@@ -42034,7 +42038,7 @@ function requireHelperMissing () {
 		};
 
 		module.exports = exports['default'];
-
+		
 	} (helperMissing, helperMissing.exports));
 	return helperMissing.exports;
 }
@@ -42091,7 +42095,7 @@ function require_if () {
 		};
 
 		module.exports = exports['default'];
-
+		
 	} (_if, _if.exports));
 	return _if.exports;
 }
@@ -42128,7 +42132,7 @@ function requireLog () {
 		};
 
 		module.exports = exports['default'];
-
+		
 	} (log, log.exports));
 	return log.exports;
 }
@@ -42155,7 +42159,7 @@ function requireLookup () {
 		};
 
 		module.exports = exports['default'];
-
+		
 	} (lookup, lookup.exports));
 	return lookup.exports;
 }
@@ -42209,7 +42213,7 @@ function require_with () {
 		};
 
 		module.exports = exports['default'];
-
+		
 	} (_with, _with.exports));
 	return _with.exports;
 }
@@ -42273,7 +42277,7 @@ function requireHelpers$1 () {
 	    }
 	  }
 	}
-
+	
 	return helpers$1;
 }
 
@@ -42314,7 +42318,7 @@ function requireInline () {
 		};
 
 		module.exports = exports['default'];
-
+		
 	} (inline, inline.exports));
 	return inline.exports;
 }
@@ -42338,7 +42342,7 @@ function requireDecorators () {
 	function registerDefaultDecorators(instance) {
 	  _decoratorsInline2['default'](instance);
 	}
-
+	
 	return decorators;
 }
 
@@ -42395,7 +42399,7 @@ function requireLogger () {
 
 		exports['default'] = logger;
 		module.exports = exports['default'];
-
+		
 	} (logger, logger.exports));
 	return logger.exports;
 }
@@ -42429,7 +42433,7 @@ function requireCreateNewLookupObject () {
 
 	  return _utils.extend.apply(undefined, [Object.create(null)].concat(sources));
 	}
-
+	
 	return createNewLookupObject;
 }
 
@@ -42509,7 +42513,7 @@ function requireProtoAccess () {
 	    delete loggedProperties[propertyName];
 	  });
 	}
-
+	
 	return protoAccess;
 }
 
@@ -42632,7 +42636,7 @@ function requireBase$1 () {
 	base$1.log = log;
 	base$1.createFrame = _utils.createFrame;
 	base$1.logger = _logger2['default'];
-
+	
 	return base$1;
 }
 
@@ -42656,7 +42660,7 @@ function requireSafeString () {
 
 		exports['default'] = SafeString;
 		module.exports = exports['default'];
-
+		
 	} (safeString, safeString.exports));
 	return safeString.exports;
 }
@@ -42687,7 +42691,7 @@ function requireWrapHelper () {
 	  };
 	  return wrapper;
 	}
-
+	
 	return wrapHelper;
 }
 
@@ -43066,7 +43070,7 @@ function requireRuntime () {
 	    return Utils.extend({ lookupProperty: lookupProperty }, options);
 	  });
 	}
-
+	
 	return runtime;
 }
 
@@ -43107,7 +43111,7 @@ function requireNoConflict () {
 		};
 
 		module.exports = exports['default'];
-
+		
 	} (noConflict, noConflict.exports));
 	return noConflict.exports;
 }
@@ -43182,7 +43186,7 @@ function requireHandlebars_runtime () {
 
 		exports['default'] = inst;
 		module.exports = exports['default'];
-
+		
 	} (handlebars_runtime, handlebars_runtime.exports));
 	return handlebars_runtime.exports;
 }
@@ -43224,7 +43228,7 @@ function requireAst () {
 		// must modify the object to operate properly.
 		exports['default'] = AST;
 		module.exports = exports['default'];
-
+		
 	} (ast, ast.exports));
 	return ast.exports;
 }
@@ -43908,7 +43912,7 @@ function requireParser () {
 		    return new Parser();
 		})();exports["default"] = handlebars;
 		module.exports = exports["default"];
-
+		
 	} (parser, parser.exports));
 	return parser.exports;
 }
@@ -44061,7 +44065,7 @@ function requireVisitor () {
 
 		exports['default'] = Visitor;
 		module.exports = exports['default'];
-
+		
 	} (visitor, visitor.exports));
 	return visitor.exports;
 }
@@ -44291,7 +44295,7 @@ function requireWhitespaceControl () {
 
 		exports['default'] = WhitespaceControl;
 		module.exports = exports['default'];
-
+		
 	} (whitespaceControl, whitespaceControl.exports));
 	return whitespaceControl.exports;
 }
@@ -44529,7 +44533,7 @@ function requireHelpers () {
 	    loc: this.locInfo(locInfo)
 	  };
 	}
-
+	
 	return helpers;
 }
 
@@ -44593,7 +44597,7 @@ function requireBase () {
 
 	  return strip.accept(ast);
 	}
-
+	
 	return base;
 }
 
@@ -45168,7 +45172,7 @@ function requireCompiler () {
 	    };
 	  }
 	}
-
+	
 	return compiler;
 }
 
@@ -45905,7 +45909,7 @@ function requireUtil () {
 
 		  return normalize(sourceURL);
 		}
-		exports.computeSourceURL = computeSourceURL;
+		exports.computeSourceURL = computeSourceURL; 
 	} (util));
 	return util;
 }
@@ -46687,7 +46691,7 @@ function requireBinarySearch () {
 		  }
 
 		  return index;
-		};
+		}; 
 	} (binarySearch));
 	return binarySearch;
 }
@@ -47878,7 +47882,7 @@ function requireSourceMapConsumer () {
 	 * and an object is returned with the following properties:
 	 *
 	 *   - line: The line number in the generated source, or null.  The
-	 *     line number is 1-based.
+	 *     line number is 1-based. 
 	 *   - column: The column number in the generated source, or null.
 	 *     The column number is 0-based.
 	 */
@@ -48585,7 +48589,7 @@ function requireCodeGen () {
 
 		exports['default'] = CodeGen;
 		module.exports = exports['default'];
-
+		
 	} (codeGen, codeGen.exports));
 	return codeGen.exports;
 }
@@ -49752,7 +49756,7 @@ function requireJavascriptCompiler () {
 
 		exports['default'] = JavaScriptCompiler;
 		module.exports = exports['default'];
-
+		
 	} (javascriptCompiler, javascriptCompiler.exports));
 	return javascriptCompiler.exports;
 }
@@ -49827,7 +49831,7 @@ function requireHandlebars () {
 
 		exports['default'] = inst;
 		module.exports = exports['default'];
-
+		
 	} (handlebars, handlebars.exports));
 	return handlebars.exports;
 }
@@ -50024,7 +50028,7 @@ function requirePrinter () {
 	  return pair.key + '=' + this.accept(pair.value);
 	};
 	/* eslint-enable new-cap */
-
+	
 	return printer;
 }
 
@@ -50822,7 +50826,7 @@ function inner_stringify(object, prefix, generateArrayPrefix, commaRoundTrip, al
     }
     for (let j = 0; j < obj_keys.length; ++j) {
         const key = obj_keys[j];
-        const value =
+        const value = 
         // @ts-ignore
         typeof key === 'object' && typeof key.value !== 'undefined' ? key.value : obj[key];
         if (skipNulls && value === null) {
@@ -50838,7 +50842,7 @@ function inner_stringify(object, prefix, generateArrayPrefix, commaRoundTrip, al
         sideChannel.set(object, step);
         const valueSideChannel = new WeakMap();
         valueSideChannel.set(sentinel, sideChannel);
-        push_to_array(values, inner_stringify(value, key_prefix, generateArrayPrefix, commaRoundTrip, allowEmptyArrays, strictNullHandling, skipNulls, encodeDotInKeys,
+        push_to_array(values, inner_stringify(value, key_prefix, generateArrayPrefix, commaRoundTrip, allowEmptyArrays, strictNullHandling, skipNulls, encodeDotInKeys, 
         // @ts-ignore
         generateArrayPrefix === 'comma' && encodeValuesOnly && isArray(obj) ? null : encoder, filter, sort, allowDots, serializeDate, format, formatter, encodeValuesOnly, charset, valueSideChannel));
     }
@@ -50943,7 +50947,7 @@ function stringify(object, opts = {}) {
         if (options.skipNulls && obj[key] === null) {
             continue;
         }
-        push_to_array(keys, inner_stringify(obj[key], key,
+        push_to_array(keys, inner_stringify(obj[key], key, 
         // @ts-expect-error
         generateArrayPrefix, commaRoundTrip, options.allowEmptyArrays, options.strictNullHandling, options.skipNulls, options.encodeDotInKeys, options.encode ? options.encoder : null, options.filter, options.sort, options.allowDots, options.serializeDate, options.format, options.formatter, options.encodeValuesOnly, options.charset, sideChannel));
     }
@@ -56601,7 +56605,7 @@ class OpenAI {
         catch (err) {
             if (err instanceof OpenAIError)
                 throw err;
-            throw new OpenAIError(`Failed to get token from 'apiKey' function: ${err.message}`,
+            throw new OpenAIError(`Failed to get token from 'apiKey' function: ${err.message}`, 
             // @ts-ignore
             { cause: err });
         }
