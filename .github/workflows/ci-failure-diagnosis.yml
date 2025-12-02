@@ -33,6 +33,7 @@ jobs:
           oauth-client-id: ${{ secrets.CI_BOT_TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.CI_BOT_TS_OAUTH_CLIENT_SECRET }}
           tags: tag:ci
+          args: --verbose=2
 
       - name: Checkout TensorZero config file
         uses: actions/checkout@v5
