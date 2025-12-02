@@ -20,9 +20,9 @@ export interface MiniSweAgentConfig {
   cwd: string
 
   /**
-   * Path to the TensorZero config directory (containing tensorzero.toml and templates/)
+   * URL of the TensorZero gateway (e.g., http://localhost:3000)
    */
-  tensorZeroConfigPath: string
+  tensorZeroGatewayUrl: string
 
   /**
    * Optional output path for the trajectory file
@@ -96,7 +96,7 @@ export async function runMiniSweAgent(
   const {
     task,
     cwd,
-    tensorZeroConfigPath,
+    tensorZeroGatewayUrl,
     // trajectoryOutputPath is ignored - we always use temp file now
     costLimit = 3.0,
     stepLimit = 0,
@@ -139,7 +139,8 @@ export async function runMiniSweAgent(
   // Set up environment variables
   const env = {
     ...process.env,
-    TENSORZERO_CONFIG_PATH: tensorZeroConfigPath,
+    // Use HTTP gateway mode instead of embedded gateway
+    TENSORZERO_GATEWAY_URL: tensorZeroGatewayUrl,
     // Skip mini-swe-agent's interactive first-time setup
     MSWEA_CONFIGURED: 'true',
     // Set a dummy model name to satisfy mini-swe-agent's model name check
@@ -151,7 +152,7 @@ export async function runMiniSweAgent(
 
   console.log(`Running mini-swe-agent with task: ${task}`)
   console.log(`Working directory: ${cwd}`)
-  console.log(`TensorZero config: ${tensorZeroConfigPath}`)
+  console.log(`TensorZero gateway URL: ${tensorZeroGatewayUrl}`)
   console.log(`MSWEA_CONFIGURED: ${env.MSWEA_CONFIGURED}`)
 
   return new Promise((resolve, reject) => {

@@ -111,24 +111,19 @@ export async function runAgent(
         `[Agent Runner] CI failure context written to: ${contextFilePath}`
       )
 
-      // Prepare TensorZero config path
-      const tensorZeroConfigPath = path.resolve(
-        process.cwd(),
-        'tensorzero',
-        'swe_agent_config',
-        'tensorzero.toml'
-      )
-
       // Determine task based on whether we have CI failure info
       const task = ciFailure
         ? 'Fix the CI failures as described in ci_failure_context.md'
         : 'Review and improve the changes in this PR as described in ci_failure_context.md'
 
+      // Hardcoded TensorZero gateway URL
+      const tensorZeroGatewayUrl = 'http://ci-bot-gateway:3000'
+
       console.log('[Agent Runner] Running mini-swe-agent...')
       const agentResult = await runMiniSweAgent({
         task,
         cwd: repoDir,
-        tensorZeroConfigPath,
+        tensorZeroGatewayUrl,
         costLimit: 3,
         timeout: agent.timeout * 60 * 1000, // Convert minutes to milliseconds
         prNumber: pullRequest.number
