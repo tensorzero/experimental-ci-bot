@@ -1,0 +1,79 @@
+{{task}}
+
+## CI Intel
+- Inspect `ci_failure_context.md` immediately to understand which workflow failed, which tests broke, and any linked stack traces.
+- Capture failing job names, test targets, and repro steps in your own notes before touching code.
+
+## Battle Plan
+1. Read the failure context and relevant source files.
+2. Reproduce the failure (e.g., targeted Jest file, `npm run lint`, etc.).
+3. Hypothesize the root cause and validate by instrumenting or inspecting diffs.
+4. Implement the smallest safe fix.
+5. Run the required validation suite (see below) plus any focused checks tied to the failure.
+6. Summarize what changed and why before signaling completion.
+
+## Guardrails
+1. Exactly one action per reply, wrapped in triple backticks as `bash`.
+2. Directory and environment changes are ephemeral—prefix commands with `cd repo && ...` when you need a specific location.
+3. Never edit GitHub Actions workflow YAMLs; stick to repository code/tests.
+4. Track long-running commands with `# timeout: <seconds>` (max {{max_timeout}} seconds) when needed.
+
+<system_information>
+{{system}} {{release}} {{version}} {{machine}}
+</system_information>
+
+## Validation Stack
+Mirror the failing CI job, then add the checks below *only when your edits or the failure involve that surface area*. Skip unrelated stacks to stay fast, but explain why a given group was or wasn’t needed in your completion notes. TensorZero’s workflows span pnpm, cargo, uv, and repo scripts.
+
+### Repository scripts & infrastructure
+Run these when bumping versions, editing coordinated sections, or touching docker-compose/examples.
+- `./ci/check-version-consistency.sh`
+- `python3 ci/check_coordinated_edits.py`
+- `./ci/check-all-docker-compose.sh`
+
+### Node/TypeScript (pnpm)
+Use when changing JS/TS/Node bindings, UI code, or anything impacting `package.json`, `pnpm-lock.yaml`, or UI fixtures.
+- `pnpm install --frozen-lockfile`
+- `pnpm build-bindings`
+- `pnpm generate-python-schemas`
+- `pnpm -r build`
+- `pnpm --filter=tensorzero-node run check-exports`
+- `pnpm --filter=tensorzero-node run format:check`
+- `pnpm --filter=tensorzero-node run lint:check`
+- `pnpm --filter=tensorzero-node run typecheck`
+- `pnpm --filter=tensorzero-ui run format:check`
+- `pnpm --filter=tensorzero-ui run lint:check`
+- `pnpm --filter=tensorzero-ui run typecheck`
+- `pnpm --filter=openai-node run format`
+- `pnpm --filter=openai-node run lint`
+- `pnpm --filter=openai-node run typecheck`
+- `pnpm ui:test`, `pnpm ui:test:e2e`, or `pnpm ui:test:e2e --grep ...` when UI or gateway flows are involved.
+
+### Rust workspace
+Use when Rust crates, bindings, or migrations change, or when CI failures point to cargo jobs.
+- `cargo fmt --all --check`
+- `cargo hack clippy --all-targets --each-feature -- -D warnings`
+- `cargo build --workspace`
+- `cargo nextest run --workspace` or the scoped targets (`cargo test-unit`, `cargo test-clickhouse`, `cargo test-optimization-mock`) that match the failing job.
+- `cargo deny check`
+
+### Python / uv tooling
+Use when Python clients, recipes, or uv-managed tooling change, or when CI points to PyO3/stub/pytest failures.
+- `uv run pyright`
+- `uv run stubtest tensorzero.tensorzero`
+- `uv run pytest`
+- `uv run --with pre-commit pre-commit run <hook> --all-files`
+- `uv run ./ui/fixtures/download-fixtures.py`
+
+## Useful Command Examples
+- Read a file: `sed -n '1,160p' path/to/file.ts`
+- Search: `rg "pattern" src/`
+- Apply edits: `cat <<'EOF' > file`
+
+## Example Response
+THOUGHT: Need the CI context before editing.
+```bash
+cat ci_failure_context.md
+```
+
+Stay methodical—prefer explainable diffs over sweeping refactors. When inputs change mid-run, re-read any regenerated files before proceeding, and explicitly document which validation suites you ran (or intentionally skipped) relative to the failing workflow.
