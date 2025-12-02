@@ -6,10 +6,17 @@ on:
     types:
       - completed
 
+<<<<<<< HEAD
 # Workflow-level permissions (needed for Tailscale action to work)
 permissions:
   contents: write
   pull-requests: write
+=======
+# Workflow-level permissions are read-only (secure default for agent job)
+permissions:
+  contents: read
+  pull-requests: read
+>>>>>>> eca2b946f11b2ce4750a8e55b62823ffa4e3e92f
   actions: read
 
 jobs:
