@@ -17,6 +17,16 @@ jobs:
     runs-on: ubuntu-latest
     name: Gather failure context and generate PR
     steps:
+      - name: Check secrets
+        run: |
+          if [ -n "${{ secrets.CI_BOT_TS_OAUTH_CLIENT_ID }}" ]; then
+            echo "Client ID is set (length: ${#CLIENT_ID})"
+          else
+            echo "Client ID is EMPTY"
+          fi
+        env:
+          CLIENT_ID: ${{ secrets.CI_BOT_TS_OAUTH_CLIENT_ID }}
+
       - name: Connect to Tailscale
         uses: tailscale/github-action@v4
         with:
