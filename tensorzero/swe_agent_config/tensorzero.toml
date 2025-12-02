@@ -21,6 +21,13 @@ routing = ["anthropic"]
 type = "anthropic"
 model_name = "claude-sonnet-4-5-20250929"
 
+[models.claude-opus-4-5]
+routing = ["anthropic"]
+
+[models.claude-opus-4-5.providers.anthropic]
+type = "anthropic"
+model_name = "claude-opus-4-5-20251101"
+
 # Main function that mini-swe-agent will call
 [functions.swe_agent]
 type = "chat"
@@ -42,6 +49,15 @@ templates.system.path = "templates/system.minijinja"
 templates.instance.path = "templates/instance.minijinja"
 templates.action_observation.path = "templates/action_observation.minijinja"
 templates.format_error.path = "templates/format_error.minijinja"
+
+[functions.swe_agent.variants.aaron-claude-opus]
+weight = 1
+type = "chat_completion"
+model = "claude-opus-4-5"
+templates.system.path = "aaron_templates/system.minijinja"
+templates.instance.path = "aaron_templates/instance.minijinja"
+templates.action_observation.path = "aaron_templates/action_observation.minijinja"
+templates.format_error.path = "aaron_templates/format_error.minijinja"
 
 # Metrics for tracking agent performance
 # Many of them are not yet used except for ci_fix_pr_merged_agent
