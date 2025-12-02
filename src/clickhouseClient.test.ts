@@ -34,7 +34,7 @@ describe('clickhouseClient', () => {
         inferenceId: 'abc-123',
         episodeId: 'episode-123',
         pullRequestId: 42,
-        // I think we're missing something here?
+        // I think we're missing something here definitely
       },
       defaultConfig,
       { client }
