@@ -6,12 +6,6 @@ on:
     types:
       - completed
 
-# Workflow-level permissions (needed for Tailscale action to work)
-permissions:
-  contents: write
-  pull-requests: write
-  actions: read
-
 jobs:
   generate-patch:
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
@@ -49,14 +43,13 @@ jobs:
 
       - name: Generate patch
         id: generate
-        uses: tensorzero/experimental-ci-bot/generate-pr-patch@viraj/pr-only
+        uses: tensorzero/experimental-ci-bot/generate-pr-patch@main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           mode: patch-only
           tensorzero-base-url: http://localhost:3000
-          tensorzero-diff-patched-successfully-metric-name: tensorzero_github_ci_bot_diff_patched_successfully
           output-artifacts-dir: debug-logs
           clickhouse-url: ${{ secrets.CI_BOT_CLICKHOUSE_URL }}
           clickhouse-table: GitHubBotPullRequestToInferenceMap

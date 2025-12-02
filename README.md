@@ -6,6 +6,111 @@
 [![CodeQL](https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yml)
 [![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
 
+## Running Locally
+
+You can run the mini-swe-agent locally to test PRs before deploying to GitHub
+Actions.
+
+### Prerequisites
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   npm run bundle  # Build the CLI
+   ```
+
+1. Set up required environment variables:
+
+   ```bash
+   # GitHub authentication (choose one):
+   export GITHUB_TOKEN=$(gh auth token)  # If using gh CLI
+   # OR
+   export GITHUB_TOKEN=ghp_your_token_here
+
+   # Model API keys (at least one required):
+   export ANTHROPIC_API_KEY=your_anthropic_key
+   # OR
+   export OPENAI_API_KEY=your_openai_key
+   ```
+
+### Usage
+
+#### Dry Run (Local Testing)
+
+Test the agent without creating PRs or comments on GitHub:
+
+```bash
+npm run cli -- --repo owner/repo --pr 123 --dry-run
+```
+
+This will:
+
+- Clone the PR repository
+- Run the mini-swe-agent to analyze and fix issues
+- Display the generated patch locally
+- Not make any changes to GitHub
+
+#### Live Mode (Create PRs/Comments)
+
+Run the agent and create actual PRs or inline comments on GitHub:
+
+```bash
+npm run cli -- --repo owner/repo --pr 456
+```
+
+This will:
+
+- Clone the PR repository
+- Run the mini-swe-agent
+- Create a follow-up PR or post inline comments based on the agent's decision
+
+#### With CI Failure Context
+
+If you have a specific workflow run that failed, you can provide its ID:
+
+```bash
+npm run cli -- --repo owner/repo --pr 789 --workflow-run-id 12345
+```
+
+### CLI Options
+
+```text
+-r, --repo <owner/repo>          Repository in "owner/repo" format
+-p, --pr <number>                Pull request number (required)
+-d, --dry-run                    Show patch locally without PRs/comments
+-t, --token <token>              GitHub token (default: GITHUB_TOKEN or gh)
+-w, --workflow-run-id <id>       Workflow run ID for failure logs
+-o, --output-dir <path>          Directory for debug artifacts
+--clickhouse-url <url>           ClickHouse URL for tracking
+--clickhouse-table <name>        ClickHouse table name
+-c, --cost-limit <dollars>       Cost limit (default: 3.0)
+--timeout <minutes>              Timeout in minutes (default: 30)
+-h, --help                       Show help message
+```
+
+### Examples
+
+```bash
+# Dry run on a public repository
+npm run cli -- --repo tensorzero/tensorzero --pr 100 --dry-run
+
+# Run on your own repository with custom settings
+export GITHUB_TOKEN=$(gh auth token)
+npm run cli -- \
+  --repo myorg/myrepo \
+  --pr 42 \
+  --cost-limit 5.0 \
+  --timeout 45 \
+  --output-dir ./debug-output
+
+# Analyze a specific failed workflow run
+npm run cli -- \
+  --repo owner/repo \
+  --pr 123 \
+  --workflow-run-id 9876543210
+```
+
 ## Developing
 
 - `npm install`

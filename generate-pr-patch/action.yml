@@ -12,6 +12,11 @@ inputs:
   token:
     description: GitHub token used to query workflow run artifacts.
     required: true
+  mode:
+    description: |
+      Operation mode: "patch-only" generates patch without creating PR,
+      "full" (default) creates PR directly.
+    default: 'full'
   tensorzero-base-url:
     description: Base URL for the TensorZero instance.
     required: true
@@ -30,6 +35,14 @@ inputs:
     description:
       Directory to store output artifacts (e.g. LLM prompt and output, git diff)
       for debugging purposes, if present.
+
+outputs:
+  has-changes:
+    description: 'Whether the agent made any changes (true/false)'
+  patch-file:
+    description: 'Path to the generated patch file (only in patch-only mode)'
+  metadata-file:
+    description: 'Path to the metadata JSON file (only in patch-only mode)'
 
 runs:
   using: node24

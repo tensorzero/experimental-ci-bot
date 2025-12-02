@@ -3,3 +3,10 @@
 dist/
 node_modules/
 coverage/
+
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc

@@ -2,10 +2,10 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import { CreatePrFeedbackActionInput } from './types.js'
 import {
-  type PullRequestToInferenceRecord,
-  getPullRequestToInferenceRecords
+  type PullRequestToEpisodeRecord,
+  getPullRequestToEpisodeRecords
 } from '../clickhouseClient.js'
-import { provideInferenceFeedback } from '../tensorZeroClient.js'
+import { provideEpisodeFeedback } from '../tensorZeroClient.js'
 
 function parseAndValidateActionInputs(): CreatePrFeedbackActionInput {
   const tensorZeroBaseUrl = core.getInput('tensorzero-base-url')?.trim()
@@ -45,7 +45,7 @@ function parseAndValidateActionInputs(): CreatePrFeedbackActionInput {
 }
 
 function isPullRequestEligibleForFeedback(
-  inferenceRecords: PullRequestToInferenceRecord[]
+  inferenceRecords: PullRequestToEpisodeRecord[]
 ): boolean {
   const pullRequestState = github.context.payload.pull_request?.state
   if (!pullRequestState) {
@@ -89,30 +89,38 @@ export async function run(): Promise<void> {
   const isPullRequestMerged =
     (github.context.payload.pull_request?.merged as boolean) ?? false
 
-  const inferenceRecords = await getPullRequestToInferenceRecords(
+  const episodeRecords = await getPullRequestToEpisodeRecords(
     pullRequestId,
     clickhouse
   )
-  if (!isPullRequestEligibleForFeedback(inferenceRecords)) {
+  if (!isPullRequestEligibleForFeedback(episodeRecords)) {
     return
   }
 
-  // Provide feedback
+  // Provide feedback for follow-up PRs
   const feedbackReason: string = isPullRequestMerged
     ? 'Pull Request Merged'
     : 'Pull Request Rejected'
   await Promise.all(
-    inferenceRecords.map(async (record) => {
-      await provideInferenceFeedback(
+    episodeRecords.map(async (record) => {
+      await provideEpisodeFeedback(
         tensorZeroBaseUrl,
         tensorZeroPrMergedMetricName,
-        record.inference_id,
+        record.episode_id,
         isPullRequestMerged,
         { reason: feedbackReason }
       )
       core.info(
-        `Feedback (${isPullRequestMerged}) provided for inference ${record.inference_id}`
+        `Feedback (${isPullRequestMerged}) provided for episode ${record.episode_id}`
       )
     })
   )
+
+  // TODO: Add feedback collection for inline suggestions
+  // This requires:
+  // 1. Tracking which review comments were posted by the bot
+  // 2. Checking if those suggestions were accepted (commits were made with the suggested changes)
+  // 3. Calculating acceptance rate
+  // 4. Sending feedback to TensorZero with ci_fix_suggestions_accepted_rate metric
+  core.info('Inline suggestion feedback collection not yet implemented')
 }

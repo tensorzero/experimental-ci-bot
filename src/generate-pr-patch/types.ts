@@ -1,4 +1,17 @@
 import type { ClickHouseConfig } from '../clickhouseClient.js'
+import type {
+  OctokitInstance,
+  PullRequestData,
+  FollowupPrResult,
+  CreateFollowupPrOptions
+} from '../pullRequests.js'
+
+export type {
+  OctokitInstance,
+  PullRequestData,
+  FollowupPrResult,
+  CreateFollowupPrOptions
+}
 
 export interface GeneratePrPatchActionInput {
   token: string
@@ -26,27 +39,4 @@ export interface WorkflowJob {
 export interface WorkflowJobsResponse {
   total_count: number
   jobs: WorkflowJob[]
-}
-
-export type OctokitInstance = ReturnType<
-  typeof import('@actions/github').getOctokit
->
-
-export type PullRequestData = Awaited<
-  ReturnType<OctokitInstance['rest']['pulls']['get']>
->['data']
-
-export interface FollowupPrResult {
-  number: number
-  id: number
-  htmlUrl: string
-}
-
-export interface CreateFollowupPrOptions {
-  octokit: OctokitInstance
-  token: string
-  owner: string
-  repo: string
-  pullRequest: PullRequestData
-  diff: string
 }

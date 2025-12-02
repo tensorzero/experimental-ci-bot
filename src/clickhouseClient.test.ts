@@ -4,7 +4,6 @@ import {
   type ClickHouseClientLike,
   type ClickHouseConfig,
   createPullRequestToInferenceRecord,
-  getPullRequestToInferenceRecords,
   getPullRequestToEpisodeRecords
 } from './clickhouseClient.js'
 
@@ -46,8 +45,7 @@ describe('clickhouseClient', () => {
         {
           episode_id: 'episode-123',
           pull_request_id: 42,
-          inference_id: 'abc-123',
-          original_pull_request_url: 'https://github.com/org/repo/pull/42'
+          inference_id: 'abc-123'
         }
       ],
       format: 'JSONEachRow'
@@ -70,13 +68,13 @@ describe('clickhouseClient', () => {
     // @ts-expect-error(Mock type is inaccurate)
     client.query.mockResolvedValueOnce({ json: jsonMock })
 
-    const records = await getPullRequestToInferenceRecords(77, defaultConfig, {
+    const records = await getPullRequestToEpisodeRecords(77, defaultConfig, {
       client
     })
 
     expect(client.query).toHaveBeenCalledWith({
       query:
-        'SELECT inference_id, pull_request_id, created_at, original_pull_request_url FROM tensorzero.inference_records WHERE pull_request_id = {pullRequestId:UInt64}',
+        'SELECT episode_id, pull_request_id, created_at, original_pull_request_url FROM tensorzero.inference_records WHERE pull_request_id = {pullRequestId:UInt64}',
       query_params: { pullRequestId: 77 },
       format: 'JSONEachRow'
     })
@@ -90,8 +88,7 @@ describe('clickhouseClient', () => {
         {
           inferenceId: 'abc',
           episodeId: 'episode-123',
-          pullRequestId: 1,
-          originalPullRequestUrl: 'https://example.com/pr/1'
+          pullRequestId: 1
         },
         { ...defaultConfig, table: 'invalid-table!' }
       )
@@ -104,8 +101,7 @@ describe('clickhouseClient', () => {
         {
           inferenceId: 'abc',
           episodeId: 'episode-123',
-          pullRequestId: 1,
-          originalPullRequestUrl: 'https://example.com/pr/1'
+          pullRequestId: 1
         },
         { ...defaultConfig, url: ' ' }
       )
@@ -120,8 +116,7 @@ describe('clickhouseClient', () => {
         {
           inferenceId: 'abc',
           episodeId: 'episode-123',
-          pullRequestId: 1,
-          originalPullRequestUrl: 'https://example.com/pr/1'
+          pullRequestId: 1
         },
         defaultConfig,
         { client }
