@@ -1,0 +1,24 @@
+<command_result>
+<returncode>{{output.returncode}}</returncode>
+{% if output.output | length < 10000 -%}
+<output>
+{{ output.output -}}
+</output>
+{%- else -%}
+<truncation_warning>
+Output exceeded 10,000 characters and was truncated.
+Strategies to reduce output:
+- Use `head -n N`, `tail -n N`, or `sed -n 'START,ENDp'` for files
+- Use more specific grep/find patterns
+- Redirect to a file and search within it: `command > output.txt && grep pattern output.txt`
+</truncation_warning>
+{%- set elided_chars = output.output | length - 10000 -%}
+<output_head>
+{{ output.output[:5000] }}
+</output_head>
+<elided_characters>{{ elided_chars }}</elided_characters>
+<output_tail>
+{{ output.output[-5000:] }}
+</output_tail>
+{%- endif -%}
+</command_result>
