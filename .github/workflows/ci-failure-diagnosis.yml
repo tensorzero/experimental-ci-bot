@@ -86,8 +86,15 @@ jobs:
           which mini || echo "mini-swe-agent not found in PATH"
           mini --help || echo "mini-swe-agent not working"
 
-      - name: Run mini-swe-agent to fix CI failures
-        uses: tensorzero/experimental-ci-bot/generate-pr-patch@main
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install mini-swe-agent
+        run: uv tool install mini-swe-agent --from "git+https://github.com/virajmehta/mini-swe-agent.git@main"
+
+      - name: Call LLM to generate PR revision
+        # TODO: currently pinned to miniswe-agent branch; switch back to main when ready.
+        uses: tensorzero/experimental-ci-bot/generate-pr-patch@viraj/pr-only
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
