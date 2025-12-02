@@ -10,3 +10,6 @@ venv/
 env/
 __pycache__/
 *.pyc
+# CI context files
+ci_failure_context.md
+.episode_id
