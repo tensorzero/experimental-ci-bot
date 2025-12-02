@@ -81,6 +81,13 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.CI_BOT_TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.CI_BOT_TS_OAUTH_CLIENT_SECRET }}
+          tags: tag:ci
+
       # Download to /tmp so checkout doesn't delete it
       - name: Download patch artifact
         uses: actions/download-artifact@v4
@@ -95,6 +102,7 @@ jobs:
           echo "head-ref=$(jq -r .headRef /tmp/patch-data/metadata.json)" >> $GITHUB_OUTPUT
           echo "owner=$(jq -r .owner /tmp/patch-data/metadata.json)" >> $GITHUB_OUTPUT
           echo "repo=$(jq -r .repo /tmp/patch-data/metadata.json)" >> $GITHUB_OUTPUT
+          echo "episode-id=$(jq -r '.episodeId // empty' /tmp/patch-data/metadata.json)" >> $GITHUB_OUTPUT
 
           # Handle multiline reasoning
           {
@@ -110,6 +118,7 @@ jobs:
           fetch-depth: 0
 
       - name: Apply patch and create PR
+        id: create-pr
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -136,8 +145,45 @@ jobs:
 
           ${{ steps.meta.outputs.reasoning }}"
 
-          gh pr create \
+          PR_URL=$(gh pr create \
             --base "${{ steps.meta.outputs.head-ref }}" \
             --head "$BRANCH_NAME" \
             --title "Automated follow-up for #${{ steps.meta.outputs.pr-number }}" \
-            --body "$PR_BODY"
+            --body "$PR_BODY")
+
+          # Extract PR number from URL (format: https://github.com/owner/repo/pull/123)
+          FOLLOWUP_PR_NUMBER=$(echo "$PR_URL" | grep -oE '[0-9]+$')
+          echo "followup-pr-number=$FOLLOWUP_PR_NUMBER" >> $GITHUB_OUTPUT
+          echo "Created follow-up PR #$FOLLOWUP_PR_NUMBER: $PR_URL"
+
+      - name: Send feedback and record to ClickHouse
+        if: steps.meta.outputs.episode-id != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TENSORZERO_BASE_URL: http://ci-bot-gateway:3000
+          CLICKHOUSE_URL: ${{ secrets.CI_BOT_CLICKHOUSE_URL }}
+          CLICKHOUSE_TABLE: GitHubBotPullRequestToInferenceMap
+        run: |
+          EPISODE_ID="${{ steps.meta.outputs.episode-id }}"
+          OWNER="${{ steps.meta.outputs.owner }}"
+          REPO="${{ steps.meta.outputs.repo }}"
+          FOLLOWUP_PR_NUMBER="${{ steps.create-pr.outputs.followup-pr-number }}"
+
+          # Get the follow-up PR's numeric ID (not number) via GitHub API
+          PR_ID=$(gh api "repos/$OWNER/$REPO/pulls/$FOLLOWUP_PR_NUMBER" --jq '.id')
+          echo "Follow-up PR #$FOLLOWUP_PR_NUMBER has ID: $PR_ID"
+
+          # 1. Send TensorZero episode feedback (ci_fix_pr_created_agent=true)
+          echo "Sending TensorZero feedback for episode $EPISODE_ID..."
+          curl -sf -X POST "$TENSORZERO_BASE_URL/feedback" \
+            -H "Content-Type: application/json" \
+            -d "{\"metric_name\": \"ci_fix_pr_created_agent\", \"episode_id\": \"$EPISODE_ID\", \"value\": true}" \
+            && echo "Feedback sent successfully" \
+            || echo "Warning: Failed to send feedback"
+
+          # 2. Write episode-to-PR mapping to ClickHouse
+          echo "Writing to ClickHouse: episode=$EPISODE_ID, pr_id=$PR_ID..."
+          curl -sf -X POST "$CLICKHOUSE_URL" \
+            -d "INSERT INTO $CLICKHOUSE_TABLE (pull_request_id, episode_id) VALUES ($PR_ID, '$EPISODE_ID')" \
+            && echo "ClickHouse record created successfully" \
+            || echo "Warning: Failed to write to ClickHouse"
