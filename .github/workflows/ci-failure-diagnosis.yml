@@ -188,10 +188,16 @@ jobs:
           echo "  PR ID: $PR_ID"
           echo "  Episode ID: $EPISODE_ID"
 
-          CLICKHOUSE_QUERY="INSERT INTO $CLICKHOUSE_TABLE (pull_request_id, episode_id) VALUES ($PR_ID, '$EPISODE_ID')"
+          # Use fully qualified table name with ci_bot database
+          CLICKHOUSE_QUERY="INSERT INTO ci_bot.$CLICKHOUSE_TABLE (pull_request_id, episode_id) VALUES ($PR_ID, '$EPISODE_ID')"
           echo "  Query: $CLICKHOUSE_QUERY"
 
-          CLICKHOUSE_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$CLICKHOUSE_URL" -d "$CLICKHOUSE_QUERY")
+          # Remove any path from URL and use query parameter for database if needed
+          # The @clickhouse/client library handles this automatically, but curl needs the base URL
+          CLICKHOUSE_BASE_URL=$(echo "$CLICKHOUSE_URL" | sed 's|/[^/]*$||')
+          echo "  Base URL length: ${#CLICKHOUSE_BASE_URL}"
+
+          CLICKHOUSE_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$CLICKHOUSE_BASE_URL/" -d "$CLICKHOUSE_QUERY")
           CLICKHOUSE_HTTP_CODE=$(echo "$CLICKHOUSE_RESPONSE" | tail -n1)
           CLICKHOUSE_BODY=$(echo "$CLICKHOUSE_RESPONSE" | sed '$d')
 
