@@ -57139,9 +57139,12 @@ async function runAgent(input) {
                 if (!artifactDir) {
                     throw new Error('Patch-only mode requires output-artifacts-dir to be set');
                 }
-                // Write patch file
+                // Write patch file (ensure it ends with newline for git apply)
                 const patchFilePath = path$1.join(artifactDir, 'patch.diff');
-                fs$1.writeFileSync(patchFilePath, trimmedDiff, 'utf-8');
+                const patchContent = trimmedDiff.endsWith('\n')
+                    ? trimmedDiff
+                    : trimmedDiff + '\n';
+                fs$1.writeFileSync(patchFilePath, patchContent, 'utf-8');
                 console.log(`[Agent Runner] Wrote patch to: ${patchFilePath}`);
                 // Write metadata file
                 const metadata = {
