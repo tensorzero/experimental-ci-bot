@@ -6,10 +6,10 @@ on:
     types:
       - completed
 
-# Workflow-level permissions are read-only (secure default for agent job)
+# Workflow-level permissions (needed for Tailscale action to work)
 permissions:
-  contents: read
-  pull-requests: read
+  contents: write
+  pull-requests: write
   actions: read
 
 jobs:
@@ -17,7 +17,11 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     runs-on: ubuntu-latest
     name: Generate patch from CI failure
-    # Inherits read-only permissions from workflow level - agent cannot push or create PRs
+    # Override with read-only permissions - agent cannot push or create PRs
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: read
     outputs:
       has-changes: ${{ steps.generate.outputs.has-changes }}
     steps:
