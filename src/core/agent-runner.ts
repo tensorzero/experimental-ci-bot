@@ -206,9 +206,12 @@ export async function runAgent(
           )
         }
 
-        // Write patch file
+        // Write patch file (ensure it ends with newline for git apply)
         const patchFilePath = path.join(artifactDir, 'patch.diff')
-        fs.writeFileSync(patchFilePath, trimmedDiff, 'utf-8')
+        const patchContent = trimmedDiff.endsWith('\n')
+          ? trimmedDiff
+          : trimmedDiff + '\n'
+        fs.writeFileSync(patchFilePath, patchContent, 'utf-8')
         console.log(`[Agent Runner] Wrote patch to: ${patchFilePath}`)
 
         // Write metadata file
