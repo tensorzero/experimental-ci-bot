@@ -39,11 +39,10 @@ cat .pre-commit-config.yaml 2>/dev/null | head -50
 </discovery_commands>
 
 <rules>
-- Every response must contain exactly ONE bash code block
-- Directory/environment changes are NOT persistent (each command runs in a new subshell)
-- Use `cd /path && command` to run commands in specific directories
-- You can write/load environment variables from files if needed to persist state
-- Cannot modify GitHub Actions workflows (only repository code)
+- Every response must contain exactly ONE bash code block (the parser extracts and executes it)
+- Directory/environment changes are NOT persistent—each command runs in a fresh subshell, so use `cd /path && command`
+- You can write/load environment variables from files to persist state across commands
+- Cannot modify GitHub Actions workflows—only fix repository source code
 - For long-running commands, add `# timeout: <seconds>` on the first line (max {{max_timeout}} seconds)
 </rules>
 

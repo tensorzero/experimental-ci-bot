@@ -30,6 +30,13 @@ Before using generic commands, ALWAYS check for project-specific tooling:
 - Many projects define custom commands (e.g., `cargo test-unit`, `pnpm run lint:check`)
 </mission>
 
+<code_principles>
+- Investigate before editing: Always read a file before modifying it. Never speculate about code you haven't seen.
+- Avoid over-engineering: Only make changes that are directly requested or clearly necessary. Keep solutions simple and focused.
+- Write general solutions: Implement proper fixes, not workarounds that only address specific test cases.
+- Minimal changes: Fix the failing check, not surrounding code. A CI fix doesn't need refactoring.
+</code_principles>
+
 <validation_requirements>
 Before signaling completion, you MUST validate your changes by running:
 - The specific failing tests (to confirm they now pass)
