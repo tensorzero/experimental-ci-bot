@@ -1,5 +1,8 @@
 import * as core from '@actions/core'
-import { createAgentInputFromGitHubActions } from '../adapters/github-actions.js'
+import {
+  createAgentInputFromGitHubActions,
+  setActionOutputs
+} from '../adapters/github-actions.js'
 import { runAgent } from '../core/agent-runner.js'
 
 /**
@@ -15,6 +18,8 @@ export async function run(): Promise<void> {
 
     if (!agentInput) {
       core.warning('Unable to create agent input; skipping action.')
+      // Set has-changes to false so downstream jobs know there's nothing to do
+      setActionOutputs({ hasChanges: false })
       return
     }
 
@@ -22,11 +27,22 @@ export async function run(): Promise<void> {
     core.info('Starting agent execution...')
     const result = await runAgent(agentInput)
 
+    // Set action outputs
+    const hasChanges = result.success && !!result.diff
+    setActionOutputs({
+      hasChanges,
+      patchFile: result.patchFile,
+      metadataFile: result.metadataFile
+    })
+
     // Check result
     if (result.success) {
       core.info('Agent execution completed successfully')
       if (result.followupPrNumber) {
         core.info(`Created follow-up PR #${result.followupPrNumber}`)
+      }
+      if (result.patchFile) {
+        core.info(`Patch file written to: ${result.patchFile}`)
       }
     } else {
       core.setFailed(

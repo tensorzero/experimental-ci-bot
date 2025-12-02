@@ -29,6 +29,18 @@ import {
 /**
  * Run the agent to fix CI failures or improve a PR
  */
+/**
+ * Metadata written for patch-only mode
+ */
+export interface PatchMetadata {
+  prNumber: number
+  headRef: string
+  owner: string
+  repo: string
+  reasoning: string
+  episodeId?: string
+}
+
 export async function runAgent(
   input: AgentRunnerInput
 ): Promise<AgentRunnerResult> {
@@ -38,6 +50,7 @@ export async function runAgent(
     pullRequest,
     ciFailure,
     mode,
+    patchOnly,
     outputDir,
     clickhouse,
     agent
@@ -46,7 +59,7 @@ export async function runAgent(
   const isDryRun = mode === 'dry-run'
 
   console.log('[Agent Runner] Starting agent execution...')
-  console.log(`[Agent Runner] Mode: ${mode}`)
+  console.log(`[Agent Runner] Mode: ${mode}${patchOnly ? ' (patch-only)' : ''}`)
   console.log(
     `[Agent Runner] PR: ${pullRequest.owner}/${pullRequest.repo}#${pullRequest.number}`
   )
@@ -180,6 +193,50 @@ export async function runAgent(
 
       // Save diff as debug artifact
       maybeWriteDebugArtifact(artifactDir, 'agent-changes.diff', trimmedDiff)
+
+      // Handle patch-only mode: write patch and metadata files, skip PR creation
+      if (patchOnly) {
+        console.log(
+          '[Agent Runner] Patch-only mode: writing patch and metadata files'
+        )
+
+        if (!artifactDir) {
+          throw new Error(
+            'Patch-only mode requires output-artifacts-dir to be set'
+          )
+        }
+
+        // Write patch file
+        const patchFilePath = path.join(artifactDir, 'patch.diff')
+        fs.writeFileSync(patchFilePath, trimmedDiff, 'utf-8')
+        console.log(`[Agent Runner] Wrote patch to: ${patchFilePath}`)
+
+        // Write metadata file
+        const metadata: PatchMetadata = {
+          prNumber: pullRequest.number,
+          headRef: pullRequest.headRef,
+          owner: pullRequest.owner,
+          repo: pullRequest.repo,
+          reasoning: agentCompletion.reasoning,
+          episodeId
+        }
+        const metadataFilePath = path.join(artifactDir, 'metadata.json')
+        fs.writeFileSync(
+          metadataFilePath,
+          JSON.stringify(metadata, null, 2),
+          'utf-8'
+        )
+        console.log(`[Agent Runner] Wrote metadata to: ${metadataFilePath}`)
+
+        return {
+          success: true,
+          episodeId,
+          diff: trimmedDiff,
+          reasoning: agentCompletion.reasoning,
+          patchFile: patchFilePath,
+          metadataFile: metadataFilePath
+        }
+      }
 
       // Create a follow-up PR with the changes
       console.log('[Agent Runner] Creating a follow-up PR with the changes')

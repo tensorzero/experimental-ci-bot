@@ -20,6 +20,7 @@ import {
  */
 interface ActionInputs {
   token: string
+  mode: 'patch-only' | 'full'
   tensorZeroBaseUrl?: string
   tensorZeroDiffPatchedSuccessfullyMetricName?: string
   outputArtifactsDir?: string
@@ -36,6 +37,14 @@ function parseActionInputs(): ActionInputs {
       'A GitHub token is required. Provide one via the `token` input.'
     )
   }
+
+  const modeInput = core.getInput('mode')?.trim() || 'full'
+  if (modeInput !== 'patch-only' && modeInput !== 'full') {
+    throw new Error(
+      `Invalid mode: ${modeInput}. Must be "patch-only" or "full".`
+    )
+  }
+  const mode = modeInput as 'patch-only' | 'full'
 
   const tensorZeroBaseUrl = core.getInput('tensorzero-base-url')?.trim()
   const tensorZeroDiffPatchedSuccessfullyMetricName = core
@@ -57,6 +66,7 @@ function parseActionInputs(): ActionInputs {
 
   return {
     token,
+    mode,
     tensorZeroBaseUrl,
     tensorZeroDiffPatchedSuccessfullyMetricName,
     outputArtifactsDir,
@@ -255,11 +265,19 @@ export async function createAgentInputFromGitHubActions(): Promise<AgentRunnerIn
   const inputs = parseActionInputs()
   const {
     token,
+    mode,
     outputArtifactsDir,
     clickhouse,
     tensorZeroBaseUrl,
     tensorZeroDiffPatchedSuccessfullyMetricName
   } = inputs
+
+  const patchOnly = mode === 'patch-only'
+  if (patchOnly) {
+    core.info(
+      'Running in patch-only mode - will generate patch without creating PR'
+    )
+  }
 
   // Mask the token
   core.setSecret(token)
@@ -288,6 +306,7 @@ export async function createAgentInputFromGitHubActions(): Promise<AgentRunnerIn
     pullRequest,
     ciFailure,
     mode: 'live', // GitHub Actions always runs in live mode
+    patchOnly,
     outputDir: outputArtifactsDir,
     clickhouse,
     tensorZero: {
@@ -299,5 +318,22 @@ export async function createAgentInputFromGitHubActions(): Promise<AgentRunnerIn
       costLimit: 3.0, // Default for GitHub Actions
       timeout: 30 // 30 minutes
     }
+  }
+}
+
+/**
+ * Set action outputs for patch-only mode
+ */
+export function setActionOutputs(outputs: {
+  hasChanges: boolean
+  patchFile?: string
+  metadataFile?: string
+}): void {
+  core.setOutput('has-changes', outputs.hasChanges ? 'true' : 'false')
+  if (outputs.patchFile) {
+    core.setOutput('patch-file', outputs.patchFile)
+  }
+  if (outputs.metadataFile) {
+    core.setOutput('metadata-file', outputs.metadataFile)
   }
 }

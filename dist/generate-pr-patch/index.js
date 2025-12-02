@@ -37512,6 +37512,11 @@ function parseActionInputs() {
     if (!token) {
         throw new Error('A GitHub token is required. Provide one via the `token` input.');
     }
+    const modeInput = coreExports.getInput('mode')?.trim() || 'full';
+    if (modeInput !== 'patch-only' && modeInput !== 'full') {
+        throw new Error(`Invalid mode: ${modeInput}. Must be "patch-only" or "full".`);
+    }
+    const mode = modeInput;
     const tensorZeroBaseUrl = coreExports.getInput('tensorzero-base-url')?.trim();
     const tensorZeroDiffPatchedSuccessfullyMetricName = coreExports.getInput('tensorzero-diff-patched-successfully-metric-name')
         ?.trim();
@@ -37526,6 +37531,7 @@ function parseActionInputs() {
         : undefined;
     return {
         token,
+        mode,
         tensorZeroBaseUrl,
         tensorZeroDiffPatchedSuccessfullyMetricName,
         outputArtifactsDir,
@@ -37672,7 +37678,11 @@ async function createAgentInputFromGitHubActions() {
     }
     // Parse action inputs
     const inputs = parseActionInputs();
-    const { token, outputArtifactsDir, clickhouse, tensorZeroBaseUrl, tensorZeroDiffPatchedSuccessfullyMetricName } = inputs;
+    const { token, mode, outputArtifactsDir, clickhouse, tensorZeroBaseUrl, tensorZeroDiffPatchedSuccessfullyMetricName } = inputs;
+    const patchOnly = mode === 'patch-only';
+    if (patchOnly) {
+        coreExports.info('Running in patch-only mode - will generate patch without creating PR');
+    }
     // Mask the token
     coreExports.setSecret(token);
     // Get repo info
@@ -37696,6 +37706,7 @@ async function createAgentInputFromGitHubActions() {
         pullRequest,
         ciFailure,
         mode: 'live', // GitHub Actions always runs in live mode
+        patchOnly,
         outputDir: outputArtifactsDir,
         clickhouse,
         tensorZero: {
@@ -37707,6 +37718,18 @@ async function createAgentInputFromGitHubActions() {
             timeout: 30 // 30 minutes
         }
     };
+}
+/**
+ * Set action outputs for patch-only mode
+ */
+function setActionOutputs(outputs) {
+    coreExports.setOutput('has-changes', outputs.hasChanges ? 'true' : 'false');
+    if (outputs.patchFile) {
+        coreExports.setOutput('patch-file', outputs.patchFile);
+    }
+    if (outputs.metadataFile) {
+        coreExports.setOutput('metadata-file', outputs.metadataFile);
+    }
 }
 
 /**
@@ -57017,14 +57040,11 @@ async function fetchDiffSummaryAndFullDiff(octokit, pr, token) {
 /**
  * Core agent runner logic shared between GitHub Actions and CLI
  */
-/**
- * Run the agent to fix CI failures or improve a PR
- */
 async function runAgent(input) {
-    const { octokit, token, pullRequest, ciFailure, mode, outputDir, clickhouse, agent } = input;
+    const { octokit, token, pullRequest, ciFailure, mode, patchOnly, outputDir, clickhouse, agent } = input;
     const isDryRun = mode === 'dry-run';
     console.log('[Agent Runner] Starting agent execution...');
-    console.log(`[Agent Runner] Mode: ${mode}`);
+    console.log(`[Agent Runner] Mode: ${mode}${patchOnly ? ' (patch-only)' : ''}`);
     console.log(`[Agent Runner] PR: ${pullRequest.owner}/${pullRequest.repo}#${pullRequest.number}`);
     // Prepare artifact directory
     const artifactDir = outputDir ? path$1.resolve(outputDir) : undefined;
@@ -57113,6 +57133,37 @@ async function runAgent(input) {
             console.log(`[Agent Runner] Diff statistics: ${filesChanged} files, +${additions} -${deletions} lines`);
             // Save diff as debug artifact
             maybeWriteDebugArtifact(artifactDir, 'agent-changes.diff', trimmedDiff);
+            // Handle patch-only mode: write patch and metadata files, skip PR creation
+            if (patchOnly) {
+                console.log('[Agent Runner] Patch-only mode: writing patch and metadata files');
+                if (!artifactDir) {
+                    throw new Error('Patch-only mode requires output-artifacts-dir to be set');
+                }
+                // Write patch file
+                const patchFilePath = path$1.join(artifactDir, 'patch.diff');
+                fs$1.writeFileSync(patchFilePath, trimmedDiff, 'utf-8');
+                console.log(`[Agent Runner] Wrote patch to: ${patchFilePath}`);
+                // Write metadata file
+                const metadata = {
+                    prNumber: pullRequest.number,
+                    headRef: pullRequest.headRef,
+                    owner: pullRequest.owner,
+                    repo: pullRequest.repo,
+                    reasoning: agentCompletion.reasoning,
+                    episodeId
+                };
+                const metadataFilePath = path$1.join(artifactDir, 'metadata.json');
+                fs$1.writeFileSync(metadataFilePath, JSON.stringify(metadata, null, 2), 'utf-8');
+                console.log(`[Agent Runner] Wrote metadata to: ${metadataFilePath}`);
+                return {
+                    success: true,
+                    episodeId,
+                    diff: trimmedDiff,
+                    reasoning: agentCompletion.reasoning,
+                    patchFile: patchFilePath,
+                    metadataFile: metadataFilePath
+                };
+            }
             // Create a follow-up PR with the changes
             console.log('[Agent Runner] Creating a follow-up PR with the changes');
             if (isDryRun) {
@@ -57291,16 +57342,28 @@ async function run() {
         const agentInput = await createAgentInputFromGitHubActions();
         if (!agentInput) {
             coreExports.warning('Unable to create agent input; skipping action.');
+            // Set has-changes to false so downstream jobs know there's nothing to do
+            setActionOutputs({ hasChanges: false });
             return;
         }
         // Run the agent
         coreExports.info('Starting agent execution...');
         const result = await runAgent(agentInput);
+        // Set action outputs
+        const hasChanges = result.success && !!result.diff;
+        setActionOutputs({
+            hasChanges,
+            patchFile: result.patchFile,
+            metadataFile: result.metadataFile
+        });
         // Check result
         if (result.success) {
             coreExports.info('Agent execution completed successfully');
             if (result.followupPrNumber) {
                 coreExports.info(`Created follow-up PR #${result.followupPrNumber}`);
+            }
+            if (result.patchFile) {
+                coreExports.info(`Patch file written to: ${result.patchFile}`);
             }
         }
         else {

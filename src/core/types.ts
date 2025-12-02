@@ -58,6 +58,12 @@ export interface AgentRunnerInput {
   mode: 'dry-run' | 'live'
 
   /**
+   * Patch-only mode - generate patch without creating PR
+   * When true, writes patch.diff and metadata.json to outputDir instead of creating a PR
+   */
+  patchOnly?: boolean
+
+  /**
    * Output directory for debug artifacts
    */
   outputDir?: string
@@ -125,4 +131,14 @@ export interface AgentRunnerResult {
    * Error message if failed
    */
   error?: string
+
+  /**
+   * Path to the patch file (only in patch-only mode)
+   */
+  patchFile?: string
+
+  /**
+   * Path to the metadata file (only in patch-only mode)
+   */
+  metadataFile?: string
 }

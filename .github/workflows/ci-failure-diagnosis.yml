@@ -6,16 +6,20 @@ on:
     types:
       - completed
 
-permissions:
-  contents: write
-  pull-requests: write
-  actions: read
+# No workflow-level permissions - each job defines its own for security
 
 jobs:
-  gather-diff-and-generate-patch:
+  generate-patch:
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     runs-on: ubuntu-latest
-    name: Gather failure context and generate PR
+    name: Generate patch from CI failure
+    # READ-ONLY permissions - agent cannot push or create PRs
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: read
+    outputs:
+      has-changes: ${{ steps.generate.outputs.has-changes }}
     steps:
       - name: Connect to Tailscale
         uses: tailscale/github-action@v4
@@ -40,19 +44,28 @@ jobs:
           uv tool install mini-swe-agent --from
           "git+https://github.com/virajmehta/mini-swe-agent.git@main"
 
-      - name: Call LLM to generate PR revision
-        # TODO: currently pinned to miniswe-agent branch; switch back to main when ready.
+      - name: Generate patch
+        id: generate
         uses: tensorzero/experimental-ci-bot/generate-pr-patch@viraj/pr-only
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          mode: patch-only
           tensorzero-base-url: http://localhost:3000
-          # TODO: Remove when agent creates PRs
           tensorzero-diff-patched-successfully-metric-name: tensorzero_github_ci_bot_diff_patched_successfully
           output-artifacts-dir: debug-logs
           clickhouse-url: ${{ secrets.CI_BOT_CLICKHOUSE_URL }}
           clickhouse-table: GitHubBotPullRequestToInferenceMap
+
+      - name: Upload patch artifact
+        if: steps.generate.outputs.has-changes == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-patch
+          path: |
+            debug-logs/patch.diff
+            debug-logs/metadata.json
 
       - name: Upload diagnostics bundle
         if: always()
@@ -60,5 +73,74 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ci-failure-diagnostics
-          path: |
-            debug-logs/
+          path: debug-logs/
+
+  apply-patch-and-create-pr:
+    needs: generate-patch
+    if: needs.generate-patch.outputs.has-changes == 'true'
+    runs-on: ubuntu-latest
+    name: Apply patch and create PR
+    # WRITE permissions - only this job can push and create PRs
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Download patch artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pr-patch
+          path: patch-data
+
+      - name: Read metadata
+        id: meta
+        run: |
+          echo "pr-number=$(jq -r .prNumber patch-data/metadata.json)" >> $GITHUB_OUTPUT
+          echo "head-ref=$(jq -r .headRef patch-data/metadata.json)" >> $GITHUB_OUTPUT
+          echo "owner=$(jq -r .owner patch-data/metadata.json)" >> $GITHUB_OUTPUT
+          echo "repo=$(jq -r .repo patch-data/metadata.json)" >> $GITHUB_OUTPUT
+
+          # Handle multiline reasoning
+          {
+            echo 'reasoning<<EOF'
+            jq -r '.reasoning // empty' patch-data/metadata.json
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
+      - name: Checkout PR branch
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.meta.outputs.head-ref }}
+          fetch-depth: 0
+
+      - name: Apply patch and create PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Create new branch
+          BRANCH_NAME="tensorzero/pr-${{ steps.meta.outputs.pr-number }}-$(date +%s)"
+          git checkout -b "$BRANCH_NAME"
+
+          # Apply patch
+          git apply patch-data/patch.diff
+
+          # Commit and push
+          git config user.email "hello@tensorzero.com"
+          git config user.name "TensorZero-Experimental-CI-Bot[bot]"
+          git add -A
+          git commit -m "chore: automated fix for PR #${{ steps.meta.outputs.pr-number }}"
+          git push -u origin "$BRANCH_NAME"
+
+          # Create PR with reasoning in body
+          PR_BODY="This pull request was generated automatically in response to failing CI on #${{ steps.meta.outputs.pr-number }}.
+
+          The proposed changes were produced by mini-swe-agent.
+
+          ## Fix Details
+
+          ${{ steps.meta.outputs.reasoning }}"
+
+          gh pr create \
+            --base "${{ steps.meta.outputs.head-ref }}" \
+            --head "$BRANCH_NAME" \
+            --title "Automated follow-up for #${{ steps.meta.outputs.pr-number }}" \
+            --body "$PR_BODY"
