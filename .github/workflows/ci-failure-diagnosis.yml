@@ -182,8 +182,49 @@ jobs:
             || echo "Warning: Failed to send feedback"
 
           # 2. Write episode-to-PR mapping to ClickHouse
-          echo "Writing to ClickHouse: episode=$EPISODE_ID, pr_id=$PR_ID..."
-          curl -sf -X POST "$CLICKHOUSE_URL" \
-            -d "INSERT INTO $CLICKHOUSE_TABLE (pull_request_id, episode_id) VALUES ($PR_ID, '$EPISODE_ID')" \
-            && echo "ClickHouse record created successfully" \
-            || echo "Warning: Failed to write to ClickHouse"
+          echo "Writing to ClickHouse..."
+          echo "  URL length: ${#CLICKHOUSE_URL}"
+          echo "  Table: $CLICKHOUSE_TABLE"
+          echo "  PR ID: $PR_ID"
+          echo "  Episode ID: $EPISODE_ID"
+
+          CLICKHOUSE_QUERY="INSERT INTO $CLICKHOUSE_TABLE (pull_request_id, episode_id) VALUES ($PR_ID, '$EPISODE_ID')"
+          echo "  Query: $CLICKHOUSE_QUERY"
+
+          CLICKHOUSE_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$CLICKHOUSE_URL" -d "$CLICKHOUSE_QUERY")
+          CLICKHOUSE_HTTP_CODE=$(echo "$CLICKHOUSE_RESPONSE" | tail -n1)
+          CLICKHOUSE_BODY=$(echo "$CLICKHOUSE_RESPONSE" | sed '$d')
+
+          echo "  HTTP Status: $CLICKHOUSE_HTTP_CODE"
+          if [ -n "$CLICKHOUSE_BODY" ]; then
+            echo "  Response Body: $CLICKHOUSE_BODY"
+          fi
+
+          if [ "$CLICKHOUSE_HTTP_CODE" -ge 200 ] && [ "$CLICKHOUSE_HTTP_CODE" -lt 300 ]; then
+            echo "ClickHouse record created successfully"
+          else
+            echo "Warning: Failed to write to ClickHouse (HTTP $CLICKHOUSE_HTTP_CODE)"
+          fi
+
+      - name: Send failure feedback
+        if: failure() && steps.meta.outputs.episode-id != ''
+        env:
+          TENSORZERO_BASE_URL: http://ci-bot-gateway:3000
+        run: |
+          EPISODE_ID="${{ steps.meta.outputs.episode-id }}"
+
+          echo "Sending failure feedback for episode $EPISODE_ID..."
+
+          # Send ci_fix_pr_created_agent=false
+          curl -sf -X POST "$TENSORZERO_BASE_URL/feedback" \
+            -H "Content-Type: application/json" \
+            -d "{\"metric_name\": \"ci_fix_pr_created_agent\", \"episode_id\": \"$EPISODE_ID\", \"value\": false}" \
+            && echo "ci_fix_pr_created_agent=false sent" \
+            || echo "Warning: Failed to send ci_fix_pr_created_agent feedback"
+
+          # Send ci_fix_pr_merged_agent=false
+          curl -sf -X POST "$TENSORZERO_BASE_URL/feedback" \
+            -H "Content-Type: application/json" \
+            -d "{\"metric_name\": \"ci_fix_pr_merged_agent\", \"episode_id\": \"$EPISODE_ID\", \"value\": false}" \
+            && echo "ci_fix_pr_merged_agent=false sent" \
+            || echo "Warning: Failed to send ci_fix_pr_merged_agent feedback"
