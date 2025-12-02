@@ -140,6 +140,8 @@ export async function runMiniSweAgent(
   const env = {
     ...process.env,
     TENSORZERO_CONFIG_PATH: tensorZeroConfigPath,
+    // Skip mini-swe-agent's interactive first-time setup
+    MSWEA_CONFIGURED: 'true',
     // Ensure Python output is unbuffered for better logging
     PYTHONUNBUFFERED: '1'
   }
