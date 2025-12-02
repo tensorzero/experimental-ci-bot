@@ -73,7 +73,7 @@ describe('clickhouseClient', () => {
 
     expect(client.query).toHaveBeenCalledWith({
       query:
-        'SELECT inference_id, pull_request_id, created_at, original_pull_request_url FROM tensorzero.inference_records WHERE pull_request_id = {pullRequestId:UInt64}',
+        'SELECT episode_id, pull_request_id, created_at, original_pull_request_url FROM tensorzero.inference_records WHERE pull_request_id = {pullRequestId:UInt64}',
       query_params: { pullRequestId: 77 },
       format: 'JSONEachRow'
     })
