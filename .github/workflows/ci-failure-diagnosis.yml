@@ -6,11 +6,6 @@ on:
     types:
       - completed
 
-permissions:
-  contents: write
-  pull-requests: write
-  actions: read
-
 jobs:
   generate-patch:
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
