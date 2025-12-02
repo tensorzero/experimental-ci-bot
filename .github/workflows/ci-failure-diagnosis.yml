@@ -18,57 +18,12 @@ jobs:
     name: Gather failure context and generate PR
     steps:
       - name: Connect to Tailscale
-        uses: tailscale/github-action@v2
+        uses: tailscale/github-action@v4
         with:
           oauth-client-id: ${{ secrets.CI_BOT_TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.CI_BOT_TS_OAUTH_CLIENT_SECRET }}
           tags: tag:ci
-
-      - name: Checkout TensorZero config file
-        uses: actions/checkout@v5
-        with:
-          repository: tensorzero/experimental-ci-bot
-          sparse-checkout: |
-            tensorzero
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install uv
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
-
-      - name: Create venv and install mini-swe-agent
-        run: |
-          uv venv
-          uv pip install git+https://github.com/SWE-agent/mini-swe-agent.git@main
-
-      - name: Move tensorzero config to /tmp
-        run: |
-          mv ./tensorzero/swe_agent_config /tmp/tensorzero-for-gateway
-          ls -lR /tmp/tensorzero-for-gateway
-
-      - name: Start TensorZero gateway
-        run: |
-          docker pull tensorzero/gateway:latest
-          docker run -d --rm \
-            --name tensorzero-gateway \
-            -e TENSORZERO_CLICKHOUSE_URL=${{ secrets.CI_BOT_CLICKHOUSE_URL }} \
-            -e OPENAI_API_KEY=${{ secrets.CI_BOT_OPENAI_API_KEY }} \
-            -e ANTHROPIC_API_KEY=${{ secrets.CI_BOT_ANTHROPIC_API_KEY }} \
-            -p 3000:3000 \
-            --volume /tmp/tensorzero-for-gateway:/action-config \
-            tensorzero/gateway:latest --config-file /action-config/tensorzero.toml
-
-          for _i in {1..100}; do
-            curl -fsS http://localhost:3000/health && exit 0
-            sleep 3
-          done
-          echo "Gateway never became ready" >&2
-          exit 1
+          args: --verbose=2
 
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -76,15 +31,6 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
           fetch-tags: false
-
-      - name: Debug
-        run: |
-          ls -lR /tmp/tensorzero-for-gateway
-          cat /tmp/tensorzero-for-gateway/tensorzero.toml
-          cat /tmp/tensorzero-for-gateway/templates/system.minijinja
-          cat /tmp/tensorzero-for-gateway/templates/instance.minijinja
-          which mini || echo "mini-swe-agent not found in PATH"
-          mini --help || echo "mini-swe-agent not working"
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -116,8 +62,3 @@ jobs:
           name: ci-failure-diagnostics
           path: |
             debug-logs/
-
-      - name: Stop TensorZero gateway
-        if: always()
-        continue-on-error: true
-        run: docker stop tensorzero-gateway
