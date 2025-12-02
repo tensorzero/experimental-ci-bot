@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   generate-patch:
-    # if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     runs-on: ubuntu-latest
     name: Generate patch from CI failure
     # Override with read-only permissions - agent cannot push or create PRs
@@ -24,6 +24,7 @@ jobs:
     outputs:
       has-changes: ${{ steps.generate.outputs.has-changes }}
     steps:
+      # Temporary, for testing only
       - name: Setup upterm session
         uses: owenthereal/action-upterm@v1
 
