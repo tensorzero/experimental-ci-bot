@@ -17,16 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Gather failure context and generate PR
     steps:
-      - name: Check secrets
-        run: |
-          if [ -n "${{ secrets.CI_BOT_TS_OAUTH_CLIENT_ID }}" ]; then
-            echo "Client ID is set (length: ${#CLIENT_ID})"
-          else
-            echo "Client ID is EMPTY"
-          fi
-        env:
-          CLIENT_ID: ${{ secrets.CI_BOT_TS_OAUTH_CLIENT_ID }}
-
       - name: Connect to Tailscale
         uses: tailscale/github-action@v4
         with:
@@ -35,48 +25,12 @@ jobs:
           tags: tag:ci
           args: --verbose=2
 
-      - name: Checkout TensorZero config file
-        uses: actions/checkout@v5
-        with:
-          repository: tensorzero/experimental-ci-bot
-          sparse-checkout: |
-            tensorzero
-
-      - name: Move tensorzero to tensorzero-for-gateway
-        run: |
-          mv ./tensorzero /tmp/tensorzero-for-gateway
-          ls -lR .
-
-      - name: Start TensorZero gateway
-        run: |
-          docker pull tensorzero/gateway:latest
-          docker run -d --rm \
-            --name tensorzero-gateway \
-            -e TENSORZERO_CLICKHOUSE_URL=${{ secrets.CI_BOT_CLICKHOUSE_URL }} \
-            -e OPENAI_API_KEY=${{ secrets.CI_BOT_OPENAI_API_KEY }} \
-            -p 3000:3000 \
-            --volume /tmp/tensorzero-for-gateway:/action-config \
-            tensorzero/gateway:latest --config-file /action-config/tensorzero.toml
-
-          for _i in {1..100}; do
-            curl -fsS http://localhost:3000/health && exit 0
-            sleep 3
-          done
-          echo "Gateway never became ready" >&2
-          exit 1
-
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
           fetch-tags: false
-
-      - name: Debug
-        run: |
-          ls -lR /tmp/tensorzero-for-gateway
-          cat /tmp/tensorzero-for-gateway/tensorzero.toml
-          cat /tmp/tensorzero-for-gateway/prompt.minijinja
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -108,8 +62,3 @@ jobs:
           name: ci-failure-diagnostics
           path: |
             debug-logs/
-
-      - name: Stop TensorZero gateway
-        if: always()
-        continue-on-error: true
-        run: docker stop tensorzero-gateway
