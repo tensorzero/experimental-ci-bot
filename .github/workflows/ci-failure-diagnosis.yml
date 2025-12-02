@@ -88,24 +88,25 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      # Download to /tmp so checkout doesn't delete it
       - name: Download patch artifact
         uses: actions/download-artifact@v4
         with:
           name: pr-patch
-          path: patch-data
+          path: /tmp/patch-data
 
       - name: Read metadata
         id: meta
         run: |
-          echo "pr-number=$(jq -r .prNumber patch-data/metadata.json)" >> $GITHUB_OUTPUT
-          echo "head-ref=$(jq -r .headRef patch-data/metadata.json)" >> $GITHUB_OUTPUT
-          echo "owner=$(jq -r .owner patch-data/metadata.json)" >> $GITHUB_OUTPUT
-          echo "repo=$(jq -r .repo patch-data/metadata.json)" >> $GITHUB_OUTPUT
+          echo "pr-number=$(jq -r .prNumber /tmp/patch-data/metadata.json)" >> $GITHUB_OUTPUT
+          echo "head-ref=$(jq -r .headRef /tmp/patch-data/metadata.json)" >> $GITHUB_OUTPUT
+          echo "owner=$(jq -r .owner /tmp/patch-data/metadata.json)" >> $GITHUB_OUTPUT
+          echo "repo=$(jq -r .repo /tmp/patch-data/metadata.json)" >> $GITHUB_OUTPUT
 
           # Handle multiline reasoning
           {
             echo 'reasoning<<EOF'
-            jq -r '.reasoning // empty' patch-data/metadata.json
+            jq -r '.reasoning // empty' /tmp/patch-data/metadata.json
             echo 'EOF'
           } >> $GITHUB_OUTPUT
 
@@ -123,8 +124,8 @@ jobs:
           BRANCH_NAME="tensorzero/pr-${{ steps.meta.outputs.pr-number }}-$(date +%s)"
           git checkout -b "$BRANCH_NAME"
 
-          # Apply patch
-          git apply patch-data/patch.diff
+          # Apply patch from /tmp
+          git apply /tmp/patch-data/patch.diff
 
           # Commit and push
           git config user.email "hello@tensorzero.com"
