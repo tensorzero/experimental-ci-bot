@@ -6,7 +6,6 @@ on:
     types:
       - completed
 
-# Workflow-level permissions (needed for Tailscale action to work)
 permissions:
   contents: write
   pull-requests: write
