@@ -1,5 +1,8 @@
 gateway.debug = true
 
+[[rate_limiting.rules]]
+tokens_per_day = 10_000_000
+
 [models.gpt-5]
 routing = ["openai"]
 
