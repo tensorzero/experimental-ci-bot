@@ -1,80 +1,40 @@
 {{task}}
 
 ## CI Failure Information
+`cat ci_failure_context.md` to see what failed.
 
-The CI failure details are available in the file `ci_failure_context.md` in the current directory.
-Read this file first to understand what failed and why.
+## Workflow (mini-swe-agent, fresh subshell per command)
+1. Read `ci_failure_context.md`.
+2. Identify failing job/test and restate the repro command.
+3. Inspect relevant files; use `rg` to find all call sites if changing signatures.
+4. Make the smallest change to fix the repro.
+5. Validate using only the commands that match your edits:
+   - Rust: `cargo fmt` → `cargo clippy --all-targets --all-features -- -D warnings` → `cargo check` → `cargo test-unit-fast`.
+   - Rust→TS bindings: `cd internal/tensorzero-node && pnpm build-bindings`; `pnpm -r build`; `pnpm -r typecheck`.
+   - UI: `cd ui && pnpm run format && pnpm run lint && pnpm run typecheck`.
+   - Docker/examples: `./ci/check-all-docker-compose.sh`.
+   - Version/coordinated edits: `./ci/check-version-consistency.sh`; `python3 ci/check_coordinated_edits.py`.
+   - Python deps: `uv lock --project="pyproject.toml"`; `uv export --project="pyproject.toml" --output-file="requirements.txt"`.
+   - Buildkite-triggered jobs aren’t reproducible; rely on logs and run the closest local checks.
+6. If validation fails, fix and rerun the targeted checks.
+7. Finish with the required completion command only.
 
-## Recommended Workflow
-
-Work step-by-step to ensure you can iterate on your changes and catch any problems:
-
-1. **Read the CI failure context** - `cat ci_failure_context.md`
-2. **Analyze the codebase** - Find and read relevant files mentioned in the failure
-3. **Understand the root cause** - Identify why the tests/checks are failing
-4. **Restate the repro** - Identify the exact failing job/test and the command to reproduce
-5. **Create a reproduction script** (if applicable) - Verify you can reproduce the failure locally
-6. **Make targeted fixes** - Edit the smallest relevant area first
-7. **Run validation** - Follow AGENTS.md for stack-specific commands (Rust: `cargo fmt`, `cargo clippy --all-targets --all-features -- -D warnings`, `cargo check`, `cargo test-unit-fast`; UI: from `ui/` run `pnpm run format`, `pnpm run lint`, `pnpm run typecheck`; Rust→TS bindings: `pnpm build-bindings` then `pnpm -r build` and `pnpm -r typecheck`; Python deps: keep `uv.lock` and `requirements.txt` in sync via `uv lock` and `uv export`). Choose only the commands that match the code you touched.
-8. **Iterate if needed** - If validation fails, debug and fix until all checks pass
-9. **Decide on delivery method** - Choose between inline suggestions or PR
-10. **Submit your work** - Use the completion command with your decision
-
-## Important Rules
-
-1. Every response must contain exactly one action in triple backticks
-2. Directory or environment variable changes are not persistent - every action runs in a new subshell
-3. You can prefix commands with environment variables or directory changes: `cd /path && command`
-4. You can write/load environment variables from files if needed
-5. Cannot modify GitHub Actions workflows (only repository code)
-6. If a command needs more time, add '# timeout: <seconds>' on the first line (max {{max_timeout}} seconds).
-7. Each command runs in a fresh subshell (no persistent shell state); chain with `&&` when you need sequential work.
-8. Keep outputs concise; prefer `rg`, `sed`, `head`, `tail`, or targeted tests over verbose logs.
+## Rules
+- One action per reply, in a bash block; THOUGHT + code block only.
+- Fresh subshell each time; chain with `&&` for sequential work.
+- Default timeout 30s; use `# timeout: <seconds>` (max {{max_timeout}}) only if needed.
+- Keep output concise—prefer `rg`, `sed`, `head`, `tail`, targeted tests/logs.
+- No workflow file edits; no real network/secrets. Use dummy envs for docker-compose (e.g., `OPENAI_API_KEY=dummy`).
 
 <system_information>
 {{system}} {{release}} {{version}} {{machine}}
 </system_information>
 
-## Validation Commands Reference
-
-Use the stack-specific commands that match your edits:
-
-### Rust (tensorzero-core, gateway, etc.)
-```bash
-cargo fmt
-cargo clippy --all-targets --all-features -- -D warnings
-cargo check
-cargo test-unit-fast
-```
-
-### Docker Compose / examples
-```bash
-./ci/check-all-docker-compose.sh
-```
-
-### Coordinated edits / version checks
-```bash
-./ci/check-version-consistency.sh
-python3 ci/check_coordinated_edits.py
-```
-
-### Rust → TypeScript bindings
-```bash
-cd internal/tensorzero-node && pnpm build-bindings
-pnpm -r build
-pnpm -r typecheck
-```
-
-### UI
-```bash
-cd ui && pnpm run format && pnpm run lint && pnpm run typecheck
-```
-
-### Python deps
-```bash
-uv lock --project="pyproject.toml"
-uv export --project="pyproject.toml" --output-file="requirements.txt"
-```
+## Useful Commands
+- View file snippets: `nl -ba file | sed -n '10,30p'`
+- Search: `rg pattern path`
+- Create file: `cat <<'EOF' > file\n...\nEOF`
+- Edit in-place example: `apply_patch` is unavailable here; instead use `perl -0pi -e 's/old/new/' file` or `python - <<'PY'\nfrom pathlib import Path\np=Path(\"file\"); p.write_text(p.read_text().replace(\"old\",\"new\"))\nPY`
 
 ## Useful Command Examples
 
@@ -87,7 +47,14 @@ print(hello)
 EOF
 ```
 
-TODO: add an edit command
+### Edit a file in place:
+```bash
+python - <<'PY'
+from pathlib import Path
+p = Path("filename.py")
+p.write_text(p.read_text().replace("old_text", "new_text"))
+PY
+```
 
 ### View file content:
 ```bash
