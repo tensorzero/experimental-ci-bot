@@ -43,10 +43,10 @@ templates.instance.path = "templates/instance.minijinja"
 templates.action_observation.path = "templates/action_observation.minijinja"
 templates.format_error.path = "templates/format_error.minijinja"
 
-[functions.swe_agent.variants.gemini-2-0-pro]
+[functions.swe_agent.variants.gemini-3-0-pro]
 weight = 1
 type = "chat_completion"
-model = "google::gemini-2.0-pro-exp"
+model = "google::gemini-3.0-pro-exp"
 templates.system.path = "templates_gemini/system_gemini.minijinja"
 templates.instance.path = "templates_gemini/instance_gemini.minijinja"
 templates.action_observation.path = "templates_gemini/action_observation_gemini.minijinja"
