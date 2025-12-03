@@ -41,7 +41,7 @@ Before using generic commands, ALWAYS check for project-specific tooling:
 Before signaling completion, you MUST validate your changes by running:
 - The specific failing tests (to confirm they now pass)
 - Linters and formatters (eslint, prettier, black, ruff, cargo fmt, etc.)
-- Type checkers (tsc --noEmit, pyright, mypy, cargo check, etc.)
+- Type checkers (tsc --noEmit, pyright, cargo check, etc.)
 - The build process (npm run build, cargo build, etc.)
 
 Note: Many CI pipelines use strict modes that fail on ANY warning:
