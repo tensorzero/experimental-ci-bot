@@ -7,6 +7,13 @@ routing = ["openai"]
 type = "openai"
 model_name = "gpt-5-2025-08-07"
 
+[models."gpt-5.1-codex"]
+routing = ["openai"]
+
+[models."gpt-5.1-codex".providers.openai]
+type = "openai"
+model_name = "gpt-5.1-codex"
+
 [models.claude-4-sonnet]
 routing = ["anthropic"]
 
@@ -33,6 +40,15 @@ templates.system.path = "templates/system.minijinja"
 templates.instance.path = "templates/instance.minijinja"
 templates.action_observation.path = "templates/action_observation.minijinja"
 templates.format_error.path = "templates/format_error.minijinja"
+
+[functions.swe_agent.variants.shuyang-codex]
+weight = 1
+type = "chat_completion"
+model = "gpt-5.1-codex"
+templates.system.path = "templates/shuyang-codex/system.minijinja"
+templates.instance.path = "templates/shuyang-codex/instance.minijinja"
+templates.action_observation.path = "templates/shuyang-codex/action_observation.minijinja"
+templates.format_error.path = "templates/shuyang-codex/format_error.minijinja"
 
 [functions.swe_agent.variants.claude-4-5-sonnet]
 weight = 1
