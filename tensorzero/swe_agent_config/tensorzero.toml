@@ -7,12 +7,14 @@ routing = ["openai"]
 type = "openai"
 model_name = "gpt-5-2025-08-07"
 
-[models."gpt-5.1"]
+[models."gpt-5.1-codex"]
 routing = ["openai"]
 
-[models."gpt-5.1".providers.openai]
+[models."gpt-5.1-codex".providers.openai]
 type = "openai"
-model_name = "gpt-5.1-2025-11-13"
+model_name = "gpt-5.1-codex"
+api_type = "responses"
+provider_tools = []
 
 [models.claude-4-sonnet]
 routing = ["anthropic"]
@@ -41,10 +43,10 @@ templates.instance.path = "templates/instance.minijinja"
 templates.action_observation.path = "templates/action_observation.minijinja"
 templates.format_error.path = "templates/format_error.minijinja"
 
-[functions.swe_agent.variants.shuyang-gpt-5-1]
+[functions.swe_agent.variants.shuyang-gpt-5-1-codex]
 weight = 1
 type = "chat_completion"
-model = "gpt-5.1"
+model = "gpt-5.1-codex"
 templates.system.path = "templates/shuyang-gpt-5-1/system.minijinja"
 templates.instance.path = "templates/shuyang-gpt-5-1/instance.minijinja"
 templates.action_observation.path = "templates/action_observation.minijinja"
