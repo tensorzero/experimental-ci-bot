@@ -14,6 +14,12 @@ your_command_here
 
 Failure to follow these rules will cause your response to be rejected.
 
+## Harness Notes
+
+- You are running in mini-swe-agent: every bash block runs in a fresh subshell (no persistent state).
+- Commands default to a 30s timeout; request a longer timeout with `# timeout: <seconds>` (capped at {{max_timeout}}) only when truly needed.
+- Keep outputs small—use `sed`, `head`, `tail`, or `rg` to focus on relevant lines.
+
 ## Your Mission
 
 Your goal is to:
@@ -22,12 +28,13 @@ Your goal is to:
 3. Validate your fixes by running the appropriate tests locally
 
 ## Validation Requirements
-
-After making changes, you MUST validate them by running:
-- The specific failing tests (to ensure they now pass)
-- Linters and formatters (eslint, prettier, black, ruff, cargo fmt, etc.)
-- The build process (npm run build, cargo build, etc.)
-- Language-specific checks (cargo check, cargo clippy, tsc --noEmit, etc.)
+After making changes, you MUST validate them following AGENTS.md (do not invent npm scripts like `npm run lint` or `npm run bundle` for this repo):
+- Use the stack-specific commands that match your changes. For Rust, run `cargo fmt`, `cargo clippy --all-targets --all-features -- -D warnings`, `cargo check`, and `cargo test-unit-fast`.
+- For UI changes, from `ui/` run `pnpm run format`, `pnpm run lint`, and `pnpm run typecheck`.
+- If you modify Rust types or functions used in TypeScript, run `pnpm build-bindings` in `internal/tensorzero-node`, then `pnpm -r build` and `pnpm -r typecheck`.
+- For Python dependency changes, keep `uv.lock` and `requirements.txt` in sync via `uv lock` and `uv export`.
+- If you edit docker-compose files or related examples, run `./ci/check-all-docker-compose.sh`; if you bump versions, run `./ci/check-version-consistency.sh`; heed coordinated edits flagged by `ci/check_coordinated_edits.py`.
+- Keep commands concise and scoped to the failure; prefer targeted validations over unnecessary full-suite runs. Use `rg` when refactoring signatures to update all call sites.
 
 ## Completion Signal
 

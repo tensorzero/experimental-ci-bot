@@ -12,12 +12,13 @@ Work step-by-step to ensure you can iterate on your changes and catch any proble
 1. **Read the CI failure context** - `cat ci_failure_context.md`
 2. **Analyze the codebase** - Find and read relevant files mentioned in the failure
 3. **Understand the root cause** - Identify why the tests/checks are failing
-4. **Create a reproduction script** (if applicable) - Verify you can reproduce the failure locally
-5. **Make targeted fixes** - Edit the source code to resolve the issue
-6. **Run validation** - Execute the failing tests, linters, and build to verify your fix
-7. **Iterate if needed** - If validation fails, debug and fix until all checks pass
-8. **Decide on delivery method** - Choose between inline suggestions or PR
-9. **Submit your work** - Use the completion command with your decision
+4. **Restate the repro** - Identify the exact failing job/test and the command to reproduce
+5. **Create a reproduction script** (if applicable) - Verify you can reproduce the failure locally
+6. **Make targeted fixes** - Edit the smallest relevant area first
+7. **Run validation** - Follow AGENTS.md for stack-specific commands (Rust: `cargo fmt`, `cargo clippy --all-targets --all-features -- -D warnings`, `cargo check`, `cargo test-unit-fast`; UI: from `ui/` run `pnpm run format`, `pnpm run lint`, `pnpm run typecheck`; Rust→TS bindings: `pnpm build-bindings` then `pnpm -r build` and `pnpm -r typecheck`; Python deps: keep `uv.lock` and `requirements.txt` in sync via `uv lock` and `uv export`). Choose only the commands that match the code you touched.
+8. **Iterate if needed** - If validation fails, debug and fix until all checks pass
+9. **Decide on delivery method** - Choose between inline suggestions or PR
+10. **Submit your work** - Use the completion command with your decision
 
 ## Important Rules
 
@@ -27,6 +28,8 @@ Work step-by-step to ensure you can iterate on your changes and catch any proble
 4. You can write/load environment variables from files if needed
 5. Cannot modify GitHub Actions workflows (only repository code)
 6. If a command needs more time, add '# timeout: <seconds>' on the first line (max {{max_timeout}} seconds).
+7. Each command runs in a fresh subshell (no persistent shell state); chain with `&&` when you need sequential work.
+8. Keep outputs concise; prefer `rg`, `sed`, `head`, `tail`, or targeted tests over verbose logs.
 
 <system_information>
 {{system}} {{release}} {{version}} {{machine}}
@@ -34,53 +37,43 @@ Work step-by-step to ensure you can iterate on your changes and catch any proble
 
 ## Validation Commands Reference
 
-TODO: update
-Depending on the project type, use these commands to validate your changes:
+Use the stack-specific commands that match your edits:
 
-### JavaScript/TypeScript:
+### Rust (tensorzero-core, gateway, etc.)
 ```bash
-# Run specific test file
-npm test -- path/to/test.spec.ts
-
-# Run linter
-npm run lint
-
-# Run formatter
-npm run format
-
-# Type check
-npx tsc --noEmit
-
-# Build
-npm run build
-```
-
-### Rust:
-```bash
-# Run specific test
-cargo test test_name
-
-# Check compilation
+cargo fmt
+cargo clippy --all-targets --all-features -- -D warnings
 cargo check
-
-# Run clippy
-cargo clippy
-
-# Format
-cargo fmt --check
-
-# Build
-cargo build
+cargo test-unit-fast
 ```
 
-### Python:
+### Docker Compose / examples
 ```bash
-# Run specific test
-pytest path/to/test_file.py::test_name
+./ci/check-all-docker-compose.sh
+```
 
-# Run linter
-ruff check .
+### Coordinated edits / version checks
+```bash
+./ci/check-version-consistency.sh
+python3 ci/check_coordinated_edits.py
+```
 
+### Rust → TypeScript bindings
+```bash
+cd internal/tensorzero-node && pnpm build-bindings
+pnpm -r build
+pnpm -r typecheck
+```
+
+### UI
+```bash
+cd ui && pnpm run format && pnpm run lint && pnpm run typecheck
+```
+
+### Python deps
+```bash
+uv lock --project="pyproject.toml"
+uv export --project="pyproject.toml" --output-file="requirements.txt"
 ```
 
 ## Useful Command Examples
