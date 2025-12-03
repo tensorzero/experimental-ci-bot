@@ -68,7 +68,10 @@ cargo fmt
 # Check for warnings and errors
 cargo clippy --all-targets --all-features -- -D warnings
 # Run unit tests (uses nextest under the hood)
-cargo test-unit-fast
+cargo test-unit-fast # optionally, adding `-- test_name_substring` to filter
+# If needed, to run an e2e test:
+docker compose -f tensorzero-core/tests/e2e/docker-compose.yml up -d
+cargo test-e2e-fast -- test-name-substring
 ```
 
 ## For APIs
