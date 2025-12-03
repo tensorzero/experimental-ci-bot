@@ -1,0 +1,11 @@
+[functions.swe_agent.variants.gb]
+type = "chat_completion"
+model = "anthropic::claude-opus-4-5"
+max_tokens = 64_000
+thinking_budget_tokens = 32_000
+retries = { num_retries = 2, max_delay_s = 15 }
+timeouts = { non_streaming.total_ms = 120_000, streaming.ttft_ms = 30_000 }
+templates.system.path = "templates/gb/system.minijinja"
+templates.instance.path = "templates/gb/instance.minijinja"
+templates.action_observation.path = "templates/gb/action_observation.minijinja"
+templates.format_error.path = "templates/gb/format_error.minijinja"
