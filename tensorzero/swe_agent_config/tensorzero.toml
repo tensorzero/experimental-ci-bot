@@ -47,8 +47,8 @@ type = "chat_completion"
 model = "gpt-5.1"
 templates.system.path = "templates/shuyang-gpt-5-1/system.minijinja"
 templates.instance.path = "templates/shuyang-gpt-5-1/instance.minijinja"
-templates.action_observation.path = "templates/shuyang-gpt-5-1/action_observation.minijinja"
-templates.format_error.path = "templates/shuyang-gpt-5-1/format_error.minijinja"
+templates.action_observation.path = "templates/action_observation.minijinja"
+templates.format_error.path = "templates/format_error.minijinja"
 
 [functions.swe_agent.variants.claude-4-5-sonnet]
 weight = 1
