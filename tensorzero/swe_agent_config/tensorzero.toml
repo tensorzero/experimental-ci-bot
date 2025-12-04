@@ -1,6 +1,7 @@
 gateway.debug = true
 
 [[rate_limiting.rules]]
+always = true
 tokens_per_day = 10_000_000
 
 [models.gpt-5]
@@ -57,9 +58,9 @@ type = "chat"
 [functions.swe_agent.experimentation]
 type = "track_and_stop"
 candidate_variants = ["shuyang-gpt-5-1-codex", "aaron-claude-opus", "viraj-claude-4-5-opus", "alan-gemini-3-0-pro", "aj-claude-4-5-opus-thinking", "gb"] 
+metric = "ci_fix_pr_merged_agent"
 
 [functions.swe_agent.variants.gpt-5]
-weight = 0
 type = "chat_completion"
 model = "gpt-5"
 templates.system.path = "templates/system.minijinja"
@@ -68,7 +69,6 @@ templates.action_observation.path = "templates/action_observation.minijinja"
 templates.format_error.path = "templates/format_error.minijinja"
 
 [functions.swe_agent.variants.shuyang-gpt-5-1-codex]
-weight = 1
 type = "chat_completion"
 model = "gpt-5.1-codex"
 retries = { num_retries = 2, max_delay_s = 15 }
@@ -79,7 +79,6 @@ templates.action_observation.path = "templates/action_observation.minijinja"
 templates.format_error.path = "templates/format_error.minijinja"
 
 [functions.swe_agent.variants.claude-4-5-sonnet]
-weight = 1
 type = "chat_completion"
 model = "claude-4-5-sonnet"
 templates.system.path = "templates/system.minijinja"
@@ -88,7 +87,6 @@ templates.action_observation.path = "templates/action_observation.minijinja"
 templates.format_error.path = "templates/format_error.minijinja"
 
 [functions.swe_agent.variants.aaron-claude-opus]
-weight = 1
 type = "chat_completion"
 model = "claude-opus-4-5"
 retries = { num_retries = 2, max_delay_s = 15 }
@@ -99,7 +97,6 @@ templates.action_observation.path = "aaron_templates/action_observation.minijinj
 templates.format_error.path = "aaron_templates/format_error.minijinja"
 
 [functions.swe_agent.variants.viraj-claude-4-5-opus]
-weight = 1
 type = "chat_completion"
 model = "claude-4-5-opus-thinking"
 retries = { num_retries = 2, max_delay_s = 15 }
@@ -110,7 +107,6 @@ templates.action_observation.path = "viraj/templates/action_observation.minijinj
 templates.format_error.path = "viraj/templates/format_error.minijinja"
 
 [functions.swe_agent.variants.aj-claude-4-5-opus-thinking]
-weight = 1
 type = "chat_completion"
 model = "claude-4-5-opus-thinking"
 retries = { num_retries = 2, max_delay_s = 15 }
@@ -122,7 +118,6 @@ templates.format_error.path = "aj/format_error.minijinja"
 max_tokens = 64_000
 
 [functions.swe_agent.variants.alan-gemini-3-0-pro]
-weight = 1
 type = "chat_completion"
 model = "google_ai_studio_gemini::gemini-3.0-pro-exp"
 retries = { num_retries = 2, max_delay_s = 15 }
@@ -134,7 +129,7 @@ templates.format_error.path = "templates_gemini/format_error_gemini.minijinja"
 
 [functions.swe_agent.variants.gb]
 type = "chat_completion"
-model = "anthropic::claude-opus-4-5" 1Code has comments. Press enter to view.
+model = "anthropic::claude-opus-4-5"
 max_tokens = 64_000
 thinking_budget_tokens = 32_000
 retries = { num_retries = 2, max_delay_s = 15 }
