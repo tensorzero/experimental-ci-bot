@@ -1,0 +1,165 @@
+{{task}}
+
+## CI Failure Information
+
+The CI failure details are available in the file `ci_failure_context.md` in the current directory.
+Read this file first to understand what failed and why.
+
+## Recommended Workflow
+
+Work step-by-step to ensure you can iterate on your changes and catch any problems:
+
+1. **Read the CI failure context** - `cat ci_failure_context.md`
+2. **Analyze the codebase** - Find and read relevant files mentioned in the failure.
+Also look at `.github/workflows/general.yml` to understand what workflow failed.
+3. **Understand the root cause** - Identify why the tests/checks are failing
+4. **Create a reproduction script** (if applicable) - Verify you can reproduce the failure locally
+5. **Make targeted fixes** - Edit the source code to resolve the issue
+6. **Run validation** - Execute the failing tests, linters, and build to verify your fix
+7. **Iterate if needed** - If validation fails, debug and fix until all checks pass
+9. **Submit your work** - Use the completion command with your decision
+
+## Important Rules
+
+1. Every response must contain exactly one action in triple backticks
+2. Directory or environment variable changes are not persistent - every action runs in a new subshell
+3. You can prefix commands with environment variables or directory changes: `cd /path && command`
+4. You can write/load environment variables from files if needed
+5. Cannot modify GitHub Actions workflows (only repository code)
+6. If a command needs more time, add '# timeout: <seconds>' on the first line (max {{max_timeout}} seconds).
+
+<system_information>
+{{system}} {{release}} {{version}} {{machine}}
+</system_information>
+
+## Validation Commands Reference
+
+# Rust
+
+```bash
+# Quick verification of Rust compilation
+cargo check
+# Restrict to a specific package
+cargo check --package tensorzero-core
+# For complex changes, check all targets and features (test suite compilation is slow)
+cargo check --all-targets --all-features
+```
+
+If you update Rust types or functions used in TypeScript, regenerate bindings (run `cargo check` first to catch compilation errors):
+
+```bash
+cd internal/tensorzero-node && pnpm build-bindings
+```
+
+If you change a signature of a struct, function, etc., use `rg` to find all instances in the codebase:
+
+```bash
+# Example: search for struct field usage when updating struct fields
+rg "StructName {"
+```
+
+Place crate imports at the top of the file or module using `use crate::...`. Avoid imports inside functions or tests. Avoid long inline crate paths.
+
+Once you're done with your work, run these commands:
+
+```bash
+# Format code
+cargo fmt
+# Check for warnings and errors
+cargo clippy --all-targets --all-features -- -D warnings
+# Run unit tests (uses nextest under the hood)
+cargo test-unit-fast # optionally, adding `-- test_name_substring` to filter
+# If needed, to run an e2e test:
+docker compose -f tensorzero-core/tests/e2e/docker-compose.yml up -d
+cargo test-e2e-fast -- test-name-substring
+```
+
+## For APIs
+
+- Prefer using `#[cfg_attr(test, ts_rs::TS)]` for ts-rs exports.
+- For any Option types visible from the frontend, include `#[cfg_attr(test, ts(export, optional_fields))]` and `#[serde(skip_serializing_if = "Option::is_none")]` so None values are not returned over the wire. In very rare cases we may decide do return `null`s, but in general we want to omit them.
+
+Some tests make HTTP requests to the gateway. To start the gateway:
+
+```bash
+# Start the gateway (has dependencies on docker containers)
+cargo run-e2e
+# Ask user to run docker containers if needed
+docker compose -f tensorzero-core/tests/e2e/docker-compose.yml up
+```
+
+# Python Dependencies
+
+We use `uv` to manage Python dependencies.
+
+When updating Python dependencies anywhere in the project, you must update both the `uv.lock` and `requirements.txt` to keep them in sync:
+
+```bash
+# 1. Update pyproject.toml with your changes, then:
+
+# 2. Generate/update uv.lock (run from directory containing pyproject.toml)
+uv lock --project="pyproject.toml"
+
+# 3. Generate/update requirements.txt (don't skip --output-file)
+uv export --project="pyproject.toml" --output-file="requirements.txt"
+```
+
+The pre-commit hooks automatically handle this by running `uv lock` and `uv export` for all `pyproject.toml` files in the repository.
+
+# Type generation for Python
+
+You can generate Python schemas using `pnpm generate-python-schemas` from the root directory.
+
+# Type generation for TypeScript
+
+We use `ts-rs` and `n-api` for TypeScript-Rust interoperability.
+
+```bash
+# Generate TypeScript type definitions from Rust types
+pnpm build-bindings
+# Rebuild tensorzero-node (generated types live in internal/tensorzero-node/lib/bindings/)
+pnpm -r build
+
+# Generate n-api implementations and package types for UI
+pnpm --filter=tensorzero-node run build
+
+# Verify TypeScript and Rust implementations agree on types
+pnpm -r typecheck
+```
+
+# UI
+
+After modifying UI code, run from the `ui/` directory:
+
+```bash
+cd ui
+pnpm run format
+pnpm run lint
+pnpm run typecheck
+```
+
+All commands must pass.
+
+# Misc
+
+- `CONTRIBUTING.md` has additional context on working on this codebase.
+
+
+## Example Session
+
+<example_response>
+THOUGHT: I need to first read the CI failure context to understand what went wrong in the pull request.
+
+```bash
+cat ci_failure_context.md
+```
+</example_response>
+
+## With max_timeout
+```bash
+# timeout: 300
+uv run expensive_script.py
+```
+
+Now begin your work!
+Do not commit to git or anything, just signal completion when you are happy with the state of the project.
