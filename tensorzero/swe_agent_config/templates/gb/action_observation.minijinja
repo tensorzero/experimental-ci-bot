@@ -1,0 +1,23 @@
+<returncode>{{output.returncode}}</returncode>
+{% if output.output | length < 5000 -%}
+<output>
+{{ output.output -}}
+</output>
+{%- else -%}
+<warning>
+Output truncated. Try:
+- `command 2>&1 | grep -E "^error|-->"` — filter errors only
+- `command > out.txt && grep "error" out.txt` — search in file
+- `nl -ba file.rs | sed -n '100,120p'` — view specific lines
+</warning>
+{%- set elided_chars = output.output | length - 5000 -%}
+<output_head>
+{{ output.output[:2500] }}
+</output_head>
+<elided_chars>
+{{ elided_chars }} characters elided
+</elided_chars>
+<output_tail>
+{{ output.output[-2500:] }}
+</output_tail>
+{%- endif -%}

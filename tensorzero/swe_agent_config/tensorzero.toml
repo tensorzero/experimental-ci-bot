@@ -1,11 +1,23 @@
 gateway.debug = true
 
+[[rate_limiting.rules]]
+tokens_per_day = 10_000_000
+
 [models.gpt-5]
 routing = ["openai"]
 
 [models.gpt-5.providers.openai]
 type = "openai"
 model_name = "gpt-5-2025-08-07"
+
+[models."gpt-5.1-codex"]
+routing = ["openai"]
+
+[models."gpt-5.1-codex".providers.openai]
+type = "openai"
+model_name = "gpt-5.1-codex"
+api_type = "responses"
+provider_tools = []
 
 [models.claude-4-sonnet]
 routing = ["anthropic"]
@@ -28,9 +40,23 @@ routing = ["anthropic"]
 type = "anthropic"
 model_name = "claude-opus-4-5-20251101"
 
+[models.claude-4-5-opus-thinking]
+routing = ["anthropic"]
+
+[models.claude-4-5-opus-thinking.providers.anthropic]
+type = "anthropic"
+model_name = "claude-opus-4-5-20251101"
+extra_body = [
+    { pointer = "/thinking", value = { type = "enabled", budget_tokens = 4096 } },
+]
+
 # Main function that mini-swe-agent will call
 [functions.swe_agent]
 type = "chat"
+
+[functions.swe_agent.experimentation]
+type = "track_and_stop"
+candidate_variants = ["shuyang-gpt-5-1-codex", "aaron-claude-opus", "viraj-claude-4-5-opus", "alan-gemini-3-0-pro", "aj-claude-4-5-opus-thinking"] 
 
 [functions.swe_agent.variants.gpt-5]
 weight = 0
@@ -38,6 +64,15 @@ type = "chat_completion"
 model = "gpt-5"
 templates.system.path = "templates/system.minijinja"
 templates.instance.path = "templates/instance.minijinja"
+templates.action_observation.path = "templates/action_observation.minijinja"
+templates.format_error.path = "templates/format_error.minijinja"
+
+[functions.swe_agent.variants.shuyang-gpt-5-1-codex]
+weight = 1
+type = "chat_completion"
+model = "gpt-5.1-codex"
+templates.system.path = "templates/shuyang-gpt-5-1/system.minijinja"
+templates.instance.path = "templates/shuyang-gpt-5-1/instance.minijinja"
 templates.action_observation.path = "templates/action_observation.minijinja"
 templates.format_error.path = "templates/format_error.minijinja"
 
@@ -58,6 +93,34 @@ templates.system.path = "aaron_templates/system.minijinja"
 templates.instance.path = "aaron_templates/instance.minijinja"
 templates.action_observation.path = "aaron_templates/action_observation.minijinja"
 templates.format_error.path = "aaron_templates/format_error.minijinja"
+
+[functions.swe_agent.variants.viraj-claude-4-5-opus]
+weight = 1
+type = "chat_completion"
+model = "claude-4-5-opus-thinking"
+templates.system.path = "viraj/templates/system.minijinja"
+templates.instance.path = "viraj/templates/instance.minijinja"
+templates.action_observation.path = "viraj/templates/action_observation.minijinja"
+templates.format_error.path = "viraj/templates/format_error.minijinja"
+
+[functions.swe_agent.variants.aj-claude-4-5-opus-thinking]
+weight = 1
+type = "chat_completion"
+model = "claude-4-5-opus-thinking"
+templates.system.path = "aj/system.minijinja"
+templates.instance.path = "aj/instance.minijinja"
+templates.action_observation.path = "aj/action_observation.minijinja"
+templates.format_error.path = "aj/format_error.minijinja"
+max_tokens = 64_000
+
+[functions.swe_agent.variants.alan-gemini-3-0-pro]
+weight = 1
+type = "chat_completion"
+model = "google_ai_studio_gemini::gemini-3.0-pro-exp"
+templates.system.path = "templates_gemini/system_gemini.minijinja"
+templates.instance.path = "templates_gemini/instance_gemini.minijinja"
+templates.action_observation.path = "templates_gemini/action_observation_gemini.minijinja"
+templates.format_error.path = "templates_gemini/format_error_gemini.minijinja"
 
 # Metrics for tracking agent performance
 # Many of them are not yet used except for ci_fix_pr_merged_agent

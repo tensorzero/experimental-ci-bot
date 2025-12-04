@@ -1,0 +1,24 @@
+<format_violation>
+Found {{actions|length}} code blocks. You must provide EXACTLY ONE.
+</format_violation>
+
+<correct_format>
+THOUGHT: Your reasoning here.
+
+```bash
+your_single_command_here
+```
+</correct_format>
+
+<completion_format>
+To complete the task:
+
+```bash
+echo "COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT
+REASONING: [Your explanation]"
+```
+
+The completion command must be alone—do not combine with other commands.
+</completion_format>
+
+Note: If your command must contain literal triple backticks, first write a placeholder (e.g., BACKTICKS), then use sed to replace it in a follow-up command.

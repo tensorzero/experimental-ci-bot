@@ -1,0 +1,29 @@
+Please provide EXACTLY ONE action in triple backticks (found {{actions|length}}).
+
+# Correct format
+
+```bash
+your_command_here
+```
+
+# Common mistakes
+
+WRONG - Multiple commands:
+
+```bash
+cargo fmt
+cargo check
+```
+
+CORRECT - Chain with &&:
+
+```bash
+cargo fmt && cargo check
+```
+
+# Completion (standalone, after validation passes)
+
+```bash
+echo "COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT
+REASONING: [What you fixed]"
+```

@@ -29,9 +29,9 @@ services:
   gateway:
     image: tensorzero/gateway
     volumes:
-      # Mount our tensorzero.toml file into the container
+      # Mount our configuration files into the container
       - ./tensorzero/swe_agent_config:/app/config:ro
-    command: --config-file /app/config/tensorzero.toml
+    command: --config-file /app/config/*.toml
     environment:
       TENSORZERO_CLICKHOUSE_URL: http://chuser:chpassword@clickhouse:8123/tensorzero
       OPENAI_API_KEY:
