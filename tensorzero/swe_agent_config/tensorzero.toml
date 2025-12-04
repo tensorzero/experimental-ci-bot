@@ -24,6 +24,16 @@ routing = ["anthropic"]
 type = "anthropic"
 model_name = "claude-sonnet-4-5-20250929"
 
+[models.claude-4-5-opus-thinking]
+routing = ["anthropic"]
+
+[models.claude-4-5-opus-thinking.providers.anthropic]
+type = "anthropic"
+model_name = "claude-opus-4-5-20251101"
+extra_body = [
+    { pointer = "/thinking", value = { type = "enabled", budget_tokens = 4096 } },
+]
+
 # Main function that mini-swe-agent will call
 [functions.swe_agent]
 type = "chat"
@@ -45,6 +55,16 @@ templates.system.path = "templates/system.minijinja"
 templates.instance.path = "templates/instance.minijinja"
 templates.action_observation.path = "templates/action_observation.minijinja"
 templates.format_error.path = "templates/format_error.minijinja"
+
+[functions.swe_agent.variants.aj-claude-4-5-opus-thinking]
+weight = 1
+type = "chat_completion"
+model = "claude-4-5-opus-thinking"
+templates.system.path = "aj/system.minijinja"
+templates.instance.path = "aj/instance.minijinja"
+templates.action_observation.path = "aj/action_observation.minijinja"
+templates.format_error.path = "aj/format_error.minijinja"
+max_tokens = 64_000
 
 [functions.swe_agent.variants.gemini-3-0-pro]
 weight = 1
