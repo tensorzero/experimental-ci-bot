@@ -1,0 +1,11 @@
+# Task
+
+{{task}}
+
+# CI Failure Information
+
+The CI failure details are available in the file `ci_failure_context.md` in the current directory.
+
+<system_information>
+{{system}} {{release}} {{version}} {{machine}}
+</system_information>
