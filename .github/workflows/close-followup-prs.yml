@@ -1,0 +1,19 @@
+name: Close Follow-up PRs
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  close-followup-prs:
+    runs-on: ubuntu-latest
+    name: Close Follow-up PRs
+    steps:
+      - name: Close Follow-up PRs
+        uses: tensorzero/experimental-ci-bot/close-followup-prs@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

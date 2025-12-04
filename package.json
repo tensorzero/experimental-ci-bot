@@ -19,6 +19,7 @@
   "exports": {
     "./generate-pr-patch": "./dist/generate-pr-patch/index.js",
     "./create-pr-feedback": "./dist/create-pr-feedback/index.js",
+    "./close-followup-prs": "./dist/close-followup-prs/index.js",
     "./cli": "./dist/cli/index.js",
     ".": "./dist/generate-pr-patch/index.js"
   },

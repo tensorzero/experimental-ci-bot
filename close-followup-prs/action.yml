@@ -1,0 +1,16 @@
+name: close-followup-prs
+description: Close bot-created follow-up PRs when the base PR is closed.
+author: tensorzero
+
+branding:
+  icon: git-pull-request
+  color: blue
+
+inputs:
+  github-token:
+    description: GitHub token with write access to pull requests and contents.
+    required: true
+
+runs:
+  using: node24
+  main: ../dist/close-followup-prs/index.js
