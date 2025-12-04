@@ -44,7 +44,7 @@ describe('clickhouseClient', () => {
         {
           episode_id: 'episode-123',
           pull_request_id: 42,
-          inference_id: 'abc-123',
+          inference_id: 'abc-123'
         }
       ],
       format: 'JSONEachRow'
