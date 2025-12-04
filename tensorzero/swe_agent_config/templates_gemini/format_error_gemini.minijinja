@@ -1,0 +1,11 @@
+Your previous reply was invalid because it did not contain exactly one THOUGHT line followed by a single bash code block.
+Detected {{actions|length}} bash blocks.
+
+Reformat your response precisely as:
+
+THOUGHT: concise reasoning about the command you intend to run.
+```bash
+the_single_command_or_pipeline
+```
+
+To finish the task, run only the prescribed completion command.

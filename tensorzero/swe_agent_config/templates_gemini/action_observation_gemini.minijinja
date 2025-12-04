@@ -1,0 +1,18 @@
+<returncode>{{output.returncode}}</returncode>
+{% if output.output | length == 0 -%}
+<output>(no stdout/stderr)</output>
+{%- elif output.output | length <= 8000 -%}
+<output>
+{{ output.output -}}
+</output>
+{%- else -%}
+<warning>
+Command output exceeded 8000 characters; content truncated. Use paging commands (head/tail/sed) or redirect to a file for targeted inspection.
+</warning>
+<output_head>
+{{ output.output[:4000] }}
+</output_head>
+<output_tail>
+{{ output.output[-4000:] }}
+</output_tail>
+{%- endif -%}
