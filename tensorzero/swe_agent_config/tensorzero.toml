@@ -1,5 +1,8 @@
 gateway.debug = true
 
+[[rate_limiting.rules]]
+tokens_per_day = 10_000_000
+
 [models.gpt-5]
 routing = ["openai"]
 
@@ -62,6 +65,15 @@ templates.instance.path = "aj/instance.minijinja"
 templates.action_observation.path = "aj/action_observation.minijinja"
 templates.format_error.path = "aj/format_error.minijinja"
 max_tokens = 64_000
+
+[functions.swe_agent.variants.gemini-3-0-pro]
+weight = 1
+type = "chat_completion"
+model = "google::gemini-3.0-pro-exp"
+templates.system.path = "templates_gemini/system_gemini.minijinja"
+templates.instance.path = "templates_gemini/instance_gemini.minijinja"
+templates.action_observation.path = "templates_gemini/action_observation_gemini.minijinja"
+templates.format_error.path = "templates_gemini/format_error_gemini.minijinja"
 
 # Metrics for tracking agent performance
 # Many of them are not yet used except for ci_fix_pr_merged_agent
