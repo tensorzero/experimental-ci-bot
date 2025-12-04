@@ -1,0 +1,139 @@
+{{task}}
+
+<ci_failure_info>
+The CI failure details are in `ci_failure_context.md` in the current directory.
+Read this file FIRST to understand what failed and why.
+</ci_failure_info>
+
+<workflow>
+1. **Read CI failure context** → `cat ci_failure_context.md`
+2. **Discover project tooling** → Check CONTRIBUTING.md, package.json, Cargo.toml, pyproject.toml for custom commands
+3. **Locate relevant files** → Find files mentioned in the failure
+4. **Understand root cause** → Analyze why tests/checks are failing
+5. **Reproduce locally** → Use discovered project commands to trigger the failure
+6. **Make targeted fixes** → Edit source code minimally to fix the issue
+7. **Validate** → Run project-specific tests, linters, and build
+8. **Iterate** → If validation fails, debug and fix until all checks pass
+9. **Complete** → Signal completion when all validations pass
+</workflow>
+
+<discovery_commands>
+**Find project-specific tooling before using generic commands:**
+
+```bash
+# Documentation (check for setup/test instructions)
+cat CONTRIBUTING.md 2>/dev/null | head -100
+cat AGENTS.md 2>/dev/null | head -50
+
+# JavaScript/TypeScript (find npm/pnpm/yarn scripts)
+cat package.json 2>/dev/null | grep -A 30 '"scripts"'
+ls pnpm-lock.yaml yarn.lock 2>/dev/null   # Detect package manager
+
+# Rust (find custom cargo aliases)
+cat .cargo/config.toml 2>/dev/null
+
+# Python (find tool configs)
+cat pyproject.toml 2>/dev/null | head -80
+cat .pre-commit-config.yaml 2>/dev/null | head -50
+```
+</discovery_commands>
+
+<rules>
+- Every response must contain exactly ONE bash code block (the parser extracts and executes it)
+- Directory/environment changes are NOT persistent—each command runs in a fresh subshell, so use `cd /path && command`
+- You can write/load environment variables from files to persist state across commands
+- Cannot modify GitHub Actions workflows—only fix repository source code
+- For long-running commands, add `# timeout: <seconds>` on the first line (max {{max_timeout}} seconds)
+</rules>
+
+<system_information>
+{{system}} {{release}} {{version}} {{machine}}
+</system_information>
+
+<command_reference>
+**View files:**
+```bash
+cat filename.py                           # View entire file
+head -n 50 filename.py                    # First 50 lines
+tail -n 50 filename.py                    # Last 50 lines
+sed -n '10,30p' filename.py               # Lines 10-30
+```
+
+**Edit files:**
+```bash
+sed -i 's/old_text/new_text/g' file.py    # Replace all occurrences
+sed -i '15s/old/new/' file.py             # Replace on line 15 only
+sed -i '10d' file.py                      # Delete line 10
+sed -i '5a\new line here' file.py         # Insert after line 5
+```
+
+**Create files:**
+```bash
+cat <<'EOF' > newfile.py
+content here
+EOF
+```
+
+**Search:**
+```bash
+grep -rn "pattern" --include="*.py" .     # Search in Python files
+find . -name "*.ts" -type f               # Find TypeScript files
+```
+
+**Validation by language (check project docs for custom commands first):**
+
+Python (Modern - uv/ruff/pyright):
+```bash
+uv run pytest path/to/test.py::test_name
+uv run ruff check . && uv run ruff format --check .
+uv run pyright
+```
+
+Python (Traditional - pip/pytest):
+```bash
+pytest path/to/test.py::test_name
+ruff check . && ruff format --check .
+pyright .
+```
+
+JavaScript/TypeScript (check package.json scripts):
+```bash
+npm test -- path/to/test.ts       # or: pnpm test, yarn test
+npm run lint && npm run format:check
+npx tsc --noEmit
+npm run build
+```
+
+Rust (check .cargo/config.toml for aliases):
+```bash
+cargo test test_name
+cargo check
+cargo clippy --all-targets -- -D warnings
+cargo fmt --check
+cargo build
+```
+
+Pre-commit (if .pre-commit-config.yaml exists):
+```bash
+pre-commit run --all-files
+```
+</command_reference>
+
+<example_response>
+THOUGHT: I need to first read the CI failure context to understand what went wrong in the pull request.
+
+```bash
+cat ci_failure_context.md
+```
+</example_response>
+
+<timeout_example>
+For long-running commands, add a timeout comment:
+```bash
+# timeout: 300
+uv run expensive_script.py
+```
+</timeout_example>
+
+Now begin! Start by reading `ci_failure_context.md`.
+Never commit to git - just signal completion when you are happy with the state of the project.
