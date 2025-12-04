@@ -101,7 +101,6 @@ templates.system.path = "templates_gemini/system_gemini.minijinja"
 templates.instance.path = "templates_gemini/instance_gemini.minijinja"
 templates.action_observation.path = "templates_gemini/action_observation_gemini.minijinja"
 templates.format_error.path = "templates_gemini/format_error_gemini.minijinja"
->>>>>>> 837ccc15a094c8ab2df641aa9f47a80264deb45f
 
 # Metrics for tracking agent performance
 # Many of them are not yet used except for ci_fix_pr_merged_agent
