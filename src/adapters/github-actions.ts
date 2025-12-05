@@ -102,6 +102,12 @@ function isPullRequestEligibleForFix(): boolean {
     return false
   }
 
+  // If the pull request is a draft, we don't want to fix it.
+  if (pullRequest.draft) {
+    core.warning(`PR is a draft; skipping action.`)
+    return false
+  }
+
   // If the workflow run did not fail, we don't want to fix it.
   if (github.context.payload.workflow_run.conclusion !== 'failure') {
     core.warning(
