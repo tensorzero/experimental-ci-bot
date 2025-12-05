@@ -99,7 +99,7 @@ export async function runMiniSweAgent(
     tensorZeroGatewayUrl,
     // trajectoryOutputPath is ignored - we always use temp file now
     costLimit = 3.0,
-    stepLimit = 0,
+    stepLimit = 40,
     modelName,
     timeout = 30 * 60 * 1000, // 30 minutes
     prNumber
@@ -124,8 +124,7 @@ export async function runMiniSweAgent(
   ]
 
   if (stepLimit > 0) {
-    // mini-swe-agent doesn't have a step-limit CLI flag, but we can set it in config
-    // For now, we'll skip this and rely on cost limit
+    args.push('-s', stepLimit.toString())
   }
 
   if (modelName) {
