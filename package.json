@@ -50,7 +50,7 @@
     "@clickhouse/client": "^1.12.1",
     "handlebars": "^4.7.8",
     "openai": "^5.23.0",
-    "simple-git": "^3.28.0"
+    "simple-git": "^3.30.0"
   },
   "devDependencies": {
     "@eslint/compat": "^1.4.0",
